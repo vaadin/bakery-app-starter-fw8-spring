@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.app;
+package com.vaadin.template.orders.backend.data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

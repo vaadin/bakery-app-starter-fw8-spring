@@ -1,8 +1,8 @@
-package com.vaadin.template.orders.backend.data;
+package com.vaadin.template.orders.backend;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.vaadin.template.orders.app.OrderInfo;
+import com.vaadin.template.orders.backend.data.OrderInfo;
 
 public interface OrderRepository extends JpaRepository<OrderInfo, Long> {
 }
