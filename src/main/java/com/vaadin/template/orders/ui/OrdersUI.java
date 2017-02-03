@@ -13,6 +13,7 @@ public class OrdersUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        // Nothing to do here right now, the navigator is set up automatically
     }
 
 }

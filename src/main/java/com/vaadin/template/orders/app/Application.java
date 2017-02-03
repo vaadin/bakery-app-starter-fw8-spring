@@ -25,9 +25,6 @@ import com.vaadin.template.orders.ui.OrdersUI;
 @EntityScan(basePackageClasses = { Order.class })
 public class Application {
 
-    private static final Logger log = LoggerFactory
-            .getLogger(Application.class);
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class);
     }
@@ -41,7 +38,7 @@ public class Application {
     public CommandLineRunner loadData(OrderRepository orders,
             UserRepository users, ProductRepository products,
             PasswordEncoder passwordEncoder) {
-        return (args) -> {
+        return args -> {
 
             users.save(new User("baker@vaadin.com", "Heidi",
                     passwordEncoder.encode("baker"), Role.BAKER));
@@ -53,8 +50,12 @@ public class Application {
             products.save(new Product("A big cake", 12.70));
             products.save(new Product("Strawberry cheese cake", 5.99));
 
-            log.info("Initialized repositories");
+            getLogger().info("Initialized repositories");
         };
+    }
+
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(Application.class);
     }
 
 }
