@@ -1,13 +1,15 @@
 package com.vaadin.template.orders.backend.data.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "OrderInfo") // "Order" is a reserved word
 public class Order {
@@ -16,19 +18,22 @@ public class Order {
     @GeneratedValue
     private Long id;
 
-    // LocalDateTime?
-    private Date due;
+    @NotNull
+    private LocalDateTime due;
+    @NotNull
     @OneToOne
     private PickupLocation pickupLocation;
+    @NotNull
     @OneToOne
     private Customer customer;
-    @OneToMany
+    @NotNull
+    @OneToMany(cascade = CascadeType.ALL)
     private List<OrderItem> items;
     private boolean paid;
     @OneToMany
     private List<HistoryItem> history;
 
-    protected Order() {
+    public Order() {
         // Empty constructor is needed by Spring Data / JPA
     }
 
@@ -36,11 +41,11 @@ public class Order {
         return id;
     }
 
-    public Date getDue() {
+    public LocalDateTime getDue() {
         return due;
     }
 
-    public void setDue(Date due) {
+    public void setDue(LocalDateTime due) {
         this.due = due;
     }
 

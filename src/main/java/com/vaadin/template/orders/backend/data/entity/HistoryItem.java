@@ -1,11 +1,12 @@
 package com.vaadin.template.orders.backend.data.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 import com.vaadin.template.orders.backend.data.OrderState;
 
@@ -16,11 +17,12 @@ public class HistoryItem {
     @GeneratedValue
     private Long id;
 
+    @NotNull
     private OrderState newState;
     private String message;
 
-    // LocalDateTime?
-    private Date timestamp;
+    @NotNull
+    private LocalDateTime timestamp;
     @OneToOne
     private User createdBy;
 
@@ -48,11 +50,11 @@ public class HistoryItem {
         this.message = message;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
