@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class OrderItem {
@@ -13,12 +14,18 @@ public class OrderItem {
     private Long id;
 
     @OneToOne
+    @NotNull
     private Product product;
     private int quantity;
     private String comment;
 
-    public OrderItem() {
+    protected OrderItem() {
         // Empty constructor is needed by Spring Data / JPA
+    }
+
+    public OrderItem(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
     }
 
     public Long getId() {

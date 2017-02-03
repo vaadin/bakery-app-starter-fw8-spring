@@ -3,6 +3,9 @@ package com.vaadin.template.orders.backend.data.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class Customer {
@@ -11,13 +14,25 @@ public class Customer {
     @GeneratedValue
     private Long id;
 
+    @NotNull
+    @NotEmpty
     private String firstName;
+    @NotNull
+    @NotEmpty
     private String lastName;
+    @NotNull
+    @NotEmpty
     private String phoneNumber;
     private String details;
 
-    public Customer() {
+    protected Customer() {
         // Empty constructor is needed by Spring Data / JPA
+    }
+
+    public Customer(String firstName, String lastName, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getId() {

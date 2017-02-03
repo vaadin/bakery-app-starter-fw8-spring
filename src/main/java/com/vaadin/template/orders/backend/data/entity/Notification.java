@@ -1,11 +1,12 @@
 package com.vaadin.template.orders.backend.data.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Notification {
@@ -15,9 +16,10 @@ public class Notification {
     private Long id;
 
     private String caption;
-    // LocalDateTime?
-    private Date timestamp;
+    @NotNull
+    private LocalDateTime timestamp;
     private String message;
+    @NotNull
     @OneToOne
     private User updatedBy;
 
@@ -37,11 +39,11 @@ public class Notification {
         this.caption = caption;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
