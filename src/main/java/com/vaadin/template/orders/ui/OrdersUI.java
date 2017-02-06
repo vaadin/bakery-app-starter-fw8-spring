@@ -4,10 +4,11 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.SpringViewDisplay;
+import com.vaadin.template.orders.app.Application;
 import com.vaadin.ui.UI;
 
 @Theme("orderstheme")
-@SpringUI
+@SpringUI(path = Application.APP_URL)
 @SpringViewDisplay
 public class OrdersUI extends UI {
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>How do I translate this?</title>
+<style>
+#login {
+	width: 15em;
+	display: block;
+}
+
+#password {
+	width: 15em;
+	display: block;
+}
+</style>
+<link rel="stylesheet"
+	href="/VAADIN/themes/valo/styles.css?v=8.0-SNAPSHOT" />
+<link rel="shortcut icon" href="/VAADIN/themes/valo/favicon.ico" />
+
+<script type="text/javascript">
+	var preserveFragment = function() {
+		if (window.location.hash) {
+			document.getElementById("form").action += window.location.hash;
+		}
+	}
+</script>
+</head>
+<body class="v-app valo" onload="preserveFragment()">
+	<form id="form" method="post" action="/login">
+		<label id="login-label" for="login">Username</label> <input
+			type="text" class="v-textfield v-widget v-has-width" id="login"
+			name="username" aria-labelledby="login-label" tabindex="0">
+		<div class="v-caption v-caption-hasdescription">
+			<label id="password-label" for="password">Password</label>
+		</div>
+		<input type="password" class="v-textfield v-widget v-has-width"
+			id="password" name="password" aria-labelledby="password-label"
+			tabindex="0">
+		<div class="v-caption v-caption-buttons"></div>
+		<div></div>
+		<div tabindex="0" role="button"
+			class="v-button v-widget v-button-primary" onclick="form.submit();">
+			<span class="v-button-wrap"><span class="v-button-caption">Login</span></span>
+		</div>
+	</form>
+</body>
+</html>

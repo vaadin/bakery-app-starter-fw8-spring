@@ -26,12 +26,16 @@ import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.backend.data.entity.User;
+import com.vaadin.template.orders.backend.service.UserDetailsServiceImpl;
 import com.vaadin.template.orders.ui.OrdersUI;
 
-@SpringBootApplication(scanBasePackageClasses = { OrdersUI.class })
+@SpringBootApplication(scanBasePackageClasses = { OrdersUI.class,
+        Application.class, UserDetailsServiceImpl.class })
 @EnableJpaRepositories(basePackageClasses = { OrderRepository.class })
 @EntityScan(basePackageClasses = { Order.class })
 public class Application {
+
+    public static final String APP_URL = "/app/";
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class);
