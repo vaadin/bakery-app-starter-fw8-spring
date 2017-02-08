@@ -5,6 +5,7 @@
 /* This file prefixes all rules with the theme name to avoid causing conflicts with other themes. */
 /* The actual styles should be defined in orderstheme.scss */
 .orderstheme {
+  @include vaadin-crud-template;
   @include addons;
   @include orderstheme;
 }

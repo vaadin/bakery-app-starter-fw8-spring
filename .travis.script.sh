@@ -6,7 +6,7 @@
 # TRAVIS_REPO_SLUG == the repository, e.g. vaadin/vaadin
 
 # Exclude the compiled theme from Sonar analysis
-SONAR_EXCLUSIONS=src/main/webapp/VAADIN/themes/orderstheme/styles.css
+SONAR_EXCLUSIONS=src/main/webapp/VAADIN/themes/orderstheme/styles.css,src/main/webapp/VAADIN/themes/orderstheme/designs.scss,src/main/java/com/vaadin/template/orders/ui/**/*Design.java
 
 if [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ "$TRAVIS_SECURE_ENV_VARS" == "true" ]
 then

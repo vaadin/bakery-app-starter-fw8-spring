@@ -1,0 +1,20 @@
+@mixin ordersview {
+
+  // Insert your own theme rules here
+  .two-row .v-grid-body .v-grid-cell {
+    height: 55px;
+    line-height: 25px;
+  }
+  .status {
+    padding-top: 16px;
+    &.problem {
+        color: red;
+    }
+  }
+  .bulletinBoard {
+    background: #FCF2D4;
+    .message {
+      padding: 1em;
+    }
+  }
+}
