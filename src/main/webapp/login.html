@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html>
+<!-- 
+Hint to Vaadin that if this page is ever sent back as response to a UIDL request, the user should be redirected.
+
+Vaadin-Refresh: /login.html
+-->
 <head>
 <title>How do I translate this?</title>
 <style>
@@ -14,9 +19,9 @@
 }
 </style>
 <link rel="stylesheet"
-	href="/VAADIN/themes/valo/styles.css?v=8.0-SNAPSHOT" />
-<link rel="shortcut icon" href="/VAADIN/themes/valo/favicon.ico" />
-
+	href="/VAADIN/themes/orderstheme/styles.css?v=8.0-SNAPSHOT" />
+<link rel="shortcut icon" href="/VAADIN/themes/orderstheme/favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript">
 	var preserveFragment = function() {
 		if (window.location.hash) {
@@ -25,10 +30,13 @@
 	}
 </script>
 </head>
-<body class="v-app valo" onload="preserveFragment()">
+<body class="v-app orderstheme" onload="preserveFragment()">
+Try: barista@vaadin.com + barista
 	<form id="form" method="post" action="/login">
-		<label id="login-label" for="login">Username</label> <input
-			type="text" class="v-textfield v-widget v-has-width" id="login"
+		<div class="v-caption v-caption-hasdescription">
+			<label id="login-label" for="login">Email</label>
+		</div>
+		<input type="text" class="v-textfield v-widget v-has-width" id="login"
 			name="username" aria-labelledby="login-label" tabindex="0">
 		<div class="v-caption v-caption-hasdescription">
 			<label id="password-label" for="password">Password</label>
