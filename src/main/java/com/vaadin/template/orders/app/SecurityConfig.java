@@ -49,10 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Allow access to login page without login
         FormLoginConfigurer<HttpSecurity> login = sec.formLogin().permitAll();
         // Login page is /login.html
-        login = login.loginPage("/login.html").loginProcessingUrl("/login")
-                .failureUrl("/login.html?error")
+        login = login.loginPage(Application.LOGIN_URL)
+                .loginProcessingUrl("/login").failureUrl("/login.html?error")
                 .successHandler(new RedirectAuthenticationSuccessHandler(
                         Application.APP_URL));
-        login.and().logout().logoutSuccessUrl("/login.html?logout");
+        login.and().logout().logoutSuccessUrl(Application.LOGOUT_URL);
     }
 }

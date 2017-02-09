@@ -5,11 +5,14 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+
+import com.vaadin.template.orders.backend.data.OrderState;
 
 @Entity(name = "OrderInfo") // "Order" is a reserved word
 public class Order {
@@ -27,8 +30,11 @@ public class Order {
     @OneToOne
     private Customer customer;
     @NotNull
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderItem> items;
+    @NotNull
+    private OrderState state;
+
     private boolean paid;
     @OneToMany
     private List<HistoryItem> history;
@@ -87,6 +93,14 @@ public class Order {
 
     public void setHistory(List<HistoryItem> history) {
         this.history = history;
+    }
+
+    public OrderState getState() {
+        return state;
+    }
+
+    public void setState(OrderState state) {
+        this.state = state;
     }
 
 }
