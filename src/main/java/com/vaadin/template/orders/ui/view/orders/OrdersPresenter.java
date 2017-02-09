@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui.view;
+package com.vaadin.template.orders.ui.view.orders;
 
 import java.util.List;
 

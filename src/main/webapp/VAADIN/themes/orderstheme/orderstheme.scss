@@ -29,8 +29,10 @@
 
 @import '../valo/valo.scss';
 @import 'ordersview';
+@import 'dashboardview';
 
 @mixin orderstheme {
   @include valo;
   @include ordersview;
+  @include dashboardview;
 }

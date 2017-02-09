@@ -1,4 +1,6 @@
-package com.vaadin.template.orders.ui.view;
+package com.vaadin.template.orders.ui.view.orders;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -6,11 +8,16 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 
-@SpringView(name = "")
-public class DashboardView extends DashboardViewDesign implements View {
+@SpringView
+public class OrdersView extends OrdersViewDesign implements View {
 
     @Autowired
-    private DashboardPresenter presenter;
+    private OrdersPresenter presenter;
+
+    @PostConstruct
+    public void init() {
+        presenter.init(this);
+    }
 
     @Override
     public void enter(ViewChangeEvent event) {

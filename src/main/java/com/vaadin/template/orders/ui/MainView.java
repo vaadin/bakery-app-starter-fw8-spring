@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.spring.annotation.SpringViewDisplay;
-import com.vaadin.template.orders.ui.view.DashboardView;
-import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.template.orders.ui.view.admin.ProductAdminView;
 import com.vaadin.template.orders.ui.view.admin.UserAdminView;
+import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
+import com.vaadin.template.orders.ui.view.orders.OrdersView;
 import com.vaadin.ui.Component;
 
 @SpringViewDisplay
@@ -21,6 +21,7 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 
     @PostConstruct
     public void initPresenter() {
+        content.addStyleName("v-scrollable");
         presenter.init(this);
     }
 
