@@ -1,5 +1,8 @@
 package com.vaadin.template.orders.ui.view.admin;
 
+import com.vaadin.spring.annotation.SpringComponent;
+
+@SpringComponent
 public class ProductAdminPresenter {
 
     private ProductAdminView view;
