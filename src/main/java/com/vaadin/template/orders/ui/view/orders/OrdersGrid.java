@@ -1,55 +1,41 @@
-package com.vaadin.template.orders.ui.view;
+package com.vaadin.template.orders.ui.view.orders;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
-import com.vaadin.ui.Grid.Column;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.renderers.HtmlRenderer;
 
-@SpringView
-public class OrdersView extends OrdersViewDesign implements View {
+public class OrdersGrid extends Grid<Order> {
 
-    @Autowired
-    private OrdersPresenter presenter;
-
-    private transient DateTimeFormatter dueDataFormat = DateTimeFormatter
+    private transient final DateTimeFormatter dueDateFormat = DateTimeFormatter
             .ofLocalizedDate(FormatStyle.SHORT);
 
-    @PostConstruct
-    public void init() {
-        list.addStyleName("two-row");
-        list.setDataProvider(presenter.getOrdersProvider());
+    public OrdersGrid() {
+        setSizeFull();
+        addStyleName("two-row");
 
-        Column<Order, String> dueColumn = list.addColumn(
+        Column<Order, String> dueColumn = addColumn(
                 order -> twoRowCell("Today",
-                        order.getDue().format(dueDataFormat)),
+                        order.getDue().format(dueDateFormat)),
                 new HtmlRenderer());
         dueColumn.setCaption("Due").setWidthUndefined();
 
-        list.addColumn(order -> {
+        addColumn(order -> {
             Customer customer = order.getCustomer();
             return twoRowCell(
                     customer.getFirstName() + " " + customer.getLastName(),
                     getOrderSummary(order));
         }, new HtmlRenderer()).setExpandRatio(1);
 
-        Column<Order, String> stateColumn = list
-                .addColumn(order -> order.getState().toString());
+        Column<Order, String> stateColumn = addColumn(
+                order -> order.getState().toString());
         stateColumn.setStyleGenerator(
                 order -> "status " + order.getState().name().toLowerCase());
-
-        presenter.init(this);
     }
 
     private String getOrderSummary(Order order) {
@@ -61,11 +47,6 @@ public class OrdersView extends OrdersViewDesign implements View {
 
     private String twoRowCell(String header, String content) {
         return "<b>" + header + "</b><br>" + content;
-    }
-
-    @Override
-    public void enter(ViewChangeEvent event) {
-        presenter.enter();
     }
 
 }
