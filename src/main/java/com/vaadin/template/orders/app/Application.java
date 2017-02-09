@@ -36,7 +36,7 @@ import com.vaadin.template.orders.ui.OrdersUI;
 @EntityScan(basePackageClasses = { Order.class })
 public class Application {
 
-    public static final String APP_URL = "/app/";
+    public static final String APP_URL = "/";
     public static final String LOGIN_URL = "/login.html";
     public static final String LOGOUT_URL = "/login.html?logout";
 
