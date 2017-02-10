@@ -9,6 +9,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,7 +36,7 @@ import com.vaadin.template.orders.ui.OrdersUI;
         Application.class, UserDetailsServiceImpl.class })
 @EnableJpaRepositories(basePackageClasses = { OrderRepository.class })
 @EntityScan(basePackageClasses = { Order.class })
-public class Application {
+public class Application extends SpringBootServletInitializer {
 
     public static final String APP_URL = "/";
     public static final String LOGIN_URL = "/login.html";
@@ -42,6 +44,12 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(
+            SpringApplicationBuilder application) {
+        return application.sources(Application.class);
     }
 
     @Bean
