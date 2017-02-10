@@ -1,6 +1,7 @@
 package com.vaadin.template.orders.ui;
 
 import com.vaadin.navigator.View;
+import com.vaadin.server.VaadinServletService;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.internal.Conventions;
@@ -36,6 +37,10 @@ public class MainPresenter {
 
     public void logout() {
         view.getUI().getSession().getSession().invalidate();
-        view.getUI().getPage().setLocation(Application.LOGOUT_URL);
+        String contextPath = ((VaadinServletService) VaadinServletService
+                .getCurrent()).getServlet().getServletContext()
+                        .getContextPath();
+        view.getUI().getPage()
+                .setLocation(contextPath + Application.LOGOUT_URL);
     }
 }
