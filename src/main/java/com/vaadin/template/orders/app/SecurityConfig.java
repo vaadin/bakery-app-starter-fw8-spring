@@ -23,6 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RedirectAuthenticationSuccessHandler successHandler;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
@@ -48,11 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Allow access to login page without login
         FormLoginConfigurer<HttpSecurity> login = sec.formLogin().permitAll();
-        // Login page is /login.html
         login = login.loginPage(Application.LOGIN_URL)
-                .loginProcessingUrl("/login").failureUrl("/login.html?error")
-                .successHandler(new RedirectAuthenticationSuccessHandler(
-                        Application.APP_URL));
+                .loginProcessingUrl(Application.LOGIN_PROCESSING_URL)
+                .failureUrl(Application.LOGIN_FAILURE_URL)
+                .successHandler(successHandler);
         login.and().logout().logoutSuccessUrl(Application.LOGOUT_URL);
     }
+
 }
