@@ -1,9 +1,15 @@
 package com.vaadin.template.orders.ui.view.dashboard;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.template.orders.ui.view.orders.OrdersDataProvider;
 
 @SpringComponent
 public class DashboardPresenter {
+
+    @Autowired
+    private OrdersDataProvider ordersDataProvider;
 
     private DashboardView view;
 
@@ -20,5 +26,9 @@ public class DashboardPresenter {
      */
     public void enter() {
         // Placeholder for the future
+    }
+
+    public OrdersDataProvider getOrdersProvider() {
+        return ordersDataProvider;
     }
 }
