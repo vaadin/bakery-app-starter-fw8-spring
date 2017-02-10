@@ -1,5 +1,7 @@
 package com.vaadin.template.orders.backend.data.entity;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -32,6 +34,11 @@ public class User {
     }
 
     public User(String email, String name, String password, Role role) {
+        Objects.requireNonNull(email);
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(password);
+        Objects.requireNonNull(role);
+
         this.email = email;
         this.name = name;
         this.password = password;
