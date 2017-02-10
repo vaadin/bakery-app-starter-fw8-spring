@@ -62,6 +62,7 @@ public class DashboardView extends DashboardViewDesign implements View {
         monthlyProductSplit.setWidth("300px");
         monthlyProductSplit.addStyleName(CENTER_BORDER);
 
+        dueGrid.setDataProvider(presenter.getOrdersProvider());
     }
 
     @Override
