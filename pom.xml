@@ -10,7 +10,7 @@
 	<name>Orders App Template</name>
 
 	<properties>
-		<vaadin.version>8.0.0.beta2</vaadin.version>
+		<vaadin.version>8.0.0.rc1</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<springboot.version>1.5.1.RELEASE</springboot.version>
 		<jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version>
