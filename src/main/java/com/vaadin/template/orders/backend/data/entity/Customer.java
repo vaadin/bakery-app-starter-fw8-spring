@@ -1,5 +1,7 @@
 package com.vaadin.template.orders.backend.data.entity;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -30,6 +32,9 @@ public class Customer {
     }
 
     public Customer(String firstName, String lastName, String phoneNumber) {
+        Objects.requireNonNull(firstName);
+        Objects.requireNonNull(lastName);
+        Objects.requireNonNull(phoneNumber);
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;

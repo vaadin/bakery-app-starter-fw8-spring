@@ -1,5 +1,7 @@
 package com.vaadin.template.orders.backend.data.entity;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -24,6 +26,8 @@ public class OrderItem {
     }
 
     public OrderItem(Product product, int quantity) {
+        Objects.requireNonNull(product);
+        Objects.requireNonNull(quantity);
         this.product = product;
         this.quantity = quantity;
     }
