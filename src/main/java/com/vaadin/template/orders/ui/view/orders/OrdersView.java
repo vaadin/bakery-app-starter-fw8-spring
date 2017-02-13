@@ -17,6 +17,7 @@ public class OrdersView extends OrdersViewDesign implements View {
     @PostConstruct
     public void init() {
         presenter.init(this);
+        list.setDataProvider(presenter.getOrdersProvider());
     }
 
     @Override
