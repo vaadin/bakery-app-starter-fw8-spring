@@ -1,10 +1,11 @@
-package com.vaadin.template.orders.ui.view.orders;
+package com.vaadin.template.orders.ui.components;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.vaadin.shared.ui.grid.ColumnResizeMode;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.ui.Grid;
@@ -18,7 +19,7 @@ public class OrdersGrid extends Grid<Order> {
     public OrdersGrid() {
         setSizeFull();
         addStyleName("two-row");
-
+        setColumnResizeMode(ColumnResizeMode.ANIMATED);
         Column<Order, String> dueColumn = addColumn(
                 order -> twoRowCell("Today",
                         order.getDue().format(dueDateFormat)),
