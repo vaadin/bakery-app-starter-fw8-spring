@@ -1,5 +1,8 @@
 package com.vaadin.template.orders.ui.components;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -10,6 +13,7 @@ import com.vaadin.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.data.provider.Query;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.OrderRepository;
+import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.framework.FrameworkDataHelper;
 
@@ -26,7 +30,10 @@ public class OrdersDataProvider
         int nrRequested = query.getLimit();
         Pageable pageable = FrameworkDataHelper.getPageable(query);
 
-        List<Order> items = orderRepository.findAll(pageable).getContent();
+        List<Order> items = orderRepository
+                .findByDueAfterAndStateInOrderByDueAsc(getFilterDate(),
+                        getStates(), pageable)
+                .getContent();
         int firstReturned = pageable.getPageNumber();
         int firstReal = firstRequested - firstReturned;
         int afterLastReal = firstReal + nrRequested;
@@ -37,9 +44,19 @@ public class OrdersDataProvider
 
     }
 
+    private List<OrderState> getStates() {
+        return Arrays.asList(OrderState.CONFIRMED, OrderState.NEW,
+                OrderState.PROBLEM, OrderState.READY_FOR_PICKUP);
+    }
+
+    private LocalDateTime getFilterDate() {
+        return LocalDate.now().atStartOfDay().minusDays(1);
+    }
+
     @Override
     protected int sizeInBackEnd(Query<Order, Object> query) {
-        return (int) orderRepository.count();
+        return (int) orderRepository.countByDueAfterAndStateIn(getFilterDate(),
+                getStates());
     }
 
 }
