@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui.view.orders;
+package com.vaadin.template.orders.ui.components;
 
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.CssLayout;

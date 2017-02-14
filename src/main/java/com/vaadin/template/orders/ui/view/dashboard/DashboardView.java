@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.template.orders.ui.view.orders.BulletinBoard;
-import com.vaadin.template.orders.ui.view.orders.OrdersGrid;
+import com.vaadin.template.orders.ui.components.BulletinBoard;
+import com.vaadin.template.orders.ui.components.OrdersGrid;
 import com.vaadin.ui.Label;
 
 @SpringView(name = "")

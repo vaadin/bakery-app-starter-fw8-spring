@@ -3,7 +3,7 @@ package com.vaadin.template.orders.ui.view.dashboard;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.template.orders.ui.view.orders.OrdersDataProvider;
+import com.vaadin.template.orders.ui.components.OrdersDataProvider;
 
 @SpringComponent
 public class DashboardPresenter {
