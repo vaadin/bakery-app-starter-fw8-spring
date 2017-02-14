@@ -17,13 +17,8 @@ public class Product {
     @Column(precision = 16, scale = 2)
     private double price;
 
-    protected Product() {
+    public Product() {
         // Empty constructor is needed by Spring Data / JPA
-    }
-
-    public Product(String name, double price) {
-        this.name = name;
-        this.price = price;
     }
 
     public String getName() {

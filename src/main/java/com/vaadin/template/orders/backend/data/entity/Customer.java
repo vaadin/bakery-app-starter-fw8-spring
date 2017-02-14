@@ -1,7 +1,5 @@
 package com.vaadin.template.orders.backend.data.entity;
 
-import java.util.Objects;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,17 +25,8 @@ public class Customer {
     private String phoneNumber;
     private String details;
 
-    protected Customer() {
+    public Customer() {
         // Empty constructor is needed by Spring Data / JPA
-    }
-
-    public Customer(String firstName, String lastName, String phoneNumber) {
-        Objects.requireNonNull(firstName);
-        Objects.requireNonNull(lastName);
-        Objects.requireNonNull(phoneNumber);
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
     }
 
     public Long getId() {
