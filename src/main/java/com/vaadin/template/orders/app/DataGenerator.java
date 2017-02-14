@@ -31,17 +31,17 @@ import com.vaadin.template.orders.backend.data.entity.User;
 @SpringComponent
 public class DataGenerator {
 
-    private static final String FILLING[] = new String[] { "Strawberry",
+    private static final String[] FILLING = new String[] { "Strawberry",
             "Chocolate", "Blueberry", "Raspberry", "Vanilla", "Salami",
             "Bacon" };
-    private static final String TYPE[] = new String[] { "Cake", "Pastry",
+    private static final String[] TYPE = new String[] { "Cake", "Pastry",
             "Tart", "Muffin", "Biscuit", "Bread", "Bagel", "Bun", "Brownie",
             "Cookie", "Cracker", "Cheese Cake" };
-    private static final String FIRST_NAME[] = new String[] { "Ori", "Amanda",
+    private static final String[] FIRST_NAME = new String[] { "Ori", "Amanda",
             "Octavia", "Laurel", "Lael", "Delilah", "Jason", "Skyler",
             "Arsenio", "Haley", "Lionel", "Sylvia", "Jessica", "Lester",
             "Ferdinand", "Elaine", "Griffin", "Kerry", "Dominique" };
-    private static final String LAST_NAME[] = new String[] { "Carter", "Castro",
+    private static final String[] LAST_NAME = new String[] { "Carter", "Castro",
             "Rich", "Irwin", "Moore", "Hendricks", "Huber", "Patton",
             "Wilkinson", "Thornton", "Nunez", "Macias", "Gallegos", "Blevins",
             "Mejia", "Pickett", "Whitney", "Farmer", "Henry", "Chen", "Macias",
@@ -134,8 +134,6 @@ public class DataGenerator {
         LocalDateTime today = LocalDate.now().atStartOfDay();
         LocalDateTime tomorrow = today.plusDays(1);
         LocalDateTime twoDays = today.plusDays(2);
-
-        // NEW, CONFIRMED, READY_FOR_PICKUP, DELIVERED, PROBLEM, CANCELLED;
 
         if (due.isBefore(today)) {
             if (random.nextDouble() < 0.9) {
