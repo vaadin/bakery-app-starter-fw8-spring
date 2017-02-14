@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
+<head>
 <!-- 
 Hint to Vaadin that if this page is ever sent back as response to a UIDL request, the user should be redirected.
 
 Vaadin-Refresh: /login.html
 -->
-<head>
-<title>How do I translate this?</title>
+<title>Orders</title>
 <style>
 #login {
 	width: 15em;
@@ -29,9 +29,18 @@ Vaadin-Refresh: /login.html
 		}
 	}
 </script>
+<script type="text/javascript">
+	// Rewrite refresh URL to include context path
+	document.head.childNodes.forEach(function(node) {
+		if (node.nodeType == Node.COMMENT_NODE) {
+			node.textContent = node.textContent.replace("/login.html",
+					document.location.pathname);
+		}
+	});
+</script>
 </head>
 <body class="v-app orderstheme" onload="preserveFragment()">
-Try: barista@vaadin.com + barista
+	Try: barista@vaadin.com + barista
 	<form id="form" method="post" action="login">
 		<div class="v-caption v-caption-hasdescription">
 			<label id="login-label" for="login">Email</label>
