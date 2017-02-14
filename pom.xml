@@ -157,6 +157,9 @@
 						<version>1.4.01</version>
 					</dependency>
 				</dependencies>
+				<configuration>
+					<extraJvmArgs>-Xmx2G</extraJvmArgs>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
