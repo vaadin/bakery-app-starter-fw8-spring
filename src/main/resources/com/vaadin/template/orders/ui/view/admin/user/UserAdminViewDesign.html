@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;orderstheme&quot;}">
-  <meta name="vaadin-version" content="8.0.0.beta1">
+  <meta name="vaadin-version" content="8.0.0.beta2">
  </head>
  <body>
   <vaadin-vertical-layout style-name="crud-template" spacing="false" responsive size-full margin="false">
@@ -16,48 +16,22 @@
     </vaadin-button>
    </vaadin-horizontal-layout>
    <vaadin-css-layout style-name="content" size-full :expand>
-    <vaadin-css-layout style-name="list" size-full>
-     <vaadin-grid size-full _id="list">
-      <table>
-       <colgroup>
-        <col column-id="project" sortable>
-        <col column-id="status" sortable>
-       </colgroup>
-       <thead>
-        <tr default>
-         <th plain-text column-ids="project">Project</th>
-         <th plain-text column-ids="status">Status</th>
-        </tr>
-       </thead>
-       <tbody></tbody>
-      </table>
-     </vaadin-grid>
+    <vaadin-css-layout style-name="list" size-full _id="listParent">
+     <vaadin-grid size-full data-item-type="com.vaadin.template.orders.backend.data.entity.User" _id="list"></vaadin-grid>
     </vaadin-css-layout>
-    <vaadin-vertical-layout style-name="inspect" spacing="false" size-full margin="false">
+    <vaadin-vertical-layout enabled="false" style-name="inspect" spacing="false" size-full margin="false" _id="form">
      <vaadin-css-layout style-name="edit" size-full :expand>
       <vaadin-css-layout style-name="section half" width-full>
-       <vaadin-text-field caption="First name:" style-name="small" width-full _id="firstName"></vaadin-text-field>
+       <vaadin-text-field caption="Email (login)" style-name="small" width-full height="31px" _id="email"></vaadin-text-field>
       </vaadin-css-layout>
       <vaadin-css-layout style-name="section half" width-full>
-       <vaadin-text-field caption="Last name:" style-name="small" width-full _id="lastName"></vaadin-text-field>
+       <vaadin-text-field caption="Name" style-name="small" width-full _id="name"></vaadin-text-field>
       </vaadin-css-layout>
       <vaadin-css-layout style-name="section half" width-full>
-       <vaadin-text-field caption="Job title:" style-name="small" width-full _id="jobTitle"></vaadin-text-field>
+       <vaadin-text-field caption="Password" style-name="small" width-full _id="password"></vaadin-text-field>
       </vaadin-css-layout>
       <vaadin-css-layout style-name="section half" width-full>
-       <vaadin-text-field caption="Phone number:" style-name="small" width-full _id="phoneNumber"></vaadin-text-field>
-      </vaadin-css-layout>
-      <vaadin-css-layout style-name="section half" width-full>
-       <vaadin-text-field caption="Email:" style-name="small" width-full _id="email"></vaadin-text-field>
-      </vaadin-css-layout>
-      <vaadin-css-layout style-name="section half" width-full>
-       <vaadin-text-field caption="Company:" style-name="small" width-full _id="company"></vaadin-text-field>
-      </vaadin-css-layout>
-      <vaadin-css-layout style-name="section half" width-full>
-       <vaadin-text-field caption="Web page url:" style-name="small" width-full _id="url"></vaadin-text-field>
-      </vaadin-css-layout>
-      <vaadin-css-layout style-name="section half" width-full>
-       <vaadin-text-area caption="Notes:" width-full _id="notes"></vaadin-text-area>
+       <vaadin-combo-box caption="Role" empty-selection-allowed="false" style-name="small" width-full data-item-type="com.vaadin.template.orders.backend.data.Role" _id="role"></vaadin-combo-box>
       </vaadin-css-layout>
      </vaadin-css-layout>
      <vaadin-horizontal-layout style-name="buttons border-top" width-full height="50px">

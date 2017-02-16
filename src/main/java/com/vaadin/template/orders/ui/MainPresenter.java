@@ -8,6 +8,7 @@ import com.vaadin.spring.internal.Conventions;
 import com.vaadin.template.orders.app.Application;
 
 @SpringComponent
+@PrototypeScope
 public class MainPresenter {
 
     private MainView view;
