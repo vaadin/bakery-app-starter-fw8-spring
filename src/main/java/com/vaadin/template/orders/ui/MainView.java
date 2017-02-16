@@ -20,9 +20,12 @@ public class MainView extends MainViewDesign implements ViewDisplay {
     private MainPresenter presenter;
 
     @PostConstruct
-    public void initPresenter() {
+    public void init() {
         content.addStyleName("v-scrollable");
         presenter.init(this);
+
+        // Hide until it works
+        products.setVisible(false);
     }
 
     @PostConstruct

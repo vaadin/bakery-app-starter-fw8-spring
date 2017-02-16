@@ -16,8 +16,10 @@ import com.vaadin.template.orders.backend.OrderRepository;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.framework.FrameworkDataHelper;
+import com.vaadin.template.orders.ui.PrototypeScope;
 
 @SpringComponent
+@PrototypeScope
 public class OrdersDataProvider
         extends AbstractBackEndDataProvider<Order, Object> {
 

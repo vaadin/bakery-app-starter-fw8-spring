@@ -1,8 +1,10 @@
 package com.vaadin.template.orders.ui.view.admin.product;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.template.orders.ui.PrototypeScope;
 
 @SpringComponent
+@PrototypeScope
 public class ProductAdminPresenter {
 
     private ProductAdminView view;
