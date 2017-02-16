@@ -5,6 +5,12 @@ dist: trusty
 install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -Dvaadin.charts.developer.license=$CHARTS_LICENSE -Dvaadin.board.developer.license=$BOARD_LICENSE
 script: ./.travis.script.sh
 
+deploy:
+  - provider: script
+    script: ./.travis.deploy.sh
+    on:
+      branch: master
+
 # Cache requires a master build
 branches:
   only:
