@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui.view.admin;
+package com.vaadin.template.orders.ui.view.admin.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

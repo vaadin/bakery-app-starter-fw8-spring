@@ -1,17 +1,17 @@
-package com.vaadin.template.orders.ui.view.admin;
+package com.vaadin.template.orders.ui.view.admin.user;
 
 import com.vaadin.spring.annotation.SpringComponent;
 
 @SpringComponent
-public class ProductAdminPresenter {
+public class UserAdminPresenter {
 
-    private ProductAdminView view;
+    private UserAdminView view;
 
-    void init(ProductAdminView view) {
+    void init(UserAdminView view) {
         this.view = view;
     }
 
-    protected ProductAdminView getView() {
+    protected UserAdminView getView() {
         return view;
     }
 
