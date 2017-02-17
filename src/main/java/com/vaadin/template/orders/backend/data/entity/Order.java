@@ -1,6 +1,7 @@
 package com.vaadin.template.orders.backend.data.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -22,7 +23,9 @@ public class Order {
     private Long id;
 
     @NotNull
-    private LocalDateTime due;
+    private LocalDate dueDate;
+    @NotNull
+    private LocalTime dueTime;
     @NotNull
     @OneToOne
     private PickupLocation pickupLocation;
@@ -47,12 +50,20 @@ public class Order {
         return id;
     }
 
-    public LocalDateTime getDue() {
-        return due;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
-    public void setDue(LocalDateTime due) {
-        this.due = due;
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public LocalTime getDueTime() {
+        return dueTime;
+    }
+
+    public void setDueTime(LocalTime dueTime) {
+        this.dueTime = dueTime;
     }
 
     public PickupLocation getPickupLocation() {
