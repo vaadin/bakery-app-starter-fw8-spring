@@ -1,15 +1,31 @@
 package com.vaadin.template.orders.ui.view.dashboard;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.addon.charts.Chart;
+import com.vaadin.addon.charts.model.ChartType;
+import com.vaadin.addon.charts.model.Configuration;
+import com.vaadin.addon.charts.model.DataSeries;
+import com.vaadin.addon.charts.model.DataSeriesItem;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.components.BulletinBoard;
 import com.vaadin.template.orders.ui.components.OrdersGrid;
-import com.vaadin.ui.Label;
 
 @SpringView(name = "")
 public class DashboardView extends DashboardViewDesign implements View {
@@ -23,13 +39,10 @@ public class DashboardView extends DashboardViewDesign implements View {
     private final BoardLabel notAvailableLabel = new BoardLabel("N/A", "1");
     private final BoardLabel newLabel = new BoardLabel("New", "2");
     private final BoardLabel tomorrowLabel = new BoardLabel("Tomorrow", "4");
-    private final Label deliveriesThisMonthGraph = new Label(
-            "month graph placeholder");
-    private final Label deliveriesThisYearGraph = new Label(
-            "year graph placeholder");
-    private final Label yearlySalesGraph = new Label("sales graph placeholder");
-    private final Label monthlyProductSplit = new Label(
-            "monthlyProductSplit placeholder");
+    private final Chart deliveriesThisMonthGraph = new Chart(ChartType.LINE);
+    private final Chart deliveriesThisYearGraph = new Chart(ChartType.LINE);
+    private final Chart yearlySalesGraph = new Chart(ChartType.LINE);
+    private final Chart monthlyProductSplit = new Chart(ChartType.PIE);
     private final OrdersGrid dueGrid = new OrdersGrid();
 
     @PostConstruct
@@ -46,27 +59,103 @@ public class DashboardView extends DashboardViewDesign implements View {
         notAvailableLabel.setHeight("150px");
         newLabel.setHeight("150px");
 
-        deliveriesThisMonthGraph.setHeight("75px");
-        deliveriesThisMonthGraph.addStyleName(CENTER_BORDER);
-        deliveriesThisYearGraph.setHeight("75px");
-        deliveriesThisYearGraph.addStyleName(CENTER_BORDER);
-
-        yearlySalesGraph.setHeight("200px");
-        yearlySalesGraph.addStyleName(CENTER_BORDER);
-
-        deliveriesThisYearGraph.addStyleName(CENTER_BORDER);
+        initDeliveriesGraphs();
+        initProductSplitMonthlyGraph();
+        initYearlySalesGraph();
 
         dueGrid.setHeight("300px");
         dueGrid.addStyleName("border");
-        monthlyProductSplit.setHeight("300px");
-        monthlyProductSplit.setWidth("300px");
-        monthlyProductSplit.addStyleName(CENTER_BORDER);
 
         dueGrid.setDataProvider(presenter.getOrdersProvider());
     }
 
+    private void initYearlySalesGraph() {
+        yearlySalesGraph.setHeight("400px");
+        int now = Year.now().getValue();
+        List<Double> thisYear = presenter.getSalesPerMonth(now);
+        List<Double> oneYearBack = presenter.getSalesPerMonth(now - 1);
+        List<Double> twoYearsBack = presenter.getSalesPerMonth(now - 2);
+
+        Configuration conf = yearlySalesGraph.getConfiguration();
+        conf.setTitle("Sales last years");
+        conf.getxAxis().setCategories(getMonthNames());
+        conf.addSeries(new MyListSeries("" + now, thisYear));
+        conf.addSeries(new MyListSeries("" + (now - 1), oneYearBack));
+        conf.addSeries(new MyListSeries("" + (now - 2), twoYearsBack));
+
+    }
+
+    private void initProductSplitMonthlyGraph() {
+        monthlyProductSplit.setHeight("300px");
+        monthlyProductSplit.setWidth("300px");
+
+        LocalDate today = LocalDate.now();
+
+        Configuration conf = monthlyProductSplit.getConfiguration();
+        String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL,
+                Locale.ENGLISH);
+        conf.setTitle("Products delivered in " + thisMonth);
+        LinkedHashMap<Product, Integer> deliveries = presenter
+                .getDeliveriesPerProduct(today.getMonthValue(),
+                        today.getYear());
+
+        final DataSeries series = new DataSeries();
+        for (Product p : deliveries.keySet()) {
+            series.add(new DataSeriesItem(p.getName(), deliveries.get(p)));
+        }
+
+        conf.addSeries(series);
+    }
+
+    private void initDeliveriesGraphs() {
+        deliveriesThisMonthGraph.setHeight("200px");
+        deliveriesThisMonthGraph.addStyleName("v-clip");
+        deliveriesThisYearGraph.setHeight("200px");
+        deliveriesThisYearGraph.addStyleName("v-clip");
+
+        Configuration monthConf = deliveriesThisMonthGraph.getConfiguration();
+        Configuration yearConf = deliveriesThisYearGraph.getConfiguration();
+
+        LocalDate today = LocalDate.now();
+
+        yearConf.setTitle("Deliveries in " + today.getYear());
+        yearConf.getxAxis().setCategories(getMonthNames());
+        yearConf.addSeries(new MyListSeries("deliveries",
+                presenter.getDeliveriesPerMonth(today.getYear())));
+        yearConf.getLegend().setEnabled(false);
+        String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL,
+                Locale.ENGLISH);
+        monthConf.setTitle("Deliveries in " + thisMonth);
+        monthConf.getLegend().setEnabled(false);
+
+        monthConf.addSeries(new MyListSeries("deliveries", presenter
+                .getDeliveriesPerDay(today.getMonthValue(), today.getYear())));
+        int daysInMonth = YearMonth.of(today.getYear(), today.getMonthValue())
+                .lengthOfMonth();
+
+        String[] categories = IntStream.rangeClosed(1, daysInMonth)
+                .mapToObj(i -> i + "").toArray(size -> new String[size]);
+        monthConf.getxAxis().setCategories(categories);
+
+    }
+
+    private String[] getMonthNames() {
+        return Stream.of(Month.values()).map(
+                month -> month.getDisplayName(TextStyle.SHORT, Locale.ENGLISH))
+                .toArray(size -> new String[size]);
+    }
+
     @Override
     public void enter(ViewChangeEvent event) {
-        presenter.enter();
+        OrderStats stats = presenter.fetchStats();
+
+        todayLabel.setContent(
+                stats.getDeliveredToday() + "/" + stats.getDueToday());
+        notAvailableLabel.setContent("" + stats.getNotAvailableToday());
+        newLabel.setContent("" + stats.getUnverified());
+        tomorrowLabel.setContent("" + stats.getDueTomorrow());
+
+        notAvailableLabel.setStyleName("problem",
+                stats.getNotAvailableToday() > 0);
     }
 }
