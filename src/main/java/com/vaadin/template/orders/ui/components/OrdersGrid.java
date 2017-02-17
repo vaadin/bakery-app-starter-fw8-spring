@@ -1,7 +1,6 @@
 package com.vaadin.template.orders.ui.components;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
@@ -25,8 +24,8 @@ public class OrdersGrid extends Grid<Order> {
         addStyleName("two-row");
         setColumnResizeMode(ColumnResizeMode.ANIMATED);
         Column<Order, String> dueColumn = addColumn(
-                order -> twoRowCell(getTimeHeader(order.getDue()),
-                        order.getDue().format(dueDateFormat)),
+                order -> twoRowCell(getTimeHeader(order.getDueDate()),
+                        order.getDueDate().format(dueDateFormat)),
                 new HtmlRenderer());
         dueColumn.setCaption("Due").setWidthUndefined();
 
@@ -43,8 +42,7 @@ public class OrdersGrid extends Grid<Order> {
                 order -> "status " + order.getState().name().toLowerCase());
     }
 
-    private String getTimeHeader(LocalDateTime due) {
-        LocalDate dueDate = due.toLocalDate();
+    private String getTimeHeader(LocalDate dueDate) {
         LocalDate today = LocalDate.now();
         if (dueDate.isEqual(today)) {
             return "Today";
