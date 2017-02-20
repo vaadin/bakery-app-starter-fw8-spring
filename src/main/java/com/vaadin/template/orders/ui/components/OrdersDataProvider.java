@@ -1,7 +1,6 @@
 package com.vaadin.template.orders.ui.components;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -33,7 +32,7 @@ public class OrdersDataProvider
         Pageable pageable = FrameworkDataHelper.getPageable(query);
 
         List<Order> items = orderRepository
-                .findByDueAfterAndStateInOrderByDueAsc(getFilterDate(),
+                .findByDueDateAfterAndStateInOrderByDueDateAsc(getFilterDate(),
                         getStates(), pageable)
                 .getContent();
         int firstReturned = pageable.getPageNumber();
@@ -51,14 +50,14 @@ public class OrdersDataProvider
                 OrderState.PROBLEM, OrderState.READY_FOR_PICKUP);
     }
 
-    private LocalDateTime getFilterDate() {
-        return LocalDate.now().atStartOfDay().minusDays(1);
+    private LocalDate getFilterDate() {
+        return LocalDate.now().minusDays(1);
     }
 
     @Override
     protected int sizeInBackEnd(Query<Order, Object> query) {
-        return (int) orderRepository.countByDueAfterAndStateIn(getFilterDate(),
-                getStates());
+        return (int) orderRepository
+                .countByDueDateAfterAndStateIn(getFilterDate(), getStates());
     }
 
 }

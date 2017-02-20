@@ -1,7 +1,7 @@
 package com.vaadin.template.orders.app;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -95,18 +95,26 @@ public class DataGenerator {
     }
 
     private void createOrders(OrderRepository orderRepo) {
-        for (int i = 0; i < 1000; i++) {
-            orders.add(createOrder(orderRepo));
+        LocalDate threeYearsAgo = LocalDate.now().minusDays(3 * 365);
+        LocalDate onMonthInTheFuture = LocalDate.now().plusDays(3 * 30);
+        for (LocalDate dueDate = threeYearsAgo; dueDate
+                .isBefore(onMonthInTheFuture); dueDate = dueDate.plusDays(1)) {
+            int ordersThisDay = random.nextInt(30);
+            for (int i = 0; i < ordersThisDay; i++) {
+                orders.add(createOrder(orderRepo, dueDate));
+            }
         }
+
     }
 
-    private Order createOrder(OrderRepository orderRepo) {
+    private Order createOrder(OrderRepository orderRepo, LocalDate dueDate) {
         Order order = new Order();
 
         order.setCustomer(getRandomCustomer());
         order.setPickupLocation(getRandomPickupLocation());
-        order.setDue(getRandomDueDate());
-        order.setState(getRandomState(order.getDue()));
+        order.setDueDate(dueDate);
+        order.setDueTime(getRandomDueTime());
+        order.setState(getRandomState(order.getDueDate()));
 
         int itemCount = random.nextInt(3);
         List<OrderItem> items = new ArrayList<>();
@@ -120,20 +128,16 @@ public class DataGenerator {
         return orderRepo.save(order);
     }
 
-    private LocalDateTime getRandomDueDate() {
-        LocalDate now = LocalDate.now();
-        // Roughly one month into the future
-        // Roughly six months into the past
-        int dateOffset = random.nextInt(7 * 30) - 30;
+    private LocalTime getRandomDueTime() {
         int time = 8 + 4 * random.nextInt(3);
 
-        return now.minusDays(dateOffset).atTime(time, 0);
+        return LocalTime.of(time, 0);
     }
 
-    private OrderState getRandomState(LocalDateTime due) {
-        LocalDateTime today = LocalDate.now().atStartOfDay();
-        LocalDateTime tomorrow = today.plusDays(1);
-        LocalDateTime twoDays = today.plusDays(2);
+    private OrderState getRandomState(LocalDate due) {
+        LocalDate today = LocalDate.now();
+        LocalDate tomorrow = today.plusDays(1);
+        LocalDate twoDays = today.plusDays(2);
 
         if (due.isBefore(today)) {
             if (random.nextDouble() < 0.9) {
@@ -171,7 +175,14 @@ public class DataGenerator {
     }
 
     private Product getRandomProduct() {
-        return getRandom(products);
+        double cutoff = 2.5;
+        double g = random.nextGaussian();
+        g = Math.min(cutoff, g);
+        g = Math.max(-cutoff, g);
+        g += cutoff;
+        g /= (cutoff * 2.0);
+
+        return products.get((int) (g * (products.size() - 1)));
     }
 
     private PickupLocation getRandomPickupLocation() {
@@ -200,7 +211,7 @@ public class DataGenerator {
     }
 
     private void createProducts(ProductRepository productsRepo) {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             Product product = new Product();
             product.setName(getRandomProductName());
             product.setPrice(2.0 + random.nextDouble() * 100.0);
@@ -209,9 +220,17 @@ public class DataGenerator {
     }
 
     private String getRandomProductName() {
-        String name = getRandom(FILLING);
+        String firstFilling = getRandom(FILLING);
+        String name;
         if (random.nextBoolean()) {
-            name += " " + getRandom(FILLING);
+            String secondFilling;
+            do {
+                secondFilling = getRandom(FILLING);
+            } while (secondFilling.equals(firstFilling));
+
+            name = firstFilling + " " + secondFilling;
+        } else {
+            name = firstFilling;
         }
         name += " " + getRandom(TYPE);
 
