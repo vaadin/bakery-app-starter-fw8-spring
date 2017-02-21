@@ -4,7 +4,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinServletService;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.internal.Conventions;
 import com.vaadin.template.orders.app.Application;
 
 @SpringComponent
@@ -25,15 +24,7 @@ public class MainPresenter {
      *            {@link SpringView @SpringView}
      */
     public void navigateTo(Class<? extends View> viewClass) {
-
-        SpringView springView = viewClass.getAnnotation(SpringView.class);
-        if (springView == null) {
-            throw new IllegalArgumentException(
-                    "The target class must be a @SpringView");
-        }
-
-        String viewId = Conventions.deriveMappingForView(viewClass, springView);
-        view.getUI().getNavigator().navigateTo(viewId);
+        view.getUI().getNavigator().navigateTo(OrdersUI.getViewId(viewClass));
     }
 
     public void logout() {
