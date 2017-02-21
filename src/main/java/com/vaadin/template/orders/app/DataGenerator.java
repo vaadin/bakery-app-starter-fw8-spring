@@ -86,7 +86,12 @@ public class DataGenerator {
         Customer customer = new Customer();
         customer.setFirstName(getRandom(FIRST_NAME));
         customer.setLastName(getRandom(LAST_NAME));
+        customer.setEmail(customer.getFirstName().toLowerCase() + "@"
+                + customer.getLastName().toLowerCase() + ".com");
         customer.setPhoneNumber(getRandomPhone());
+        if (random.nextInt(10) == 0) {
+            customer.setDetails("Very important customer");
+        }
         return customerRepo.save(customer);
     }
 
@@ -120,12 +125,32 @@ public class DataGenerator {
         List<OrderItem> items = new ArrayList<>();
         for (int i = 0; i <= itemCount; i++) {
             OrderItem item = new OrderItem();
-            item.setProduct(getRandomProduct());
+            Product product;
+            do {
+                product = getRandomProduct();
+            } while (containsProduct(items, product));
+            item.setProduct(product);
             item.setQuantity(random.nextInt(10) + 1);
+            if (random.nextInt(5) == 0) {
+                if (random.nextBoolean()) {
+                    item.setComment("Lactose free");
+                } else {
+                    item.setComment("Gluten free");
+                }
+            }
             items.add(item);
         }
         order.setItems(items);
         return orderRepo.save(order);
+    }
+
+    private boolean containsProduct(List<OrderItem> items, Product product) {
+        for (OrderItem item : items) {
+            if (item.getProduct() == product) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private LocalTime getRandomDueTime() {
@@ -206,7 +231,7 @@ public class DataGenerator {
         store.setName("Store");
         pickupLocations.add(pickupRepo.save(store));
         PickupLocation bakery = new PickupLocation();
-        store.setName("Bakery");
+        bakery.setName("Bakery");
         pickupLocations.add(pickupRepo.save(bakery));
     }
 

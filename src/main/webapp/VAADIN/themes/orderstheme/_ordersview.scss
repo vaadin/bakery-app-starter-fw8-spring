@@ -17,4 +17,35 @@
       padding: 1em;
     }
   }
+  .v-textfield.v-readonly {
+    // Hide placeholder in readonly fields
+    &::placeholder {
+      color: transparent;
+
+    }
+    &:-ms-input-placeholder {
+      color: transparent;
+    }
+
+    &::-webkit-input-placeholder {
+      color: transparent;
+    }
+
+    padding-left: 0;
+    border: 0;
+  }
+  .v-filterselect.v-readonly {
+    input {
+      padding-left: 0;
+      border: 0;
+    }
+    .v-filterselect-button {
+      display: none;
+    }
+  }
+  .v-datefield.v-readonly {
+    .v-datefield-button {
+      display: none;
+    }
+  }
 }

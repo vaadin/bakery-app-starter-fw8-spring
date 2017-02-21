@@ -10,7 +10,7 @@ import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.template.orders.ui.view.admin.product.ProductAdminView;
 import com.vaadin.template.orders.ui.view.admin.user.UserAdminView;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
-import com.vaadin.template.orders.ui.view.orders.OrdersView;
+import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 import com.vaadin.ui.Component;
 
 @SpringViewDisplay
@@ -31,7 +31,7 @@ public class MainView extends MainViewDesign implements ViewDisplay {
     @PostConstruct
     public void populateMenu() {
         storefront
-                .addClickListener(e -> presenter.navigateTo(OrdersView.class));
+                .addClickListener(e -> presenter.navigateTo(OrdersListView.class));
         dashboard.addClickListener(
                 e -> presenter.navigateTo(DashboardView.class));
         users.addClickListener(e -> presenter.navigateTo(UserAdminView.class));
