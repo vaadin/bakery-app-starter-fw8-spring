@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.template.orders.backend.OrderRepository;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.service.UserDetailsServiceImpl;
@@ -42,4 +43,8 @@ public class Application extends SpringBootServletInitializer {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public StringToIntegerConverter stringToIntegerConverter() {
+        return new StringToIntegerConverter("Unable to parse integer");
+    }
 }

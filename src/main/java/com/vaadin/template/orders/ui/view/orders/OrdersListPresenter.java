@@ -3,26 +3,24 @@ package com.vaadin.template.orders.ui.view.orders;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.template.orders.backend.OrderRepository;
+import com.vaadin.template.orders.backend.data.entity.Order;
+import com.vaadin.template.orders.ui.OrdersUI;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.components.OrdersDataProvider;
 
 @SpringComponent
 @PrototypeScope
-public class OrdersPresenter {
+public class OrdersListPresenter {
 
-    private final OrderRepository orderRepository;
-    private OrdersView view;
+    private OrdersListView view;
 
     @Autowired
     private OrdersDataProvider ordersDataProvider;
 
-    @Autowired
-    public OrdersPresenter(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public OrdersListPresenter() {
     }
 
-    void init(OrdersView view) {
+    void init(OrdersListView view) {
         this.view = view;
     }
 
@@ -33,12 +31,22 @@ public class OrdersPresenter {
         // Placeholder for the future
     }
 
-    protected OrdersView getView() {
+    protected OrdersListView getView() {
         return view;
     }
 
     public OrdersDataProvider getOrdersProvider() {
         return ordersDataProvider;
+    }
+
+    public void selectedOrder(Order order) {
+        String viewId = OrdersUI.getViewId(OrderView.class);
+        view.getUI().getNavigator().navigateTo(viewId + "/" + order.getId());
+    }
+
+    public void newOrder() {
+        String viewId = OrdersUI.getViewId(OrderView.class);
+        view.getUI().getNavigator().navigateTo(viewId);
     }
 
 }
