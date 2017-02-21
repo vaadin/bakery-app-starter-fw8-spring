@@ -35,4 +35,8 @@
   @include valo;
   @include ordersview;
   @include dashboardview;
+
+  .v-errorindicator {
+    display: none; // Only show validation errors using field styles
+  }
 }
