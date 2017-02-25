@@ -23,6 +23,9 @@ public class Customer {
     @NotNull
     @NotEmpty
     private String phoneNumber;
+    @NotNull
+    @NotEmpty
+    private String email;
     private String details;
 
     public Customer() {
@@ -55,6 +58,14 @@ public class Customer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getDetails() {

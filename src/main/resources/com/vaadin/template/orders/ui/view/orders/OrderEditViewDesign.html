@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;orderstheme&quot;}">
+  <meta name="vaadin-version" content="8.0.0.beta2">
+ </head>
+ <body>
+  <vaadin-vertical-layout size-full>
+   <vaadin-grid-layout spacing width-full height="30px">
+    <row>
+     <column colspan="2">
+      <vaadin-horizontal-layout width-full _id="reportHeader">
+       <vaadin-label style-name="header bold" plain-text _id="orderId">
+         #182 NEW 
+       </vaadin-label>
+       <vaadin-button plain-text :right>
+         Set state... 
+       </vaadin-button>
+      </vaadin-horizontal-layout>
+     </column>
+    </row>
+    <row>
+     <column>
+      <vaadin-label style-name="header" plain-text>
+        Due 
+      </vaadin-label>
+     </column>
+    </row>
+    <row>
+     <column>
+      <vaadin-date-time-field placeholder="Due" width-full _id="dueDateTime"></vaadin-date-time-field>
+     </column>
+     <column>
+      <vaadin-horizontal-layout spacing="false" width-full>
+       <vaadin-label plain-text :middle>
+         @ 
+       </vaadin-label>
+       <vaadin-combo-box placeholder="Pickup location" width-full input-prompt="Pickup location" data-item-type="com.vaadin.template.orders.backend.data.entity.PickupLocation" _id="pickupLocation" :expand></vaadin-combo-box>
+      </vaadin-horizontal-layout>
+     </column>
+    </row>
+    <row>
+     <column>
+      <vaadin-label style-name="header" plain-text>
+        Customer 
+      </vaadin-label>
+     </column>
+    </row>
+    <row>
+     <column>
+      <vaadin-text-field placeholder="First Name" width-full _id="firstName"></vaadin-text-field>
+     </column>
+     <column>
+      <vaadin-text-field placeholder="Last Name" width-full _id="lastName"></vaadin-text-field>
+     </column>
+    </row>
+    <row>
+     <column>
+      <vaadin-text-field placeholder="Phone number" width-full _id="phone"></vaadin-text-field>
+     </column>
+     <column>
+      <vaadin-text-field placeholder="E-mail" width-full _id="email"></vaadin-text-field>
+     </column>
+    </row>
+    <row>
+     <column colspan="2">
+      <vaadin-text-field placeholder="Additional details" width-full _id="details"></vaadin-text-field>
+     </column>
+    </row>
+    <row>
+     <column>
+      <vaadin-check-box caption="New customer" _id="newCustomer"></vaadin-check-box>
+     </column>
+    </row>
+    <row>
+     <column>
+      <vaadin-label style-name="header" plain-text>
+        Products 
+      </vaadin-label>
+     </column>
+    </row>
+    <row>
+     <column colspan="2">
+      <vaadin-css-layout width-full _id="productInfoContainer"></vaadin-css-layout>
+     </column>
+    </row>
+    <row></row>
+    <row>
+     <column colspan="2">
+      <vaadin-horizontal-layout width-full>
+       <vaadin-button icon="fonticon://FontAwesome/f055" style-name="borderless" _id="addItems">
+         Add items... 
+       </vaadin-button>
+       <vaadin-label style-name="huge bold" plain-text _id="total" :right>
+         price 
+       </vaadin-label>
+      </vaadin-horizontal-layout>
+     </column>
+    </row>
+    <row>
+     <column>
+      <vaadin-button _id="editBackCancel">
+        Cancel 
+      </vaadin-button>
+     </column>
+     <column>
+      <vaadin-button plain-text _id="ok" :right>
+        Done 
+      </vaadin-button>
+     </column>
+    </row>
+   </vaadin-grid-layout>
+  </vaadin-vertical-layout>
+ </body>
+</html>
