@@ -32,8 +32,8 @@ public class OrdersDataProvider
         Pageable pageable = FrameworkDataHelper.getPageable(query);
 
         List<Order> items = orderRepository
-                .findByDueDateAfterAndStateInOrderByDueDateAsc(getFilterDate(),
-                        getStates(), pageable)
+                .findByDueDateAfterAndStateInOrderByDueDateAscDueTimeDescIdDesc(
+                        getFilterDate(), getStates(), pageable)
                 .getContent();
         int firstReturned = pageable.getPageNumber();
         int firstReal = firstRequested - firstReturned;

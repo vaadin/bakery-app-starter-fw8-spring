@@ -13,8 +13,8 @@ import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Page<Order> findByDueDateAfterAndStateInOrderByDueDateAsc(LocalDate dueDate,
-            Collection<OrderState> states, Pageable page);
+    Page<Order> findByDueDateAfterAndStateInOrderByDueDateAscDueTimeDescIdDesc(
+            LocalDate dueDate, Collection<OrderState> states, Pageable page);
 
     long countByDueDateAfterAndStateIn(LocalDate dueDate,
             Collection<OrderState> states);
