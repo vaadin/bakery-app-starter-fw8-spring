@@ -18,7 +18,6 @@ import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.components.DollarPriceFormatter;
-import com.vaadin.template.orders.ui.components.ProductComboBox;
 
 @SpringComponent
 @PrototypeScope
@@ -26,9 +25,6 @@ public class ProductInfo extends ProductInfoDesign {
 
     @Autowired
     private DollarPriceFormatter priceFormatter;
-
-    @Autowired
-    private ProductComboBox product;
 
     @Autowired
     private StringToIntegerConverter converter;
@@ -40,8 +36,6 @@ public class ProductInfo extends ProductInfoDesign {
 
     @PostConstruct
     public void init() {
-        addComponent(product, 0, 0);
-
         binder = new BeanValidationBinder<>(OrderItem.class);
         binder.forField(quantity).withConverter(converter).bind("quantity");
         binder.bindInstanceFields(this);
