@@ -16,9 +16,7 @@ import com.vaadin.ui.UI;
 @SpringUI
 @Viewport("width=device-width, initial-scale=1.0")
 public class OrdersUI extends UI {
-    static {
-        SpringDevTools.fix();
-    }
+
     @Autowired
     private MainView mainView;
 
