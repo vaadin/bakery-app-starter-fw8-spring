@@ -1,6 +1,7 @@
 package com.vaadin.template.orders.ui.view.orders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -20,8 +21,11 @@ import com.vaadin.template.orders.backend.OrderRepository;
 import com.vaadin.template.orders.backend.PickupLocationRepository;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
+import com.vaadin.template.orders.backend.data.entity.HistoryItem;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.data.entity.PickupLocation;
+import com.vaadin.template.orders.backend.service.OrderService;
+import com.vaadin.template.orders.backend.service.UserService;
 import com.vaadin.template.orders.ui.OrdersUI;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.ui.Component.Focusable;
@@ -36,6 +40,15 @@ public class OrderEditPresenter {
     private OrderEditView view;
     private final PickupLocationRepository pickupLocationRepository;
     private final CustomerRepository customerRepository;
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private OrderService orderService;
+
+    private static final List<OrderState> happyPath = Arrays.asList(
+            OrderState.NEW, OrderState.CONFIRMED, OrderState.READY_FOR_PICKUP,
+            OrderState.DELIVERED);
 
     @Autowired
     public OrderEditPresenter(OrderRepository orderRepository,
@@ -71,7 +84,7 @@ public class OrderEditPresenter {
             }
         }
 
-        view.editOrder(order);
+        view.setOrder(order);
         updateTotalSum();
         if (id == null) {
             view.setMode(Mode.EDIT);
@@ -83,6 +96,11 @@ public class OrderEditPresenter {
     @EventBusListenerMethod
     private void updateTotalSum(ProductInfoChange change) {
         updateTotalSum();
+    }
+
+    @EventBusListenerMethod
+    private void orderUpdated(OrderUpdated event) {
+        view.setOrder(orderRepository.findOne(view.getOrder().getId()));
     }
 
     private void updateTotalSum() {
@@ -118,7 +136,16 @@ public class OrderEditPresenter {
 
     public void okPressed() {
         if (view.getMode() == Mode.REPORT) {
-            // TODO set state
+            // Set next state
+            Order order = view.getOrder();
+            Optional<OrderState> nextState = getNextHappyPathState(
+                    order.getState());
+            if (!nextState.isPresent()) {
+                throw new IllegalStateException(
+                        "The next state button should never be enabled when the state does not follow the happy path");
+            }
+            orderService.changeState(order, nextState.get());
+            reload(order.getId());
         } else if (view.getMode() == Mode.CONFIRMATION) {
             saveOrder();
         } else if (view.getMode() == Mode.EDIT) {
@@ -137,6 +164,10 @@ public class OrderEditPresenter {
         }
     }
 
+    private void reload(Long id) {
+        ((OrdersUI) view.getUI()).navigateTo(OrderEditView.class, id);
+    }
+
     private void saveOrder() {
         try {
             // FIXME service, transaction, cascade, ...
@@ -144,6 +175,15 @@ public class OrderEditPresenter {
             // FIXME Use existing customer maybe
             Customer customer = customerRepository.save(order.getCustomer());
             order.setCustomer(customer);
+
+            if (order.getHistory() == null) {
+                String comment = "Order placed";
+                order.setHistory(new ArrayList<>());
+                HistoryItem item = new HistoryItem(userService.getCurrentUser(),
+                        comment);
+                item.setNewState(OrderState.NEW);
+                order.getHistory().add(item);
+            }
             order = orderRepository.save(order);
 
             // Navigate to edit view so URL is updated correctly
@@ -160,6 +200,7 @@ public class OrderEditPresenter {
             Notification.show(
                     "Somebody else might have updated the data. Please refresh and try again.",
                     Type.ERROR_MESSAGE);
+            getLogger().log(Level.WARNING, "Unable to save order", e);
             return;
         }
     }
@@ -168,4 +209,11 @@ public class OrderEditPresenter {
         return Logger.getLogger(OrderEditPresenter.class.getName());
     }
 
+    public Optional<OrderState> getNextHappyPathState(OrderState current) {
+        final int currentIndex = happyPath.indexOf(current);
+        if (currentIndex == -1 || currentIndex == happyPath.size() - 1) {
+            return Optional.empty();
+        }
+        return Optional.of(happyPath.get(currentIndex + 1));
+    }
 }

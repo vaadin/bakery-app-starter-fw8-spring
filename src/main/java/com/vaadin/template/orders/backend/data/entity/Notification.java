@@ -1,5 +1,6 @@
 package com.vaadin.template.orders.backend.data.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -9,7 +10,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Notification {
+public class Notification implements Serializable {
 
     @Id
     @GeneratedValue

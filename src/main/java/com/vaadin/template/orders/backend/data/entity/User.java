@@ -1,5 +1,6 @@
 package com.vaadin.template.orders.backend.data.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -11,7 +12,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.vaadin.template.orders.backend.data.Role;
 
 @Entity
-public class User {
+public class User implements Serializable {
 
     @Id
     @NotNull
