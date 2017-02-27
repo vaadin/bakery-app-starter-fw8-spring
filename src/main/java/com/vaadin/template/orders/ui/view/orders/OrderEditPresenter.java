@@ -73,7 +73,11 @@ public class OrderEditPresenter {
 
         view.editOrder(order);
         updateTotalSum();
-        view.setReportMode(id != null);
+        if (id == null) {
+            view.setMode(Mode.EDIT);
+        } else {
+            view.setMode(Mode.REPORT);
+        }
     }
 
     @EventBusListenerMethod
@@ -95,10 +99,14 @@ public class OrderEditPresenter {
     }
 
     public void editBackCancelPressed() {
-        if (view.isReportMode()) {
-            view.setReportMode(false);
-        } else {
-            // editing
+        if (view.getMode() == Mode.REPORT) {
+            // Edit order
+            view.setMode(Mode.EDIT);
+        } else if (view.getMode() == Mode.CONFIRMATION) {
+            // Back to edit
+            view.setMode(Mode.EDIT);
+        } else if (view.getMode() == Mode.EDIT) {
+            // Cancel edit
             Long id = view.getOrder().getId();
             if (id == null) {
                 ((OrdersUI) view.getUI()).navigateTo(OrdersListView.class);
@@ -109,37 +117,50 @@ public class OrderEditPresenter {
     }
 
     public void okPressed() {
-        if (!view.isReportMode()) {
+        if (view.getMode() == Mode.REPORT) {
+            // TODO set state
+        } else if (view.getMode() == Mode.CONFIRMATION) {
+            saveOrder();
+        } else if (view.getMode() == Mode.EDIT) {
             Optional<HasValue<?>> firstErrorField = view.validate().findFirst();
             if (firstErrorField.isPresent()) {
                 ((Focusable) firstErrorField.get()).focus();
                 return;
             }
-            try {
-                // FIXME service, transaction, cascade, ...
-                Order order = view.getOrder();
-                // FIXME Use existing customer maybe
-                Customer customer = customerRepository
-                        .save(order.getCustomer());
-                order.setCustomer(customer);
-                order = orderRepository.save(order);
-
-                // Navigate to edit view so URL is updated correctly
-                ((OrdersUI) view.getUI()).navigateTo(OrderEditView.class,
-                        order.getId());
-            } catch (ValidationException e) {
-                // Should not get here if validation is setup properly
-                Notification.show("Please check the contents of the fields.",
-                        Type.ERROR_MESSAGE);
-                getLogger().log(Level.FINEST,
-                        "Validation error during order save", e);
-                return;
-            } catch (Exception e) {
-                Notification.show(
-                        "Somebody else might have updated the data. Please refresh and try again.",
-                        Type.ERROR_MESSAGE);
-                return;
+            // New order should still show a confirmation page
+            Order order = view.getOrder();
+            if (order.getId() == null) {
+                view.setMode(Mode.CONFIRMATION);
+            } else {
+                saveOrder();
             }
+        }
+    }
+
+    private void saveOrder() {
+        try {
+            // FIXME service, transaction, cascade, ...
+            Order order = view.getOrder();
+            // FIXME Use existing customer maybe
+            Customer customer = customerRepository.save(order.getCustomer());
+            order.setCustomer(customer);
+            order = orderRepository.save(order);
+
+            // Navigate to edit view so URL is updated correctly
+            ((OrdersUI) view.getUI()).navigateTo(OrderEditView.class,
+                    order.getId());
+        } catch (ValidationException e) {
+            // Should not get here if validation is setup properly
+            Notification.show("Please check the contents of the fields.",
+                    Type.ERROR_MESSAGE);
+            getLogger().log(Level.FINEST, "Validation error during order save",
+                    e);
+            return;
+        } catch (Exception e) {
+            Notification.show(
+                    "Somebody else might have updated the data. Please refresh and try again.",
+                    Type.ERROR_MESSAGE);
+            return;
         }
     }
 
