@@ -11,13 +11,16 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.internal.Conventions;
 import com.vaadin.template.orders.ui.view.orders.OrderEditView;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.declarative.Design;
 
 @Theme("orderstheme")
 @SpringUI
 @Viewport("width=device-width, initial-scale=1.0")
 public class OrdersUI extends UI {
+
     static {
         SpringDevTools.fix();
+        Design.setComponentFactory(new SpringCompatibleComponentFactory());
     }
     @Autowired
     private MainView mainView;
