@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
 
 import com.vaadin.template.orders.backend.data.OrderState;
@@ -34,12 +35,15 @@ public class Order {
     private Customer customer;
     @NotNull
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderColumn(name = "id")
     private List<OrderItem> items;
     @NotNull
     private OrderState state;
 
     private boolean paid;
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderColumn(name = "id")
     private List<HistoryItem> history;
 
     public Order() {

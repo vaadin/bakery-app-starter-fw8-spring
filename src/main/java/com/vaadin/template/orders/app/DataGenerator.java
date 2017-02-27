@@ -1,7 +1,9 @@
 package com.vaadin.template.orders.app;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -22,6 +24,7 @@ import com.vaadin.template.orders.backend.UserRepository;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.backend.data.entity.Customer;
+import com.vaadin.template.orders.backend.data.entity.HistoryItem;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.backend.data.entity.PickupLocation;
@@ -57,7 +60,11 @@ public class DataGenerator {
     private final List<PickupLocation> pickupLocations = new ArrayList<>();
     private final List<Product> products = new ArrayList<>();
     private final List<Customer> customers = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
     private final List<Order> orders = new ArrayList<>();
+    private User baker;
+    private User barista;
+    private User admin;
 
     @Bean
     public CommandLineRunner loadData(OrderRepository orders,
@@ -141,6 +148,55 @@ public class DataGenerator {
             items.add(item);
         }
         order.setItems(items);
+
+        order.setHistory(new ArrayList<>());
+        HistoryItem item = new HistoryItem(getBarista(), "Order placed");
+        item.setNewState(OrderState.NEW);
+        LocalDateTime orderPlaced = dueDate.minusDays(random.nextInt(5) + 2)
+                .atTime(random.nextInt(10) + 7, 00);
+        item.setTimestamp(orderPlaced);
+        order.getHistory().add(item);
+        if (order.getState() == OrderState.CANCELLED) {
+            item = new HistoryItem(getBarista(), "Order cancelled");
+            item.setNewState(OrderState.CANCELLED);
+            item.setTimestamp(orderPlaced.plusDays(random.nextInt(
+                    (int) orderPlaced.until(dueDate.atTime(order.getDueTime()),
+                            ChronoUnit.DAYS))));
+            order.getHistory().add(item);
+        } else if (order.getState() == OrderState.CONFIRMED
+                || order.getState() == OrderState.DELIVERED
+                || order.getState() == OrderState.PROBLEM
+                || order.getState() == OrderState.READY_FOR_PICKUP) {
+            item = new HistoryItem(getBaker(), "Order confirmed");
+            item.setNewState(OrderState.CONFIRMED);
+            item.setTimestamp(orderPlaced.plusDays(random.nextInt(2))
+                    .plusHours(random.nextInt(5)));
+            order.getHistory().add(item);
+
+            if (order.getState() == OrderState.PROBLEM) {
+                item = new HistoryItem(getBaker(),
+                        "Can't make it. Did not get any ingredients this morning");
+                item.setNewState(OrderState.PROBLEM);
+                item.setTimestamp(dueDate.atTime(random.nextInt(4) + 4, 0));
+                order.getHistory().add(item);
+            } else if (order.getState() == OrderState.READY_FOR_PICKUP
+                    || order.getState() == OrderState.DELIVERED) {
+                item = new HistoryItem(getBaker(), "Order ready for pickup");
+                item.setNewState(OrderState.READY_FOR_PICKUP);
+                item.setTimestamp(dueDate.atTime(random.nextInt(2) + 8,
+                        random.nextBoolean() ? 0 : 30));
+                order.getHistory().add(item);
+                if (order.getState() == OrderState.DELIVERED) {
+                    item = new HistoryItem(getBaker(), "Order delivered");
+                    item.setNewState(OrderState.DELIVERED);
+                    item.setTimestamp(dueDate.atTime(order.getDueTime()
+                            .minusMinutes(random.nextInt(120))));
+                    order.getHistory().add(item);
+                }
+            }
+
+        }
+
         return orderRepo.save(order);
     }
 
@@ -218,6 +274,14 @@ public class DataGenerator {
         return getRandom(customers);
     }
 
+    private User getBaker() {
+        return baker;
+    }
+
+    private User getBarista() {
+        return barista;
+    }
+
     private <T> T getRandom(List<T> items) {
         return items.get(random.nextInt(items.size()));
     }
@@ -262,13 +326,16 @@ public class DataGenerator {
         return name;
     }
 
-    private void createUsers(UserRepository users) {
-        users.save(new User("baker@vaadin.com", "Heidi",
+    private void createUsers(UserRepository userRepository) {
+        baker = userRepository.save(new User("baker@vaadin.com", "Heidi",
                 passwordEncoder.encode("baker"), Role.BAKER));
-        users.save(new User("barista@vaadin.com", "Malin",
+        barista = userRepository.save(new User("barista@vaadin.com", "Malin",
                 passwordEncoder.encode("barista"), Role.BARISTA));
-        users.save(new User("admin@vaadin.com", "Göran",
+        admin = userRepository.save(new User("admin@vaadin.com", "Göran",
                 passwordEncoder.encode("admin"), Role.ADMIN));
+        users.add(barista);
+        users.add(admin);
+        users.add(baker);
     }
 
     private static Logger getLogger() {

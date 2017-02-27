@@ -17,7 +17,6 @@ public class HistoryItem {
     @GeneratedValue
     private Long id;
 
-    @NotNull
     private OrderState newState;
     private String message;
 
@@ -26,8 +25,14 @@ public class HistoryItem {
     @OneToOne
     private User createdBy;
 
-    public HistoryItem() {
+    protected HistoryItem() {
         // Empty constructor is needed by Spring Data / JPA
+    }
+
+    public HistoryItem(User createdBy, String message) {
+        this.createdBy = createdBy;
+        this.message = message;
+        timestamp = LocalDateTime.now();
     }
 
     public Long getId() {

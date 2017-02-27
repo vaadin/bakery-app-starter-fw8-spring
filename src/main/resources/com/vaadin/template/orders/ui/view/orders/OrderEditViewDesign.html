@@ -4,17 +4,18 @@
   <meta charset="UTF-8">
   <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;orderstheme&quot;}">
   <meta name="vaadin-version" content="8.0.0.beta2">
+  <meta name="package-mapping" content="com_vaadin_template_orders_ui_view_orders:com.vaadin.template.orders.ui.view.orders">
  </head>
  <body>
-  <vaadin-vertical-layout width-full>
+  <vaadin-vertical-layout>
    <vaadin-grid-layout spacing width-full>
     <row>
      <column colspan="2">
       <vaadin-horizontal-layout width-full _id="reportHeader">
-       <vaadin-label style-name="header bold" plain-text _id="orderId">
+       <vaadin-label style-name="header bold" plain-text _id="orderIdAndState">
          #182 NEW 
        </vaadin-label>
-       <vaadin-button plain-text :right>
+       <vaadin-button plain-text _id="setState" :right>
          Set state... 
        </vaadin-button>
       </vaadin-horizontal-layout>
@@ -96,6 +97,11 @@
          price 
        </vaadin-label>
       </vaadin-horizontal-layout>
+     </column>
+    </row>
+    <row>
+     <column colspan="2">
+      <com_vaadin_template_orders_ui_view_orders-order-history _id="history"></com_vaadin_template_orders_ui_view_orders-order-history>
      </column>
     </row>
     <row>
