@@ -37,6 +37,8 @@ public class OrderEditView extends OrderEditViewDesign implements View {
 
     private BeanValidationBinder<Order> binder;
 
+    private Mode mode;
+
     @PostConstruct
     public void init() {
         presenter.init(this);
@@ -144,28 +146,32 @@ public class OrderEditView extends OrderEditViewDesign implements View {
         addComponent(new Label("Order not found"));
     }
 
-    public void setReportMode(boolean reportMode) {
-        binder.setReadOnly(reportMode);
+    public void setMode(Mode mode) {
+        this.mode = mode;
+        binder.setReadOnly(mode != Mode.EDIT);
         for (Component c : productInfoContainer) {
             if (c instanceof ProductInfo) {
-                ((ProductInfo) c).setReportMode(reportMode);
+                ((ProductInfo) c).setReportMode(mode != Mode.EDIT);
             }
         }
-        addItems.setVisible(!reportMode);
+        addItems.setVisible(mode == Mode.EDIT);
 
-        reportHeader.setVisible(reportMode);
+        reportHeader.setVisible(mode == Mode.REPORT);
 
-        if (reportMode) {
+        if (mode == Mode.REPORT) {
             editBackCancel.setCaption("Edit");
             ok.setCaption("<next status>");
+        } else if (mode == Mode.CONFIRMATION) {
+            editBackCancel.setCaption("< Back");
+            ok.setCaption("Place order");
         } else {
             editBackCancel.setCaption("Cancel");
             ok.setCaption("Done");
         }
     }
 
-    public boolean isReportMode() {
-        return reportHeader.isVisible();
+    public Mode getMode() {
+        return mode;
     }
 
     public Stream<HasValue<?>> validate() {
