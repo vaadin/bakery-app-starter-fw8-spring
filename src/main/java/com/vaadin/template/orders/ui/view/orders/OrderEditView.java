@@ -113,6 +113,7 @@ public class OrderEditView extends OrderEditViewDesign implements View {
 
         newCustomer.setVisible(mode == Mode.EDIT && getOrder().getId() == null);
 
+        reportHeader.setVisible(order.getId() != null);
         if (order.getId() == null) {
             addEmptyOrderItem();
             dueDateTime.focus();
@@ -171,9 +172,8 @@ public class OrderEditView extends OrderEditViewDesign implements View {
             }
         }
         addItems.setVisible(mode == Mode.EDIT);
-        reportHeader.setVisible(mode == Mode.REPORT);
         history.setVisible(mode == Mode.REPORT);
-
+        setState.setVisible(mode == Mode.REPORT);
         newCustomer.setVisible(mode == Mode.EDIT && getOrder().getId() == null);
 
         if (mode == Mode.REPORT) {
@@ -186,9 +186,11 @@ public class OrderEditView extends OrderEditViewDesign implements View {
         } else if (mode == Mode.CONFIRMATION) {
             editBackCancel.setCaption("< Back");
             ok.setCaption("Place order");
+            ok.setVisible(true);
         } else {
             editBackCancel.setCaption("Cancel");
             ok.setCaption("Done");
+            ok.setVisible(true);
         }
     }
 
