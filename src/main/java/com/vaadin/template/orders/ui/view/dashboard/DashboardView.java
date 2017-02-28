@@ -9,18 +9,19 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
+import com.vaadin.addon.charts.model.*;
+import com.vaadin.data.provider.DataProvider;
+import com.vaadin.data.provider.ListDataProvider;
+import com.vaadin.template.orders.backend.dto.SalesPerMonthDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.addon.charts.Chart;
-import com.vaadin.addon.charts.model.ChartType;
-import com.vaadin.addon.charts.model.Configuration;
-import com.vaadin.addon.charts.model.DataSeries;
-import com.vaadin.addon.charts.model.DataSeriesItem;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
@@ -71,19 +72,29 @@ public class DashboardView extends DashboardViewDesign implements View {
     private void initYearlySalesGraph() {
         yearlySalesGraph.setHeight("400px");
         int now = Year.now().getValue();
-        List<Double> thisYear = presenter.getSalesPerMonth(now);
-        List<Double> oneYearBack = presenter.getSalesPerMonth(now - 1);
-        List<Double> twoYearsBack = presenter.getSalesPerMonth(now - 2);
+        List<SalesPerMonthDTO> threeYears = presenter.getSalesPerMonthLastThreeYears();
+        List<SalesPerMonthDTO> twoYearsBack = threeYears.stream().filter(dto->dto.getYear()==now-2).collect(Collectors.toList());
+        List<SalesPerMonthDTO> oneYearBack = threeYears.stream().filter(dto->dto.getYear()==now-1).collect(Collectors.toList());
+        List<SalesPerMonthDTO> thisYear = threeYears.stream().filter(dto->dto.getYear()==now).collect(Collectors.toList());
 
         Configuration conf = yearlySalesGraph.getConfiguration();
         conf.setTitle("Sales last years");
         conf.getxAxis().setCategories(getMonthNames());
-        conf.addSeries(new MyListSeries(Integer.toString(now), thisYear));
-        conf.addSeries(
-                new MyListSeries(Integer.toString(now - 1), oneYearBack));
-        conf.addSeries(
-                new MyListSeries(Integer.toString(now - 2), twoYearsBack));
 
+        DataProvider<SalesPerMonthDTO, ?> thisYearDataProvider = new ListDataProvider<>(thisYear);
+        DataProvider<SalesPerMonthDTO, ?> oneYearBackDataProvider = new ListDataProvider<>(oneYearBack);
+        DataProvider<SalesPerMonthDTO, ?> twoYearsBackDataProvider = new ListDataProvider<>(twoYearsBack);
+        DataProviderSeries<SalesPerMonthDTO> thisYearSeries = new DataProviderSeries<>(thisYearDataProvider, SalesPerMonthDTO::getSales);
+        DataProviderSeries<SalesPerMonthDTO> oneYearSeries = new DataProviderSeries<>(oneYearBackDataProvider, SalesPerMonthDTO::getSales);
+        DataProviderSeries<SalesPerMonthDTO> twoYearsSeries = new DataProviderSeries<>(twoYearsBackDataProvider, SalesPerMonthDTO::getSales);
+        thisYearSeries.setName(String.valueOf(now));
+        oneYearSeries.setName(String.valueOf(now-1));
+        twoYearsSeries.setName(String.valueOf(now-2));
+
+
+        conf.addSeries(thisYearSeries);
+        conf.addSeries(oneYearSeries);
+        conf.addSeries(twoYearsSeries);
     }
 
     private void initProductSplitMonthlyGraph() {
