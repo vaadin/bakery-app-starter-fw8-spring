@@ -1,5 +1,7 @@
 package com.vaadin.template.orders.backend.data.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -8,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-public class Customer {
+public class Customer implements Serializable {
 
     @Id
     @GeneratedValue

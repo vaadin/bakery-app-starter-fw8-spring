@@ -2,6 +2,7 @@ package com.vaadin.template.orders.ui.view.orders;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +16,7 @@ import com.vaadin.data.HasValue;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.data.entity.OrderItem;
@@ -38,6 +40,9 @@ public class OrderEditView extends OrderEditViewDesign implements View {
     private BeanValidationBinder<Order> binder;
 
     private Mode mode;
+
+    @Autowired
+    private ObjectProvider<OrderStateWindow> windowProvider;
 
     @PostConstruct
     public void init() {
@@ -83,6 +88,12 @@ public class OrderEditView extends OrderEditViewDesign implements View {
         addItems.addClickListener(e -> addEmptyOrderItem());
         editBackCancel.addClickListener(e -> presenter.editBackCancelPressed());
         ok.addClickListener(e -> presenter.okPressed());
+
+        setState.addClickListener(e -> {
+            OrderStateWindow w = windowProvider.getObject();
+            w.setOrder(getOrder());
+            getUI().addWindow(w);
+        });
     }
 
     @Override
@@ -95,26 +106,31 @@ public class OrderEditView extends OrderEditViewDesign implements View {
         }
     }
 
-    public void editOrder(Order order) {
+    public void setOrder(Order order) {
+        orderIdAndState.setValue("#" + order.getId() + " " + order.getState());
         binder.setBean(order);
         productInfoContainer.removeAllComponents();
 
+        newCustomer.setVisible(mode == Mode.EDIT && getOrder().getId() == null);
+
         if (order.getId() == null) {
-            newCustomer.setVisible(true);
             addEmptyOrderItem();
             dueDateTime.focus();
         } else {
-            newCustomer.setVisible(false);
             for (OrderItem item : order.getItems()) {
                 ProductInfo productInfo = createProductInfo(item);
+                productInfo.setReportMode(mode != Mode.EDIT);
                 productInfoContainer.addComponent(productInfo);
             }
+            history.setOrder(order);
         }
     }
 
     private void addEmptyOrderItem() {
         OrderItem orderItem = new OrderItem();
-        productInfoContainer.addComponent(createProductInfo(orderItem));
+        ProductInfo productInfo = createProductInfo(orderItem);
+        productInfoContainer.addComponent(productInfo);
+        productInfo.focus();
         getOrder().getItems().add(orderItem);
     }
 
@@ -155,12 +171,18 @@ public class OrderEditView extends OrderEditViewDesign implements View {
             }
         }
         addItems.setVisible(mode == Mode.EDIT);
-
         reportHeader.setVisible(mode == Mode.REPORT);
+        history.setVisible(mode == Mode.REPORT);
+
+        newCustomer.setVisible(mode == Mode.EDIT && getOrder().getId() == null);
 
         if (mode == Mode.REPORT) {
             editBackCancel.setCaption("Edit");
-            ok.setCaption("<next status>");
+            Optional<OrderState> nextState = presenter
+                    .getNextHappyPathState(getOrder().getState());
+            ok.setCaption(
+                    nextState.map(OrderState::getDisplayName).orElse("?"));
+            ok.setVisible(nextState.isPresent());
         } else if (mode == Mode.CONFIRMATION) {
             editBackCancel.setCaption("< Back");
             ok.setCaption("Place order");

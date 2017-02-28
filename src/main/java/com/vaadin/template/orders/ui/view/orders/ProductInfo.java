@@ -81,4 +81,8 @@ public class ProductInfo extends ProductInfoDesign {
                 .map(BindingValidationStatus::getField);
     }
 
+    @Override
+    public void focus() {
+        product.focus();
+    }
 }

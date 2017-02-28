@@ -1,5 +1,6 @@
 package com.vaadin.template.orders.backend.data.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -11,13 +12,12 @@ import javax.validation.constraints.NotNull;
 import com.vaadin.template.orders.backend.data.OrderState;
 
 @Entity
-public class HistoryItem {
+public class HistoryItem implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @NotNull
     private OrderState newState;
     private String message;
 
@@ -26,8 +26,14 @@ public class HistoryItem {
     @OneToOne
     private User createdBy;
 
-    public HistoryItem() {
+    protected HistoryItem() {
         // Empty constructor is needed by Spring Data / JPA
+    }
+
+    public HistoryItem(User createdBy, String message) {
+        this.createdBy = createdBy;
+        this.message = message;
+        timestamp = LocalDateTime.now();
     }
 
     public Long getId() {
