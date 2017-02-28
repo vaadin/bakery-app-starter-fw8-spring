@@ -8,24 +8,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.annotation.PreDestroy;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBus.ViewEventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.template.orders.backend.CustomerRepository;
-import com.vaadin.template.orders.backend.OrderRepository;
 import com.vaadin.template.orders.backend.PickupLocationRepository;
 import com.vaadin.template.orders.backend.data.OrderState;
-import com.vaadin.template.orders.backend.data.entity.Customer;
-import com.vaadin.template.orders.backend.data.entity.HistoryItem;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 import com.vaadin.template.orders.backend.service.OrderService;
-import com.vaadin.template.orders.backend.service.UserService;
 import com.vaadin.template.orders.ui.OrdersUI;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.ui.Component.Focusable;
@@ -36,30 +33,29 @@ import com.vaadin.ui.Notification.Type;
 @PrototypeScope
 public class OrderEditPresenter {
 
-    private final OrderRepository orderRepository;
     private OrderEditView view;
     private final PickupLocationRepository pickupLocationRepository;
-    private final CustomerRepository customerRepository;
 
-    @Autowired
-    private UserService userService;
     @Autowired
     private OrderService orderService;
 
     private static final List<OrderState> happyPath = Arrays.asList(
             OrderState.NEW, OrderState.CONFIRMED, OrderState.READY_FOR_PICKUP,
             OrderState.DELIVERED);
+    private final ViewEventBus eventBus;
 
     @Autowired
-    public OrderEditPresenter(OrderRepository orderRepository,
-            CustomerRepository customerRepository,
-            PickupLocationRepository pickupLocationRepository,
+    public OrderEditPresenter(PickupLocationRepository pickupLocationRepository,
             EventBus.ViewEventBus eventBus) {
-        this.orderRepository = orderRepository;
-        this.customerRepository = customerRepository;
         this.pickupLocationRepository = pickupLocationRepository;
+        this.eventBus = eventBus;
 
         eventBus.subscribe(this);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        eventBus.unsubscribe(this);
     }
 
     void init(OrderEditView view) {
@@ -77,20 +73,14 @@ public class OrderEditPresenter {
             order.setState(OrderState.NEW);
             order.setItems(new ArrayList<>());
         } else {
-            order = orderRepository.findOne(id);
+            order = orderService.findOrder(id);
             if (order == null) {
                 view.showNotFound();
                 return;
             }
         }
 
-        view.setOrder(order);
-        updateTotalSum();
-        if (id == null) {
-            view.setMode(Mode.EDIT);
-        } else {
-            view.setMode(Mode.REPORT);
-        }
+        refreshView(order);
     }
 
     @EventBusListenerMethod
@@ -100,7 +90,7 @@ public class OrderEditPresenter {
 
     @EventBusListenerMethod
     private void orderUpdated(OrderUpdated event) {
-        view.setOrder(orderRepository.findOne(view.getOrder().getId()));
+        refresh(view.getOrder().getId());
     }
 
     private void updateTotalSum() {
@@ -145,9 +135,14 @@ public class OrderEditPresenter {
                         "The next state button should never be enabled when the state does not follow the happy path");
             }
             orderService.changeState(order, nextState.get());
-            reload(order.getId());
+            refresh(order.getId());
         } else if (view.getMode() == Mode.CONFIRMATION) {
-            saveOrder();
+            Order order = saveOrder();
+            if (order != null) {
+                // Navigate to edit view so URL is updated correctly
+                ((OrdersUI) view.getUI()).navigateTo(OrderEditView.class,
+                        order.getId());
+            }
         } else if (view.getMode() == Mode.EDIT) {
             Optional<HasValue<?>> firstErrorField = view.validate().findFirst();
             if (firstErrorField.isPresent()) {
@@ -159,49 +154,52 @@ public class OrderEditPresenter {
             if (order.getId() == null) {
                 view.setMode(Mode.CONFIRMATION);
             } else {
-                saveOrder();
+                order = saveOrder();
+                if (order != null) {
+                    refresh(order.getId());
+                }
             }
         }
     }
 
-    private void reload(Long id) {
-        ((OrdersUI) view.getUI()).navigateTo(OrderEditView.class, id);
+    private void refresh(Long id) {
+        Order order = orderService.findOrder(id);
+        if (order == null) {
+            view.showNotFound();
+            return;
+        }
+        refreshView(order);
+
     }
 
-    private void saveOrder() {
+    private void refreshView(Order order) {
+        view.setOrder(order);
+        updateTotalSum();
+        if (order.getId() == null) {
+            view.setMode(Mode.EDIT);
+        } else {
+            view.setMode(Mode.REPORT);
+        }
+    }
+
+    private Order saveOrder() {
         try {
-            // FIXME service, transaction, cascade, ...
             Order order = view.getOrder();
-            // FIXME Use existing customer maybe
-            Customer customer = customerRepository.save(order.getCustomer());
-            order.setCustomer(customer);
+            return orderService.saveOrder(order);
 
-            if (order.getHistory() == null) {
-                String comment = "Order placed";
-                order.setHistory(new ArrayList<>());
-                HistoryItem item = new HistoryItem(userService.getCurrentUser(),
-                        comment);
-                item.setNewState(OrderState.NEW);
-                order.getHistory().add(item);
-            }
-            order = orderRepository.save(order);
-
-            // Navigate to edit view so URL is updated correctly
-            ((OrdersUI) view.getUI()).navigateTo(OrderEditView.class,
-                    order.getId());
         } catch (ValidationException e) {
             // Should not get here if validation is setup properly
             Notification.show("Please check the contents of the fields.",
                     Type.ERROR_MESSAGE);
             getLogger().log(Level.FINEST, "Validation error during order save",
                     e);
-            return;
+            return null;
         } catch (Exception e) {
             Notification.show(
                     "Somebody else might have updated the data. Please refresh and try again.",
                     Type.ERROR_MESSAGE);
             getLogger().log(Level.WARNING, "Unable to save order", e);
-            return;
+            return null;
         }
     }
 
