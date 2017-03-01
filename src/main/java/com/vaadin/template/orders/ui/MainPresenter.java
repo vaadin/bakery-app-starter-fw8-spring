@@ -1,16 +1,26 @@
 package com.vaadin.template.orders.ui;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinServletService;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.app.Application;
+import com.vaadin.template.orders.app.security.SecuredViewAccessControl;
 
 @SpringComponent
 @PrototypeScope
 public class MainPresenter {
 
+    @Autowired
+    private SecuredViewAccessControl viewAccessControl;
+
     private MainView view;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     void init(MainView view) {
         this.view = view;
@@ -34,5 +44,9 @@ public class MainPresenter {
                         .getContextPath();
         view.getUI().getPage()
                 .setLocation(contextPath + Application.LOGOUT_URL);
+    }
+
+    public boolean hasAccess(Class<? extends View> viewClass) {
+        return viewAccessControl.isAccessGranted(view.getUI(), viewClass);
     }
 }

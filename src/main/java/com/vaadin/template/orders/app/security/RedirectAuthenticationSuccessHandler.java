@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.app;
+package com.vaadin.template.orders.app.security;
 
 import java.io.IOException;
 
@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.web.context.annotation.ApplicationScope;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.template.orders.app.Application;
 
 /**
  * Redirects to the application after successful authentication.
