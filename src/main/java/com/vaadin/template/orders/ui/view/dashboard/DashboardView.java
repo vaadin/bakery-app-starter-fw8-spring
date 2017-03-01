@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -46,12 +47,14 @@ public class DashboardView extends DashboardViewDesign implements View {
 
     @PostConstruct
     public void init() {
+        getLogger().info("DashBoardView.init()");
         board.addRow(todayLabel, notAvailableLabel, newLabel, tomorrowLabel);
         board.addRow(deliveriesThisMonthGraph, deliveriesThisYearGraph);
         board.addRow(yearlySalesGraph);
         board.addRow(monthlyProductSplit, dueGrid);
         board.addRow(new BulletinBoard());
 
+        getLogger().info("... board set up");
         // Dummy configuration for now
         todayLabel.setHeight("150px");
         tomorrowLabel.setHeight("150px");
@@ -59,13 +62,17 @@ public class DashboardView extends DashboardViewDesign implements View {
         newLabel.setHeight("150px");
 
         initDeliveriesGraphs();
+        getLogger().info("... devlieries graphs set up");
         initProductSplitMonthlyGraph();
+        getLogger().info("... product split graphs set up");
         initYearlySalesGraph();
+        getLogger().info("... yearly sales graphs set up");
 
         dueGrid.setHeight("300px");
         dueGrid.addStyleName("border");
 
         dueGrid.setDataProvider(presenter.getOrdersProvider());
+        getLogger().info("DashBoardView.init() done");
     }
 
     private void initYearlySalesGraph() {
@@ -161,4 +168,9 @@ public class DashboardView extends DashboardViewDesign implements View {
         notAvailableLabel.setStyleName("problem",
                 stats.getNotAvailableToday() > 0);
     }
+
+    private static Logger getLogger() {
+        return Logger.getLogger(DashboardView.class.getName());
+    }
+
 }
