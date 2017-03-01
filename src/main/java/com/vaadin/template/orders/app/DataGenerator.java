@@ -73,13 +73,19 @@ public class DataGenerator {
             PickupLocationRepository pickupLocations,
             PasswordEncoder passwordEncoder) {
         return args -> {
+            getLogger().info("Generating demo data");
+            getLogger().info("... generating users");
             createUsers(users);
+            getLogger().info("... generating products");
             createProducts(products);
+            getLogger().info("... generating customers");
             createCustomers(customers);
+            getLogger().info("... generating pickup locations");
             createPickupLocations(pickupLocations);
+            getLogger().info("... generating orders");
             createOrders(orders);
 
-            getLogger().info("Initialized repositories");
+            getLogger().info("Generated demo data");
         };
     }
 
@@ -107,19 +113,19 @@ public class DataGenerator {
     }
 
     private void createOrders(OrderRepository orderRepo) {
-        LocalDate threeYearsAgo = LocalDate.now().minusDays(3 * 365);
-        LocalDate onMonthInTheFuture = LocalDate.now().plusDays(3 * 30);
-        for (LocalDate dueDate = threeYearsAgo; dueDate
-                .isBefore(onMonthInTheFuture); dueDate = dueDate.plusDays(1)) {
-            int ordersThisDay = random.nextInt(30);
+        LocalDate twoYearsAgo = LocalDate.now().minusDays(2 * 365);
+        LocalDate oneMonthInTheFuture = LocalDate.now().plusDays(30);
+        for (LocalDate dueDate = twoYearsAgo; dueDate
+                .isBefore(oneMonthInTheFuture); dueDate = dueDate.plusDays(1)) {
+            int ordersThisDay = random.nextInt(10);
             for (int i = 0; i < ordersThisDay; i++) {
-                orders.add(createOrder(orderRepo, dueDate));
+                orders.add(createOrder(dueDate));
             }
         }
-
+        orderRepo.save(orders);
     }
 
-    private Order createOrder(OrderRepository orderRepo, LocalDate dueDate) {
+    private Order createOrder(LocalDate dueDate) {
         Order order = new Order();
 
         order.setCustomer(getRandomCustomer());
@@ -197,7 +203,7 @@ public class DataGenerator {
 
         }
 
-        return orderRepo.save(order);
+        return order;
     }
 
     private boolean containsProduct(List<OrderItem> items, Product product) {
