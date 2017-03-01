@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.backend.service;
+package com.vaadin.template.orders.app.security;
 
 import java.util.Collections;
 
@@ -32,8 +32,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         } else {
             return new org.springframework.security.core.userdetails.User(
                     user.getEmail(), user.getPassword(),
-                    Collections.singletonList(new SimpleGrantedAuthority(
-                            user.getRole().getIdentifier())));
+                    Collections.singletonList(
+                            new SimpleGrantedAuthority(user.getRole())));
         }
     }
 }
