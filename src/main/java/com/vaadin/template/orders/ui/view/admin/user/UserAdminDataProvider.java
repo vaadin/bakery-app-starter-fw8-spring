@@ -53,7 +53,7 @@ public class UserAdminDataProvider extends PageableDataProvider<User, Object> {
 
     @Override
     public Object getId(User item) {
-        return item.getEmail();
+        return item.getId();
     }
 
 }
