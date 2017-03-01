@@ -50,8 +50,8 @@ public class UserAdminPresenter {
         getView().editItem(freshCopy, false);
     }
 
-    public Role[] getAvailableRoles() {
-        return Role.values();
+    public String[] getAvailableRoles() {
+        return Role.ALL_ROLES;
     }
 
     public void addNewClicked() {

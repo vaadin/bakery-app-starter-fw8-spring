@@ -1,22 +1,14 @@
 package com.vaadin.template.orders.backend.data;
 
-import java.util.stream.Stream;
+public class Role {
+    public static final String BARISTA = "barista";
+    public static final String BAKER = "baker";
+    public static final String ADMIN = "admin";
+    public static final String[] ALL_ROLES = new String[] { BARISTA, BAKER,
+            ADMIN };
 
-public enum Role {
-    BARISTA, BAKER, ADMIN;
-
-    public static String[] getRoleNames() {
-        Stream<String> roles = Stream.of(Role.values())
-                .map(Role::getIdentifier);
-        return roles.toArray(String[]::new);
+    private Role() {
+        // Static methods and fields only
     }
 
-    /**
-     * Gets the identifier of the role, used for access control.
-     *
-     * @return the string identifier of the role
-     */
-    public String getIdentifier() {
-        return name();
-    }
 }

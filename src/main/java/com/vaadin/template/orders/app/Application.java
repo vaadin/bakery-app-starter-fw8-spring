@@ -12,13 +12,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vaadin.spring.events.annotation.EnableEventBus;
 
 import com.vaadin.data.converter.StringToIntegerConverter;
+import com.vaadin.template.orders.app.security.SecurityConfig;
 import com.vaadin.template.orders.backend.OrderRepository;
 import com.vaadin.template.orders.backend.data.entity.Order;
-import com.vaadin.template.orders.backend.service.UserDetailsServiceImpl;
+import com.vaadin.template.orders.backend.service.UserService;
 import com.vaadin.template.orders.ui.OrdersUI;
 
 @SpringBootApplication(scanBasePackageClasses = { OrdersUI.class,
-        Application.class, UserDetailsServiceImpl.class })
+        Application.class, UserService.class, SecurityConfig.class })
 @EnableJpaRepositories(basePackageClasses = { OrderRepository.class })
 @EntityScan(basePackageClasses = { Order.class })
 @EnableEventBus

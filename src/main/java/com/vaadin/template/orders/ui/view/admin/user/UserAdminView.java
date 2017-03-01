@@ -3,16 +3,19 @@ package com.vaadin.template.orders.ui.view.admin.user;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 
 import com.vaadin.data.Binder;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.backend.data.entity.User;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.components.grid.SingleSelectionModel;
 
 @SpringView
+@Secured(Role.ADMIN)
 public class UserAdminView extends UserAdminViewDesign implements View {
 
     @Autowired

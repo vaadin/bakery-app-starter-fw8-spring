@@ -9,8 +9,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.vaadin.template.orders.backend.data.Role;
-
 @Entity
 public class User implements Serializable {
 
@@ -28,13 +26,13 @@ public class User implements Serializable {
     private String name;
 
     @NotNull
-    private Role role;
+    private String role;
 
     protected User() {
         // Empty constructor is needed by Spring Data / JPA
     }
 
-    public User(String email, String name, String password, Role role) {
+    public User(String email, String name, String password, String role) {
         Objects.requireNonNull(email);
         Objects.requireNonNull(name);
         Objects.requireNonNull(password);
@@ -62,11 +60,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

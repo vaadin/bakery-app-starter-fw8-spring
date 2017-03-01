@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.app;
+package com.vaadin.template.orders.app.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.FormLoginC
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.vaadin.template.orders.app.Application;
 import com.vaadin.template.orders.backend.data.Role;
 
 @EnableWebSecurity
@@ -46,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Allow access to static resources ("/VAADIN/**")
         reg = reg.antMatchers("/VAADIN/**").permitAll();
         // Require authentication for all URLS ("/**")
-        reg = reg.antMatchers("/**").hasAnyAuthority(Role.getRoleNames());
+        reg = reg.antMatchers("/**").hasAnyAuthority(Role.ALL_ROLES);
         HttpSecurity sec = reg.and();
 
         // Allow access to login page without login
