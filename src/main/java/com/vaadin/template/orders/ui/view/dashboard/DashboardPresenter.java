@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
+import com.vaadin.template.orders.backend.dto.SalesPerMonthDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
@@ -73,6 +74,14 @@ public class DashboardPresenter {
     public List<Integer> getDeliveriesPerMonth(int year) {
         return (List) dataWithMissingAsNull(12,
                 repository.countPerMonth(OrderState.DELIVERED, year));
+    }
+
+    public List<SalesPerMonthDTO> getSalesPerMonthLastThreeYears() {
+        List<SalesPerMonthDTO> deliveries = new ArrayList<>();
+        for(Object[] delivery : repository.sumPerMonthLastThreeYears(OrderState.DELIVERED)){
+            deliveries.add(new SalesPerMonthDTO((Integer)delivery[0], (Integer)delivery[1], (Double)delivery[2]));
+        }
+        return deliveries;
     }
 
     public List<Double> getSalesPerMonth(int year) {
