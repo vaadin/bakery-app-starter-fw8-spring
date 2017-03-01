@@ -3,7 +3,8 @@
  <head>
   <meta charset="UTF-8">
   <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;orderstheme&quot;}">
-  <meta name="vaadin-version" content="8.0.0.beta2">
+  <meta name="vaadin-version" content="8.0.0">
+  <meta name="package-mapping" content="com_vaadin_template_orders_ui_view_admin:com.vaadin.template.orders.ui.view.admin">
  </head>
  <body>
   <vaadin-vertical-layout style-name="crud-template" spacing="false" responsive size-full margin="false">
@@ -16,7 +17,7 @@
     </vaadin-button>
    </vaadin-horizontal-layout>
    <vaadin-css-layout style-name="content" size-full :expand>
-    <vaadin-css-layout style-name="list" size-full _id="listParent">
+    <vaadin-css-layout style-name="list" size-full>
      <vaadin-grid size-full data-item-type="com.vaadin.template.orders.backend.data.entity.User" _id="list"></vaadin-grid>
     </vaadin-css-layout>
     <vaadin-vertical-layout enabled="false" style-name="inspect" spacing="false" size-full margin="false" _id="form">
@@ -31,7 +32,7 @@
        <vaadin-text-field caption="Password" style-name="small" width-full _id="password"></vaadin-text-field>
       </vaadin-css-layout>
       <vaadin-css-layout style-name="section half" width-full>
-       <vaadin-combo-box caption="Role" empty-selection-allowed="false" style-name="small" width-full data-item-type="java.lang.String" _id="role"></vaadin-combo-box>
+       <com_vaadin_template_orders_ui_view_admin-role-select style-name="small" width-full _id="role"></com_vaadin_template_orders_ui_view_admin-role-select>
       </vaadin-css-layout>
      </vaadin-css-layout>
      <vaadin-horizontal-layout style-name="buttons border-top" width-full height="50px">
