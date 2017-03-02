@@ -52,6 +52,9 @@ public class MainView extends MainViewDesign implements ViewDisplay {
         if (view instanceof Component) {
             content.removeAllComponents();
             content.addComponent((Component) view);
+        } else if (view instanceof HasComponent) {
+            content.removeAllComponents();
+            content.addComponent(((HasComponent) view).getComponent());
         } else {
             throw new IllegalArgumentException(
                     "View is not a component: " + view);
