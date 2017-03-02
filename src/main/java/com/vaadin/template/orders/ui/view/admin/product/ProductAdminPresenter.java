@@ -1,26 +1,54 @@
 package com.vaadin.template.orders.ui.view.admin.product;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.template.orders.backend.ProductRepository;
+import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.PrototypeScope;
+import com.vaadin.template.orders.ui.view.admin.AbstractCrudPresenter;
 
 @SpringComponent
 @PrototypeScope
-public class ProductAdminPresenter {
+public class ProductAdminPresenter
+        extends AbstractCrudPresenter<Product, ProductAdminView> {
 
-    private ProductAdminView view;
+    @Autowired
+    private ProductAdminDataProvider userAdminDataProvider;
+    @Autowired
+    private ProductRepository repository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    void init(ProductAdminView view) {
-        this.view = view;
+    @Override
+    protected Product getCopy(Product entity) {
+        return repository.findOne(entity.getId());
     }
 
-    protected ProductAdminView getView() {
-        return view;
+    @Override
+    protected ProductAdminDataProvider getGridDataProvider() {
+        return userAdminDataProvider;
     }
 
-    /**
-     * Called when the user enters the view.
-     */
-    public void enter() {
-        // Placeholder for the future
+    @Override
+    protected void deleteEntity(Product entity) {
+        repository.delete(entity.getId());
     }
+
+    @Override
+    protected Product saveEntity(Product editItem) {
+        return repository.save(editItem);
+    }
+
+    @Override
+    protected Product createEntity() {
+        return new Product();
+    }
+
+    @Override
+    public void filterGrid(String filter) {
+        getGridDataProvider().setFilter(filter);
+    }
+
 }
