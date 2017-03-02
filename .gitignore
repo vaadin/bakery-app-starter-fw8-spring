@@ -8,3 +8,6 @@ styles.scss.cache
 addons.scss
 
 .vaadin-designer2
+
+.idea
+*.iml
