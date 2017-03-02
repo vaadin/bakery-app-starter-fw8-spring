@@ -46,7 +46,7 @@ public class UserAdminPresenter {
         // Fetch a fresh item so we have the latest changes (less optimistic
         // locking problems) and so that we are not editing the data shown in
         // the grid (change data -> cancel should not update the grid)
-        User freshCopy = repository.findOne(user.getEmail());
+        User freshCopy = repository.findOne(user.getId());
         getView().editItem(freshCopy, false);
     }
 
@@ -82,7 +82,7 @@ public class UserAdminPresenter {
     }
 
     public void deleteClicked() {
-        repository.delete(view.getEditItem().getEmail());
+        repository.delete(view.getEditItem().getId());
         userAdminDataProvider.refreshAll();
         view.stopEditing();
     }
