@@ -18,6 +18,18 @@ Vaadin-Refresh: context://login.html
 	display: block;
 }
 
+label {
+    font-size: 14px;
+    font-weight: 400;
+    padding-bottom: 0.3em;
+    padding-left: 1px;
+    display: inline-block;
+    white-space: nowrap;
+    line-height: 1.55;
+    color: #464646;
+    cursor: default;
+    -webkit-tap-highlight-color: transparent;
+}
 #button-submit {
 	height: 37px;
 	border-radius: 4px;
@@ -79,14 +91,10 @@ Vaadin-Refresh: context://login.html
 <body class="v-app orderstheme" onload="preserveFragment()">
 Try: barista@vaadin.com + barista
 	<form id="form" method="post" action="login">
-		<div class="v-caption v-caption-hasdescription">
-			<label id="login-label" for="login">Email</label>
-		</div>
+        <label id="login-label" for="login">Email</label>
 		<input type="text" class="v-textfield v-widget v-has-width" id="login"
 			name="username" aria-labelledby="login-label" tabindex="0">
-		<div class="v-caption v-caption-hasdescription">
-			<label id="password-label" for="password">Password</label>
-		</div>
+        <label id="password-label" for="password">Password</label>
 		<input type="password" class="v-textfield v-widget v-has-width"
 			id="password" name="password" aria-labelledby="password-label"
 			tabindex="0">
