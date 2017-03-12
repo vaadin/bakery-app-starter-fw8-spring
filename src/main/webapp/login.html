@@ -8,14 +8,41 @@ Vaadin-Refresh: context://login.html
 <head>
 <title>How do I translate this?</title>
 <style>
-#login {
-	width: 15em;
-	display: block;
+@font-face {
+    font-family: "Open Sans";
+    src: url(login/fonts/open-sans/OpenSans-Light-webfont.eot);
+    src: url(login/fonts/open-sans/OpenSans-Light-webfont.eot?#iefix) format("embedded-opentype"),
+         url(login/fonts/open-sans/OpenSans-Light-webfont.woff) format("woff"),
+         url(login/fonts/open-sans/OpenSans-Light-webfont.ttf) format("truetype");
+    font-weight: 300;
+    font-style: normal;
 }
 
-#password {
-	width: 15em;
-	display: block;
+@font-face {
+    font-family: "Open Sans";
+    src: url(login/fonts/open-sans/OpenSans-Regular-webfont.eot);
+    src: url(login/fonts/open-sans/OpenSans-Regular-webfont.eot?#iefix) format("embedded-opentype"),
+         url(login/fonts/open-sans/OpenSans-Regular-webfont.woff) format("woff"),
+         url(login/fonts/open-sans/OpenSans-Regular-webfont.ttf) format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Open Sans";
+    src: url(login/fonts/open-sans/OpenSans-Semibold-webfont.eot);
+    src: url(login/fonts/open-sans/OpenSans-Semibold-webfont.eot?#iefix) format("embedded-opentype"),
+         url(login/fonts/open-sans/OpenSans-Semibold-webfont.woff) format("woff"),
+         url(login/fonts/open-sans/OpenSans-Semibold-webfont.ttf) format("truetype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+body {
+    font: 300 16px/1.55 "Open Sans", sans-serif;
+    color: #464646;
+    background-color: #fafafa;
+    cursor: default;
 }
 
 label {
@@ -73,6 +100,7 @@ input[type='password'] {
 }
 
 #button-submit {
+    margin-top: 2em;
 	height: 37px;
 	border-radius: 4px;
 	border: 1px solid #1362b1;
@@ -97,7 +125,7 @@ input[type='password'] {
 	white-space: nowrap;
 	position: relative;
 	font: inherit;
-	font-weight: bold;
+	font-weight: 600;
 	line-height: 1.55;
 }
 
@@ -115,11 +143,8 @@ input[type='password'] {
 	transition: box-shadow 180ms, border 180ms;
 	border-radius: inherit;
 }
-
-
 </style>
-<link rel="stylesheet"
-	href="VAADIN/themes/orderstheme/styles.css?v=8.0-SNAPSHOT" />
+<!-- TODO: Add a project icon when we have one, which can then be easily swapped out by customrs -->
 <link rel="shortcut icon" href="VAADIN/themes/orderstheme/favicon.ico" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript">
@@ -130,15 +155,13 @@ input[type='password'] {
 	}
 </script>
 </head>
-<body class="v-app orderstheme" onload="preserveFragment()">
-Try: barista@vaadin.com + barista
+<body onload="preserveFragment()">
+    <p>Try: barista@vaadin.com + barista<br>or admin@vaadin.com + admin</p>
 	<form id="form" method="post" action="login">
         <label id="login-label" for="login">Email</label>
 		<input type="text" id="login" name="username" aria-labelledby="login-label" autofocus>
         <label id="password-label" for="password">Password</label>
 		<input type="password" id="password" name="password" aria-labelledby="password-label">
-		<div class="v-caption v-caption-buttons"></div>
-		<div></div>
 		<button id="button-submit" type="submit">Sign in</button>
 	</form>
 </body>
