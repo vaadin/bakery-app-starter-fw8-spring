@@ -20,7 +20,6 @@ import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.data.entity.OrderItem;
-import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 import com.vaadin.template.orders.ui.components.DollarPriceFormatter;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
@@ -47,9 +46,6 @@ public class OrderEditView extends OrderEditViewDesign implements View {
     @PostConstruct
     public void init() {
         presenter.init(this);
-        pickupLocation.setItems(presenter.getPickupLocations());
-        pickupLocation.setEmptySelectionAllowed(false);
-        pickupLocation.setItemCaptionGenerator(PickupLocation::getName);
 
         // Binds properties in Order automatically:
         // pickupLocation, state, paid
