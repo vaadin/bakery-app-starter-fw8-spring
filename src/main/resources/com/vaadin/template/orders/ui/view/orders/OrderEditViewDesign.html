@@ -3,8 +3,9 @@
  <head>
   <meta charset="UTF-8">
   <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;orderstheme&quot;}">
-  <meta name="vaadin-version" content="8.0.0.beta2">
+  <meta name="vaadin-version" content="8.0.0">
   <meta name="package-mapping" content="com_vaadin_template_orders_ui_view_orders:com.vaadin.template.orders.ui.view.orders">
+  <meta name="package-mapping" content="com_vaadin_template_orders_ui_components:com.vaadin.template.orders.ui.components">
  </head>
  <body>
   <vaadin-vertical-layout>
@@ -37,7 +38,7 @@
        <vaadin-label plain-text :middle>
          @ 
        </vaadin-label>
-       <vaadin-combo-box placeholder="Pickup location" width-full input-prompt="Pickup location" data-item-type="com.vaadin.template.orders.backend.data.entity.PickupLocation" _id="pickupLocation" :expand></vaadin-combo-box>
+       <com_vaadin_template_orders_ui_components-pickup-location-combo-box width-full _id="pickupLocation" :expand></com_vaadin_template_orders_ui_components-pickup-location-combo-box>
       </vaadin-horizontal-layout>
      </column>
     </row>
