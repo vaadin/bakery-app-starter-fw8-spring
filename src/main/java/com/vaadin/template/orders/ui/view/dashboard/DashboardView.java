@@ -157,7 +157,7 @@ public class DashboardView extends DashboardViewDesign implements View {
         notAvailableLabel
                 .setContent(Integer.toString(stats.getNotAvailableToday()));
         if(stats.getNotAvailableToday() > 0){
-            notAvailableLabel.setRed(true);
+            notAvailableLabel.setNeedsAttention(true);
         }
         newLabel.setContent(Integer.toString(stats.getUnverified()));
         tomorrowLabel.setContent(Integer.toString(stats.getDueTomorrow()));
