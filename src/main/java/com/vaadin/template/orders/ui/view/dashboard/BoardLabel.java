@@ -10,7 +10,7 @@ public class BoardLabel extends Label {
 
     public BoardLabel(String header, String content) {
         super("", ContentMode.HTML);
-        addStyleName("center border");
+        addStyleName("board-box-label");
         setSizeFull();
         setHeader(header);
         setContent(content);
@@ -26,10 +26,13 @@ public class BoardLabel extends Label {
         updateValue();
     }
 
+    public void setNeedsAttention(boolean needsAttention) {
+        setStyleName("board-box-needs-attention", needsAttention);
+    }
+
     private void updateValue() {
-        setValue("<h1>" + header + "</h1>" //
-                + "<p>" //
-                + "<h2>" + content + "</h2>");
+        setValue("<div class=\"board-box-small-text\">" + header + "</div>" //
+                + "<div class=\"board-box-big-text\">" + content + "</div>");
     }
 
 }
