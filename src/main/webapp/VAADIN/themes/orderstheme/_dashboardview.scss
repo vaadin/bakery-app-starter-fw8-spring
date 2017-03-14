@@ -18,7 +18,7 @@
     text-align:center;
   }
 
-  .board-box .board-box-small-text {
+  .board-box-small-text {
     font: 600 20px "Open Sans", sans-serif;
     position: absolute;
     left:0;
@@ -26,7 +26,11 @@
 
   }
 
-  .board-box .board-box-big-text {
+  .board-box-big-text {
     font: 600 48px/110px "Open Sans", sans-serif;
+  }
+
+  .board-box-needs-attention {
+    color: red;
   }
 }

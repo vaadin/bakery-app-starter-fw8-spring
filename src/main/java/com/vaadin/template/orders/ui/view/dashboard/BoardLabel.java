@@ -7,7 +7,6 @@ public class BoardLabel extends Label {
 
     private String header;
     private String content;
-    private boolean red = false;
 
     public BoardLabel(String header, String content) {
         super("", ContentMode.HTML);
@@ -27,17 +26,13 @@ public class BoardLabel extends Label {
         updateValue();
     }
 
-    public void setRed(boolean red) {
-        this.red = red;
+    public void setNeedsAttention(boolean needsAttention) {
+        setStyleName("board-box-needs-attention", needsAttention);
     }
 
     private void updateValue() {
-        String redHtml = "";
-        if(red){
-            redHtml = "style=\"color:red\"";
-        }
-        setValue( "<div class=\"board-box-small-text\">" + header + "</div>" //
-                + "<div class=\"board-box-big-text\" "+ redHtml +">" + content + "</div>");
+        setValue("<div class=\"board-box-small-text\">" + header + "</div>" //
+                + "<div class=\"board-box-big-text\">" + content + "</div>");
     }
 
 }

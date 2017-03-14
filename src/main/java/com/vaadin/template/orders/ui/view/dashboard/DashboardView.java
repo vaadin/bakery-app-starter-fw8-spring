@@ -48,7 +48,8 @@ public class DashboardView extends DashboardViewDesign implements View {
     @PostConstruct
     public void init() {
         getLogger().info("DashBoardView.init()");
-        board.addRow(new BoardBox(todayLabel), new BoardBox(notAvailableLabel), new BoardBox(newLabel), new BoardBox(tomorrowLabel));
+        board.addRow(new BoardBox(todayLabel), new BoardBox(notAvailableLabel),
+                new BoardBox(newLabel), new BoardBox(tomorrowLabel));
         board.addRow(deliveriesThisMonthGraph, deliveriesThisYearGraph);
         board.addRow(yearlySalesGraph);
         board.addRow(monthlyProductSplit, dueGrid);
@@ -156,8 +157,8 @@ public class DashboardView extends DashboardViewDesign implements View {
                 stats.getDeliveredToday() + "/" + stats.getDueToday());
         notAvailableLabel
                 .setContent(Integer.toString(stats.getNotAvailableToday()));
-        if(stats.getNotAvailableToday() > 0){
-            notAvailableLabel.setRed(true);
+        if (stats.getNotAvailableToday() > -1) {
+            notAvailableLabel.setNeedsAttention(true);
         }
         newLabel.setContent(Integer.toString(stats.getUnverified()));
         tomorrowLabel.setContent(Integer.toString(stats.getDueTomorrow()));
