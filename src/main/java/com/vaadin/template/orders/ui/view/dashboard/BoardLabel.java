@@ -7,10 +7,11 @@ public class BoardLabel extends Label {
 
     private String header;
     private String content;
+    private boolean needsAttention = false;
 
     public BoardLabel(String header, String content) {
         super("", ContentMode.HTML);
-        addStyleName("center border");
+        addStyleName("board-box-label");
         setSizeFull();
         setHeader(header);
         setContent(content);
@@ -26,10 +27,17 @@ public class BoardLabel extends Label {
         updateValue();
     }
 
+    public void setNeedsAttention(boolean needsAttention) {
+        this.needsAttention = needsAttention;
+    }
+
     private void updateValue() {
-        setValue("<h1>" + header + "</h1>" //
-                + "<p>" //
-                + "<h2>" + content + "</h2>");
+        String needsAttentionHtml = "";
+        if(needsAttention){
+            needsAttentionHtml = "style=\"color:red\"";
+        }
+        setValue( "<div class=\"board-box-small-text\">" + header + "</div>" //
+                + "<div class=\"board-box-big-text\" "+ needsAttentionHtml +">" + content + "</div>");
     }
 
 }
