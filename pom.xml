@@ -10,8 +10,8 @@
 	<name>Orders App Template</name>
 
 	<properties>
-		<vaadin.version>8.1-SNAPSHOT</vaadin.version>
-		<vaadin.plugin.version>8.0.0</vaadin.plugin.version>
+		<vaadin.version>8.1.0.alpha1</vaadin.version>
+		<vaadin.plugin.version>8.1.0.alpha1</vaadin.plugin.version>
 		<springboot.version>1.5.1.RELEASE</springboot.version>
 		<jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version>
 		<org.vaadin.spring.version>0.0.7.RELEASE</org.vaadin.spring.version>
@@ -108,7 +108,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-charts</artifactId>
-			<version>4.0.0-beta1</version>
+			<version>4.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
