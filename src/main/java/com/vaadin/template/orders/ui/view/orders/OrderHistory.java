@@ -19,6 +19,9 @@ import com.vaadin.ui.TextField;
 @PrototypeScope
 public class OrderHistory extends OrderHistoryDesign {
 
+    protected static final String COMMENT_INPUT = "commentInput";
+    protected static final String SAVE_COMMENT = "commitCommentButton";
+
     @Autowired
     private DateTimeFormatter dateTimeFormatter;
     @Autowired
@@ -31,6 +34,8 @@ public class OrderHistory extends OrderHistoryDesign {
     @PostConstruct
     public void init() {
         controller.init(this);
+        newCommentInput.setId(COMMENT_INPUT);
+        commitNewComment.setId(SAVE_COMMENT);
         addComment.addClickListener(e -> {
             items.addComponent(newCommentInput);
             items.addComponent(commitNewComment);
