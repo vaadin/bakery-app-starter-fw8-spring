@@ -51,7 +51,7 @@ public class OrdersGrid extends Grid<Order> {
             LocalDate todayNextWeek = today.plusDays(7);
             if (dueDate.isAfter(today) && dueDate.isBefore(todayNextWeek)) {
                 return dueDate.getDayOfWeek().getDisplayName(TextStyle.SHORT,
-                        Locale.ENGLISH);
+                        Locale.US);
             } else {
                 // In the past or more than a week in the future
                 return "";

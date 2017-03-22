@@ -96,7 +96,7 @@ public class DashboardView extends DashboardViewDesign implements View {
 
         Configuration conf = monthlyProductSplit.getConfiguration();
         String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL,
-                Locale.ENGLISH);
+                Locale.US);
         conf.setTitle("Products delivered in " + thisMonth);
         LinkedHashMap<Product, Integer> deliveries = presenter
                 .getDeliveriesPerProduct(today.getMonthValue(),
@@ -128,7 +128,7 @@ public class DashboardView extends DashboardViewDesign implements View {
                 presenter.getDeliveriesPerMonth(today.getYear())));
         yearConf.getLegend().setEnabled(false);
         String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL,
-                Locale.ENGLISH);
+                Locale.US);
         monthConf.setTitle("Deliveries in " + thisMonth);
         monthConf.getLegend().setEnabled(false);
 
@@ -144,8 +144,8 @@ public class DashboardView extends DashboardViewDesign implements View {
     }
 
     private String[] getMonthNames() {
-        return Stream.of(Month.values()).map(
-                month -> month.getDisplayName(TextStyle.SHORT, Locale.ENGLISH))
+        return Stream.of(Month.values())
+                .map(month -> month.getDisplayName(TextStyle.SHORT, Locale.US))
                 .toArray(size -> new String[size]);
     }
 

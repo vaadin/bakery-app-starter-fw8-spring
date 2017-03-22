@@ -59,8 +59,7 @@ public class OrderHistory extends OrderHistoryDesign {
     }
 
     private String formatMessage(HistoryItem historyItem) {
-        return dateTimeFormatter.format(historyItem.getTimestamp(),
-                Locale.ENGLISH);
+        return dateTimeFormatter.format(historyItem.getTimestamp(), Locale.US);
     }
 
     public Order getOrder() {
