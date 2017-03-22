@@ -4,11 +4,11 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.data.Converter;
-import com.vaadin.data.converter.StringToDoubleConverter;
+import com.vaadin.data.ValueContext;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.template.orders.app.PriceConverter;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudView;
 import com.vaadin.ui.Button;
@@ -25,7 +25,8 @@ public class ProductAdminView extends AbstractCrudView<Product>
 
     private final ProductAdminViewDesign userAdminViewDesign;
 
-    private Converter<String, Double> priceToStringConverter;
+    @Autowired
+    private PriceConverter priceToStringConverter;
 
     public ProductAdminView() {
         super(Product.class);
@@ -37,8 +38,10 @@ public class ProductAdminView extends AbstractCrudView<Product>
     public void init() {
         super.init();
         getGrid().setColumns("name", "price");
-
-        priceToStringConverter = new StringToDoubleConverter("Invalid value");
+        getGrid().removeColumn("price");
+        getGrid().addColumn(
+                product -> priceToStringConverter.convertToPresentation(
+                        product.getPrice(), new ValueContext(getGrid())));
         getBinder().forField(getComponent().price)
                 .withConverter(priceToStringConverter).bind("price");
         getBinder().bindInstanceFields(getComponent());

@@ -1,5 +1,7 @@
 package com.vaadin.template.orders.ui.view.admin;
 
+import java.io.Serializable;
+
 import org.springframework.security.access.annotation.Secured;
 
 import com.vaadin.data.Binder;
@@ -13,7 +15,8 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.components.grid.SingleSelectionModel;
 
 @Secured(Role.ADMIN)
-public abstract class AbstractCrudView<T> implements HasComponent {
+public abstract class AbstractCrudView<T>
+        implements HasComponent, Serializable {
 
     private final Class<T> entityType;
     private final Binder<T> binder;

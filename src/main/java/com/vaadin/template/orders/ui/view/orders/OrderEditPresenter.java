@@ -18,10 +18,8 @@ import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.template.orders.backend.PickupLocationRepository;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Order;
-import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.ui.OrdersUI;
 import com.vaadin.template.orders.ui.PrototypeScope;
@@ -34,7 +32,6 @@ import com.vaadin.ui.Notification.Type;
 public class OrderEditPresenter {
 
     private OrderEditView view;
-    private final PickupLocationRepository pickupLocationRepository;
 
     @Autowired
     private OrderService orderService;
@@ -45,9 +42,7 @@ public class OrderEditPresenter {
     private final ViewEventBus eventBus;
 
     @Autowired
-    public OrderEditPresenter(PickupLocationRepository pickupLocationRepository,
-            EventBus.ViewEventBus eventBus) {
-        this.pickupLocationRepository = pickupLocationRepository;
+    public OrderEditPresenter(EventBus.ViewEventBus eventBus) {
         this.eventBus = eventBus;
 
         eventBus.subscribe(this);
@@ -100,10 +95,6 @@ public class OrderEditPresenter {
                         .summingDouble(item -> item.getProduct().getPrice()
                                 * item.getQuantity()));
         view.setSum(sum);
-    }
-
-    public List<PickupLocation> getPickupLocations() {
-        return pickupLocationRepository.findAll();
     }
 
     public void editBackCancelPressed() {
