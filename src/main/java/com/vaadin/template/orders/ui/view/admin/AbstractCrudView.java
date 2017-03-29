@@ -9,7 +9,6 @@ import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.ui.HasComponent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.components.grid.SingleSelectionModel;
@@ -50,15 +49,6 @@ public abstract class AbstractCrudView<T>
     }
 
     protected void init() {
-        // Because of https://github.com/vaadin/framework/issues/8467
-        Grid<T> oldGrid = getGrid();
-        Grid<T> list = new Grid<>(entityType);
-        list.setSizeFull();
-        ((ComponentContainer) oldGrid.getParent()).replaceComponent(oldGrid,
-                list);
-        setGrid(list);
-        // End of workaround
-
         getGrid().addSelectionListener(e -> {
             if (!e.isUserOriginated()) {
                 return;
@@ -79,7 +69,7 @@ public abstract class AbstractCrudView<T>
 
         // Button logic
         getUpdate().addClickListener(event -> {
-            boolean isNew = list.getSelectedItems().isEmpty();
+            boolean isNew = getGrid().getSelectedItems().isEmpty();
             getPresenter().updateClicked(isNew);
         });
         getDelete().addClickListener(event -> getPresenter().deleteClicked());
