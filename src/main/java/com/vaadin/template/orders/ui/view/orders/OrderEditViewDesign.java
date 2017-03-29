@@ -26,7 +26,8 @@ import com.vaadin.ui.declarative.Design;
 @SuppressWarnings("serial")
 public class OrderEditViewDesign extends VerticalLayout {
     protected HorizontalLayout reportHeader;
-    protected Label orderIdAndState;
+    protected Label orderId;
+    protected Label state;
     protected Button setState;
     protected DateTimeField dueDateTime;
     protected PickupLocationComboBox pickupLocation;
