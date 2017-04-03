@@ -16,8 +16,11 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.internal.Conventions;
 import com.vaadin.spring.navigator.SpringViewProvider;
+import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.ui.view.AccessDeniedView;
+import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
 import com.vaadin.template.orders.ui.view.orders.OrderEditView;
+import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 import com.vaadin.ui.UI;
 
 @Theme("orderstheme")
@@ -45,6 +48,24 @@ public class OrdersUI extends UI {
                 .collect(Collectors.toSet());
         setContent(mainView);
         mainView.populateMenu();
+
+        navigateToDefaultView();
+    }
+
+    private void navigateToDefaultView() {
+        // If the user wants a speficic view, it's in the URL.
+        // Otherwise admin goes to DashboardView and everybody else to
+        // OrderListView
+
+        if (!getNavigator().getState().isEmpty()) {
+            return;
+        }
+
+        if (getUserRoles().contains(Role.ADMIN)) {
+            navigateTo(DashboardView.class);
+        } else {
+            navigateTo(OrdersListView.class);
+        }
     }
 
     /**

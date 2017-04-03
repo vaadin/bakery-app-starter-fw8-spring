@@ -29,7 +29,7 @@ import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.components.BulletinBoard;
 import com.vaadin.template.orders.ui.components.OrdersGrid;
 
-@SpringView(name = "")
+@SpringView
 public class DashboardView extends DashboardViewDesign implements View {
 
     @Autowired
