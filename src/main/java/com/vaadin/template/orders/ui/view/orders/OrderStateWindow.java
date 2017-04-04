@@ -36,6 +36,7 @@ public class OrderStateWindow extends Window {
         layout.removeAllComponents();
         for (OrderState state : OrderState.values()) {
             Button button = new Button(state.getDisplayName());
+            button.setId(state.name());
             button.addClickListener(e -> controller.setState(order, state));
             layout.addComponent(button);
 

@@ -32,7 +32,7 @@ public class Application extends SpringBootServletInitializer {
     public static final String LOGIN_PROCESSING_URL = "/login";
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class);
+        SpringApplication.run(Application.class, args);
     }
 
     @Override

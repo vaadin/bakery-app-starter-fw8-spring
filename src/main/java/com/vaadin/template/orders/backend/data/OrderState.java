@@ -13,4 +13,19 @@ public enum OrderState {
     public String getDisplayName() {
         return SharedUtil.upperCaseUnderscoreToHumanFriendly(name());
     }
+
+    /**
+     * Gets a enum value for which {@link #getDisplayName()} returns the given
+     * string.
+     *
+     * @return the enum value with a matching display name
+     */
+    public static OrderState forDisplayName(String displayName) {
+        for (OrderState state : values()) {
+            if (displayName.equals(state.getDisplayName())) {
+                return state;
+            }
+        }
+        return null;
+    }
 }

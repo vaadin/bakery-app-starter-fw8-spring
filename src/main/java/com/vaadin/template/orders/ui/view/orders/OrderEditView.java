@@ -103,7 +103,8 @@ public class OrderEditView extends OrderEditViewDesign implements View {
     }
 
     public void setOrder(Order order) {
-        orderIdAndState.setValue("#" + order.getId() + " " + order.getState());
+        orderId.setValue("#" + order.getId());
+        state.setValue(order.getState().getDisplayName());
         binder.setBean(order);
         productInfoContainer.removeAllComponents();
 

@@ -13,10 +13,13 @@
     <row>
      <column colspan="2">
       <vaadin-horizontal-layout width-full _id="reportHeader">
-       <vaadin-label style-name="header bold" plain-text _id="orderIdAndState">
-         #182 NEW 
+       <vaadin-label style-name="header bold" id="id" plain-text _id="orderId">
+         #182 
        </vaadin-label>
-       <vaadin-button plain-text _id="setState" :right>
+       <vaadin-label style-name="header bold" id="state" plain-text _id="state">
+         NEW 
+       </vaadin-label>
+       <vaadin-button id="setState" plain-text _id="setState" :right :expand>
          Set state... 
        </vaadin-button>
       </vaadin-horizontal-layout>
