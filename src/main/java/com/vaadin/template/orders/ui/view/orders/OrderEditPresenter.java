@@ -13,7 +13,6 @@ import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBus.ViewEventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 
 import com.vaadin.data.HasValue;
@@ -23,6 +22,7 @@ import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.ui.OrdersUI;
 import com.vaadin.template.orders.ui.PrototypeScope;
+import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
@@ -39,18 +39,20 @@ public class OrderEditPresenter {
     private static final List<OrderState> happyPath = Arrays.asList(
             OrderState.NEW, OrderState.CONFIRMED, OrderState.READY_FOR_PICKUP,
             OrderState.DELIVERED);
-    private final ViewEventBus eventBus;
+    private final EventBus.ViewEventBus shouldBeGlobalEventBus;
 
     @Autowired
-    public OrderEditPresenter(EventBus.ViewEventBus eventBus) {
-        this.eventBus = eventBus;
-
-        eventBus.subscribe(this);
+    public OrderEditPresenter(ViewEventBus viewEventBus,
+            EventBus.ViewEventBus shouldBeGlobalEventBus) {
+        viewEventBus.subscribe(ProductInfoChange.class,
+                change -> updateTotalSum());
+        this.shouldBeGlobalEventBus = shouldBeGlobalEventBus;
+        shouldBeGlobalEventBus.subscribe(this);
     }
 
     @PreDestroy
     public void destroy() {
-        eventBus.unsubscribe(this);
+        shouldBeGlobalEventBus.unsubscribe(this);
     }
 
     void init(OrderEditView view) {
@@ -76,11 +78,6 @@ public class OrderEditPresenter {
         }
 
         refreshView(order);
-    }
-
-    @EventBusListenerMethod
-    private void updateTotalSum(ProductInfoChange change) {
-        updateTotalSum();
     }
 
     @EventBusListenerMethod

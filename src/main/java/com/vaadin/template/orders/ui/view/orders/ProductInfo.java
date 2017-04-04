@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.events.EventBus;
 
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.BindingValidationStatus;
@@ -18,6 +17,7 @@ import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.components.DollarPriceFormatter;
+import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
 
 @SpringComponent
 @PrototypeScope
@@ -30,7 +30,7 @@ public class ProductInfo extends ProductInfoDesign {
     private StringToIntegerConverter converter;
 
     @Autowired
-    private EventBus.ViewEventBus eventBus;
+    private ViewEventBus viewEventBus;
 
     private BeanValidationBinder<OrderItem> binder;
 
@@ -59,7 +59,7 @@ public class ProductInfo extends ProductInfoDesign {
     }
 
     private void fireProductInfoChanged() {
-        eventBus.publish(this, new ProductInfoChange());
+        viewEventBus.publish(new ProductInfoChange());
     }
 
     public double getSum() {
