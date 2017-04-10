@@ -11,3 +11,7 @@ addons.scss
 .vaadin-designer2
 
 orders.iml
+
+yarn.lock
+src/main/frontend
+src/main/webapp/VAADIN/frontend
