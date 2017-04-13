@@ -70,4 +70,16 @@ public class OrderService {
 
     }
 
+    public Order addHistoryItem(Order order, String comment) {
+        HistoryItem item = new HistoryItem(userService.getCurrentUser(),
+                comment);
+        if (order.getHistory() == null) {
+            order.setHistory(new ArrayList<>());
+        }
+        order.getHistory().add(item);
+
+        return orderRepository.save(order);
+
+    }
+
 }
