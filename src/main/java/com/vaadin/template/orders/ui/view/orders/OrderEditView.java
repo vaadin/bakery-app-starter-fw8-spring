@@ -17,7 +17,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.OrderState;
-import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.ui.components.DollarPriceFormatter;
@@ -71,15 +70,14 @@ public class OrderEditView extends OrderEditViewDesign implements View {
                     order.setDueTime(value.toLocalTime());
                 });
         binder.bindInstanceFields(this);
-        SubPropertyBinder.bind(binder, firstName, "customer.firstName",
-                Customer.class);
-        SubPropertyBinder.bind(binder, lastName, "customer.lastName",
-                Customer.class);
-        SubPropertyBinder.bind(binder, phone, "customer.phoneNumber",
-                Customer.class);
-        SubPropertyBinder.bind(binder, email, "customer.email", Customer.class);
-        SubPropertyBinder.bind(binder, details, "customer.details",
-                Customer.class);
+
+        // These can be removed once
+        // https://github.com/vaadin/framework/issues/9210 is fixed
+        binder.bind(firstName, "customer.firstName");
+        binder.bind(lastName, "customer.lastName");
+        binder.bind(phone, "customer.phoneNumber");
+        binder.bind(email, "customer.email");
+        binder.bind(details, "customer.details");
 
         addItems.addClickListener(e -> addEmptyOrderItem());
         editBackCancel.addClickListener(e -> presenter.editBackCancelPressed());
