@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui.view;
+package com.vaadin.template.orders.ui.view.object;
 
 import java.util.List;
 
@@ -10,8 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Predicate;
-import com.vaadin.template.orders.ui.MenuObject;
-import com.vaadin.template.orders.ui.view.orders.CurrentDriver;
+import com.vaadin.template.orders.ui.CurrentDriver;
 import com.vaadin.testbench.TestBenchTestCase;
 
 public class AbstractViewObject extends TestBenchTestCase {

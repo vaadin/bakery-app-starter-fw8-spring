@@ -1,10 +1,11 @@
-package com.vaadin.template.orders.ui.view.orders;
+package com.vaadin.template.orders.ui.view.orders.object;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.template.orders.backend.data.OrderState;
-import com.vaadin.template.orders.ui.view.AbstractViewObject;
+import com.vaadin.template.orders.ui.view.object.AbstractViewObject;
+import com.vaadin.template.orders.ui.view.orders.OrderHistory;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.CustomGridLayoutElement;
 import com.vaadin.testbench.elements.LabelElement;

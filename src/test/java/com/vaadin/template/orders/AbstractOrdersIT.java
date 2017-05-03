@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui.view.orders;
+package com.vaadin.template.orders;
 
 import java.util.logging.Logger;
 
@@ -9,6 +9,7 @@ import com.machinepublishers.jbrowserdriver.JBrowserDriver;
 import com.machinepublishers.jbrowserdriver.RequestHeaders;
 import com.machinepublishers.jbrowserdriver.Settings;
 import com.machinepublishers.jbrowserdriver.UserAgent;
+import com.vaadin.template.orders.ui.CurrentDriver;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
 

@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui.view.orders;
+package com.vaadin.template.orders.ui;
 
 import org.openqa.selenium.WebDriver;
 
