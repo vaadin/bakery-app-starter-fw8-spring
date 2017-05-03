@@ -19,8 +19,8 @@ import com.vaadin.ui.TextField;
 @PrototypeScope
 public class OrderHistory extends OrderHistoryDesign {
 
-    protected static final String COMMENT_INPUT = "commentInput";
-    protected static final String SAVE_COMMENT = "commitCommentButton";
+    public static final String COMMENT_INPUT = "commentInput";
+    public static final String SAVE_COMMENT = "commitCommentButton";
 
     @Autowired
     private DateTimeFormatter dateTimeFormatter;

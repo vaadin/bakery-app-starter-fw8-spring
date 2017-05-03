@@ -6,15 +6,18 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.backend.data.OrderState;
-import com.vaadin.template.orders.ui.LoginViewObject;
-import com.vaadin.template.orders.ui.view.orders.OrderEditViewObject.HistoryItemObject;
+import com.vaadin.template.orders.ui.view.object.LoginViewObject;
+import com.vaadin.template.orders.ui.view.orders.object.OrderEditViewObject;
+import com.vaadin.template.orders.ui.view.orders.object.OrderListViewObject;
+import com.vaadin.template.orders.ui.view.orders.object.OrderEditViewObject.HistoryItemObject;
 
 public class UpdateOrderIT extends AbstractOrdersIT {
 
     @Test
     public void updateOrderState() throws IOException {
-        StorefrontViewObject storeFront = LoginViewObject.loginAsBarista();
+        OrderListViewObject storeFront = LoginViewObject.loginAsBarista();
         OrderEditViewObject orderEdit = storeFront.selectOrder(0);
 
         Assert.assertEquals(OrderState.READY_FOR_PICKUP, orderEdit.getState());
@@ -24,7 +27,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
     @Test
     public void addHistoryComment() throws IOException {
-        StorefrontViewObject storeFront = LoginViewObject.loginAsBarista();
+        OrderListViewObject storeFront = LoginViewObject.loginAsBarista();
         OrderEditViewObject orderEdit = storeFront.selectOrder(1);
 
         Assert.assertEquals(3, orderEdit.getHistory().size());

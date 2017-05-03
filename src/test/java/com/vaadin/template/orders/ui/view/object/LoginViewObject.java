@@ -1,19 +1,18 @@
-package com.vaadin.template.orders.ui;
+package com.vaadin.template.orders.ui.view.object;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.vaadin.template.orders.ui.view.AbstractViewObject;
-import com.vaadin.template.orders.ui.view.dashboard.DashboardViewObject;
-import com.vaadin.template.orders.ui.view.orders.StorefrontViewObject;
+import com.vaadin.template.orders.ui.view.dashboard.object.DashboardViewObject;
+import com.vaadin.template.orders.ui.view.orders.object.OrderListViewObject;
 
 public class LoginViewObject extends AbstractViewObject {
 
     private static final String APP_URL = "http://localhost:8080/";
 
-    public static StorefrontViewObject loginAsBarista() {
+    public static OrderListViewObject loginAsBarista() {
         new LoginViewObject().login("barista@vaadin.com", "barista");
-        return new StorefrontViewObject();
+        return new OrderListViewObject();
     }
 
     public static DashboardViewObject loginAsAdmin() {
