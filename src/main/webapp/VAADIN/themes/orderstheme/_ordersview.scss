@@ -11,12 +11,6 @@
         color: red;
     }
   }
-  .bulletin-board {
-    background: #FCF2D4;
-    .message {
-      padding: 1em;
-    }
-  }
   .v-textfield.v-readonly {
     // Hide placeholder in readonly fields
     &::placeholder {
