@@ -9,7 +9,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.google.common.base.Predicate;
 import com.vaadin.template.orders.ui.CurrentDriver;
 import com.vaadin.testbench.TestBenchTestCase;
 
@@ -61,7 +60,7 @@ public class AbstractViewObject extends TestBenchTestCase {
 
     protected void waitUntilElementPresent(String errorMessage, By by) {
         new WebDriverWait(getDriver(), 30)
-                .until((Predicate<WebDriver>) driver -> isElementPresent(by));
+                .until(driver -> isElementPresent(by));
 
     }
 
