@@ -5,11 +5,11 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.ValueContext;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.app.PriceConverter;
 import com.vaadin.template.orders.backend.data.entity.Product;
+import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -18,7 +18,7 @@ import com.vaadin.ui.TextField;
 
 @SpringView
 public class ProductAdminView extends AbstractCrudView<Product>
-        implements View {
+        implements OrdersView {
 
     @Autowired
     private ProductAdminPresenter presenter;
@@ -42,9 +42,9 @@ public class ProductAdminView extends AbstractCrudView<Product>
         getGrid().addColumn(
                 product -> priceToStringConverter.convertToPresentation(
                         product.getPrice(), new ValueContext(getGrid())));
-        getBinder().forField(getComponent().price)
+        getBinder().forField(getViewComponent().price)
                 .withConverter(priceToStringConverter).bind("price");
-        getBinder().bindInstanceFields(getComponent());
+        getBinder().bindInstanceFields(getViewComponent());
 
         presenter.init(this);
     }
@@ -55,7 +55,7 @@ public class ProductAdminView extends AbstractCrudView<Product>
     }
 
     @Override
-    public ProductAdminViewDesign getComponent() {
+    public ProductAdminViewDesign getViewComponent() {
         return userAdminViewDesign;
     }
 
@@ -66,42 +66,42 @@ public class ProductAdminView extends AbstractCrudView<Product>
 
     @Override
     protected Grid<Product> getGrid() {
-        return getComponent().list;
+        return getViewComponent().list;
     }
 
     @Override
     protected void setGrid(Grid<Product> grid) {
-        getComponent().list = grid;
+        getViewComponent().list = grid;
     }
 
     @Override
     protected Component getForm() {
-        return getComponent().form;
+        return getViewComponent().form;
     }
 
     @Override
     protected Button getAdd() {
-        return getComponent().add;
+        return getViewComponent().add;
     }
 
     @Override
     protected Button getCancel() {
-        return getComponent().cancel;
+        return getViewComponent().cancel;
     }
 
     @Override
     protected Button getDelete() {
-        return getComponent().delete;
+        return getViewComponent().delete;
     }
 
     @Override
     protected Button getUpdate() {
-        return getComponent().update;
+        return getViewComponent().update;
     }
 
     @Override
     protected TextField getSearch() {
-        return getComponent().search;
+        return getViewComponent().search;
     }
 
 }
