@@ -25,7 +25,6 @@ import com.vaadin.addon.charts.model.DataSeriesItem;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.entity.Product;
-import com.vaadin.template.orders.ui.components.BulletinBoard;
 import com.vaadin.template.orders.ui.components.OrdersGrid;
 import com.vaadin.template.orders.ui.view.OrdersView;
 
@@ -53,7 +52,6 @@ public class DashboardView extends DashboardViewDesign implements OrdersView {
         board.addRow(deliveriesThisMonthGraph, deliveriesThisYearGraph);
         board.addRow(yearlySalesGraph);
         board.addRow(monthlyProductSplit, dueGrid);
-        board.addRow(new BulletinBoard());
         getLogger().info("... board set up");
 
         initDeliveriesGraphs();
