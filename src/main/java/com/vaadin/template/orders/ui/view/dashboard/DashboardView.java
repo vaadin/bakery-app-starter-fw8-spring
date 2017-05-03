@@ -22,15 +22,15 @@ import com.vaadin.addon.charts.model.ChartType;
 import com.vaadin.addon.charts.model.Configuration;
 import com.vaadin.addon.charts.model.DataSeries;
 import com.vaadin.addon.charts.model.DataSeriesItem;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.components.BulletinBoard;
 import com.vaadin.template.orders.ui.components.OrdersGrid;
+import com.vaadin.template.orders.ui.view.OrdersView;
 
 @SpringView
-public class DashboardView extends DashboardViewDesign implements View {
+public class DashboardView extends DashboardViewDesign implements OrdersView {
 
     @Autowired
     private DashboardPresenter presenter;

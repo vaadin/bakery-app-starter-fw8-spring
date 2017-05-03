@@ -8,12 +8,12 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.template.orders.ui.view.admin.product.ProductAdminView;
 import com.vaadin.template.orders.ui.view.admin.user.UserAdminView;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
 import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 
 @SpringViewDisplay
 @UIScope
@@ -49,16 +49,12 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 
     @Override
     public void showView(View view) {
-        if (view instanceof Component) {
-            content.removeAllComponents();
-            content.addComponent((Component) view);
-        } else if (view instanceof HasComponent) {
-            content.removeAllComponents();
-            content.addComponent(((HasComponent) view).getComponent());
-        } else {
+        if (!(view instanceof OrdersView)) {
             throw new IllegalArgumentException(
-                    "View is not a component: " + view);
+                    "Only OrdersView implementations are supported");
         }
+        content.removeAllComponents();
+        content.addComponent(((OrdersView) view).getViewComponent());
     }
 
 }

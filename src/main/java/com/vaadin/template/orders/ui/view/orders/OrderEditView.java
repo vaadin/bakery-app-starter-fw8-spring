@@ -13,18 +13,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.ui.components.DollarPriceFormatter;
+import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 
 @SpringView(name = "order")
-public class OrderEditView extends OrderEditViewDesign implements View {
+public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 
     @Autowired
     private OrderEditPresenter presenter;
