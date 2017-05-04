@@ -103,8 +103,6 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 		binder.setBean(order);
 		productInfoContainer.removeAllComponents();
 
-		newCustomer.setVisible(mode == Mode.EDIT && getOrder().getId() == null);
-
 		reportHeader.setVisible(order.getId() != null);
 		if (order.getId() == null) {
 			addEmptyOrderItem();
@@ -166,7 +164,6 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 		addItems.setVisible(mode == Mode.EDIT);
 		history.setVisible(mode == Mode.REPORT);
 		setState.setVisible(mode == Mode.REPORT);
-		newCustomer.setVisible(mode == Mode.EDIT && getOrder().getId() == null);
 
 		if (mode == Mode.REPORT) {
 			editBackCancel.setCaption("Edit");
