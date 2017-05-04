@@ -8,7 +8,7 @@
 # Exclude the compiled theme from Sonar analysis
 SONAR_EXCLUSIONS=src/main/webapp/VAADIN/themes/orderstheme/styles.css
 SONAR_EXCLUSIONS+=,src/main/webapp/VAADIN/themes/orderstheme/designs.scss
-SONAR_EXCLUSIONS+=,src/main/webapp/VAADIN/frontend
+SONAR_EXCLUSIONS+=,src/main/webapp/VAADIN/frontend/**
 SONAR_EXCLUSIONS+=,src/main/java/com/vaadin/template/orders/ui/**/*Design.java
 
 TESTBENCH=-Dvaadin.testbench.developer.license=$TESTBENCH_LICENSE
