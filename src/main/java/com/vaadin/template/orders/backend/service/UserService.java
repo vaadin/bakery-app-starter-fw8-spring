@@ -10,11 +10,11 @@ import com.vaadin.template.orders.ui.OrdersUI;
 @SpringComponent
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    public User getCurrentUser() {
-        return userRepository.findByEmail(OrdersUI.get().getUsername());
-    }
+	public User getCurrentUser() {
+		return userRepository.findByEmail(OrdersUI.get().getUsername());
+	}
 
 }

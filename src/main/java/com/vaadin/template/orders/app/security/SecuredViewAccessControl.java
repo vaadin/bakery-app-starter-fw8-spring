@@ -15,46 +15,43 @@ import com.vaadin.template.orders.ui.OrdersUI;
 import com.vaadin.ui.UI;
 
 @SpringComponent
-public class SecuredViewAccessControl
-        implements ViewAccessControl, Serializable {
+public class SecuredViewAccessControl implements ViewAccessControl, Serializable {
 
-    private transient WebApplicationContext webApplicationContext = null;
+	private transient WebApplicationContext webApplicationContext = null;
 
-    @Override
-    public boolean isAccessGranted(UI ui, String beanName) {
-        final Secured viewSecured = getWebApplicationContext(ui)
-                .findAnnotationOnBean(beanName, Secured.class);
-        return isAccessGranted(ui, viewSecured);
-    }
+	@Override
+	public boolean isAccessGranted(UI ui, String beanName) {
+		final Secured viewSecured = getWebApplicationContext(ui).findAnnotationOnBean(beanName, Secured.class);
+		return isAccessGranted(ui, viewSecured);
+	}
 
-    public boolean isAccessGranted(UI ui, Class<? extends View> viewClass) {
-        Secured viewSecured = AnnotationUtils.findAnnotation(viewClass,
-                Secured.class);
-        return isAccessGranted(ui, viewSecured);
-    }
+	public boolean isAccessGranted(UI ui, Class<? extends View> viewClass) {
+		Secured viewSecured = AnnotationUtils.findAnnotation(viewClass, Secured.class);
+		return isAccessGranted(ui, viewSecured);
+	}
 
-    private boolean isAccessGranted(UI ui, Secured viewSecured) {
-        if (viewSecured == null) {
-            return true;
-        }
+	private boolean isAccessGranted(UI ui, Secured viewSecured) {
+		if (viewSecured == null) {
+			return true;
+		}
 
-        Set<String> userRoles = ((OrdersUI) ui).getUserRoles();
-        for (String roleWithAccess : viewSecured.value()) {
-            if (userRoles.contains(roleWithAccess)) {
-                return true;
-            }
-        }
+		Set<String> userRoles = ((OrdersUI) ui).getUserRoles();
+		for (String roleWithAccess : viewSecured.value()) {
+			if (userRoles.contains(roleWithAccess)) {
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    protected WebApplicationContext getWebApplicationContext(UI ui) {
-        if (webApplicationContext == null) {
-            webApplicationContext = ((SpringVaadinServletService) ui
-                    .getSession().getService()).getWebApplicationContext();
-        }
+	protected WebApplicationContext getWebApplicationContext(UI ui) {
+		if (webApplicationContext == null) {
+			webApplicationContext = ((SpringVaadinServletService) ui.getSession().getService())
+					.getWebApplicationContext();
+		}
 
-        return webApplicationContext;
-    }
+		return webApplicationContext;
+	}
 
 }

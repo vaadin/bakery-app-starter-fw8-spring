@@ -13,20 +13,20 @@ import com.vaadin.ui.ComboBox;
 @PrototypeScope
 public class PickupLocationComboBox extends ComboBox<PickupLocation> {
 
-    // Singleton data provider which knows which products are available and is
-    // informed when they are updated, deleted or new ones are added
-    @Autowired
-    private PickupLocationComboBoxDataProvider dataProvider;
+	// Singleton data provider which knows which products are available and is
+	// informed when they are updated, deleted or new ones are added
+	@Autowired
+	private PickupLocationComboBoxDataProvider dataProvider;
 
-    public PickupLocationComboBox() {
-        setEmptySelectionAllowed(false);
-        setPlaceholder("Pickup location");
-        setItemCaptionGenerator(PickupLocation::getName);
-    }
+	public PickupLocationComboBox() {
+		setEmptySelectionAllowed(false);
+		setPlaceholder("Pickup location");
+		setItemCaptionGenerator(PickupLocation::getName);
+	}
 
-    @PostConstruct
-    private void init() {
-        setDataProvider(dataProvider);
-    }
+	@PostConstruct
+	private void init() {
+		setDataProvider(dataProvider);
+	}
 
 }

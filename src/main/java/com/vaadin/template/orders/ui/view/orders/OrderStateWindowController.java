@@ -13,19 +13,19 @@ import com.vaadin.template.orders.ui.PrototypeScope;
 @PrototypeScope
 public class OrderStateWindowController {
 
-    @Autowired
-    private OrderService orderService;
-    private OrderStateWindow view;
-    @Autowired
-    private EventBus.ViewEventBus eventBus;
+	@Autowired
+	private OrderService orderService;
+	private OrderStateWindow view;
+	@Autowired
+	private EventBus.ViewEventBus eventBus;
 
-    public void setState(Order order, OrderState state) {
-        orderService.changeState(order, state);
-        view.close();
-        eventBus.publish(this, new OrderUpdated());
-    }
+	public void setState(Order order, OrderState state) {
+		orderService.changeState(order, state);
+		view.close();
+		eventBus.publish(this, new OrderUpdated());
+	}
 
-    public void init(OrderStateWindow view) {
-        this.view = view;
-    }
+	public void init(OrderStateWindow view) {
+		this.view = view;
+	}
 }

@@ -11,35 +11,31 @@ import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
 
 @SpringComponent
-public class ProductComboBoxDataProvider
-        extends PageableDataProvider<Product, String> {
+public class ProductComboBoxDataProvider extends PageableDataProvider<Product, String> {
 
-    private final ProductRepository productRepository;
+	private final ProductRepository productRepository;
 
-    @Autowired
-    public ProductComboBoxDataProvider(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+	@Autowired
+	public ProductComboBoxDataProvider(ProductRepository productRepository) {
+		this.productRepository = productRepository;
+	}
 
-    private String getNameFilter(Query<Product, String> query) {
-        if (query.getFilter().isPresent()) {
-            return "%" + query.getFilter().get() + "%";
-        } else {
-            return "%";
-        }
-    }
+	private String getNameFilter(Query<Product, String> query) {
+		if (query.getFilter().isPresent()) {
+			return "%" + query.getFilter().get() + "%";
+		} else {
+			return "%";
+		}
+	}
 
-    @Override
-    protected Page<Product> fetchFromBackEnd(Query<Product, String> query,
-            Pageable pageable) {
-        return productRepository.findByNameLikeIgnoreCaseOrderByName(
-                getNameFilter(query), pageable);
-    }
+	@Override
+	protected Page<Product> fetchFromBackEnd(Query<Product, String> query, Pageable pageable) {
+		return productRepository.findByNameLikeIgnoreCaseOrderByName(getNameFilter(query), pageable);
+	}
 
-    @Override
-    protected int sizeInBackEnd(Query<Product, String> query) {
-        return productRepository
-                .countByNameLikeIgnoreCase(getNameFilter(query));
-    }
+	@Override
+	protected int sizeInBackEnd(Query<Product, String> query) {
+		return productRepository.countByNameLikeIgnoreCase(getNameFilter(query));
+	}
 
 }

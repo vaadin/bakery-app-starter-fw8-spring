@@ -6,8 +6,8 @@ import com.vaadin.shared.Registration;
 
 public interface ViewEventBus {
 
-    void publish(Object payload);
+	void publish(Object payload);
 
-    <T> Registration subscribe(Class<T> payloadType, Consumer<T> listener);
+	<T> Registration subscribe(Class<T> payloadType, Consumer<T> listener);
 
 }

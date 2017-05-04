@@ -15,25 +15,21 @@ import com.vaadin.template.orders.backend.data.entity.User;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
+	private final UserRepository userRepository;
 
-    @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+	@Autowired
+	public UserDetailsServiceImpl(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
-    @Override
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username);
-        if (null == user) {
-            throw new UsernameNotFoundException(
-                    "No user present with username: " + username);
-        } else {
-            return new org.springframework.security.core.userdetails.User(
-                    user.getEmail(), user.getPassword(),
-                    Collections.singletonList(
-                            new SimpleGrantedAuthority(user.getRole())));
-        }
-    }
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByEmail(username);
+		if (null == user) {
+			throw new UsernameNotFoundException("No user present with username: " + username);
+		} else {
+			return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+					Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
+		}
+	}
 }

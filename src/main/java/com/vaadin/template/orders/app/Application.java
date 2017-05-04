@@ -19,37 +19,35 @@ import com.vaadin.template.orders.backend.service.UserService;
 import com.vaadin.template.orders.ui.OrdersUI;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBusImpl;
 
-@SpringBootApplication(scanBasePackageClasses = { OrdersUI.class,
-        Application.class, UserService.class, SecurityConfig.class,
-        ViewEventBusImpl.class })
+@SpringBootApplication(scanBasePackageClasses = { OrdersUI.class, Application.class, UserService.class,
+		SecurityConfig.class, ViewEventBusImpl.class })
 @EnableJpaRepositories(basePackageClasses = { OrderRepository.class })
 @EntityScan(basePackageClasses = { Order.class })
 @EnableEventBus
 public class Application extends SpringBootServletInitializer {
 
-    public static final String APP_URL = "/";
-    public static final String LOGIN_URL = "/login.html";
-    public static final String LOGOUT_URL = "/login.html?logout";
-    public static final String LOGIN_FAILURE_URL = "/login.html?error";
-    public static final String LOGIN_PROCESSING_URL = "/login";
+	public static final String APP_URL = "/";
+	public static final String LOGIN_URL = "/login.html";
+	public static final String LOGOUT_URL = "/login.html?logout";
+	public static final String LOGIN_FAILURE_URL = "/login.html?error";
+	public static final String LOGIN_PROCESSING_URL = "/login";
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
 
-    @Override
-    protected SpringApplicationBuilder configure(
-            SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(Application.class);
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    public StringToIntegerConverter stringToIntegerConverter() {
-        return new StringToIntegerConverter("Unable to parse integer");
-    }
+	@Bean
+	public StringToIntegerConverter stringToIntegerConverter() {
+		return new StringToIntegerConverter("Unable to parse integer");
+	}
 }

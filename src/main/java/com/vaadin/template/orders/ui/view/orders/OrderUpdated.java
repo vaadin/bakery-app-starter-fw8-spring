@@ -5,7 +5,7 @@ package com.vaadin.template.orders.ui.view.orders;
  */
 public class OrderUpdated {
 
-    public OrderUpdated() {
-        // This is just a marker class to invoke the correct listener
-    }
+	public OrderUpdated() {
+		// This is just a marker class to invoke the correct listener
+	}
 }

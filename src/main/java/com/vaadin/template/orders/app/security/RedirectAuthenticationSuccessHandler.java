@@ -20,34 +20,32 @@ import com.vaadin.template.orders.app.Application;
  */
 @SpringComponent
 @ApplicationScope
-public class RedirectAuthenticationSuccessHandler
-        implements AuthenticationSuccessHandler {
+public class RedirectAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final String location;
+	private final String location;
 
-    @Autowired
-    private ServletContext servletContext;
+	@Autowired
+	private ServletContext servletContext;
 
-    public RedirectAuthenticationSuccessHandler() {
-        location = Application.APP_URL;
-    }
+	public RedirectAuthenticationSuccessHandler() {
+		location = Application.APP_URL;
+	}
 
-    private String getAbsoluteUrl(String url) {
-        final String relativeUrl;
-        if (url.startsWith("/")) {
-            relativeUrl = url.substring(1);
-        } else {
-            relativeUrl = url;
-        }
-        return servletContext.getContextPath() + "/" + relativeUrl;
-    }
+	private String getAbsoluteUrl(String url) {
+		final String relativeUrl;
+		if (url.startsWith("/")) {
+			relativeUrl = url.substring(1);
+		} else {
+			relativeUrl = url;
+		}
+		return servletContext.getContextPath() + "/" + relativeUrl;
+	}
 
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request,
-            HttpServletResponse response, Authentication authentication)
-            throws IOException, ServletException {
-        response.sendRedirect(getAbsoluteUrl(location));
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+			Authentication authentication) throws IOException, ServletException {
+		response.sendRedirect(getAbsoluteUrl(location));
 
-    }
+	}
 
 }
