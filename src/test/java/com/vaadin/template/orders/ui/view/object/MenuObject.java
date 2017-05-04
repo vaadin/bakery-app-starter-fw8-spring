@@ -8,20 +8,19 @@ import com.vaadin.testbench.By;
 
 public class MenuObject extends AbstractViewObject {
 
-    public OrderListViewObject navigateToStorefront() {
-        // ../.. is because WebDriver refuses to click on a covered element
-        WebElement menuLink = getMenuLink("Storefront");
-        menuLink.click();
-        return new OrderListViewObject();
-    }
+	public OrderListViewObject navigateToStorefront() {
+		// ../.. is because WebDriver refuses to click on a covered element
+		WebElement menuLink = getMenuLink("Storefront");
+		menuLink.click();
+		return new OrderListViewObject();
+	}
 
-    public WebElement getMenuLink(String caption) {
-        try {
-            return findElement(
-                    By.xpath("//span[text()='" + caption + "']/../.."));
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
+	public WebElement getMenuLink(String caption) {
+		try {
+			return findElement(By.xpath("//span[text()='" + caption + "']/../.."));
+		} catch (NoSuchElementException e) {
+			return null;
+		}
+	}
 
 }

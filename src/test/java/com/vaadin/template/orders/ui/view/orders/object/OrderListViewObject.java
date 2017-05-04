@@ -5,14 +5,14 @@ import com.vaadin.testbench.elements.GridElement;
 
 public class OrderListViewObject extends AbstractViewObject {
 
-    public OrderEditViewObject selectOrder(int index) {
-        GridElement grid = getOrderGrid();
-        grid.getRow(index).click();
-        return new OrderEditViewObject();
-    }
+	public OrderEditViewObject selectOrder(int index) {
+		GridElement grid = getOrderGrid();
+		grid.getRow(index).click();
+		return new OrderEditViewObject();
+	}
 
-    public GridElement getOrderGrid() {
-        return $(GridElement.class).first();
-    }
+	public GridElement getOrderGrid() {
+		return $(GridElement.class).first();
+	}
 
 }
