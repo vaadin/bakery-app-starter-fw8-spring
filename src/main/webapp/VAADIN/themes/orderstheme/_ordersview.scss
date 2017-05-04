@@ -1,18 +1,17 @@
 @mixin ordersview {
 	// Insert your own theme rules here
-	
 	.new-order {
-		color: #5A6054;
+		color: #5a6054;
 		font-size: 60px;
-		text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+		text-shadow: 1px 1px 3px rgba(0,0,0,.2);
 	}
 
 	.order-form {
 		max-width: 900px;
-	
+
 		.add-items {
 			text-align: left;
-			border: 1px dashed rgba(0,0,0,0.2);
+			border: 1px dashed rgba(0,0,0,.2);
 		}
 		.total {
 			text-align: right;
@@ -21,12 +20,12 @@
 	}
 
 	.history {
-		border-top: 1px solid rgba(0,0,0,0.1);
-		background-color: rgba(0,0,0,0.05);
+		border-top: 1px solid rgba(0,0,0,.1);
+		background-color: rgba(0,0,0,.05);
 	}
 
 	.product-row {
-		border-bottom: 1px solid rgba(0,0,0,0.05);
+		border-bottom: 1px solid rgba(0,0,0,.05);
 		margin-bottom: 16px;
 	}
 
