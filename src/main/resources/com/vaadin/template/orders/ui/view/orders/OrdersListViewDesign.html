@@ -7,9 +7,9 @@
   <meta name="package-mapping" content="orders:com.vaadin.template.orders.ui.components">
  </head>
  <body>
-  <vaadin-vertical-layout spacing="false" size-full margin="false">
-   <orders-orders-grid size-full _id="list" :expand></orders-orders-grid>
-   <vaadin-button icon="fonticon://FontAwesome/f055" style-name="borderless" plain-text _id="newOrder" :right></vaadin-button>
-  </vaadin-vertical-layout>
+  <vaadin-absolute-layout>
+   <vaadin-button icon="fonticon://FontAwesome/f055" style-name="new-order borderless huge" width="100px" height="100px" plain-text _id="newOrder" :right="0px" :bottom="0px" :z-index="10"></vaadin-button>
+   <orders-orders-grid size-full _id="list"></orders-orders-grid>
+  </vaadin-absolute-layout>
  </body>
 </html>
