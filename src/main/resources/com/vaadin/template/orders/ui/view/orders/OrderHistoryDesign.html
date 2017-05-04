@@ -6,20 +6,22 @@
   <meta name="vaadin-version" content="8.0.2">
  </head>
  <body>
-  <vaadin-vertical-layout size-auto>
+  <vaadin-vertical-layout spacing="false" size-auto margin="false">
    <vaadin-label style-name="bold large" plain-text>
      History 
    </vaadin-label>
-   <vaadin-grid-layout spacing id="history" _id="items">
-    <row>
-     <column></column>
-     <column></column>
-     <column></column>
-    </row>
-   </vaadin-grid-layout>
-   <vaadin-button id="addComment" plain-text _id="addComment">
-     Add comment 
-   </vaadin-button>
+   <vaadin-vertical-layout style-name="history">
+    <vaadin-grid-layout spacing id="history" _id="items">
+     <row>
+      <column></column>
+      <column></column>
+      <column></column>
+     </row>
+    </vaadin-grid-layout>
+    <vaadin-button style-name="link" id="addComment" plain-text _id="addComment">
+      Add comment 
+    </vaadin-button>
+   </vaadin-vertical-layout>
   </vaadin-vertical-layout>
  </body>
 </html>
