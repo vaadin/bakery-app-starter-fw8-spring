@@ -15,27 +15,27 @@ import com.vaadin.template.orders.ui.view.orders.object.OrderEditViewObject.Hist
 
 public class UpdateOrderIT extends AbstractOrdersIT {
 
-    @Test
-    public void updateOrderState() throws IOException {
-        OrderListViewObject storeFront = LoginViewObject.loginAsBarista();
-        OrderEditViewObject orderEdit = storeFront.selectOrder(0);
+	@Test
+	public void updateOrderState() throws IOException {
+		OrderListViewObject storeFront = LoginViewObject.loginAsBarista();
+		OrderEditViewObject orderEdit = storeFront.selectOrder(0);
 
-        Assert.assertEquals(OrderState.READY_FOR_PICKUP, orderEdit.getState());
-        orderEdit.setState(OrderState.DELIVERED);
-        Assert.assertEquals(OrderState.DELIVERED, orderEdit.getState());
-    }
+		Assert.assertEquals(OrderState.READY_FOR_PICKUP, orderEdit.getState());
+		orderEdit.setState(OrderState.DELIVERED);
+		Assert.assertEquals(OrderState.DELIVERED, orderEdit.getState());
+	}
 
-    @Test
-    public void addHistoryComment() throws IOException {
-        OrderListViewObject storeFront = LoginViewObject.loginAsBarista();
-        OrderEditViewObject orderEdit = storeFront.selectOrder(1);
+	@Test
+	public void addHistoryComment() throws IOException {
+		OrderListViewObject storeFront = LoginViewObject.loginAsBarista();
+		OrderEditViewObject orderEdit = storeFront.selectOrder(1);
 
-        Assert.assertEquals(3, orderEdit.getHistory().size());
-        orderEdit.addHistoryComment("foo");
-        List<HistoryItemObject> history = orderEdit.getHistory();
-        Assert.assertEquals(4, history.size());
-        Assert.assertEquals("foo", history.get(3).getMessage());
+		Assert.assertEquals(3, orderEdit.getHistory().size());
+		orderEdit.addHistoryComment("foo");
+		List<HistoryItemObject> history = orderEdit.getHistory();
+		Assert.assertEquals(4, history.size());
+		Assert.assertEquals("foo", history.get(3).getMessage());
 
-    }
+	}
 
 }

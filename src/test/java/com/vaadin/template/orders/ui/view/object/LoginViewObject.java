@@ -8,49 +8,49 @@ import com.vaadin.template.orders.ui.view.orders.object.OrderListViewObject;
 
 public class LoginViewObject extends AbstractViewObject {
 
-    private static final String APP_URL = "http://localhost:8080/";
+	private static final String APP_URL = "http://localhost:8080/";
 
-    public static OrderListViewObject loginAsBarista() {
-        new LoginViewObject().login("barista@vaadin.com", "barista");
-        return new OrderListViewObject();
-    }
+	public static OrderListViewObject loginAsBarista() {
+		new LoginViewObject().login("barista@vaadin.com", "barista");
+		return new OrderListViewObject();
+	}
 
-    public static DashboardViewObject loginAsAdmin() {
-        new LoginViewObject().login("admin@vaadin.com", "admin");
-        return new DashboardViewObject();
-    }
+	public static DashboardViewObject loginAsAdmin() {
+		new LoginViewObject().login("admin@vaadin.com", "admin");
+		return new DashboardViewObject();
+	}
 
-    private void login(String username, String password) {
-        getDriver().get(APP_URL);
-        WebElement loginElement = getLogin();
-        WebElement passwordElement = getPassword();
-        loginElement.clear();
-        loginElement.sendKeys(username);
-        passwordElement.clear();
-        passwordElement.sendKeys(password);
+	private void login(String username, String password) {
+		getDriver().get(APP_URL);
+		WebElement loginElement = getLogin();
+		WebElement passwordElement = getPassword();
+		loginElement.clear();
+		loginElement.sendKeys(username);
+		passwordElement.clear();
+		passwordElement.sendKeys(password);
 
-        getSubmit().click();
+		getSubmit().click();
 
-        // try {
-        // testBench().compareScreen("submit-clicked");
-        // } catch (Exception e) {
-        // throw new RuntimeException(e);
-        // }
-        waitUntilElementPresent("Login failed", By.className("navigation-bar"));
-        // Assert.assertFalse("Login failed",
-        // isElementPresent(By.id("button-submit")));
-    }
+		// try {
+		// testBench().compareScreen("submit-clicked");
+		// } catch (Exception e) {
+		// throw new RuntimeException(e);
+		// }
+		waitUntilElementPresent("Login failed", By.className("navigation-bar"));
+		// Assert.assertFalse("Login failed",
+		// isElementPresent(By.id("button-submit")));
+	}
 
-    private WebElement getSubmit() {
-        return findElement(By.id("button-submit"));
-    }
+	private WebElement getSubmit() {
+		return findElement(By.id("button-submit"));
+	}
 
-    private WebElement getPassword() {
-        return findElement(By.id("password"));
-    }
+	private WebElement getPassword() {
+		return findElement(By.id("password"));
+	}
 
-    private WebElement getLogin() {
-        return findElement(By.id("login"));
-    }
+	private WebElement getLogin() {
+		return findElement(By.id("login"));
+	}
 
 }
