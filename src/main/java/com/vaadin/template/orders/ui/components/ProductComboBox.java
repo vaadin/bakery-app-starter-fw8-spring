@@ -13,21 +13,21 @@ import com.vaadin.ui.ComboBox;
 @PrototypeScope
 public class ProductComboBox extends ComboBox<Product> {
 
-    // Singleton data provider which knows which products are available and is
-    // informed when they are updated, deleted or new ones are added
-    @Autowired
-    private ProductComboBoxDataProvider dataProvider;
+	// Singleton data provider which knows which products are available and is
+	// informed when they are updated, deleted or new ones are added
+	@Autowired
+	private ProductComboBoxDataProvider dataProvider;
 
-    public ProductComboBox() {
-        setWidth("100%");
-        setEmptySelectionAllowed(false);
-        setPlaceholder("Product");
-        setItemCaptionGenerator(Product::getName);
-    }
+	public ProductComboBox() {
+		setWidth("100%");
+		setEmptySelectionAllowed(false);
+		setPlaceholder("Product");
+		setItemCaptionGenerator(Product::getName);
+	}
 
-    @PostConstruct
-    public void init() {
-        setDataProvider(dataProvider);
-    }
+	@PostConstruct
+	public void init() {
+		setDataProvider(dataProvider);
+	}
 
 }

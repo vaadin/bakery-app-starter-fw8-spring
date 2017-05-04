@@ -16,32 +16,32 @@ import com.vaadin.ui.Window;
 @PrototypeScope
 public class OrderStateWindow extends Window {
 
-    @Autowired
-    private OrderStateWindowController controller;
+	@Autowired
+	private OrderStateWindowController controller;
 
-    private final VerticalLayout layout = new VerticalLayout();
+	private final VerticalLayout layout = new VerticalLayout();
 
-    private Order order;
+	private Order order;
 
-    @PostConstruct
-    public void init() {
-        controller.init(this);
-        setContent(layout);
-        setModal(true);
-        setResizable(false);
-    }
+	@PostConstruct
+	public void init() {
+		controller.init(this);
+		setContent(layout);
+		setModal(true);
+		setResizable(false);
+	}
 
-    public void setOrder(Order order) {
-        this.order = order;
-        layout.removeAllComponents();
-        for (OrderState state : OrderState.values()) {
-            Button button = new Button(state.getDisplayName());
-            button.setId(state.name());
-            button.addClickListener(e -> controller.setState(order, state));
-            layout.addComponent(button);
+	public void setOrder(Order order) {
+		this.order = order;
+		layout.removeAllComponents();
+		for (OrderState state : OrderState.values()) {
+			Button button = new Button(state.getDisplayName());
+			button.setId(state.name());
+			button.addClickListener(e -> controller.setState(order, state));
+			layout.addComponent(button);
 
-            button.setEnabled(state != order.getState());
-        }
+			button.setEnabled(state != order.getState());
+		}
 
-    }
+	}
 }

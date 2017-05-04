@@ -8,15 +8,15 @@ import com.vaadin.ui.Component;
  */
 public interface OrdersView extends View {
 
-    /**
-     * Gets the component to show when navigating to the view.
-     *
-     * By default casts this View to a {@link Component}.
-     *
-     * @return the component to show, by default the view instance itself
-     */
-    public default Component getViewComponent() {
-        return (Component) this;
-    }
+	/**
+	 * Gets the component to show when navigating to the view.
+	 *
+	 * By default casts this View to a {@link Component}.
+	 *
+	 * @return the component to show, by default the view instance itself
+	 */
+	public default Component getViewComponent() {
+		return (Component) this;
+	}
 
 }

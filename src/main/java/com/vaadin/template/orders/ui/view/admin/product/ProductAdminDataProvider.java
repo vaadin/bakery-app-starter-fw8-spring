@@ -13,45 +13,42 @@ import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
 
 @SpringComponent
 @PrototypeScope
-public class ProductAdminDataProvider
-        extends PageableDataProvider<Product, Object> {
+public class ProductAdminDataProvider extends PageableDataProvider<Product, Object> {
 
-    @Autowired
-    private ProductRepository repository;
-    private String filter = null;
+	@Autowired
+	private ProductRepository repository;
+	private String filter = null;
 
-    @Override
-    protected Page<Product> fetchFromBackEnd(Query<Product, Object> query,
-            Pageable pageable) {
-        if (filter == null) {
-            return repository.findByOrderByName(pageable);
-        } else {
-            return repository.findByNameLikeIgnoreCaseOrderByName(filter,
-                    pageable);
-        }
-    }
+	@Override
+	protected Page<Product> fetchFromBackEnd(Query<Product, Object> query, Pageable pageable) {
+		if (filter == null) {
+			return repository.findByOrderByName(pageable);
+		} else {
+			return repository.findByNameLikeIgnoreCaseOrderByName(filter, pageable);
+		}
+	}
 
-    @Override
-    protected int sizeInBackEnd(Query<Product, Object> query) {
-        if (filter == null) {
-            return (int) repository.count();
-        } else {
-            return repository.countByNameLikeIgnoreCase(filter);
-        }
-    }
+	@Override
+	protected int sizeInBackEnd(Query<Product, Object> query) {
+		if (filter == null) {
+			return (int) repository.count();
+		} else {
+			return repository.countByNameLikeIgnoreCase(filter);
+		}
+	}
 
-    public void setFilter(String filter) {
-        if ("".equals(filter)) {
-            this.filter = null;
-        } else {
-            this.filter = "%" + filter + "%";
-        }
-        refreshAll();
-    }
+	public void setFilter(String filter) {
+		if ("".equals(filter)) {
+			this.filter = null;
+		} else {
+			this.filter = "%" + filter + "%";
+		}
+		refreshAll();
+	}
 
-    @Override
-    public Object getId(Product item) {
-        return item.getId();
-    }
+	@Override
+	public Object getId(Product item) {
+		return item.getId();
+	}
 
 }

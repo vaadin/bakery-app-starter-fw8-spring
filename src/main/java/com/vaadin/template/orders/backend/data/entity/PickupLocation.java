@@ -9,25 +9,25 @@ import javax.persistence.Id;
 @Entity
 public class PickupLocation implements Serializable {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-    private String name;
+	@Id
+	@GeneratedValue
+	private Long id;
+	private String name;
 
-    public PickupLocation() {
-        // Empty constructor is needed by Spring Data / JPA
-    }
+	public PickupLocation() {
+		// Empty constructor is needed by Spring Data / JPA
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
 }

@@ -14,39 +14,37 @@ import com.vaadin.template.orders.app.security.SecuredViewAccessControl;
 @PrototypeScope
 public class MainPresenter {
 
-    @Autowired
-    private SecuredViewAccessControl viewAccessControl;
+	@Autowired
+	private SecuredViewAccessControl viewAccessControl;
 
-    private MainView view;
+	private MainView view;
 
-    @Autowired
-    private ApplicationContext applicationContext;
+	@Autowired
+	private ApplicationContext applicationContext;
 
-    void init(MainView view) {
-        this.view = view;
-    }
+	void init(MainView view) {
+		this.view = view;
+	}
 
-    /**
-     * Navigate to the given view class.
-     *
-     * @param viewClass
-     *            the class of the target view, must be annotated using
-     *            {@link SpringView @SpringView}
-     */
-    public void navigateTo(Class<? extends View> viewClass) {
-        view.getUI().getNavigator().navigateTo(OrdersUI.getViewId(viewClass));
-    }
+	/**
+	 * Navigate to the given view class.
+	 *
+	 * @param viewClass
+	 *            the class of the target view, must be annotated using
+	 *            {@link SpringView @SpringView}
+	 */
+	public void navigateTo(Class<? extends View> viewClass) {
+		view.getUI().getNavigator().navigateTo(OrdersUI.getViewId(viewClass));
+	}
 
-    public void logout() {
-        view.getUI().getSession().getSession().invalidate();
-        String contextPath = ((VaadinServletService) VaadinServletService
-                .getCurrent()).getServlet().getServletContext()
-                        .getContextPath();
-        view.getUI().getPage()
-                .setLocation(contextPath + Application.LOGOUT_URL);
-    }
+	public void logout() {
+		view.getUI().getSession().getSession().invalidate();
+		String contextPath = ((VaadinServletService) VaadinServletService.getCurrent()).getServlet().getServletContext()
+				.getContextPath();
+		view.getUI().getPage().setLocation(contextPath + Application.LOGOUT_URL);
+	}
 
-    public boolean hasAccess(Class<? extends View> viewClass) {
-        return viewAccessControl.isAccessGranted(view.getUI(), viewClass);
-    }
+	public boolean hasAccess(Class<? extends View> viewClass) {
+		return viewAccessControl.isAccessGranted(view.getUI(), viewClass);
+	}
 }
