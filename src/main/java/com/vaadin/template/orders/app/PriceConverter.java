@@ -9,12 +9,12 @@ import com.vaadin.spring.annotation.SpringComponent;
 @SpringComponent
 public class PriceConverter extends StringToDoubleConverter {
 
-    public PriceConverter() {
-        super("Invalid price, please re-check the value");
-    }
+	public PriceConverter() {
+		super("Invalid price, please re-check the value");
+	}
 
-    @Override
-    protected NumberFormat getFormat(Locale locale) {
-        return NumberFormat.getCurrencyInstance(Locale.US);
-    }
+	@Override
+	protected NumberFormat getFormat(Locale locale) {
+		return NumberFormat.getCurrencyInstance(Locale.US);
+	}
 }

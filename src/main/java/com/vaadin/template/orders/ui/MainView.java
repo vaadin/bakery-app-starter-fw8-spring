@@ -19,42 +19,39 @@ import com.vaadin.ui.Button;
 @UIScope
 public class MainView extends MainViewDesign implements ViewDisplay {
 
-    @Autowired
-    private MainPresenter presenter;
+	@Autowired
+	private MainPresenter presenter;
 
-    @PostConstruct
-    public void init() {
-        content.addStyleName("v-scrollable");
-        presenter.init(this);
+	@PostConstruct
+	public void init() {
+		content.addStyleName("v-scrollable");
+		presenter.init(this);
 
-        // Hide until it works
-        products.setVisible(false);
-    }
+		// Hide until it works
+		products.setVisible(false);
+	}
 
-    public void populateMenu() {
-        addMenuItem(storefront, OrdersListView.class);
-        addMenuItem(dashboard, DashboardView.class);
-        addMenuItem(users, UserAdminView.class);
-        addMenuItem(products, ProductAdminView.class);
-        logout.addClickListener(e -> presenter.logout());
-    }
+	public void populateMenu() {
+		addMenuItem(storefront, OrdersListView.class);
+		addMenuItem(dashboard, DashboardView.class);
+		addMenuItem(users, UserAdminView.class);
+		addMenuItem(products, ProductAdminView.class);
+		logout.addClickListener(e -> presenter.logout());
+	}
 
-    private void addMenuItem(Button navigationButton,
-            Class<? extends View> targetView) {
-        navigationButton.setVisible(presenter.hasAccess(targetView));
-        navigationButton
-                .addClickListener(e -> presenter.navigateTo(targetView));
+	private void addMenuItem(Button navigationButton, Class<? extends View> targetView) {
+		navigationButton.setVisible(presenter.hasAccess(targetView));
+		navigationButton.addClickListener(e -> presenter.navigateTo(targetView));
 
-    }
+	}
 
-    @Override
-    public void showView(View view) {
-        if (!(view instanceof OrdersView)) {
-            throw new IllegalArgumentException(
-                    "Only OrdersView implementations are supported");
-        }
-        content.removeAllComponents();
-        content.addComponent(((OrdersView) view).getViewComponent());
-    }
+	@Override
+	public void showView(View view) {
+		if (!(view instanceof OrdersView)) {
+			throw new IllegalArgumentException("Only OrdersView implementations are supported");
+		}
+		content.removeAllComponents();
+		content.addComponent(((OrdersView) view).getViewComponent());
+	}
 
 }

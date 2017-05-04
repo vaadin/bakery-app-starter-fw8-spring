@@ -15,82 +15,81 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 
 @SpringView
-public class UserAdminView extends AbstractCrudView<User>
-        implements OrdersView {
+public class UserAdminView extends AbstractCrudView<User> implements OrdersView {
 
-    @Autowired
-    private UserAdminPresenter presenter;
+	@Autowired
+	private UserAdminPresenter presenter;
 
-    private final UserAdminViewDesign userAdminViewDesign;
+	private final UserAdminViewDesign userAdminViewDesign;
 
-    public UserAdminView() {
-        super(User.class);
-        userAdminViewDesign = new UserAdminViewDesign();
-    }
+	public UserAdminView() {
+		super(User.class);
+		userAdminViewDesign = new UserAdminViewDesign();
+	}
 
-    @Override
-    @PostConstruct
-    public void init() {
-        super.init();
-        getGrid().setColumns("email", "name", "role");
-        getBinder().bindInstanceFields(getViewComponent());
+	@Override
+	@PostConstruct
+	public void init() {
+		super.init();
+		getGrid().setColumns("email", "name", "role");
+		getBinder().bindInstanceFields(getViewComponent());
 
-        presenter.init(this);
-    }
+		presenter.init(this);
+	}
 
-    @Override
-    public void enter(ViewChangeEvent event) {
-        // Nothing to do here
-    }
+	@Override
+	public void enter(ViewChangeEvent event) {
+		// Nothing to do here
+	}
 
-    @Override
-    public UserAdminViewDesign getViewComponent() {
-        return userAdminViewDesign;
-    }
+	@Override
+	public UserAdminViewDesign getViewComponent() {
+		return userAdminViewDesign;
+	}
 
-    @Override
-    protected UserAdminPresenter getPresenter() {
-        return presenter;
-    }
+	@Override
+	protected UserAdminPresenter getPresenter() {
+		return presenter;
+	}
 
-    @Override
-    protected Grid<User> getGrid() {
-        return getViewComponent().list;
-    }
+	@Override
+	protected Grid<User> getGrid() {
+		return getViewComponent().list;
+	}
 
-    @Override
-    protected void setGrid(Grid<User> grid) {
-        getViewComponent().list = grid;
-    }
+	@Override
+	protected void setGrid(Grid<User> grid) {
+		getViewComponent().list = grid;
+	}
 
-    @Override
-    protected Component getForm() {
-        return getViewComponent().form;
-    }
+	@Override
+	protected Component getForm() {
+		return getViewComponent().form;
+	}
 
-    @Override
-    protected Button getAdd() {
-        return getViewComponent().add;
-    }
+	@Override
+	protected Button getAdd() {
+		return getViewComponent().add;
+	}
 
-    @Override
-    protected Button getCancel() {
-        return getViewComponent().cancel;
-    }
+	@Override
+	protected Button getCancel() {
+		return getViewComponent().cancel;
+	}
 
-    @Override
-    protected Button getDelete() {
-        return getViewComponent().delete;
-    }
+	@Override
+	protected Button getDelete() {
+		return getViewComponent().delete;
+	}
 
-    @Override
-    protected Button getUpdate() {
-        return getViewComponent().update;
-    }
+	@Override
+	protected Button getUpdate() {
+		return getViewComponent().update;
+	}
 
-    @Override
-    protected TextField getSearch() {
-        return getViewComponent().search;
-    }
+	@Override
+	protected TextField getSearch() {
+		return getViewComponent().search;
+	}
 
 }

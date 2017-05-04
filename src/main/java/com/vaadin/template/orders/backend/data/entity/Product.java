@@ -10,37 +10,37 @@ import javax.persistence.Id;
 @Entity
 public class Product implements Serializable {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+	@Id
+	@GeneratedValue
+	private Long id;
 
-    private String name;
+	private String name;
 
-    @Column(precision = 16, scale = 2)
-    private double price;
+	@Column(precision = 16, scale = 2)
+	private double price;
 
-    public Product() {
-        // Empty constructor is needed by Spring Data / JPA
-    }
+	public Product() {
+		// Empty constructor is needed by Spring Data / JPA
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public double getPrice() {
-        return price;
-    }
+	public double getPrice() {
+		return price;
+	}
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+	public void setPrice(double price) {
+		this.price = price;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
 }

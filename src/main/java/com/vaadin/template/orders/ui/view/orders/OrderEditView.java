@@ -26,184 +26,177 @@ import com.vaadin.ui.Label;
 @SpringView(name = "order")
 public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 
-    @Autowired
-    private OrderEditPresenter presenter;
+	@Autowired
+	private OrderEditPresenter presenter;
 
-    @Autowired
-    private ObjectProvider<ProductInfo> productInfoProvider;
+	@Autowired
+	private ObjectProvider<ProductInfo> productInfoProvider;
 
-    @Autowired
-    private DollarPriceFormatter formatter;
+	@Autowired
+	private DollarPriceFormatter formatter;
 
-    private BeanValidationBinder<Order> binder;
+	private BeanValidationBinder<Order> binder;
 
-    private Mode mode;
+	private Mode mode;
 
-    @Autowired
-    private ObjectProvider<OrderStateWindow> windowProvider;
+	@Autowired
+	private ObjectProvider<OrderStateWindow> windowProvider;
 
-    @PostConstruct
-    public void init() {
-        presenter.init(this);
+	@PostConstruct
+	public void init() {
+		presenter.init(this);
 
-        // Binds properties in Order automatically:
-        // pickupLocation, state, paid
-        // Does not bind sub properties, see
-        // https://github.com/vaadin/framework/issues/8384
-        binder = new BeanValidationBinder<>(Order.class);
+		// Binds properties in Order automatically:
+		// pickupLocation, state, paid
+		// Does not bind sub properties, see
+		// https://github.com/vaadin/framework/issues/8384
+		binder = new BeanValidationBinder<>(Order.class);
 
-        // Bindings are done in the order the fields appear on the screen as we
-        // report validation errors for the first invalid field and it is most
-        // intuitive for the user that we start from the top if there are
-        // multiple errors.
-        binder.forField(dueDateTime).asRequired("You must select a date")
-                .bind(order -> {
-                    if (order.getDueDate() == null
-                            || order.getDueTime() == null) {
-                        return null;
-                    }
+		// Bindings are done in the order the fields appear on the screen as we
+		// report validation errors for the first invalid field and it is most
+		// intuitive for the user that we start from the top if there are
+		// multiple errors.
+		binder.forField(dueDateTime).asRequired("You must select a date").bind(order -> {
+			if (order.getDueDate() == null || order.getDueTime() == null) {
+				return null;
+			}
 
-                    return LocalDateTime.of(order.getDueDate(),
-                            order.getDueTime());
-                }, (order, value) -> {
-                    order.setDueDate(value.toLocalDate());
-                    order.setDueTime(value.toLocalTime());
-                });
-        binder.bindInstanceFields(this);
+			return LocalDateTime.of(order.getDueDate(), order.getDueTime());
+		}, (order, value) -> {
+			order.setDueDate(value.toLocalDate());
+			order.setDueTime(value.toLocalTime());
+		});
+		binder.bindInstanceFields(this);
 
-        // These can be removed once
-        // https://github.com/vaadin/framework/issues/9210 is fixed
-        binder.bind(firstName, "customer.firstName");
-        binder.bind(lastName, "customer.lastName");
-        binder.bind(phone, "customer.phoneNumber");
-        binder.bind(email, "customer.email");
-        binder.bind(details, "customer.details");
+		// These can be removed once
+		// https://github.com/vaadin/framework/issues/9210 is fixed
+		binder.bind(firstName, "customer.firstName");
+		binder.bind(lastName, "customer.lastName");
+		binder.bind(phone, "customer.phoneNumber");
+		binder.bind(email, "customer.email");
+		binder.bind(details, "customer.details");
 
-        addItems.addClickListener(e -> addEmptyOrderItem());
-        editBackCancel.addClickListener(e -> presenter.editBackCancelPressed());
-        ok.addClickListener(e -> presenter.okPressed());
+		addItems.addClickListener(e -> addEmptyOrderItem());
+		editBackCancel.addClickListener(e -> presenter.editBackCancelPressed());
+		ok.addClickListener(e -> presenter.okPressed());
 
-        setState.addClickListener(e -> {
-            OrderStateWindow w = windowProvider.getObject();
-            w.setOrder(getOrder());
-            getUI().addWindow(w);
-        });
-    }
+		setState.addClickListener(e -> {
+			OrderStateWindow w = windowProvider.getObject();
+			w.setOrder(getOrder());
+			getUI().addWindow(w);
+		});
+	}
 
-    @Override
-    public void enter(ViewChangeEvent event) {
-        String orderId = event.getParameters();
-        if ("".equals(orderId)) {
-            presenter.enterView(null);
-        } else {
-            presenter.enterView(Long.valueOf(orderId));
-        }
-    }
+	@Override
+	public void enter(ViewChangeEvent event) {
+		String orderId = event.getParameters();
+		if ("".equals(orderId)) {
+			presenter.enterView(null);
+		} else {
+			presenter.enterView(Long.valueOf(orderId));
+		}
+	}
 
-    public void setOrder(Order order) {
-        orderId.setValue("#" + order.getId());
-        state.setValue(order.getState().getDisplayName());
-        binder.setBean(order);
-        productInfoContainer.removeAllComponents();
+	public void setOrder(Order order) {
+		orderId.setValue("#" + order.getId());
+		state.setValue(order.getState().getDisplayName());
+		binder.setBean(order);
+		productInfoContainer.removeAllComponents();
 
-        newCustomer.setVisible(mode == Mode.EDIT && getOrder().getId() == null);
+		newCustomer.setVisible(mode == Mode.EDIT && getOrder().getId() == null);
 
-        reportHeader.setVisible(order.getId() != null);
-        if (order.getId() == null) {
-            addEmptyOrderItem();
-            dueDateTime.focus();
-        } else {
-            for (OrderItem item : order.getItems()) {
-                ProductInfo productInfo = createProductInfo(item);
-                productInfo.setReportMode(mode != Mode.EDIT);
-                productInfoContainer.addComponent(productInfo);
-            }
-            history.setOrder(order);
-        }
-    }
+		reportHeader.setVisible(order.getId() != null);
+		if (order.getId() == null) {
+			addEmptyOrderItem();
+			dueDateTime.focus();
+		} else {
+			for (OrderItem item : order.getItems()) {
+				ProductInfo productInfo = createProductInfo(item);
+				productInfo.setReportMode(mode != Mode.EDIT);
+				productInfoContainer.addComponent(productInfo);
+			}
+			history.setOrder(order);
+		}
+	}
 
-    private void addEmptyOrderItem() {
-        OrderItem orderItem = new OrderItem();
-        ProductInfo productInfo = createProductInfo(orderItem);
-        productInfoContainer.addComponent(productInfo);
-        productInfo.focus();
-        getOrder().getItems().add(orderItem);
-    }
+	private void addEmptyOrderItem() {
+		OrderItem orderItem = new OrderItem();
+		ProductInfo productInfo = createProductInfo(orderItem);
+		productInfoContainer.addComponent(productInfo);
+		productInfo.focus();
+		getOrder().getItems().add(orderItem);
+	}
 
-    /**
-     * Create a ProductInfo instance using Spring so that it is injected and can
-     * in turn inject a ProductComboBox and its data provider.
-     *
-     * @param orderItem
-     *            the item to edit
-     *
-     * @return a new product info instance
-     */
-    private ProductInfo createProductInfo(OrderItem orderItem) {
-        ProductInfo productInfo = productInfoProvider.getObject();
-        productInfo.setItem(orderItem);
-        return productInfo;
-    }
+	/**
+	 * Create a ProductInfo instance using Spring so that it is injected and can
+	 * in turn inject a ProductComboBox and its data provider.
+	 *
+	 * @param orderItem
+	 *            the item to edit
+	 *
+	 * @return a new product info instance
+	 */
+	private ProductInfo createProductInfo(OrderItem orderItem) {
+		ProductInfo productInfo = productInfoProvider.getObject();
+		productInfo.setItem(orderItem);
+		return productInfo;
+	}
 
-    protected Order getOrder() {
-        return binder.getBean();
-    }
+	protected Order getOrder() {
+		return binder.getBean();
+	}
 
-    protected void setSum(double sum) {
-        total.setValue(formatter.format(sum, Locale.US));
-    }
+	protected void setSum(double sum) {
+		total.setValue(formatter.format(sum, Locale.US));
+	}
 
-    public void showNotFound() {
-        removeAllComponents();
-        addComponent(new Label("Order not found"));
-    }
+	public void showNotFound() {
+		removeAllComponents();
+		addComponent(new Label("Order not found"));
+	}
 
-    public void setMode(Mode mode) {
-        this.mode = mode;
-        binder.setReadOnly(mode != Mode.EDIT);
-        for (Component c : productInfoContainer) {
-            if (c instanceof ProductInfo) {
-                ((ProductInfo) c).setReportMode(mode != Mode.EDIT);
-            }
-        }
-        addItems.setVisible(mode == Mode.EDIT);
-        history.setVisible(mode == Mode.REPORT);
-        setState.setVisible(mode == Mode.REPORT);
-        newCustomer.setVisible(mode == Mode.EDIT && getOrder().getId() == null);
+	public void setMode(Mode mode) {
+		this.mode = mode;
+		binder.setReadOnly(mode != Mode.EDIT);
+		for (Component c : productInfoContainer) {
+			if (c instanceof ProductInfo) {
+				((ProductInfo) c).setReportMode(mode != Mode.EDIT);
+			}
+		}
+		addItems.setVisible(mode == Mode.EDIT);
+		history.setVisible(mode == Mode.REPORT);
+		setState.setVisible(mode == Mode.REPORT);
+		newCustomer.setVisible(mode == Mode.EDIT && getOrder().getId() == null);
 
-        if (mode == Mode.REPORT) {
-            editBackCancel.setCaption("Edit");
-            Optional<OrderState> nextState = presenter
-                    .getNextHappyPathState(getOrder().getState());
-            ok.setCaption(
-                    nextState.map(OrderState::getDisplayName).orElse("?"));
-            ok.setVisible(nextState.isPresent());
-        } else if (mode == Mode.CONFIRMATION) {
-            editBackCancel.setCaption("< Back");
-            ok.setCaption("Place order");
-            ok.setVisible(true);
-        } else {
-            editBackCancel.setCaption("Cancel");
-            ok.setCaption("Done");
-            ok.setVisible(true);
-        }
-    }
+		if (mode == Mode.REPORT) {
+			editBackCancel.setCaption("Edit");
+			Optional<OrderState> nextState = presenter.getNextHappyPathState(getOrder().getState());
+			ok.setCaption(nextState.map(OrderState::getDisplayName).orElse("?"));
+			ok.setVisible(nextState.isPresent());
+		} else if (mode == Mode.CONFIRMATION) {
+			editBackCancel.setCaption("< Back");
+			ok.setCaption("Place order");
+			ok.setVisible(true);
+		} else {
+			editBackCancel.setCaption("Cancel");
+			ok.setCaption("Done");
+			ok.setVisible(true);
+		}
+	}
 
-    public Mode getMode() {
-        return mode;
-    }
+	public Mode getMode() {
+		return mode;
+	}
 
-    public Stream<HasValue<?>> validate() {
-        Stream<HasValue<?>> errorFields = binder.validate()
-                .getFieldValidationErrors().stream()
-                .map(BindingValidationStatus::getField);
+	public Stream<HasValue<?>> validate() {
+		Stream<HasValue<?>> errorFields = binder.validate().getFieldValidationErrors().stream()
+				.map(BindingValidationStatus::getField);
 
-        for (Component c : productInfoContainer) {
-            if (c instanceof ProductInfo) {
-                errorFields = Stream.concat(errorFields,
-                        ((ProductInfo) c).validate());
-            }
-        }
-        return errorFields;
-    }
+		for (Component c : productInfoContainer) {
+			if (c instanceof ProductInfo) {
+				errorFields = Stream.concat(errorFields, ((ProductInfo) c).validate());
+			}
+		}
+		return errorFields;
+	}
 }

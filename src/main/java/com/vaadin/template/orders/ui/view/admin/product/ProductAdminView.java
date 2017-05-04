@@ -17,91 +17,88 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 
 @SpringView
-public class ProductAdminView extends AbstractCrudView<Product>
-        implements OrdersView {
+public class ProductAdminView extends AbstractCrudView<Product> implements OrdersView {
 
-    @Autowired
-    private ProductAdminPresenter presenter;
+	@Autowired
+	private ProductAdminPresenter presenter;
 
-    private final ProductAdminViewDesign userAdminViewDesign;
+	private final ProductAdminViewDesign userAdminViewDesign;
 
-    @Autowired
-    private PriceConverter priceToStringConverter;
+	@Autowired
+	private PriceConverter priceToStringConverter;
 
-    public ProductAdminView() {
-        super(Product.class);
-        userAdminViewDesign = new ProductAdminViewDesign();
-    }
+	public ProductAdminView() {
+		super(Product.class);
+		userAdminViewDesign = new ProductAdminViewDesign();
+	}
 
-    @Override
-    @PostConstruct
-    public void init() {
-        super.init();
-        getGrid().setColumns("name", "price");
-        getGrid().removeColumn("price");
-        getGrid().addColumn(
-                product -> priceToStringConverter.convertToPresentation(
-                        product.getPrice(), new ValueContext(getGrid())));
-        getBinder().forField(getViewComponent().price)
-                .withConverter(priceToStringConverter).bind("price");
-        getBinder().bindInstanceFields(getViewComponent());
+	@Override
+	@PostConstruct
+	public void init() {
+		super.init();
+		getGrid().setColumns("name", "price");
+		getGrid().removeColumn("price");
+		getGrid().addColumn(product -> priceToStringConverter.convertToPresentation(product.getPrice(),
+				new ValueContext(getGrid())));
+		getBinder().forField(getViewComponent().price).withConverter(priceToStringConverter).bind("price");
+		getBinder().bindInstanceFields(getViewComponent());
 
-        presenter.init(this);
-    }
+		presenter.init(this);
+	}
 
-    @Override
-    public void enter(ViewChangeEvent event) {
-        // Nothing to do here
-    }
+	@Override
+	public void enter(ViewChangeEvent event) {
+		// Nothing to do here
+	}
 
-    @Override
-    public ProductAdminViewDesign getViewComponent() {
-        return userAdminViewDesign;
-    }
+	@Override
+	public ProductAdminViewDesign getViewComponent() {
+		return userAdminViewDesign;
+	}
 
-    @Override
-    protected ProductAdminPresenter getPresenter() {
-        return presenter;
-    }
+	@Override
+	protected ProductAdminPresenter getPresenter() {
+		return presenter;
+	}
 
-    @Override
-    protected Grid<Product> getGrid() {
-        return getViewComponent().list;
-    }
+	@Override
+	protected Grid<Product> getGrid() {
+		return getViewComponent().list;
+	}
 
-    @Override
-    protected void setGrid(Grid<Product> grid) {
-        getViewComponent().list = grid;
-    }
+	@Override
+	protected void setGrid(Grid<Product> grid) {
+		getViewComponent().list = grid;
+	}
 
-    @Override
-    protected Component getForm() {
-        return getViewComponent().form;
-    }
+	@Override
+	protected Component getForm() {
+		return getViewComponent().form;
+	}
 
-    @Override
-    protected Button getAdd() {
-        return getViewComponent().add;
-    }
+	@Override
+	protected Button getAdd() {
+		return getViewComponent().add;
+	}
 
-    @Override
-    protected Button getCancel() {
-        return getViewComponent().cancel;
-    }
+	@Override
+	protected Button getCancel() {
+		return getViewComponent().cancel;
+	}
 
-    @Override
-    protected Button getDelete() {
-        return getViewComponent().delete;
-    }
+	@Override
+	protected Button getDelete() {
+		return getViewComponent().delete;
+	}
 
-    @Override
-    protected Button getUpdate() {
-        return getViewComponent().update;
-    }
+	@Override
+	protected Button getUpdate() {
+		return getViewComponent().update;
+	}
 
-    @Override
-    protected TextField getSearch() {
-        return getViewComponent().search;
-    }
+	@Override
+	protected TextField getSearch() {
+		return getViewComponent().search;
+	}
 
 }

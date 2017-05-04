@@ -6,10 +6,8 @@ import com.vaadin.addon.charts.model.ListSeries;
 
 public class MyListSeries extends ListSeries {
 
-    public MyListSeries(String name,
-            List<? extends Number> deliveriesForMonth) {
-        super(name, deliveriesForMonth
-                .toArray(new Number[deliveriesForMonth.size()]));
-    }
+	public MyListSeries(String name, List<? extends Number> deliveriesForMonth) {
+		super(name, deliveriesForMonth.toArray(new Number[deliveriesForMonth.size()]));
+	}
 
 }

@@ -6,12 +6,11 @@ import com.vaadin.template.orders.ui.PrototypeScope;
 
 @SpringComponent
 @PrototypeScope
-public class AccessDeniedView extends AccessDeniedDesign
-        implements OrdersView {
+public class AccessDeniedView extends AccessDeniedDesign implements OrdersView {
 
-    @Override
-    public void enter(ViewChangeEvent event) {
-        // Nothing to do, just show the view
-    }
+	@Override
+	public void enter(ViewChangeEvent event) {
+		// Nothing to do, just show the view
+	}
 
 }

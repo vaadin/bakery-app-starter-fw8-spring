@@ -8,13 +8,12 @@ import com.vaadin.template.orders.backend.data.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByEmail(String email);
+	User findByEmail(String email);
 
-    Page<User> findByOrderByEmail(Pageable pageable);
+	Page<User> findByOrderByEmail(Pageable pageable);
 
-    Page<User> findByEmailLikeIgnoreCaseOrNameLikeIgnoreCaseOrderByEmail(
-            String emailLike, String nameLike, Pageable pageable);
+	Page<User> findByEmailLikeIgnoreCaseOrNameLikeIgnoreCaseOrderByEmail(String emailLike, String nameLike,
+			Pageable pageable);
 
-    long countByEmailLikeIgnoreCaseOrNameLikeIgnoreCase(String emailLike,
-            String nameLike);
+	long countByEmailLikeIgnoreCaseOrNameLikeIgnoreCase(String emailLike, String nameLike);
 }

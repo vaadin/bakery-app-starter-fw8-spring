@@ -11,21 +11,21 @@ import com.vaadin.template.orders.ui.PrototypeScope;
 @PrototypeScope
 public class OrderHistoryController {
 
-    private OrderHistory view;
+	private OrderHistory view;
 
-    @Autowired
-    private OrderService orderService;
+	@Autowired
+	private OrderService orderService;
 
-    @Autowired
-    private EventBus.ViewEventBus eventBus;
+	@Autowired
+	private EventBus.ViewEventBus eventBus;
 
-    public void init(OrderHistory view) {
-        this.view = view;
-    }
+	public void init(OrderHistory view) {
+		this.view = view;
+	}
 
-    public void addNewComment(String comment) {
-        orderService.addHistoryItem(view.getOrder(), comment);
-        eventBus.publish(this, new OrderUpdated());
-    }
+	public void addNewComment(String comment) {
+		orderService.addHistoryItem(view.getOrder(), comment);
+		eventBus.publish(this, new OrderUpdated());
+	}
 
 }
