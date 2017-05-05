@@ -8,6 +8,8 @@
 
 	.order-form {
 		max-width: 900px;
+	  	display: flex;
+	  	flex-wrap: wrap;
 
 		.add-items {
 			text-align: left;
@@ -17,6 +19,15 @@
 			text-align: right;
 			border-top: 2px solid black;
 		}
+	}
+	.order-form > * {
+		margin: 8px;
+	}
+	.order-form > .v-caption {
+		display: none;
+	}
+	.order-form[width-range~="600px-"] > .half {
+		width: calc(50% - 16px) !important;
 	}
 
 	.history {
