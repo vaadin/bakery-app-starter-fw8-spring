@@ -4,6 +4,10 @@
 		color: #5a6054;
 		font-size: 60px;
 		text-shadow: 1px 1px 3px rgba(0,0,0,.2);
+		
+		&:after {
+			display: none;
+		}
 	}
 
 	.order-form {
@@ -25,6 +29,11 @@
 	}
 	.order-form > .v-caption {
 		display: none;
+	}
+	.order-form[width-range~="-599px"] {
+		.cancel {
+			order: 99;
+		}
 	}
 	.order-form[width-range~="600px-"] > .half {
 		width: calc(50% - 16px) !important;
