@@ -6,7 +6,6 @@ import com.vaadin.annotations.PropertyId;
 import com.vaadin.template.orders.ui.components.PickupLocationComboBox;
 import com.vaadin.template.orders.ui.view.orders.OrderHistory;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.DateTimeField;
 import com.vaadin.ui.HorizontalLayout;
@@ -43,7 +42,6 @@ public class OrderEditViewDesign extends VerticalLayout {
 	protected TextField email;
 	@PropertyId("customer.details")
 	protected TextField details;
-	protected CheckBox newCustomer;
 	protected CssLayout productInfoContainer;
 	protected Button addItems;
 	protected Label total;
