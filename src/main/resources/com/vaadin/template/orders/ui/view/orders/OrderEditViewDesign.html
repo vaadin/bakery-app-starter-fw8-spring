@@ -8,121 +8,58 @@
   <meta name="package-mapping" content="com_vaadin_template_orders_ui_components:com.vaadin.template.orders.ui.components">
  </head>
  <body>
-  <vaadin-vertical-layout style-name="order-form">
-   <vaadin-grid-layout spacing width-full>
-    <row>
-     <column colspan="2">
-      <vaadin-horizontal-layout width-full _id="reportHeader">
-       <vaadin-label style-name="header bold" id="id" plain-text _id="orderId">
-         #182 
-       </vaadin-label>
-       <vaadin-label style-name="header bold" id="state" plain-text _id="state">
-         New order 
-       </vaadin-label>
-       <vaadin-button id="setState" plain-text _id="setState" :right :expand>
-         Set state... 
-       </vaadin-button>
-      </vaadin-horizontal-layout>
-     </column>
-    </row>
-    <row>
-     <column>
-      <vaadin-label style-name="header" plain-text>
-        Due 
-      </vaadin-label>
-     </column>
-    </row>
-    <row>
-     <column>
-      <vaadin-date-time-field placeholder="Due" width-full _id="dueDateTime"></vaadin-date-time-field>
-     </column>
-     <column>
-      <vaadin-horizontal-layout width-full>
-       <vaadin-label style-name="large" plain-text :middle>
-         @ 
-       </vaadin-label>
-       <com_vaadin_template_orders_ui_components-pickup-location-combo-box width-full _id="pickupLocation" :expand></com_vaadin_template_orders_ui_components-pickup-location-combo-box>
-      </vaadin-horizontal-layout>
-     </column>
-    </row>
-    <row>
-     <column>
-      <vaadin-label style-name="header" plain-text>
-        Customer 
-      </vaadin-label>
-     </column>
-    </row>
-    <row>
-     <column>
-      <vaadin-text-field placeholder="First Name" width-full data-property-id="customer.firstName" _id="firstName"></vaadin-text-field>
-     </column>
-     <column>
-      <vaadin-text-field placeholder="Last Name" width-full data-property-id="customer.lastName" _id="lastName"></vaadin-text-field>
-     </column>
-    </row>
-    <row>
-     <column>
-      <vaadin-text-field placeholder="Phone number" width-full data-property-id="customer.phoneNumber" _id="phone"></vaadin-text-field>
-     </column>
-     <column>
-      <vaadin-text-field placeholder="E-mail" width-full data-property-id="customer.email" _id="email"></vaadin-text-field>
-     </column>
-    </row>
-    <row>
-     <column colspan="2">
-      <vaadin-text-field placeholder="Additional details" width-full data-property-id="customer.details" _id="details"></vaadin-text-field>
-     </column>
-    </row>
-    <row>
-     <column>
-      <vaadin-check-box caption="New customer" _id="newCustomer"></vaadin-check-box>
-     </column>
-    </row>
-    <row>
-     <column>
-      <vaadin-label style-name="header" plain-text>
-        Products 
-      </vaadin-label>
-     </column>
-    </row>
-    <row>
-     <column colspan="2">
-      <vaadin-css-layout width-full _id="productInfoContainer"></vaadin-css-layout>
-     </column>
-    </row>
-    <row></row>
-    <row>
-     <column colspan="2">
-      <vaadin-button icon="fonticon://Vaadin-Icons/e7fe" style-name="add-items link" width-full height="100px" _id="addItems">
-        Add item 
-      </vaadin-button>
-     </column>
-    </row>
-    <row>
-     <column colspan="2">
-      <vaadin-label style-name="total huge bold" width-full plain-text _id="total">
-        0.00 
-      </vaadin-label>
-     </column>
-    </row>
-    <row>
-     <column colspan="2">
-      <com_vaadin_template_orders_ui_view_orders-order-history width-full _id="history"></com_vaadin_template_orders_ui_view_orders-order-history>
-     </column>
-    </row>
-    <row>
-     <column>
-      <vaadin-button style-name="link" _id="editBackCancel">
-        Cancel 
-      </vaadin-button>
-     </column>
-     <column>
-      <vaadin-button style-name="primary" plain-text _id="ok" :right>
-        Place order... 
-      </vaadin-button>
-     </column>
-    </row>
-   </vaadin-grid-layout>
+  <vaadin-vertical-layout>
+   <vaadin-css-layout style-name="order-form" responsive width-full>
+    <vaadin-horizontal-layout width-full _id="reportHeader">
+     <vaadin-label style-name="header bold" id="id" plain-text _id="orderId">
+       #182 
+     </vaadin-label>
+     <vaadin-label style-name="header bold" id="state" plain-text _id="state">
+       New order 
+     </vaadin-label>
+     <vaadin-button id="setState" plain-text _id="setState" :right :expand>
+       Set state... 
+     </vaadin-button>
+    </vaadin-horizontal-layout>
+    <vaadin-label style-name="header" width-full plain-text>
+      Due 
+    </vaadin-label>
+    <vaadin-date-time-field placeholder="Due" style-name="half" width-full _id="dueDateTime"></vaadin-date-time-field>
+    <vaadin-horizontal-layout style-name="half" width-full>
+     <vaadin-label style-name="large" plain-text :middle>
+       @ 
+     </vaadin-label>
+     <com_vaadin_template_orders_ui_components-pickup-location-combo-box width-full _id="pickupLocation" :expand></com_vaadin_template_orders_ui_components-pickup-location-combo-box>
+    </vaadin-horizontal-layout>
+    <vaadin-label style-name="header" width-full plain-text>
+      Customer 
+    </vaadin-label>
+    <vaadin-text-field style-name="half" placeholder="First Name" width-full data-property-id="customer.firstName" _id="firstName"></vaadin-text-field>
+    <vaadin-text-field style-name="half" placeholder="Last Name" width-full data-property-id="customer.lastName" _id="lastName"></vaadin-text-field>
+    <vaadin-text-field style-name="half" placeholder="Phone number" width-full data-property-id="customer.phoneNumber" _id="phone"></vaadin-text-field>
+    <vaadin-text-field style-name="half" placeholder="E-mail" width-full data-property-id="customer.email" _id="email"></vaadin-text-field>
+    <vaadin-text-field placeholder="Additional details" width-full data-property-id="customer.details" _id="details"></vaadin-text-field>
+    <vaadin-check-box caption="New customer" width-full _id="newCustomer"></vaadin-check-box>
+    <vaadin-label style-name="header" width-full plain-text>
+      Products 
+    </vaadin-label>
+    <vaadin-css-layout width-full _id="productInfoContainer"></vaadin-css-layout>
+    <vaadin-button icon="fonticon://Vaadin-Icons/e7fe" style-name="add-items link" width-full height="100px" _id="addItems">
+      Add item 
+    </vaadin-button>
+    <vaadin-label style-name="total huge bold" width-full plain-text _id="total">
+      0.00 
+    </vaadin-label>
+    <com_vaadin_template_orders_ui_view_orders-order-history width-full _id="history"></com_vaadin_template_orders_ui_view_orders-order-history>
+    <vaadin-horizontal-layout width-full>
+     <vaadin-button style-name="link" _id="editBackCancel">
+       Cancel 
+     </vaadin-button>
+     <vaadin-button style-name="primary" plain-text _id="ok" :right>
+       Place order... 
+     </vaadin-button>
+    </vaadin-horizontal-layout>
+   </vaadin-css-layout>
   </vaadin-vertical-layout>
  </body>
 </html>
