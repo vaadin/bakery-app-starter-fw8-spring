@@ -1,6 +1,5 @@
 package com.vaadin.template.orders.ui.view.orders;
 
-import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -56,16 +55,6 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 		// report validation errors for the first invalid field and it is most
 		// intuitive for the user that we start from the top if there are
 		// multiple errors.
-		binder.forField(dueDateTime).asRequired("You must select a date").bind(order -> {
-			if (order.getDueDate() == null || order.getDueTime() == null) {
-				return null;
-			}
-
-			return LocalDateTime.of(order.getDueDate(), order.getDueTime());
-		}, (order, value) -> {
-			order.setDueDate(value.toLocalDate());
-			order.setDueTime(value.toLocalTime());
-		});
 		binder.bindInstanceFields(this);
 
 		// These can be removed once
@@ -77,7 +66,7 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 		binder.bind(details, "customer.details");
 
 		addItems.addClickListener(e -> addEmptyOrderItem());
-		editBackCancel.addClickListener(e -> presenter.editBackCancelPressed());
+		cancel.addClickListener(e -> presenter.editBackCancelPressed());
 		ok.addClickListener(e -> presenter.okPressed());
 
 		setState.addClickListener(e -> {
@@ -98,16 +87,17 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 	}
 
 	public void setOrder(Order order) {
-		orderId.setValue("#" + order.getId());
-		state.setValue(order.getState().getDisplayName());
+		orderState.setValue(order.getState().getDisplayName());
+		setState.setVisible(order.getId() != null);
 		binder.setBean(order);
 		productInfoContainer.removeAllComponents();
 
 		reportHeader.setVisible(order.getId() != null);
 		if (order.getId() == null) {
 			addEmptyOrderItem();
-			dueDateTime.focus();
+			dueDate.focus();
 		} else {
+			orderId.setValue("#" + order.getId());
 			for (OrderItem item : order.getItems()) {
 				ProductInfo productInfo = createProductInfo(item);
 				productInfo.setReportMode(mode != Mode.EDIT);
@@ -166,16 +156,16 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 		setState.setVisible(mode == Mode.REPORT);
 
 		if (mode == Mode.REPORT) {
-			editBackCancel.setCaption("Edit");
+			cancel.setCaption("Edit");
 			Optional<OrderState> nextState = presenter.getNextHappyPathState(getOrder().getState());
 			ok.setCaption(nextState.map(OrderState::getDisplayName).orElse("?"));
 			ok.setVisible(nextState.isPresent());
 		} else if (mode == Mode.CONFIRMATION) {
-			editBackCancel.setCaption("< Back");
+			cancel.setCaption("< Back");
 			ok.setCaption("Place order");
 			ok.setVisible(true);
 		} else {
-			editBackCancel.setCaption("Cancel");
+			cancel.setCaption("Cancel");
 			ok.setCaption("Done");
 			ok.setVisible(true);
 		}

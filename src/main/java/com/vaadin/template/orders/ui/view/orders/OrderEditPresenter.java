@@ -1,5 +1,6 @@
 package com.vaadin.template.orders.ui.view.orders;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.data.OrderState;
+import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.ui.NavigationManager;
@@ -69,6 +71,8 @@ public class OrderEditPresenter {
 			order = new Order();
 			order.setState(OrderState.NEW);
 			order.setItems(new ArrayList<>());
+			order.setCustomer(new Customer());
+			order.setDueTime(LocalTime.of(8, 00));
 		} else {
 			order = orderService.findOrder(id);
 			if (order == null) {
@@ -172,7 +176,7 @@ public class OrderEditPresenter {
 
 		} catch (ValidationException e) {
 			// Should not get here if validation is setup properly
-			Notification.show("Please check the contents of the fields.", Type.ERROR_MESSAGE);
+			Notification.show("Please check the contents of the fields: " + e.getMessage(), Type.ERROR_MESSAGE);
 			getLogger().log(Level.FINEST, "Validation error during order save", e);
 			return null;
 		} catch (Exception e) {

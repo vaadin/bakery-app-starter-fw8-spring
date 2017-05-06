@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;orderstheme&quot;}">
-  <meta name="vaadin-version" content="8.0.2">
+  <meta name="vaadin-version" content="8.0.5">
   <meta name="package-mapping" content="com_vaadin_template_orders_ui_view_orders:com.vaadin.template.orders.ui.view.orders">
   <meta name="package-mapping" content="com_vaadin_template_orders_ui_components:com.vaadin.template.orders.ui.components">
  </head>
@@ -14,7 +14,7 @@
      <vaadin-label style-name="header bold" id="orderId" plain-text _id="orderId">
        #182 
      </vaadin-label>
-     <vaadin-label style-name="header bold" id="state" plain-text _id="state">
+     <vaadin-label style-name="header bold" id="orderState" plain-text _id="orderState">
        New order 
      </vaadin-label>
      <vaadin-button id="setState" plain-text _id="setState" :right :expand>
@@ -24,7 +24,7 @@
     <vaadin-label style-name="header" width-full plain-text>
       Due 
     </vaadin-label>
-    <vaadin-date-time-field id="dueDateTime" placeholder="Due" style-name="half" width-full _id="dueDateTime"></vaadin-date-time-field>
+    <vaadin-date-field id="dueDate" placeholder="Due" style-name="half" width-full _id="dueDate"></vaadin-date-field>
     <vaadin-horizontal-layout style-name="half" width-full>
      <vaadin-label style-name="large" plain-text :middle>
        @ 
@@ -50,7 +50,7 @@
       0.00 
     </vaadin-label>
     <com_vaadin_template_orders_ui_view_orders-order-history id="history" width-full _id="history"></com_vaadin_template_orders_ui_view_orders-order-history>
-    <vaadin-button style-name="link half cancel" id="editBackCancel" width-full height="60px" _id="editBackCancel">
+    <vaadin-button style-name="link half cancel" id="cancel" width-full height="60px" _id="cancel">
       Cancel 
     </vaadin-button>
     <vaadin-button style-name="primary half" id="ok" width-full height="60px" plain-text _id="ok">
