@@ -10,10 +10,10 @@
   <vaadin-grid-layout style-name="product-row" spacing width-full>
    <row>
     <column expand="1">
-     <orders-product-combo-box width-full _id="product"></orders-product-combo-box>
+     <orders-product-combo-box id="product" width-full _id="product"></orders-product-combo-box>
     </column>
     <column>
-     <vaadin-text-field width="5em" _id="quantity"></vaadin-text-field>
+     <vaadin-text-field id="quantity" width="5em" _id="quantity"></vaadin-text-field>
     </column>
     <column>
      <vaadin-label plain-text>
@@ -21,14 +21,14 @@
      </vaadin-label>
     </column>
     <column>
-     <vaadin-label plain-text _id="price">
+     <vaadin-label id="price" plain-text _id="price">
        0.00 
      </vaadin-label>
     </column>
    </row>
    <row>
     <column>
-     <vaadin-text-field placeholder="Details" width-full _id="comment"></vaadin-text-field>
+     <vaadin-text-field id="comment" placeholder="Details" width-full _id="comment"></vaadin-text-field>
     </column>
    </row>
    <row></row>

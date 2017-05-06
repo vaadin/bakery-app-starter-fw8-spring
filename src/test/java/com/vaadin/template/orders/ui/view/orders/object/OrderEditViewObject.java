@@ -7,7 +7,7 @@ import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.ui.view.object.AbstractViewObject;
 import com.vaadin.template.orders.ui.view.orders.OrderHistory;
 import com.vaadin.testbench.elements.ButtonElement;
-import com.vaadin.testbench.elements.CustomGridLayoutElement;
+import com.vaadin.testbench.elements.GridLayoutElement;
 import com.vaadin.testbench.elements.LabelElement;
 import com.vaadin.testbench.elements.TextFieldElement;
 import com.vaadin.testbench.elements.WindowElement;
@@ -30,9 +30,9 @@ public class OrderEditViewObject extends AbstractViewObject {
 		return OrderState.forDisplayName(displayName);
 	}
 
-	public List<HistoryItemObject> getHistory() {
+	public List<HistoryItemObject> getItems() {
 		List<HistoryItemObject> history = new ArrayList<>();
-		CustomGridLayoutElement layout = $(CustomGridLayoutElement.class).id("history");
+		GridLayoutElement layout = $(GridLayoutElement.class).id("items");
 		for (int i = 0; i < layout.getRowCount(); i++) {
 			String date = layout.getCell(i, 0).getText();
 			String message = layout.getCell(i, 1).getText();

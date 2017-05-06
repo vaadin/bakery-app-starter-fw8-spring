@@ -10,8 +10,8 @@ import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.ui.view.object.LoginViewObject;
 import com.vaadin.template.orders.ui.view.orders.object.OrderEditViewObject;
-import com.vaadin.template.orders.ui.view.orders.object.OrderListViewObject;
 import com.vaadin.template.orders.ui.view.orders.object.OrderEditViewObject.HistoryItemObject;
+import com.vaadin.template.orders.ui.view.orders.object.OrderListViewObject;
 
 public class UpdateOrderIT extends AbstractOrdersIT {
 
@@ -30,9 +30,9 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 		OrderListViewObject storeFront = LoginViewObject.loginAsBarista();
 		OrderEditViewObject orderEdit = storeFront.selectOrder(1);
 
-		Assert.assertEquals(3, orderEdit.getHistory().size());
+		Assert.assertEquals(3, orderEdit.getItems().size());
 		orderEdit.addHistoryComment("foo");
-		List<HistoryItemObject> history = orderEdit.getHistory();
+		List<HistoryItemObject> history = orderEdit.getItems();
 		Assert.assertEquals(4, history.size());
 		Assert.assertEquals("foo", history.get(3).getMessage());
 
