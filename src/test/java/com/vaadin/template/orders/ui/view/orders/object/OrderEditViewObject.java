@@ -3,6 +3,9 @@ package com.vaadin.template.orders.ui.view.orders.object;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.ui.view.object.AbstractViewObject;
 import com.vaadin.template.orders.ui.view.orders.OrderHistory;
@@ -68,7 +71,12 @@ public class OrderEditViewObject extends AbstractViewObject {
 
 	}
 
+	private void scrollIntoView(WebElement element) {
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView()", element);
+	}
+
 	public void addHistoryComment(String message) {
+		scrollIntoView(getAddHistoryComment());
 		getAddHistoryComment().click();
 		TextFieldElement input = getHistoryCommentInput();
 		input.setValue(message);

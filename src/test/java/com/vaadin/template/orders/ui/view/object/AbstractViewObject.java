@@ -49,6 +49,9 @@ public class AbstractViewObject extends TestBenchTestCase {
 		}
 
 		WebElement dialog = elements.get(0);
+		if (!dialog.isDisplayed()) {
+			return;
+		}
 		WebElement closeButton = getShadowRoot(dialog).findElement(By.id("licenseDialogClose"));
 		closeButton.click();
 	}

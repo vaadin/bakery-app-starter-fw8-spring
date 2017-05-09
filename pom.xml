@@ -276,6 +276,11 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<systemPropertyVariables>
+						<webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
+					</systemPropertyVariables>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -312,6 +317,25 @@
 						<id>yarn install</id>
 						<goals>
 							<goal>yarn</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Plugin for automatically download Chrome Driver for tests -->
+			<plugin>
+				<groupId>com.lazerycode.selenium</groupId>
+				<artifactId>driver-binary-downloader-maven-plugin</artifactId>
+				<version>1.0.12</version>
+				<configuration>
+					<!-- root directory that downloaded driver binaries will be stored in -->
+					<onlyGetDriversForHostOperatingSystem>true</onlyGetDriversForHostOperatingSystem>
+					<rootStandaloneServerDirectory>driver</rootStandaloneServerDirectory>
+					<customRepositoryMap>webdrivers.xml</customRepositoryMap>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>selenium</goal>
 						</goals>
 					</execution>
 				</executions>
