@@ -19,11 +19,6 @@ import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 @UIScope
 public class NavigationManagerBean extends SpringNavigator implements NavigationManager {
 
-	@PostConstruct
-	protected void initialize() {
-		System.out.println("Initializing navigation manager");
-	}
-
 	/**
 	 * Find the view id (URI fragment) used for a given view class.
 	 *
