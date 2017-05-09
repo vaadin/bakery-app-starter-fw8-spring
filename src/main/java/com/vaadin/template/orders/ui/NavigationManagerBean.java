@@ -1,7 +1,5 @@
 package com.vaadin.template.orders.ui;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

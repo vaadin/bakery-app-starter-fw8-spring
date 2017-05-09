@@ -13,10 +13,7 @@ import com.vaadin.annotations.Viewport;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
-import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.ui.view.AccessDeniedView;
-import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
-import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 import com.vaadin.ui.UI;
 
 @Theme("orderstheme")
