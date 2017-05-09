@@ -11,7 +11,7 @@ public class ProductInfoElement extends ProductInfoDesignElement {
 		private String product;
 		private String comment;
 		private int quantity;
-		private String price;
+		private int price;
 
 		public ProductOrderData() {
 
@@ -47,12 +47,16 @@ public class ProductInfoElement extends ProductInfoDesignElement {
 			this.quantity = quantity;
 		}
 
-		public String getPrice() {
+		public int getPrice() {
 			return price;
 		}
 
-		public void setPrice(String price) {
+		public void setPrice(int price) {
 			this.price = price;
+		}
+
+		public void setPrice(double price) {
+			setPrice((int) (100 * price));
 		}
 
 	}
@@ -73,7 +77,8 @@ public class ProductInfoElement extends ProductInfoDesignElement {
 			// Hidden in report mode if there is no comment
 			productOrderData.setComment("");
 		}
-		productOrderData.setPrice(getPrice().getText());
+		int intPrice = (int) (100 * Double.parseDouble(getPrice().getText().replace("$", "")));
+		productOrderData.setPrice(intPrice);
 
 		return productOrderData;
 	}

@@ -90,8 +90,8 @@ public class OrderEditPresenter {
 	}
 
 	private void updateTotalSum() {
-		double sum = view.getOrder().getItems().stream().filter(item -> item.getProduct() != null)
-				.collect(Collectors.summingDouble(item -> item.getProduct().getPrice() * item.getQuantity()));
+		int sum = view.getOrder().getItems().stream().filter(item -> item.getProduct() != null)
+				.collect(Collectors.summingInt(item -> item.getProduct().getPrice() * item.getQuantity()));
 		view.setSum(sum);
 	}
 

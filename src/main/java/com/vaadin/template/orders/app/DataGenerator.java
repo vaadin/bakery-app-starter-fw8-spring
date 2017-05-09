@@ -289,7 +289,8 @@ public class DataGenerator {
 		for (int i = 0; i < 10; i++) {
 			Product product = new Product();
 			product.setName(getRandomProductName());
-			product.setPrice(2.0 + random.nextDouble() * 100.0);
+			double doublePrice = 2.0 + random.nextDouble() * 100.0;
+			product.setPrice((int) (doublePrice * 100.0));
 			products.add(productsRepo.save(product));
 		}
 	}
