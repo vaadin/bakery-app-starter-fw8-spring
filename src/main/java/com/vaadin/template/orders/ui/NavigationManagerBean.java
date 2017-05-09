@@ -1,7 +1,5 @@
 package com.vaadin.template.orders.ui;
 
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.navigator.View;
@@ -9,6 +7,7 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.internal.Conventions;
 import com.vaadin.spring.navigator.SpringNavigator;
+import com.vaadin.template.orders.app.security.SecurityUtils;
 import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
 import com.vaadin.template.orders.ui.view.orders.OrdersListView;
@@ -48,7 +47,7 @@ public class NavigationManagerBean extends SpringNavigator implements Navigation
 
 	@Override
 	public void navigateToDefaultView() {
-		// If the user wants a speficic view, it's in the URL.
+		// If the user wants a specific view, it's in the URL.
 		// Otherwise admin goes to DashboardView and everybody else to
 		// OrderListView
 
@@ -56,12 +55,6 @@ public class NavigationManagerBean extends SpringNavigator implements Navigation
 			return;
 		}
 
-		navigateTo(isCurrentUserAdmin() ? DashboardView.class : OrdersListView.class);
-	}
-
-	private boolean isCurrentUserAdmin() {
-		SecurityContext context = SecurityContextHolder.getContext();
-		return context.getAuthentication().getAuthorities().stream()
-				.filter(authority -> authority.getAuthority().equals(Role.ADMIN)).findAny().isPresent();
+		navigateTo(SecurityUtils.isCurrentUserInRole(Role.ADMIN) ? DashboardView.class : OrdersListView.class);
 	}
 }
