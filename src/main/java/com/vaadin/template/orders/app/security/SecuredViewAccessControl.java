@@ -1,7 +1,6 @@
 package com.vaadin.template.orders.app.security;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.security.access.annotation.Secured;
@@ -11,7 +10,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.spring.access.ViewAccessControl;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.server.SpringVaadinServletService;
-import com.vaadin.template.orders.ui.OrdersUI;
 import com.vaadin.ui.UI;
 
 @SpringComponent
@@ -31,18 +29,7 @@ public class SecuredViewAccessControl implements ViewAccessControl, Serializable
 	}
 
 	private boolean isAccessGranted(UI ui, Secured viewSecured) {
-		if (viewSecured == null) {
-			return true;
-		}
-
-		Set<String> userRoles = ((OrdersUI) ui).getUserRoles();
-		for (String roleWithAccess : viewSecured.value()) {
-			if (userRoles.contains(roleWithAccess)) {
-				return true;
-			}
-		}
-
-		return false;
+		return SecurityUtils.isAccessGranted(ui, viewSecured);
 	}
 
 	protected WebApplicationContext getWebApplicationContext(UI ui) {
@@ -53,5 +40,4 @@ public class SecuredViewAccessControl implements ViewAccessControl, Serializable
 
 		return webApplicationContext;
 	}
-
 }
