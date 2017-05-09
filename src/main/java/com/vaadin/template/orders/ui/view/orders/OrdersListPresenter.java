@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.data.entity.Order;
-import com.vaadin.template.orders.ui.OrdersUI;
+import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.components.OrdersDataProvider;
 
@@ -13,6 +13,9 @@ import com.vaadin.template.orders.ui.components.OrdersDataProvider;
 public class OrdersListPresenter {
 
 	private OrdersListView view;
+
+	@Autowired
+	private NavigationManager navigationManager;
 
 	@Autowired
 	private OrdersDataProvider ordersDataProvider;
@@ -34,11 +37,10 @@ public class OrdersListPresenter {
 	}
 
 	public void selectedOrder(Order order) {
-		((OrdersUI) view.getUI()).navigateTo(OrderEditView.class, order.getId());
+		navigationManager.navigateTo(OrderEditView.class, order.getId());
 	}
 
 	public void newOrder() {
-		((OrdersUI) view.getUI()).navigateTo(OrderEditView.class);
+		navigationManager.navigateTo(OrderEditView.class);
 	}
-
 }
