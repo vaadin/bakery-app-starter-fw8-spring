@@ -1,11 +1,7 @@
 package com.vaadin.template.orders.ui;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.vaadin.annotations.Theme;
@@ -30,7 +26,6 @@ public class OrdersUI extends UI {
 	@Autowired
 	private MainView mainView;
 	private String username;
-	private Set<String> userRoles;
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
@@ -39,8 +34,6 @@ public class OrdersUI extends UI {
 		UsernamePasswordAuthenticationToken p = (UsernamePasswordAuthenticationToken) vaadinRequest.getUserPrincipal();
 		UserDetails userDetails = (UserDetails) p.getPrincipal();
 		username = userDetails.getUsername();
-		userRoles = userDetails.getAuthorities().stream().map(auth -> ((SimpleGrantedAuthority) auth).getAuthority())
-				.collect(Collectors.toSet());
 		setContent(mainView);
 		mainView.populateMenu();
 
@@ -53,9 +46,5 @@ public class OrdersUI extends UI {
 
 	public String getUsername() {
 		return username;
-	}
-
-	public Set<String> getUserRoles() {
-		return userRoles;
 	}
 }
