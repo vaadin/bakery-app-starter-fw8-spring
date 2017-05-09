@@ -1,7 +1,6 @@
 package com.vaadin.template.orders.ui;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinServletService;
@@ -15,12 +14,12 @@ import com.vaadin.template.orders.app.security.SecuredViewAccessControl;
 public class MainPresenter {
 
 	@Autowired
+	private NavigationManager navigationManager;
+
+	@Autowired
 	private SecuredViewAccessControl viewAccessControl;
 
 	private MainView view;
-
-	@Autowired
-	private ApplicationContext applicationContext;
 
 	void init(MainView view) {
 		this.view = view;
@@ -34,7 +33,7 @@ public class MainPresenter {
 	 *            {@link SpringView @SpringView}
 	 */
 	public void navigateTo(Class<? extends View> viewClass) {
-		view.getUI().getNavigator().navigateTo(OrdersUI.getViewId(viewClass));
+		view.getUI().getNavigator().navigateTo(navigationManager.getViewId(viewClass));
 	}
 
 	public void logout() {

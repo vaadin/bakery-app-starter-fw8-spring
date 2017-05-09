@@ -20,7 +20,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.service.OrderService;
-import com.vaadin.template.orders.ui.OrdersUI;
+import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
 import com.vaadin.ui.Component.Focusable;
@@ -35,6 +35,9 @@ public class OrderEditPresenter {
 
 	@Autowired
 	private OrderService orderService;
+
+	@Autowired
+	private NavigationManager navigationManager;
 
 	private static final List<OrderState> happyPath = Arrays.asList(OrderState.NEW, OrderState.CONFIRMED,
 			OrderState.READY_FOR_PICKUP, OrderState.DELIVERED);
@@ -99,7 +102,7 @@ public class OrderEditPresenter {
 			// Cancel edit
 			Long id = view.getOrder().getId();
 			if (id == null) {
-				((OrdersUI) view.getUI()).navigateTo(OrdersListView.class);
+				navigationManager.navigateTo(OrdersListView.class);
 			} else {
 				enterView(id);
 			}
@@ -121,7 +124,7 @@ public class OrderEditPresenter {
 			Order order = saveOrder();
 			if (order != null) {
 				// Navigate to edit view so URL is updated correctly
-				((OrdersUI) view.getUI()).navigateTo(OrderEditView.class, order.getId());
+				navigationManager.navigateTo(OrderEditView.class, order.getId());
 			}
 		} else if (view.getMode() == Mode.EDIT) {
 			Optional<HasValue<?>> firstErrorField = view.validate().findFirst();
