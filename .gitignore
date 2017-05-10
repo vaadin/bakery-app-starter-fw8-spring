@@ -8,6 +8,7 @@ styles.css
 styles.scss.cache
 addons.scss
 
+.designer
 .vaadin-designer2
 
 orders.iml
@@ -15,3 +16,9 @@ orders.iml
 yarn.lock
 src/main/frontend
 src/main/webapp/VAADIN/frontend
+
+.driver
+.DS_Store
+**/*~
+
+error-screenshots
