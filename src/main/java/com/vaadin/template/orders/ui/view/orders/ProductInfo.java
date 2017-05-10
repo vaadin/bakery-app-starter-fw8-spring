@@ -59,7 +59,7 @@ public class ProductInfo extends ProductInfoDesign {
 		viewEventBus.publish(new ProductInfoChange());
 	}
 
-	public double getSum() {
+	public int getSum() {
 		OrderItem item = binder.getBean();
 		return item.getQuantity() * item.getProduct().getPrice();
 	}

@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.template.orders.backend.UserRepository;
 import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.backend.data.entity.User;
+import com.vaadin.template.orders.backend.service.UserService;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudPresenter;
 
@@ -19,13 +19,13 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 	@Autowired
 	private UserAdminDataProvider userAdminDataProvider;
 	@Autowired
-	private UserRepository repository;
+	private UserService service;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Override
 	protected User getCopy(User entity) {
-		return repository.findOne(entity.getId());
+		return service.get(entity.getId());
 	}
 
 	@Override
@@ -35,12 +35,12 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 
 	@Override
 	protected void deleteEntity(User entity) {
-		repository.delete(entity.getId());
+		service.delete(entity.getId());
 	}
 
 	@Override
 	protected User saveEntity(User editItem) {
-		return repository.save(editItem);
+		return service.save(editItem);
 	}
 
 	@Override

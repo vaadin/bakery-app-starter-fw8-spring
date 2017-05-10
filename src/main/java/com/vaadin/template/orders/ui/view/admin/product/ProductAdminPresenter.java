@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.template.orders.backend.ProductRepository;
 import com.vaadin.template.orders.backend.data.entity.Product;
+import com.vaadin.template.orders.backend.service.ProductService;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudPresenter;
 
@@ -16,13 +16,13 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 	@Autowired
 	private ProductAdminDataProvider userAdminDataProvider;
 	@Autowired
-	private ProductRepository repository;
+	private ProductService service;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Override
 	protected Product getCopy(Product entity) {
-		return repository.findOne(entity.getId());
+		return service.get(entity.getId());
 	}
 
 	@Override
@@ -32,12 +32,12 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 
 	@Override
 	protected void deleteEntity(Product entity) {
-		repository.delete(entity.getId());
+		service.delete(entity.getId());
 	}
 
 	@Override
 	protected Product saveEntity(Product editItem) {
-		return repository.save(editItem);
+		return service.save(editItem);
 	}
 
 	@Override
