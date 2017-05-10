@@ -12,12 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
+import com.vaadin.data.ValueContext;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.data.entity.OrderItem;
-import com.vaadin.template.orders.ui.components.DollarPriceFormatter;
 import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
@@ -32,7 +33,7 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 	private ObjectProvider<ProductInfo> productInfoProvider;
 
 	@Autowired
-	private DollarPriceFormatter formatter;
+	private DollarPriceConverter priceConverter;
 
 	private BeanValidationBinder<Order> binder;
 
@@ -134,8 +135,8 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 		return binder.getBean();
 	}
 
-	protected void setSum(double sum) {
-		total.setValue(formatter.format(sum, Locale.US));
+	protected void setSum(int sum) {
+		total.setValue(priceConverter.convertToPresentation(sum, new ValueContext(Locale.US)));
 	}
 
 	public void showNotFound() {

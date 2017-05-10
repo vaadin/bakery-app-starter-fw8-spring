@@ -26,14 +26,14 @@ public class OrderHistoryElement extends OrderHistoryDesignElement {
 		for (int i = 0; i < layout.getRowCount(); i++) {
 			String date = layout.getCell(i, 0).getText();
 			String message = layout.getCell(i, 1).getText();
-			String author = layout.getCell(i, 1).getText();
+			String author = layout.getCell(i, 2).getText();
 			history.add(new OrderHistoryItemObject(date, message, author));
 		}
 		return history;
 	}
 
 	public void addComment(String message) {
-		getAddComment().click();
+		ElementUtil.click(getAddComment());
 		TextFieldElement input = getCommentInput();
 		input.setValue(message);
 

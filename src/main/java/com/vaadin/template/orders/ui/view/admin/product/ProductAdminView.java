@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.data.ValueContext;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.template.orders.app.PriceConverter;
+import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudView;
@@ -25,7 +25,7 @@ public class ProductAdminView extends AbstractCrudView<Product> implements Order
 	private final ProductAdminViewDesign userAdminViewDesign;
 
 	@Autowired
-	private PriceConverter priceToStringConverter;
+	private DollarPriceConverter priceToStringConverter;
 
 	public ProductAdminView() {
 		super(Product.class);

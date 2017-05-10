@@ -3,16 +3,19 @@ package com.vaadin.template.orders.ui.view.orders;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
-import org.hamcrest.beans.SamePropertyValuesAs;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.vaadin.data.Result;
+import com.vaadin.data.ValueContext;
 import com.vaadin.template.orders.AbstractOrdersIT;
+import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.ui.view.object.LoginViewObject;
+import com.vaadin.template.orders.ui.view.orders.OrderEditViewElement.OrderInfo;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
 import com.vaadin.template.orders.ui.view.orders.object.OrderListViewObject;
 import com.vaadin.testbench.ElementQuery;
@@ -32,14 +35,12 @@ public class AddOrderIT extends AbstractOrdersIT {
 		assertEnabledWithText("Add item", orderEditView.getAddItems());
 	}
 
-	public static class TestOrder {
-		LocalDate dueDate = LocalDate.of(2025, 12, 5);
-		Customer customer = new Customer();
-		String pickupLocation = "Store";
-		List<ProductOrderData> products = new ArrayList<>();
-		String total;
-
+	public static class TestOrder extends OrderInfo {
 		public TestOrder() {
+			dueDate = LocalDate.of(2025, 12, 5);
+			customer = new Customer();
+			pickupLocation = "Store";
+			products = new ArrayList<>();
 			customer.setFirstName("First");
 			customer.setLastName("Last");
 			customer.setPhoneNumber("Phone");
@@ -48,15 +49,14 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 			ProductOrderData productOrderData = new ProductOrderData("Bacon Salami Tart", 2, "Lactose free");
 			// Price used only to verify that the UI is updated correctly
-			productOrderData.setPrice("$79.05");
+			productOrderData.setPrice(79.05);
 			products.add(productOrderData);
 			productOrderData = new ProductOrderData("Bacon Cracker", 1, "");
 			// Price used only to verify that the UI is updated correctly
-			productOrderData.setPrice("$98.78");
+			productOrderData.setPrice(98.77);
 			products.add(productOrderData);
-			total = "$256.88"; // 79.05*2+98.78
+			total = "$256.87"; // 79.05*2+98.77
 		}
-
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		OrderListViewObject ordersList = LoginViewObject.loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 
-		TestOrder testOrder = new TestOrder();
+		OrderInfo testOrder = new TestOrder();
 		orderEditView.setCustomerInfo(testOrder.customer);
 		orderEditView.getDueDate().setValue(format(testOrder.dueDate));
 		orderEditView.getPickupLocation().selectByText(testOrder.pickupLocation);
@@ -77,7 +77,11 @@ public class AddOrderIT extends AbstractOrdersIT {
 			ProductInfoElement productInfo = orderEditView.getProductInfo(i);
 			productInfo.setProduct(product);
 			// Check that (unit) price was updated correctly
-			Assert.assertEquals(product.getPrice(), ElementUtil.getText(productInfo.getPrice()));
+			String itemPriceText = ElementUtil.getText(productInfo.getPrice());
+			Result<Integer> itemPrice = new DollarPriceConverter().convertToModel(itemPriceText,
+					new ValueContext(Locale.US));
+
+			Assert.assertEquals((Integer) product.getPrice(), itemPrice.getOrThrow(RuntimeException::new));
 		}
 
 		// Check total sum
@@ -89,7 +93,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		Assert.assertEquals("Place order", orderEditView.getOk().getText());
 
 		// Order info intact
-		assertOrder(testOrder, orderEditView);
+		orderEditView.assertOrder(testOrder);
 
 		// Place order -> go to order report screen
 		// This causes a reload so we need first wait until the refresh is done
@@ -104,7 +108,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		Assert.assertEquals(OrderState.NEW, orderEditView.getCurrentState());
 
 		// Order info intact
-		assertOrder(testOrder, orderEditView);
+		orderEditView.assertOrder(testOrder);
 
 		// It's now possible to set state
 		Assert.assertNotNull(orderEditView.getSetState());
@@ -124,30 +128,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 		// Re-fetch the orderEditView reference as the whole view was updated
 		orderEditView = new ElementQuery<>(OrderEditViewElement.class).context(getDriver()).first();
-		assertOrder(testOrder, orderEditView);
-
-	}
-
-	private void assertOrder(TestOrder testOrder, OrderEditViewElement orderEditView) {
-		ElementUtil.scrollIntoView(orderEditView.getDueDate());
-		// Disabled until https://github.com/vaadin/framework/pull/9263 is
-		// merged
-		// Assert.assertEquals(format(testOrder.dueDate),
-		// orderEditView.getDueDate().getValue());
-		Assert.assertEquals(testOrder.pickupLocation, orderEditView.getPickupLocation().getValue());
-		Assert.assertThat(testOrder.customer,
-				SamePropertyValuesAs.samePropertyValuesAs(orderEditView.getCustomerInfo()));
-
-		for (int i = 0; i < testOrder.products.size(); i++) {
-			ProductOrderData productInTestOrder = testOrder.products.get(i);
-			ProductInfoElement productInfo = orderEditView.getProductInfo(i);
-
-			Assert.assertThat(productInfo.getProductOrderData(),
-					SamePropertyValuesAs.samePropertyValuesAs(productInTestOrder));
-		}
-
-		// Check total sum
-		Assert.assertEquals(testOrder.total, ElementUtil.getText(orderEditView.getTotal()));
+		orderEditView.assertOrder(testOrder);
 
 	}
 

@@ -2,7 +2,6 @@ package com.vaadin.template.orders.backend.data.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,8 +15,8 @@ public class Product implements Serializable {
 
 	private String name;
 
-	@Column(precision = 16, scale = 2)
-	private double price;
+	// Real price * 100 as an int to avoid rounding errors
+	private int price;
 
 	public Product() {
 		// Empty constructor is needed by Spring Data / JPA
@@ -31,11 +30,11 @@ public class Product implements Serializable {
 		this.name = name;
 	}
 
-	public double getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 

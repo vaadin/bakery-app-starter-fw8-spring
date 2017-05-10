@@ -11,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
+import com.vaadin.data.ValueContext;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.PrototypeScope;
-import com.vaadin.template.orders.ui.components.DollarPriceFormatter;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
 
 @SpringComponent
@@ -24,10 +25,7 @@ import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
 public class ProductInfo extends ProductInfoDesign {
 
 	@Autowired
-	private DollarPriceFormatter priceFormatter;
-
-	@Autowired
-	private StringToIntegerConverter converter;
+	private DollarPriceConverter priceFormatter;
 
 	@Autowired
 	private ViewEventBus viewEventBus;
@@ -37,7 +35,7 @@ public class ProductInfo extends ProductInfoDesign {
 	@PostConstruct
 	public void init() {
 		binder = new BeanValidationBinder<>(OrderItem.class);
-		binder.forField(quantity).withConverter(converter).bind("quantity");
+		binder.forField(quantity).withConverter(new StringToIntegerConverter("Please enter a number")).bind("quantity");
 		binder.bindInstanceFields(this);
 		binder.addValueChangeListener(e -> {
 			if (e.getComponent() == quantity || e.getComponent() == product) {
@@ -47,14 +45,14 @@ public class ProductInfo extends ProductInfoDesign {
 
 		product.addSelectionListener(e -> {
 			Optional<Product> selectedProduct = e.getFirstSelectedItem();
-			double productPrice = selectedProduct.map(Product::getPrice).orElse(0.0);
+			int productPrice = selectedProduct.map(Product::getPrice).orElse(0);
 			updatePrice(productPrice);
 		});
 
 	}
 
-	private void updatePrice(double productPrice) {
-		price.setValue(priceFormatter.format(productPrice, Locale.US));
+	private void updatePrice(int productPrice) {
+		price.setValue(priceFormatter.convertToPresentation(productPrice, new ValueContext(Locale.US)));
 	}
 
 	private void fireProductInfoChanged() {
