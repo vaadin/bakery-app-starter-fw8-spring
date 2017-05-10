@@ -311,7 +311,7 @@
 				<configuration>
 					<!-- root directory that downloaded driver binaries will be stored in -->
 					<onlyGetDriversForHostOperatingSystem>true</onlyGetDriversForHostOperatingSystem>
-					<rootStandaloneServerDirectory>driver</rootStandaloneServerDirectory>
+					<rootStandaloneServerDirectory>.driver</rootStandaloneServerDirectory>
 					<customRepositoryMap>webdrivers.xml</customRepositoryMap>
 				</configuration>
 				<executions>
