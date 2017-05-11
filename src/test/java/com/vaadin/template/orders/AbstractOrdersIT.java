@@ -2,9 +2,9 @@ package com.vaadin.template.orders;
 
 import java.util.function.Supplier;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import com.vaadin.template.orders.ui.CurrentDriver;
 import com.vaadin.template.orders.ui.view.orders.ElementUtil;
-import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.TestBenchTestCase;
 
@@ -26,8 +25,17 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 		Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 		root.setLevel(Level.INFO);
 	}
-	@Rule
-	public ScreenshotOnFailureRule screenshotOnFailure = new ScreenshotOnFailureRule(this, true);
+	// Disabled for now because ChromeDriver sometimes seems to freeze on this
+	// @Rule
+	// public ScreenshotOnFailureRule screenshotOnFailure = new
+	// ScreenshotOnFailureRule(this, true);
+
+	@After
+	public void destroyDriver() {
+		if (getDriver() != null) {
+			getDriver().quit();
+		}
+	}
 
 	@Before
 	public void createDriver() {
