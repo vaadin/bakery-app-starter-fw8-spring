@@ -277,6 +277,8 @@
 				<configuration>
 					<systemPropertyVariables>
 						<webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
+						<webdriver.chrome.verboseLogging>true</webdriver.chrome.verboseLogging>
+						<webdriver.chrome.logfile>chromedriver.log</webdriver.chrome.logfile>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
