@@ -257,6 +257,10 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<maxAttempts>120</maxAttempts>
+				</configuration>
+
 			</plugin>
 
 			<plugin>
