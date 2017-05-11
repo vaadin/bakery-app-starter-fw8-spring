@@ -1,13 +1,15 @@
 package com.vaadin.template.orders.ui.view.admin.product;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.vaadin.data.provider.Query;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.template.orders.backend.ProductRepository;
 import com.vaadin.template.orders.backend.data.entity.Product;
+import com.vaadin.template.orders.backend.service.ProductService;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
 
@@ -16,32 +18,24 @@ import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
 public class ProductAdminDataProvider extends PageableDataProvider<Product, Object> {
 
 	@Autowired
-	private ProductRepository repository;
-	private String filter = null;
+	private ProductService service;
+	private Optional<String> filter = Optional.empty();
 
 	@Override
 	protected Page<Product> fetchFromBackEnd(Query<Product, Object> query, Pageable pageable) {
-		if (filter == null) {
-			return repository.findByOrderByName(pageable);
-		} else {
-			return repository.findByNameLikeIgnoreCaseOrderByName(filter, pageable);
-		}
+		return service.findAnyMatching(filter, pageable);
 	}
 
 	@Override
 	protected int sizeInBackEnd(Query<Product, Object> query) {
-		if (filter == null) {
-			return (int) repository.count();
-		} else {
-			return repository.countByNameLikeIgnoreCase(filter);
-		}
+		return (int) service.countAnyMatching(filter);
 	}
 
 	public void setFilter(String filter) {
 		if ("".equals(filter)) {
-			this.filter = null;
+			this.filter = Optional.empty();
 		} else {
-			this.filter = "%" + filter + "%";
+			this.filter = Optional.of(filter);
 		}
 		refreshAll();
 	}
