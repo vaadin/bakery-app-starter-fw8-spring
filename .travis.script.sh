@@ -25,3 +25,5 @@ then
 	# Charts license is only needed because CDN is triggered also in the "verify" step for some reason
 	mvn -B -e -V -Dmaven.javadoc.skip=false $TESTBENCH $CHARTS $BOARD -Dsonar.verbose=true -Dsonar.analysis.mode=publish -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_LOGIN -Dsonar.exclusions=$SONAR_EXCLUSIONS verify sonar:sonar
 fi
+
+tail -1000 chromedriver.log
