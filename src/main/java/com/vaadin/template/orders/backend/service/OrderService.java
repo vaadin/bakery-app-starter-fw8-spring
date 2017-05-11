@@ -1,10 +1,14 @@
 package com.vaadin.template.orders.backend.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.vaadin.template.orders.backend.CustomerRepository;
@@ -76,6 +80,15 @@ public class OrderService {
 
 		return orderRepository.save(order);
 
+	}
+
+	public Page<Order> findAfterDueDateWithState(LocalDate filterDate, List<OrderState> states, Pageable pageable) {
+		return orderRepository.findByDueDateAfterAndStateInOrderByDueDateAscDueTimeDescIdDesc(filterDate, states,
+				pageable);
+	}
+
+	public long countAfterDueDateWithState(LocalDate filterDate, List<OrderState> states) {
+		return orderRepository.countByDueDateAfterAndStateIn(filterDate, states);
 	}
 
 }
