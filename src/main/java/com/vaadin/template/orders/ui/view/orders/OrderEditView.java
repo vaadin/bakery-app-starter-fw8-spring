@@ -1,7 +1,9 @@
 package com.vaadin.template.orders.ui.view.orders;
 
+import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
@@ -46,11 +48,18 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 	public void init() {
 		presenter.init(this);
 
+		// We're limiting dueTime to even hours between 07:00 and 17:00
+		dueTime.setItems(IntStream.range(7, 17).mapToObj(h -> LocalTime.of(h, 0)));
+
 		// Binds properties in Order automatically:
 		// pickupLocation, state, paid
 		// Does not bind sub properties, see
 		// https://github.com/vaadin/framework/issues/8384
 		binder = new BeanValidationBinder<>(Order.class);
+
+		// Almost all fields are required, so we don't want to display
+		// indicators
+		binder.setRequiredConfigurator(null);
 
 		// Bindings are done in the order the fields appear on the screen as we
 		// report validation errors for the first invalid field and it is most
@@ -60,10 +69,8 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 
 		// These can be removed once
 		// https://github.com/vaadin/framework/issues/9210 is fixed
-		binder.bind(firstName, "customer.firstName");
-		binder.bind(lastName, "customer.lastName");
+		binder.bind(fullName, "customer.fullName");
 		binder.bind(phone, "customer.phoneNumber");
-		binder.bind(email, "customer.email");
 		binder.bind(details, "customer.details");
 
 		addItems.addClickListener(e -> addEmptyOrderItem());
@@ -75,6 +82,7 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 			w.setOrder(getOrder());
 			getUI().addWindow(w);
 		});
+
 	}
 
 	@Override
@@ -145,6 +153,12 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 	}
 
 	public void setMode(Mode mode) {
+		// Allow to style different modes separately
+		if (this.mode != null) {
+			removeStyleName(this.mode.name().toLowerCase());
+		}
+		addStyleName(mode.name().toLowerCase());
+		
 		this.mode = mode;
 		binder.setReadOnly(mode != Mode.EDIT);
 		for (Component c : productInfoContainer) {

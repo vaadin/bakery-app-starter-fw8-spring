@@ -18,16 +18,10 @@ public class Customer implements Serializable {
 
 	@NotNull
 	@NotEmpty
-	private String firstName;
-	@NotNull
-	@NotEmpty
-	private String lastName;
+	private String fullName;
 	@NotNull
 	@NotEmpty
 	private String phoneNumber;
-	@NotNull
-	@NotEmpty
-	private String email;
 	private String details;
 
 	public Customer() {
@@ -38,20 +32,12 @@ public class Customer implements Serializable {
 		return id;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getFullName() {
+		return fullName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 	public String getPhoneNumber() {
@@ -60,14 +46,6 @@ public class Customer implements Serializable {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getDetails() {

@@ -39,25 +39,21 @@ public class OrderEditViewDesignElement extends VerticalLayoutElement {
 	public DateFieldElement getDueDate() {
 		return $(DateFieldElement.class).id("dueDate");
 	}
+	
+	public ComboBoxElement getDueTime() {
+		return $(ComboBoxElement.class).id("dueTime");
+	}
 
 	public ComboBoxElement getPickupLocation() {
 		return $(ComboBoxElement.class).id("pickupLocation");
 	}
 
-	public TextFieldElement getFirstName() {
-		return $(com.vaadin.testbench.elements.TextFieldElement.class).id("firstName");
-	}
-
-	public TextFieldElement getLastName() {
-		return $(com.vaadin.testbench.elements.TextFieldElement.class).id("lastName");
+	public TextFieldElement getFullName() {
+		return $(com.vaadin.testbench.elements.TextFieldElement.class).id("fullName");
 	}
 
 	public TextFieldElement getPhone() {
 		return $(com.vaadin.testbench.elements.TextFieldElement.class).id("phone");
-	}
-
-	public TextFieldElement getEmail() {
-		return $(com.vaadin.testbench.elements.TextFieldElement.class).id("email");
 	}
 
 	public TextFieldElement getDetails() {

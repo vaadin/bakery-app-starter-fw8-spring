@@ -85,10 +85,8 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 		Customer currentCustomer = currentOrder.customer;
 		Customer updatedCustomer = new Customer();
 
-		updatedCustomer.setFirstName(currentCustomer.getFirstName() + "-updated");
-		updatedCustomer.setLastName(currentCustomer.getLastName() + "-updated");
+		updatedCustomer.setFullName(currentCustomer.getFullName() + "-updated");
 		updatedCustomer.setPhoneNumber(currentCustomer.getPhoneNumber() + "-updated");
-		updatedCustomer.setEmail(currentCustomer.getEmail() + "-updated");
 		updatedCustomer.setDetails(currentCustomer.getDetails() + "-updated");
 		updatedOrder.customer = updatedCustomer;
 		orderEdit.setCustomerInfo(updatedCustomer);
@@ -133,10 +131,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 		Customer currentCustomer = currentOrder.customer;
 		Customer updatedCustomer = new Customer();
 
-		updatedCustomer.setFirstName(currentCustomer.getFirstName() + "-updated");
-		updatedCustomer.setLastName(currentCustomer.getLastName() + "-updated");
-		updatedCustomer.setPhoneNumber(currentCustomer.getPhoneNumber() + "-updated");
-		updatedCustomer.setEmail(currentCustomer.getEmail() + "-updated");
+		updatedCustomer.setFullName(currentCustomer.getFullName() + "-updated");
 		updatedCustomer.setDetails(currentCustomer.getDetails() + "-updated");
 		orderEdit.setCustomerInfo(updatedCustomer);
 
