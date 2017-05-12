@@ -61,6 +61,7 @@ public class DashboardView extends DashboardViewDesign implements OrdersView {
 		initProductSplitMonthlyGraph();
 		initYearlySalesGraph();
 
+		dueGrid.setId("dueGrid");
 		dueGrid.setHeight("300px");
 		dueGrid.addStyleName("border");
 
@@ -68,6 +69,7 @@ public class DashboardView extends DashboardViewDesign implements OrdersView {
 	}
 
 	private void initYearlySalesGraph() {
+		yearlySalesGraph.setId("yearlySales");
 		yearlySalesGraph.setHeight("400px");
 		int year = Year.now().getValue();
 
@@ -83,6 +85,7 @@ public class DashboardView extends DashboardViewDesign implements OrdersView {
 	}
 
 	private void initProductSplitMonthlyGraph() {
+		monthlyProductSplit.setId("monthlyProductSplit");
 		monthlyProductSplit.setHeight("300px");
 		monthlyProductSplit.setWidth("300px");
 
@@ -98,8 +101,10 @@ public class DashboardView extends DashboardViewDesign implements OrdersView {
 	private void initDeliveriesGraphs() {
 		LocalDate today = LocalDate.now();
 
+		deliveriesThisMonthGraph.setId("deliveriesThisMonth");
 		deliveriesThisMonthGraph.setHeight("200px");
 		deliveriesThisMonthGraph.addStyleName("v-clip");
+		deliveriesThisYearGraph.setId("deliveriesThisYear");
 		deliveriesThisYearGraph.setHeight("200px");
 		deliveriesThisYearGraph.addStyleName("v-clip");
 
