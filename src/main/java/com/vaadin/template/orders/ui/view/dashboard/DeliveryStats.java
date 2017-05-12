@@ -1,12 +1,12 @@
 package com.vaadin.template.orders.ui.view.dashboard;
 
-public class OrderStats {
+public class DeliveryStats {
 
 	private int deliveredToday;
 	private int dueToday;
 	private int dueTomorrow;
 	private int notAvailableToday;
-	private int unverified;
+	private int newOrders;
 
 	public int getDeliveredToday() {
 		return deliveredToday;
@@ -40,12 +40,12 @@ public class OrderStats {
 		this.notAvailableToday = notAvailableToday;
 	}
 
-	public int getUnverified() {
-		return unverified;
+	public int getNewOrders() {
+		return newOrders;
 	}
 
-	public void setUnverified(int unverified) {
-		this.unverified = unverified;
+	public void setNewOrders(int newOrders) {
+		this.newOrders = newOrders;
 	}
 
 }
