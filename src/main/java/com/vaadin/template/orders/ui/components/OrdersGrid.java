@@ -29,7 +29,7 @@ public class OrdersGrid extends Grid<Order> {
 
 		addColumn(order -> {
 			Customer customer = order.getCustomer();
-			return twoRowCell(customer.getFirstName() + " " + customer.getLastName(), getOrderSummary(order));
+			return twoRowCell(customer.getFullName(), getOrderSummary(order));
 		}, new HtmlRenderer()).setExpandRatio(1);
 
 		Column<Order, String> stateColumn = addColumn(order -> order.getState().toString());

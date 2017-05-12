@@ -1,6 +1,7 @@
 package com.vaadin.template.orders.ui.view.orders;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +23,11 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 
 	public static class OrderInfo {
 		LocalDate dueDate;
+		LocalTime dueTime;
 		Customer customer;
 		String pickupLocation;
 		List<ProductOrderData> products;
-		String total;
+		String total;	
 	}
 
 	public void setState(OrderState state) {
@@ -51,19 +53,15 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 	}
 
 	public void setCustomerInfo(Customer customer) {
-		getFirstName().setValue(customer.getFirstName());
-		getLastName().setValue(customer.getLastName());
+		getFullName().setValue(customer.getFullName());
 		getPhone().setValue(customer.getPhoneNumber());
-		getEmail().setValue(customer.getEmail());
 		getDetails().setValue(customer.getDetails());
 	}
 
 	public Customer getCustomerInfo() {
 		Customer customer = new Customer();
-		customer.setFirstName(getFirstName().getValue());
-		customer.setLastName(getLastName().getValue());
+		customer.setFullName(getFullName().getValue());
 		customer.setPhoneNumber(getPhone().getValue());
-		customer.setEmail(getEmail().getValue());
 		customer.setDetails(getDetails().getValue());
 		return customer;
 	}
