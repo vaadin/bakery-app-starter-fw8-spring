@@ -14,17 +14,16 @@ import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
-import com.vaadin.template.orders.ui.view.object.LoginViewObject;
+import com.vaadin.template.orders.ui.view.object.LoginViewElement;
 import com.vaadin.template.orders.ui.view.orders.OrderEditViewElement.OrderInfo;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
-import com.vaadin.template.orders.ui.view.orders.object.OrderListViewObject;
 import com.vaadin.testbench.ElementQuery;
 
 public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void emptyAddOrderView() {
-		OrderListViewObject ordersList = LoginViewObject.loginAsBarista();
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 		assertNotFound("Order state should not be shown", () -> orderEditView.getOrderState());
 		assertNotFound("Order id should not be shown", () -> orderEditView.getOrderId());
@@ -61,7 +60,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void addOrder() {
-		OrderListViewObject ordersList = LoginViewObject.loginAsBarista();
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 
 		OrderInfo testOrder = new TestOrder();

@@ -17,17 +17,16 @@ import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
-import com.vaadin.template.orders.ui.view.object.LoginViewObject;
+import com.vaadin.template.orders.ui.view.object.LoginViewElement;
 import com.vaadin.template.orders.ui.view.orders.OrderEditViewElement.OrderInfo;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
-import com.vaadin.template.orders.ui.view.orders.object.OrderListViewObject;
 import com.vaadin.testbench.ElementQuery;
 
 public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateOrderState() throws IOException {
-		OrderListViewObject storeFront = LoginViewObject.loginAsBarista();
+		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(0);
 
 		Assert.assertEquals(OrderState.READY_FOR_PICKUP, orderEdit.getCurrentState());
@@ -37,7 +36,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void addHistoryComment() throws IOException {
-		OrderListViewObject storeFront = LoginViewObject.loginAsBarista();
+		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 
 		OrderHistoryElement history = orderEdit.getHistory();
@@ -77,7 +76,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateOrderInfo() {
-		OrderListViewObject storeFront = LoginViewObject.loginAsBarista();
+		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 		ElementUtil.click(orderEdit.getCancel());
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
@@ -126,7 +125,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateButCancel() {
-		OrderListViewObject storeFront = LoginViewObject.loginAsBarista();
+		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 		ElementUtil.click(orderEdit.getCancel());
 		OrderInfo currentOrder = orderEdit.getOrderInfo();

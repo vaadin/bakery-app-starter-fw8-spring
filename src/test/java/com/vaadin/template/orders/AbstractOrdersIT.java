@@ -13,9 +13,11 @@ import org.slf4j.LoggerFactory;
 
 import com.vaadin.template.orders.ui.CurrentDriver;
 import com.vaadin.template.orders.ui.view.orders.ElementUtil;
+import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.TestBenchTestCase;
+import com.vaadin.testbench.elementsbase.AbstractElement;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -67,6 +69,11 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 			// Everything ok
 		}
 
+	}
+
+	public static <T extends AbstractElement> T findFirstElement(Class<T> elementType) {
+		WebDriver driver = CurrentDriver.get();
+		return new ElementQuery<>(elementType).context(driver).first();
 	}
 
 }
