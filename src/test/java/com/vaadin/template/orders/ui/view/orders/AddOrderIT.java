@@ -1,6 +1,7 @@
 package com.vaadin.template.orders.ui.view.orders;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -37,6 +38,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 	public static class TestOrder extends OrderInfo {
 		public TestOrder() {
 			dueDate = LocalDate.of(2025, 12, 5);
+			dueTime = LocalTime.of(8, 00);
 			customer = new Customer();
 			pickupLocation = "Store";
 			products = new ArrayList<>();

@@ -133,6 +133,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 		updatedCustomer.setFullName(currentCustomer.getFullName() + "-updated");
 		updatedCustomer.setDetails(currentCustomer.getDetails() + "-updated");
+		updatedCustomer.setPhoneNumber(currentCustomer.getPhoneNumber() + "-updated");
 		orderEdit.setCustomerInfo(updatedCustomer);
 
 		String updatedPickupLocation = "Store".equals(currentOrder.pickupLocation) ? "Bakery" : "Store";
