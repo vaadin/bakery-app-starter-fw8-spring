@@ -1,5 +1,6 @@
 package com.vaadin.template.orders.ui.view.orders;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,6 +73,7 @@ public class OrderEditPresenter {
 			order.setState(OrderState.NEW);
 			order.setItems(new ArrayList<>());
 			order.setCustomer(new Customer());
+			order.setDueDate(LocalDate.now().plusDays(1));
 			order.setDueTime(LocalTime.of(8, 00));
 		} else {
 			order = orderService.findOrder(id);
@@ -146,7 +148,7 @@ public class OrderEditPresenter {
 					refresh(order.getId());
 				}
 			}
-		}
+		}		
 	}
 
 	private void refresh(Long id) {

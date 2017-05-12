@@ -24,7 +24,10 @@
     <vaadin-label style-name="header" width-full plain-text>
       Due 
     </vaadin-label>
-    <vaadin-date-field id="dueDate" placeholder="Due" style-name="half" width-full _id="dueDate"></vaadin-date-field>
+    <vaadin-horizontal-layout style-name="half" width-full>
+     <vaadin-date-field id="dueDate" placeholder="Date" width-full _id="dueDate" :expand></vaadin-date-field>
+     <vaadin-combo-box empty-selection-allowed="false" id="dueTime" text-input-allowed="false" width="100px" data-item-type="java.time.LocalTime" _id="dueTime"></vaadin-combo-box>
+    </vaadin-horizontal-layout>
     <vaadin-horizontal-layout style-name="half" width-full>
      <vaadin-label style-name="large" plain-text :middle>
        @ 
@@ -34,10 +37,8 @@
     <vaadin-label style-name="header" width-full plain-text>
       Customer 
     </vaadin-label>
-    <vaadin-text-field style-name="half" id="firstName" placeholder="First Name" width-full data-property-id="customer.firstName" _id="firstName"></vaadin-text-field>
-    <vaadin-text-field style-name="half" id="lastName" placeholder="Last Name" width-full data-property-id="customer.lastName" _id="lastName"></vaadin-text-field>
+    <vaadin-text-field style-name="half" id="fullName" placeholder="Firstname Lastname" width-full data-property-id="customer.fullName" _id="fullName"></vaadin-text-field>
     <vaadin-text-field style-name="half" id="phone" placeholder="Phone number" width-full data-property-id="customer.phoneNumber" _id="phone"></vaadin-text-field>
-    <vaadin-text-field style-name="half" id="email" placeholder="E-mail" width-full data-property-id="customer.email" _id="email"></vaadin-text-field>
     <vaadin-text-field id="details" placeholder="Additional details" width-full data-property-id="customer.details" _id="details"></vaadin-text-field>
     <vaadin-label style-name="header" width-full plain-text>
       Products 

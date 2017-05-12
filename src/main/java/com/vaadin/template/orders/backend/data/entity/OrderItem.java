@@ -20,7 +20,7 @@ public class OrderItem implements Serializable {
 	@NotNull
 	private Product product;
 	@Min(1)
-	private int quantity;
+	private int quantity = 1;
 	private String comment;
 
 	public OrderItem() {

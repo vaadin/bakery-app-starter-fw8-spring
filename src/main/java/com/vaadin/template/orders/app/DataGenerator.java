@@ -88,9 +88,9 @@ public class DataGenerator {
 
 	private Customer createCustomer(CustomerRepository customerRepo) {
 		Customer customer = new Customer();
-		customer.setFirstName(getRandom(FIRST_NAME));
-		customer.setLastName(getRandom(LAST_NAME));
-		customer.setEmail(customer.getFirstName().toLowerCase() + "@" + customer.getLastName().toLowerCase() + ".com");
+		String first = getRandom(FIRST_NAME);
+		String last = getRandom(LAST_NAME);
+		customer.setFullName(first + " " + last);
 		customer.setPhoneNumber(getRandomPhone());
 		if (random.nextInt(10) == 0) {
 			customer.setDetails("Very important customer");
