@@ -22,6 +22,7 @@ import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.service.OrderService;
+import com.vaadin.template.orders.backend.service.PickupLocationService;
 import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
@@ -37,6 +38,8 @@ public class OrderEditPresenter {
 
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private PickupLocationService pickupLocationService;
 
 	@Autowired
 	private NavigationManager navigationManager;
@@ -73,6 +76,7 @@ public class OrderEditPresenter {
 			order.setItems(new ArrayList<>());
 			order.setCustomer(new Customer());
 			order.setDueTime(LocalTime.of(8, 00));
+			order.setPickupLocation(pickupLocationService.getDefault());
 		} else {
 			order = orderService.findOrder(id);
 			if (order == null) {

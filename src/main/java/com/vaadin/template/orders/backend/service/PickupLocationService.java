@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.vaadin.spring.annotation.SpringComponent;
@@ -32,6 +33,10 @@ public class PickupLocationService {
 		} else {
 			return pickupLocationRepository.countByNameLikeIgnoreCase("%");
 		}
+	}
+
+	public PickupLocation getDefault() {
+		return findAnyMatching(Optional.empty(), new PageRequest(0, 1)).iterator().next();
 	}
 
 }
