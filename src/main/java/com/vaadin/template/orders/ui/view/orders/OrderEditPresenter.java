@@ -22,7 +22,6 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
-import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.PrototypeScope;
