@@ -1,0 +1,10 @@
+@mixin menu {
+  .navigation .selected {
+    background: red;
+  }
+
+  .app-shell .navigation .selected.v-button.borderless:hover {
+    background: darkred;
+
+  }
+}

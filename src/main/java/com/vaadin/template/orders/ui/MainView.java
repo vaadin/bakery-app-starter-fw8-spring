@@ -1,5 +1,8 @@
 package com.vaadin.template.orders.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 
 	@Autowired
 	private MainPresenter presenter;
+	private Map<Class<? extends View>, Button> navigationButtons = new HashMap<>();
 
 	@PostConstruct
 	public void init() {
@@ -32,16 +36,19 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 	}
 
 	public void populateMenu() {
-		addMenuItem(storefront, OrdersListView.class);
-		addMenuItem(dashboard, DashboardView.class);
-		addMenuItem(users, UserAdminView.class);
-		addMenuItem(products, ProductAdminView.class);
+		attachNavigation(storefront, OrdersListView.class);
+		attachNavigation(dashboard, DashboardView.class);
+		attachNavigation(users, UserAdminView.class);
+		attachNavigation(products, ProductAdminView.class);
 		logout.addClickListener(e -> presenter.logout());
 	}
 
-	private void addMenuItem(Button navigationButton, Class<? extends View> targetView) {
+	private void attachNavigation(Button navigationButton, Class<? extends View> targetView) {
+		navigationButtons.put(targetView, navigationButton);
 		navigationButton.setVisible(presenter.hasAccess(targetView));
-		navigationButton.addClickListener(e -> presenter.navigateTo(targetView));
+		navigationButton.addClickListener(e -> {
+			presenter.navigateTo(targetView);
+		});
 
 	}
 
@@ -52,6 +59,11 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 		}
 		content.removeAllComponents();
 		content.addComponent(((OrdersView) view).getViewComponent());
+
+		navigationButtons.forEach((viewClass, button) -> {
+			button.setStyleName("selected", viewClass == view.getClass());
+		});
+
 	}
 
 }
