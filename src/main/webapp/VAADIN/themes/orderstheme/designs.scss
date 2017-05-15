@@ -109,6 +109,12 @@
         &:focus:after {
           content: none;
         }
+        &:after {
+          // Without this the mousedown event is caught by the :after Element
+          // but mouseup goes to the underlying span (after is hidden on focus).
+          // This combination prevents a 'click' event from firing in Safari
+          pointer-events: none;
+        }
 
         &.borderless:hover {
           background: darken($navigation-bar-bg-color, 7%);
