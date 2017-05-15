@@ -2,7 +2,6 @@ package com.vaadin.template.orders.ui.view.admin.user;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
@@ -21,9 +20,6 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 
 	@Autowired
 	private UserService service;
-
-	@Autowired
-	private Logger logger;
 
 	@Override
 	protected User getCopy(User entity) {
@@ -53,10 +49,5 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 	@Override
 	public void filterGrid(String filter) {
 		getGridDataProvider().setFilter(filter);
-	}
-
-	@Override
-	protected Logger getLogger() {
-		return logger;
 	}
 }

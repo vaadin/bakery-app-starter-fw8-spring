@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.addon.charts.Chart;
@@ -24,17 +23,15 @@ import com.vaadin.addon.charts.model.ListSeries;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.entity.Product;
+import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.components.OrdersGrid;
 import com.vaadin.template.orders.ui.view.OrdersView;
 
 @SpringView
-public class DashboardView extends DashboardViewDesign implements OrdersView {
+public class DashboardView extends DashboardViewDesign implements OrdersView, HasLogger {
 
 	@Autowired
 	private DashboardPresenter presenter;
-
-	@Autowired
-	private Logger logger;
 
 	private final BoardLabel todayLabel = new BoardLabel("Today", "3/7");
 	private final BoardLabel notAvailableLabel = new BoardLabel("N/A", "1");
@@ -140,10 +137,10 @@ public class DashboardView extends DashboardViewDesign implements OrdersView {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		DashboardData data = presenter.fetchData();
-		logger.info("Update graphs started");
+		getLogger().info("Update graphs started");
 		updateLabels(data.getDeliveryStats());
 		updateGraphs(data);
-		logger.info("Update graphs done");
+		getLogger().info("Update graphs done");
 	}
 
 	private void updateGraphs(DashboardData data) {

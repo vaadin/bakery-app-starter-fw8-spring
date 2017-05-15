@@ -2,13 +2,13 @@ package com.vaadin.template.orders.ui.view.admin;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 
-public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> implements Serializable {
+public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> implements HasLogger, Serializable {
 
 	private V view;
 
@@ -83,6 +83,4 @@ public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> im
 	public void cancelClicked() {
 		getView().stopEditing();
 	}
-
-	protected abstract Logger getLogger();
 }
