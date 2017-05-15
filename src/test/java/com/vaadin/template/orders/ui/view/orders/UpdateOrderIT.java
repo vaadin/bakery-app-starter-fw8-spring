@@ -68,7 +68,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 	}
 
 	private void assertWithinLastFiveMinutes(String date) {
-		LocalDateTime commentTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("d/M/uu h:m a"));
+		LocalDateTime commentTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("M/d/uu h:m a"));
 		Assert.assertTrue("Time (" + commentTime + ") should be within last 5 minutes",
 				commentTime.until(LocalDateTime.now(), ChronoUnit.MINUTES) <= 5);
 
