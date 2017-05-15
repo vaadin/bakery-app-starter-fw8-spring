@@ -1,5 +1,6 @@
 package com.vaadin.template.orders.ui.view.admin.product;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,10 +16,15 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 
 	@Autowired
 	private ProductAdminDataProvider userAdminDataProvider;
+
 	@Autowired
 	private ProductService service;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private Logger logger;
 
 	@Override
 	protected Product getCopy(Product entity) {
@@ -50,4 +56,8 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 		getGridDataProvider().setFilter(filter);
 	}
 
+	@Override
+	protected Logger getLogger() {
+		return logger;
+	}
 }

@@ -6,13 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.annotation.PreDestroy;
 import javax.validation.ValidationException;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -44,6 +43,9 @@ public class OrderEditPresenter {
 
 	@Autowired
 	private NavigationManager navigationManager;
+
+	@Autowired
+	private Logger logger;
 
 	private static final List<OrderState> happyPath = Arrays.asList(OrderState.NEW, OrderState.CONFIRMED,
 			OrderState.READY_FOR_PICKUP, OrderState.DELIVERED);
@@ -152,7 +154,7 @@ public class OrderEditPresenter {
 					refresh(order.getId());
 				}
 			}
-		}		
+		}
 	}
 
 	private void refresh(Long id) {
@@ -183,18 +185,14 @@ public class OrderEditPresenter {
 		} catch (ValidationException e) {
 			// Should not get here if validation is setup properly
 			Notification.show("Please check the contents of the fields: " + e.getMessage(), Type.ERROR_MESSAGE);
-			getLogger().log(Level.FINEST, "Validation error during order save", e);
+			logger.error("Validation error during order save", e);
 			return null;
 		} catch (Exception e) {
 			Notification.show("Somebody else might have updated the data. Please refresh and try again.",
 					Type.ERROR_MESSAGE);
-			getLogger().log(Level.WARNING, "Unable to save order", e);
+			logger.error("Unable to save order", e);
 			return null;
 		}
-	}
-
-	private static Logger getLogger() {
-		return Logger.getLogger(OrderEditPresenter.class.getName());
 	}
 
 	public Optional<OrderState> getNextHappyPathState(OrderState current) {

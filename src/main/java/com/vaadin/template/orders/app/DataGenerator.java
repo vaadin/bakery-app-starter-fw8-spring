@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -49,6 +48,9 @@ public class DataGenerator {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private Logger logger;
+
 	private final Random random = new Random(1L);
 
 	private final List<PickupLocation> pickupLocations = new ArrayList<>();
@@ -64,19 +66,19 @@ public class DataGenerator {
 	public CommandLineRunner loadData(OrderRepository orders, UserRepository users, ProductRepository products,
 			CustomerRepository customers, PickupLocationRepository pickupLocations, PasswordEncoder passwordEncoder) {
 		return args -> {
-			getLogger().info("Generating demo data");
-			getLogger().info("... generating users");
+			logger.info("Generating demo data");
+			logger.info("... generating users");
 			createUsers(users);
-			getLogger().info("... generating products");
+			logger.info("... generating products");
 			createProducts(products);
-			getLogger().info("... generating customers");
+			logger.info("... generating customers");
 			createCustomers(customers);
-			getLogger().info("... generating pickup locations");
+			logger.info("... generating pickup locations");
 			createPickupLocations(pickupLocations);
-			getLogger().info("... generating orders");
+			logger.info("... generating orders");
 			createOrders(orders);
 
-			getLogger().info("Generated demo data");
+			logger.info("Generated demo data");
 		};
 	}
 
@@ -322,9 +324,4 @@ public class DataGenerator {
 		users.add(admin);
 		users.add(baker);
 	}
-
-	private static Logger getLogger() {
-		return LoggerFactory.getLogger(DataGenerator.class);
-	}
-
 }

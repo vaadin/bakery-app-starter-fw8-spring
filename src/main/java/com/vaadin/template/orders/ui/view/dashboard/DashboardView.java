@@ -7,12 +7,12 @@ import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.addon.charts.Chart;
@@ -32,6 +32,9 @@ public class DashboardView extends DashboardViewDesign implements OrdersView {
 
 	@Autowired
 	private DashboardPresenter presenter;
+
+	@Autowired
+	private Logger logger;
 
 	private final BoardLabel todayLabel = new BoardLabel("Today", "3/7");
 	private final BoardLabel notAvailableLabel = new BoardLabel("N/A", "1");
@@ -137,10 +140,10 @@ public class DashboardView extends DashboardViewDesign implements OrdersView {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		DashboardData data = presenter.fetchData();
-		getLogger().info("Update graphs started");
+		logger.info("Update graphs started");
 		updateLabels(data.getDeliveryStats());
 		updateGraphs(data);
-		getLogger().info("Update graphs done");
+		logger.info("Update graphs done");
 	}
 
 	private void updateGraphs(DashboardData data) {
@@ -167,9 +170,4 @@ public class DashboardView extends DashboardViewDesign implements OrdersView {
 
 		notAvailableLabel.setStyleName("problem", deliveryStats.getNotAvailableToday() > 0);
 	}
-
-	private static Logger getLogger() {
-		return Logger.getLogger(DashboardView.class.getName());
-	}
-
 }
