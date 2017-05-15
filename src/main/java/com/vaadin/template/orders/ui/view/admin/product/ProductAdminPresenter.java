@@ -15,8 +15,10 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 
 	@Autowired
 	private ProductAdminDataProvider userAdminDataProvider;
+
 	@Autowired
 	private ProductService service;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -49,5 +51,4 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 	public void filterGrid(String filter) {
 		getGridDataProvider().setFilter(filter);
 	}
-
 }

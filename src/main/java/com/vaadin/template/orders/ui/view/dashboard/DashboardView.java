@@ -7,7 +7,6 @@ import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -24,11 +23,12 @@ import com.vaadin.addon.charts.model.ListSeries;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.entity.Product;
+import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.components.OrdersGrid;
 import com.vaadin.template.orders.ui.view.OrdersView;
 
 @SpringView
-public class DashboardView extends DashboardViewDesign implements OrdersView {
+public class DashboardView extends DashboardViewDesign implements OrdersView, HasLogger {
 
 	@Autowired
 	private DashboardPresenter presenter;
@@ -167,9 +167,4 @@ public class DashboardView extends DashboardViewDesign implements OrdersView {
 
 		notAvailableLabel.setStyleName("problem", deliveryStats.getNotAvailableToday() > 0);
 	}
-
-	private static Logger getLogger() {
-		return Logger.getLogger(DashboardView.class.getName());
-	}
-
 }

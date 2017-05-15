@@ -158,7 +158,7 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 			removeStyleName(this.mode.name().toLowerCase());
 		}
 		addStyleName(mode.name().toLowerCase());
-		
+
 		this.mode = mode;
 		binder.setReadOnly(mode != Mode.EDIT);
 		for (Component c : productInfoContainer) {

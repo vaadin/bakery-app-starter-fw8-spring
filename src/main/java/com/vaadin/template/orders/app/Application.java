@@ -5,13 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vaadin.spring.events.annotation.EnableEventBus;
 
-import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.template.orders.app.security.SecurityConfig;
 import com.vaadin.template.orders.backend.OrderRepository;
 import com.vaadin.template.orders.backend.data.entity.Order;
@@ -39,15 +35,5 @@ public class Application extends SpringBootServletInitializer {
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Application.class);
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
-	public StringToIntegerConverter stringToIntegerConverter() {
-		return new StringToIntegerConverter("Unable to parse integer");
 	}
 }

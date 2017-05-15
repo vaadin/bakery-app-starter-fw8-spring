@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -30,9 +28,10 @@ import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.backend.data.entity.User;
+import com.vaadin.template.orders.ui.HasLogger;
 
 @SpringComponent
-public class DataGenerator {
+public class DataGenerator implements HasLogger {
 
 	private static final String[] FILLING = new String[] { "Strawberry", "Chocolate", "Blueberry", "Raspberry",
 			"Vanilla", "Salami", "Bacon" };
@@ -322,9 +321,4 @@ public class DataGenerator {
 		users.add(admin);
 		users.add(baker);
 	}
-
-	private static Logger getLogger() {
-		return LoggerFactory.getLogger(DataGenerator.class);
-	}
-
 }

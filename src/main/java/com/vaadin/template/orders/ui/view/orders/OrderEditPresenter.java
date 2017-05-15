@@ -1,13 +1,12 @@
 package com.vaadin.template.orders.ui.view.orders;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.annotation.PreDestroy;
@@ -24,6 +23,7 @@ import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.backend.service.PickupLocationService;
+import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
@@ -33,7 +33,7 @@ import com.vaadin.ui.Notification.Type;
 
 @SpringComponent
 @PrototypeScope
-public class OrderEditPresenter {
+public class OrderEditPresenter implements Serializable, HasLogger {
 
 	private OrderEditView view;
 
@@ -152,7 +152,7 @@ public class OrderEditPresenter {
 					refresh(order.getId());
 				}
 			}
-		}		
+		}
 	}
 
 	private void refresh(Long id) {
@@ -183,18 +183,14 @@ public class OrderEditPresenter {
 		} catch (ValidationException e) {
 			// Should not get here if validation is setup properly
 			Notification.show("Please check the contents of the fields: " + e.getMessage(), Type.ERROR_MESSAGE);
-			getLogger().log(Level.FINEST, "Validation error during order save", e);
+			getLogger().error("Validation error during order save", e);
 			return null;
 		} catch (Exception e) {
 			Notification.show("Somebody else might have updated the data. Please refresh and try again.",
 					Type.ERROR_MESSAGE);
-			getLogger().log(Level.WARNING, "Unable to save order", e);
+			getLogger().error("Unable to save order", e);
 			return null;
 		}
-	}
-
-	private static Logger getLogger() {
-		return Logger.getLogger(OrderEditPresenter.class.getName());
 	}
 
 	public Optional<OrderState> getNextHappyPathState(OrderState current) {

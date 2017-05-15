@@ -3,7 +3,6 @@ package com.vaadin.template.orders.ui.view.admin.user;
 import java.io.Serializable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.data.Role;
@@ -18,10 +17,9 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 
 	@Autowired
 	private UserAdminDataProvider userAdminDataProvider;
+
 	@Autowired
 	private UserService service;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
 	@Override
 	protected User getCopy(User entity) {
@@ -52,5 +50,4 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 	public void filterGrid(String filter) {
 		getGridDataProvider().setFilter(filter);
 	}
-
 }
