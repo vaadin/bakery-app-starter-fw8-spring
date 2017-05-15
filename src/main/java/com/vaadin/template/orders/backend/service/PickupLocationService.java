@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.PickupLocationRepository;
 import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 
-@SpringComponent
+@Service
 public class PickupLocationService {
 
 	@Autowired
