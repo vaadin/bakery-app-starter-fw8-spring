@@ -12,11 +12,11 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.CustomerRepository;
 import com.vaadin.template.orders.backend.OrderRepository;
 import com.vaadin.template.orders.backend.data.OrderState;
@@ -30,14 +30,14 @@ import com.vaadin.template.orders.ui.view.dashboard.DeliveryStats;
 @Service
 public class OrderService {
 
-	@Autowired
-	private OrderRepository orderRepository;
-	@Autowired
-	private CustomerRepository customerRepository;
+	private transient OrderRepository orderRepository;
 
-	@Autowired
-	private UserService userService;
+	private transient CustomerRepository customerRepository;
+
+	private transient UserService userService;
+
 	private static Set<OrderState> notAvailableStates;
+
 	static {
 		notAvailableStates = new HashSet<>(Arrays.asList(OrderState.values()));
 		notAvailableStates.remove(OrderState.DELIVERED);
@@ -46,7 +46,7 @@ public class OrderService {
 	}
 
 	public Order findOrder(Long id) {
-		return orderRepository.findOne(id);
+		return getOrderRepository().findOne(id);
 	}
 
 	public Order changeState(Order order, OrderState state) {
@@ -56,13 +56,13 @@ public class OrderService {
 		order.setState(state);
 		addHistoryItem(order, state);
 
-		return orderRepository.save(order);
+		return getOrderRepository().save(order);
 	}
 
 	private void addHistoryItem(Order order, OrderState newState) {
 		String comment = "Order " + newState.getDisplayName();
 
-		HistoryItem item = new HistoryItem(userService.getCurrentUser(), comment);
+		HistoryItem item = new HistoryItem(getUserService().getCurrentUser(), comment);
 		item.setNewState(newState);
 		if (order.getHistory() == null) {
 			order.setHistory(new ArrayList<>());
@@ -73,49 +73,50 @@ public class OrderService {
 	@Transactional(rollbackOn = Exception.class)
 	public Order saveOrder(Order order) {
 		// FIXME Use existing customer maybe
-		Customer customer = customerRepository.save(order.getCustomer());
+		Customer customer = getCustomerRepository().save(order.getCustomer());
 		order.setCustomer(customer);
 
 		if (order.getHistory() == null) {
 			String comment = "Order placed";
 			order.setHistory(new ArrayList<>());
-			HistoryItem item = new HistoryItem(userService.getCurrentUser(), comment);
+			HistoryItem item = new HistoryItem(getUserService().getCurrentUser(), comment);
 			item.setNewState(OrderState.NEW);
 			order.getHistory().add(item);
 		}
-		return orderRepository.save(order);
 
+		return getOrderRepository().save(order);
 	}
 
 	public Order addHistoryItem(Order order, String comment) {
-		HistoryItem item = new HistoryItem(userService.getCurrentUser(), comment);
+		HistoryItem item = new HistoryItem(getUserService().getCurrentUser(), comment);
+
 		if (order.getHistory() == null) {
 			order.setHistory(new ArrayList<>());
 		}
+
 		order.getHistory().add(item);
 
-		return orderRepository.save(order);
-
+		return getOrderRepository().save(order);
 	}
 
 	public Page<Order> findAfterDueDateWithState(LocalDate filterDate, List<OrderState> states, Pageable pageable) {
-		return orderRepository.findByDueDateAfterAndStateIn(filterDate, states, pageable);
+		return getOrderRepository().findByDueDateAfterAndStateIn(filterDate, states, pageable);
 	}
 
 	public long countAfterDueDateWithState(LocalDate filterDate, List<OrderState> states) {
-		return orderRepository.countByDueDateAfterAndStateIn(filterDate, states);
+		return getOrderRepository().countByDueDateAfterAndStateIn(filterDate, states);
 	}
 
 	private DeliveryStats getDeliveryStats() {
 		DeliveryStats stats = new DeliveryStats();
 		LocalDate today = LocalDate.now();
-		stats.setDueToday((int) orderRepository.countByDueDate(today));
-		stats.setDueTomorrow((int) orderRepository.countByDueDate(today.plusDays(1)));
-		stats.setDeliveredToday(
-				(int) orderRepository.countByDueDateAndStateIn(today, Collections.singleton(OrderState.DELIVERED)));
+		stats.setDueToday((int) getOrderRepository().countByDueDate(today));
+		stats.setDueTomorrow((int) getOrderRepository().countByDueDate(today.plusDays(1)));
+		stats.setDeliveredToday((int) getOrderRepository().countByDueDateAndStateIn(today,
+				Collections.singleton(OrderState.DELIVERED)));
 
-		stats.setNotAvailableToday((int) orderRepository.countByDueDateAndStateIn(today, notAvailableStates));
-		stats.setNewOrders((int) orderRepository.countByState(OrderState.NEW));
+		stats.setNotAvailableToday((int) getOrderRepository().countByDueDateAndStateIn(today, notAvailableStates));
+		stats.setNewOrders((int) getOrderRepository().countByState(OrderState.NEW));
 
 		return stats;
 	}
@@ -128,7 +129,7 @@ public class OrderService {
 
 		Number[][] salesPerMonth = new Number[3][12];
 		data.setSalesPerMonth(salesPerMonth);
-		List<Object[]> sales = orderRepository.sumPerMonthLastThreeYears(OrderState.DELIVERED, year);
+		List<Object[]> sales = getOrderRepository().sumPerMonthLastThreeYears(OrderState.DELIVERED, year);
 
 		for (Object[] salesData : sales) {
 			// year, month, deliveries
@@ -140,7 +141,7 @@ public class OrderService {
 
 		LinkedHashMap<Product, Integer> productDeliveries = new LinkedHashMap<>();
 		data.setProductDeliveries(productDeliveries);
-		for (Object[] result : orderRepository.countPerProduct(OrderState.DELIVERED, year, month)) {
+		for (Object[] result : getOrderRepository().countPerProduct(OrderState.DELIVERED, year, month)) {
 			int sum = ((Long) result[0]).intValue();
 			Product p = (Product) result[1];
 			productDeliveries.put(p, sum);
@@ -152,11 +153,11 @@ public class OrderService {
 	private List<Number> getDeliveriesPerDay(int month, int year) {
 		int daysInMonth = YearMonth.of(year, month).lengthOfMonth();
 		return flattenAndReplaceMissingWithNull(daysInMonth,
-				orderRepository.countPerDay(OrderState.DELIVERED, year, month));
+				getOrderRepository().countPerDay(OrderState.DELIVERED, year, month));
 	}
 
 	private List<Number> getDeliveriesPerMonth(int year) {
-		return flattenAndReplaceMissingWithNull(12, orderRepository.countPerMonth(OrderState.DELIVERED, year));
+		return flattenAndReplaceMissingWithNull(12, getOrderRepository().countPerMonth(OrderState.DELIVERED, year));
 	}
 
 	private List<Number> flattenAndReplaceMissingWithNull(int length, List<Object[]> list) {
@@ -169,5 +170,17 @@ public class OrderService {
 			counts.set((Integer) result[0] - 1, (Number) result[1]);
 		}
 		return counts;
+	}
+
+	protected OrderRepository getOrderRepository() {
+		return orderRepository = BeanLocator.use(orderRepository).orElseFindInstance(OrderRepository.class);
+	}
+
+	protected CustomerRepository getCustomerRepository() {
+		return customerRepository = BeanLocator.use(customerRepository).orElseFindInstance(CustomerRepository.class);
+	}
+
+	protected UserService getUserService() {
+		return userService = BeanLocator.use(userService).orElseFindInstance(UserService.class);
 	}
 }
