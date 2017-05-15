@@ -1,5 +1,6 @@
 package com.vaadin.template.orders.ui.view.orders;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import java.util.stream.Collectors;
 import javax.annotation.PreDestroy;
 import javax.validation.ValidationException;
 
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -23,6 +23,7 @@ import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.backend.service.PickupLocationService;
+import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
@@ -32,7 +33,7 @@ import com.vaadin.ui.Notification.Type;
 
 @SpringComponent
 @PrototypeScope
-public class OrderEditPresenter {
+public class OrderEditPresenter implements Serializable, HasLogger {
 
 	private OrderEditView view;
 
@@ -43,9 +44,6 @@ public class OrderEditPresenter {
 
 	@Autowired
 	private NavigationManager navigationManager;
-
-	@Autowired
-	private Logger logger;
 
 	private static final List<OrderState> happyPath = Arrays.asList(OrderState.NEW, OrderState.CONFIRMED,
 			OrderState.READY_FOR_PICKUP, OrderState.DELIVERED);
@@ -185,12 +183,12 @@ public class OrderEditPresenter {
 		} catch (ValidationException e) {
 			// Should not get here if validation is setup properly
 			Notification.show("Please check the contents of the fields: " + e.getMessage(), Type.ERROR_MESSAGE);
-			logger.error("Validation error during order save", e);
+			getLogger().error("Validation error during order save", e);
 			return null;
 		} catch (Exception e) {
 			Notification.show("Somebody else might have updated the data. Please refresh and try again.",
 					Type.ERROR_MESSAGE);
-			logger.error("Unable to save order", e);
+			getLogger().error("Unable to save order", e);
 			return null;
 		}
 	}

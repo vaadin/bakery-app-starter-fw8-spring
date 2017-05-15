@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -29,9 +28,10 @@ import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.backend.data.entity.User;
+import com.vaadin.template.orders.ui.HasLogger;
 
 @SpringComponent
-public class DataGenerator {
+public class DataGenerator implements HasLogger {
 
 	private static final String[] FILLING = new String[] { "Strawberry", "Chocolate", "Blueberry", "Raspberry",
 			"Vanilla", "Salami", "Bacon" };
@@ -48,9 +48,6 @@ public class DataGenerator {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private Logger logger;
-
 	private final Random random = new Random(1L);
 
 	private final List<PickupLocation> pickupLocations = new ArrayList<>();
@@ -66,19 +63,19 @@ public class DataGenerator {
 	public CommandLineRunner loadData(OrderRepository orders, UserRepository users, ProductRepository products,
 			CustomerRepository customers, PickupLocationRepository pickupLocations, PasswordEncoder passwordEncoder) {
 		return args -> {
-			logger.info("Generating demo data");
-			logger.info("... generating users");
+			getLogger().info("Generating demo data");
+			getLogger().info("... generating users");
 			createUsers(users);
-			logger.info("... generating products");
+			getLogger().info("... generating products");
 			createProducts(products);
-			logger.info("... generating customers");
+			getLogger().info("... generating customers");
 			createCustomers(customers);
-			logger.info("... generating pickup locations");
+			getLogger().info("... generating pickup locations");
 			createPickupLocations(pickupLocations);
-			logger.info("... generating orders");
+			getLogger().info("... generating orders");
 			createOrders(orders);
 
-			logger.info("Generated demo data");
+			getLogger().info("Generated demo data");
 		};
 	}
 
