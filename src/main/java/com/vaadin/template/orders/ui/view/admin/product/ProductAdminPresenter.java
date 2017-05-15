@@ -1,9 +1,9 @@
 package com.vaadin.template.orders.ui.view.admin.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.backend.service.ProductService;
 import com.vaadin.template.orders.ui.PrototypeScope;
@@ -16,15 +16,11 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 	@Autowired
 	private ProductAdminDataProvider userAdminDataProvider;
 
-	@Autowired
-	private ProductService service;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private transient ProductService service;
 
 	@Override
 	protected Product getCopy(Product entity) {
-		return service.get(entity.getId());
+		return getProductService().get(entity.getId());
 	}
 
 	@Override
@@ -34,12 +30,12 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 
 	@Override
 	protected void deleteEntity(Product entity) {
-		service.delete(entity.getId());
+		getProductService().delete(entity.getId());
 	}
 
 	@Override
 	protected Product saveEntity(Product editItem) {
-		return service.save(editItem);
+		return getProductService().save(editItem);
 	}
 
 	@Override
@@ -50,5 +46,9 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 	@Override
 	public void filterGrid(String filter) {
 		getGridDataProvider().setFilter(filter);
+	}
+
+	protected ProductService getProductService() {
+		return service = BeanLocator.use(service).orElseFindInstance(ProductService.class);
 	}
 }

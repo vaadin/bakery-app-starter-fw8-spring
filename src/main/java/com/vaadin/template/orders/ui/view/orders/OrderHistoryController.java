@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.ui.PrototypeScope;
 
@@ -13,8 +14,7 @@ public class OrderHistoryController {
 
 	private OrderHistory view;
 
-	@Autowired
-	private OrderService orderService;
+	private transient OrderService orderService;
 
 	@Autowired
 	private EventBus.ViewEventBus eventBus;
@@ -28,4 +28,7 @@ public class OrderHistoryController {
 		eventBus.publish(this, new OrderUpdated());
 	}
 
+	protected OrderService getOrderService() {
+		return orderService = BeanLocator.use(orderService).orElseFindInstance(OrderService.class);
+	}
 }

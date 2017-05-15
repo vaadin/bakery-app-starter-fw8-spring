@@ -18,6 +18,7 @@ import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
@@ -37,10 +38,9 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 
 	private OrderEditView view;
 
-	@Autowired
-	private OrderService orderService;
-	@Autowired
-	private PickupLocationService pickupLocationService;
+	private transient OrderService orderService;
+
+	private transient PickupLocationService pickupLocationService;
 
 	@Autowired
 	private NavigationManager navigationManager;
@@ -78,9 +78,9 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 			order.setCustomer(new Customer());
 			order.setDueDate(LocalDate.now().plusDays(1));
 			order.setDueTime(LocalTime.of(8, 00));
-			order.setPickupLocation(pickupLocationService.getDefault());
+			order.setPickupLocation(getPickupLocationService().getDefault());
 		} else {
-			order = orderService.findOrder(id);
+			order = getOrderService().findOrder(id);
 			if (order == null) {
 				view.showNotFound();
 				return;
@@ -128,7 +128,7 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 				throw new IllegalStateException(
 						"The next state button should never be enabled when the state does not follow the happy path");
 			}
-			orderService.changeState(order, nextState.get());
+			getOrderService().changeState(order, nextState.get());
 			refresh(order.getId());
 		} else if (view.getMode() == Mode.CONFIRMATION) {
 			Order order = saveOrder();
@@ -156,7 +156,7 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 	}
 
 	private void refresh(Long id) {
-		Order order = orderService.findOrder(id);
+		Order order = getOrderService().findOrder(id);
 		if (order == null) {
 			view.showNotFound();
 			return;
@@ -178,7 +178,7 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 	private Order saveOrder() {
 		try {
 			Order order = view.getOrder();
-			return orderService.saveOrder(order);
+			return getOrderService().saveOrder(order);
 
 		} catch (ValidationException e) {
 			// Should not get here if validation is setup properly
@@ -199,5 +199,14 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 			return Optional.empty();
 		}
 		return Optional.of(happyPath.get(currentIndex + 1));
+	}
+
+	protected OrderService getOrderService() {
+		return orderService = BeanLocator.use(orderService).orElseFindInstance(OrderService.class);
+	}
+
+	protected PickupLocationService getPickupLocationService() {
+		return pickupLocationService = BeanLocator.use(pickupLocationService)
+				.orElseFindInstance(PickupLocationService.class);
 	}
 }
