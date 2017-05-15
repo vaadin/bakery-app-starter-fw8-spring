@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.PickupLocationRepository;
 import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 
