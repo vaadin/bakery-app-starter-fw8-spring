@@ -2,8 +2,8 @@ package com.vaadin.template.orders.ui.view.admin.user;
 
 import java.io.Serializable;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.data.Role;
@@ -18,10 +18,12 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 
 	@Autowired
 	private UserAdminDataProvider userAdminDataProvider;
+
 	@Autowired
 	private UserService service;
+
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private Logger logger;
 
 	@Override
 	protected User getCopy(User entity) {
@@ -53,4 +55,8 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 		getGridDataProvider().setFilter(filter);
 	}
 
+	@Override
+	protected Logger getLogger() {
+		return logger;
+	}
 }

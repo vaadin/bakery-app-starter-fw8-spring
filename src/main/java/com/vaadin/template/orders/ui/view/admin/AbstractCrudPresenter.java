@@ -1,9 +1,8 @@
 package com.vaadin.template.orders.ui.view.admin;
 
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.vaadin.ui.Notification;
@@ -56,7 +55,7 @@ public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> im
 			// or then invalid data -> should not happen if validators are in
 			// place
 			Notification.show("A problem occured while saving the data. Please check the fields.", Type.ERROR_MESSAGE);
-			getLogger().log(Level.FINE, "Unable to save entity of type " + entity.getClass().getName(), e);
+			getLogger().error("Unable to save entity of type " + entity.getClass().getName(), e);
 			return;
 		}
 		if (isNew) {
@@ -74,19 +73,16 @@ public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> im
 		} catch (DataIntegrityViolationException e) {
 			Notification.show("The given entity cannot be deleted as there are references to it in the database",
 					Type.ERROR_MESSAGE);
-			getLogger().log(Level.FINE, "Unable to delete entity of type " + entity.getClass().getName(), e);
+			getLogger().error("Unable to delete entity of type " + entity.getClass().getName(), e);
 			return;
 		}
 		getGridDataProvider().refreshAll();
 		getView().stopEditing();
 	}
 
-	private Logger getLogger() {
-		return Logger.getLogger(AbstractCrudPresenter.class.getName());
-	}
-
 	public void cancelClicked() {
 		getView().stopEditing();
 	}
 
+	protected abstract Logger getLogger();
 }
