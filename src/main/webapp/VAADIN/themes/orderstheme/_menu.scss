@@ -1,10 +1,14 @@
 @mixin menu {
   .navigation .selected {
-    background: red;
+    background: darken($v-focus-color,10%);
+    border-radius: 0;
+    .v-icon, .v-button-caption {
+    	color: lighten($v-focus-color,50%);
+    }
   }
-
-  .app-shell .navigation .selected.v-button.borderless:hover {
-    background: darkred;
-
+  .app-shell .navigation .v-button:hover {
+  	.v-icon, .v-button-caption {
+    	color: lighten($v-focus-color,50%);
+    }
   }
 }
