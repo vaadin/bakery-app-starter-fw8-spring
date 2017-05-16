@@ -13,7 +13,6 @@ import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValueContext;
 import com.vaadin.data.converter.StringToIntegerConverter;
-import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.entity.OrderItem;
@@ -34,8 +33,7 @@ public class ProductInfo extends ProductInfoDesign {
 
 	private BeanValidationBinder<OrderItem> binder;
 
-	// We'll display this instead of a TextArea in "report mode" for a better
-	// presentation
+	// Use Label instead of TextArea in "report mode" for a better presentation
 	private Label readOnlyComment = new Label();
 
 	private boolean reportMode = false;
