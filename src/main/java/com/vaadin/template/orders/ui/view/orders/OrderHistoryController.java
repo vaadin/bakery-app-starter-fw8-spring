@@ -24,7 +24,7 @@ public class OrderHistoryController {
 	}
 
 	public void addNewComment(String comment) {
-		orderService.addHistoryItem(view.getOrder(), comment);
+		getOrderService().addHistoryItem(view.getOrder(), comment);
 		eventBus.publish(this, new OrderUpdated());
 	}
 
