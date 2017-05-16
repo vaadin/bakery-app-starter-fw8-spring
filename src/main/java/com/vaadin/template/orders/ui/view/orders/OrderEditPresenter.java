@@ -178,6 +178,8 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 	private Order saveOrder() {
 		try {
 			Order order = view.getOrder();
+			// Filter out empty products
+			order.getItems().removeIf(orderItem -> orderItem.getProduct() == null);
 			return orderService.saveOrder(order);
 
 		} catch (ValidationException e) {

@@ -156,4 +156,23 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 		orderEdit.getCancel().click();
 		orderEdit.assertOrder(currentOrder);
 	}
+
+	@Test
+	public void emptyProductRowsDoNotPreventSave() {
+		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
+		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
+		ElementUtil.click(orderEdit.getCancel()); // "Edit"
+
+		int nrProducts = orderEdit.getNumberOfProducts();
+		for (int i = 0; i < 3; i++) {
+			ElementUtil.click(orderEdit.getAddItems());
+		}
+		Assert.assertEquals(nrProducts + 3, orderEdit.getNumberOfProducts());
+		ElementUtil.click(orderEdit.getOk());
+
+		// Assert saved
+		Assert.assertEquals("Save failed", "Edit", ElementUtil.getText(orderEdit.getCancel()));
+		// Should still have the same products
+		Assert.assertEquals(nrProducts, orderEdit.getNumberOfProducts());
+	}
 }
