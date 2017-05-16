@@ -10,18 +10,21 @@
    <vaadin-label style-name="bold large" plain-text>
      History 
    </vaadin-label>
-   <vaadin-vertical-layout style-name="history">
-    <vaadin-grid-layout spacing id="items" _id="items">
-     <row>
-      <column></column>
-      <column></column>
-      <column></column>
-     </row>
-    </vaadin-grid-layout>
-    <vaadin-button style-name="link" id="addComment" plain-text _id="addComment">
-      Add comment 
-    </vaadin-button>
-   </vaadin-vertical-layout>
+   <vaadin-panel _id="historyPanel">
+    <vaadin-vertical-layout style-name="history">
+     <vaadin-grid-layout spacing id="items" _id="items">
+      <row>
+       <column></column>
+       <column></column>
+       <column></column>
+      </row>
+     </vaadin-grid-layout>
+     <vaadin-horizontal-layout spacing="false" width-full>
+      <vaadin-text-field width-full _id="newCommentInput" :expand></vaadin-text-field>
+      <vaadin-button icon="fonticon://Vaadin-Icons/e921" style-name="quiet" plain-text _id="commitNewComment"></vaadin-button>
+     </vaadin-horizontal-layout>
+    </vaadin-vertical-layout>
+   </vaadin-panel>
   </vaadin-vertical-layout>
  </body>
 </html>

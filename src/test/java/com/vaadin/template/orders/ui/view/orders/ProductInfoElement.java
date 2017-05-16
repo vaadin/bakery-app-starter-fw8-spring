@@ -74,8 +74,12 @@ public class ProductInfoElement extends ProductInfoDesignElement {
 		try {
 			productOrderData.setComment(getComment().getValue());
 		} catch (NoSuchElementException e) {
-			// Hidden in report mode if there is no comment
-			productOrderData.setComment("");
+			try {
+				productOrderData.setComment(getReportModeComment().getText());
+			} catch (NoSuchElementException e2) {
+				// Hidden in report mode if there is no comment
+				productOrderData.setComment("");
+			}
 		}
 		int intPrice = (int) (100 * Double.parseDouble(getPrice().getText().replace("$", "")));
 		productOrderData.setPrice(intPrice);
