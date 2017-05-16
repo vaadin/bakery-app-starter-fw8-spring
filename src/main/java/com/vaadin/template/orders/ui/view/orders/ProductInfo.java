@@ -74,6 +74,17 @@ public class ProductInfo extends ProductInfoDesign {
 		comment.setVisible(!(reportMode && comment.isEmpty()));
 	}
 
+	/**
+	 * Checks if no product has been selected. If no product is selected, the
+	 * whole product info section is ignored when saving changes.
+	 *
+	 * @return <code>true</code> if no product is selected, <code>false</code>
+	 *         otherwise
+	 */
+	public boolean isEmpty() {
+		return product.isEmpty();
+	}
+
 	public Stream<HasValue<?>> validate() {
 		return binder.validate().getFieldValidationErrors().stream().map(BindingValidationStatus::getField);
 	}

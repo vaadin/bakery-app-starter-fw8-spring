@@ -196,7 +196,10 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 
 		for (Component c : productInfoContainer) {
 			if (c instanceof ProductInfo) {
-				errorFields = Stream.concat(errorFields, ((ProductInfo) c).validate());
+				ProductInfo productInfo = (ProductInfo) c;
+				if (!productInfo.isEmpty()) {
+					errorFields = Stream.concat(errorFields, productInfo.validate());
+				}
 			}
 		}
 		return errorFields;
