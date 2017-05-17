@@ -1,11 +1,11 @@
 package com.vaadin.template.orders.ui.components;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.vaadin.data.provider.Query;
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 import com.vaadin.template.orders.backend.service.PickupLocationService;
 import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
@@ -13,17 +13,22 @@ import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
 @SpringComponent
 public class PickupLocationComboBoxDataProvider extends PageableDataProvider<PickupLocation, String> {
 
-	@Autowired
-	private PickupLocationService service;
+	private transient PickupLocationService pickupLocationService;
 
 	@Override
 	protected Page<PickupLocation> fetchFromBackEnd(Query<PickupLocation, String> query, Pageable pageable) {
-		return service.findAnyMatching(query.getFilter(), pageable);
+		return getPickupLocationService().findAnyMatching(query.getFilter(), pageable);
 	}
 
 	@Override
 	protected int sizeInBackEnd(Query<PickupLocation, String> query) {
-		return (int) service.countAnyMatching(query.getFilter());
+		return (int) getPickupLocationService().countAnyMatching(query.getFilter());
 	}
 
+	protected PickupLocationService getPickupLocationService() {
+		if (pickupLocationService == null) {
+			pickupLocationService = BeanLocator.find(PickupLocationService.class);
+		}
+		return pickupLocationService;
+	}
 }

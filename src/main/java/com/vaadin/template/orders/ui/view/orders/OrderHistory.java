@@ -25,6 +25,7 @@ public class OrderHistory extends OrderHistoryDesign {
 
 	@Autowired
 	private DateTimeFormatter dateTimeFormatter;
+
 	@Autowired
 	private OrderHistoryController controller;
 

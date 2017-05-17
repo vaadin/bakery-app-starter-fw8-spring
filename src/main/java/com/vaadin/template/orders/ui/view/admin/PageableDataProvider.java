@@ -1,15 +1,21 @@
 package com.vaadin.template.orders.ui.view.admin;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.util.Pair;
 
 import com.vaadin.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.data.provider.Query;
+import com.vaadin.data.provider.QuerySortOrder;
+import com.vaadin.shared.data.sort.SortDirection;
 
 public abstract class PageableDataProvider<T, F> extends AbstractBackEndDataProvider<T, F> {
 
@@ -24,7 +30,22 @@ public abstract class PageableDataProvider<T, F> extends AbstractBackEndDataProv
 
 	private static <T, F> Pageable getPageable(Query<T, F> q) {
 		Pair<Integer, Integer> pageSizeAndNumber = limitAndOffsetToPageSizeAndNumber(q.getOffset(), q.getLimit());
-		return new PageRequest(pageSizeAndNumber.getSecond(), pageSizeAndNumber.getFirst());
+		return new PageRequest(pageSizeAndNumber.getSecond(), pageSizeAndNumber.getFirst(), createSpringSort(q));
+	}
+
+	private static <T, F> Sort createSpringSort(Query<T, F> q) {
+		List<Order> orders = q.getSortOrders().stream().map(PageableDataProvider::queryOrderToSpringOrder)
+				.collect(Collectors.toList());
+		if (orders.isEmpty()) {
+			return null;
+		} else {
+			return new Sort(orders);
+		}
+	}
+
+	private static Order queryOrderToSpringOrder(QuerySortOrder queryOrder) {
+		return new Order(queryOrder.getDirection() == SortDirection.ASCENDING ? Direction.ASC : Direction.DESC,
+				queryOrder.getSorted());
 	}
 
 	public static Pair<Integer, Integer> limitAndOffsetToPageSizeAndNumber(int offset, int limit) {

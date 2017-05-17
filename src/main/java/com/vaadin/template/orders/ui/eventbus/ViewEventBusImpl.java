@@ -1,6 +1,5 @@
 package com.vaadin.template.orders.ui.eventbus;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +13,7 @@ import com.vaadin.spring.annotation.ViewScope;
 
 @SpringComponent
 @ViewScope
-public class ViewEventBusImpl implements ViewEventBus, Serializable {
+public class ViewEventBusImpl implements ViewEventBus {
 
 	private Map<Class<?>, List<Consumer<?>>> listeners = new HashMap<>();
 

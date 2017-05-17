@@ -1,10 +1,11 @@
 package com.vaadin.template.orders.ui.eventbus;
 
+import java.io.Serializable;
 import java.util.function.Consumer;
 
 import com.vaadin.shared.Registration;
 
-public interface ViewEventBus {
+public interface ViewEventBus extends Serializable {
 
 	void publish(Object payload);
 

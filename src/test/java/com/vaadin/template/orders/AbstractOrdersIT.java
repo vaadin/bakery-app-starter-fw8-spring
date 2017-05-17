@@ -1,5 +1,7 @@
 package com.vaadin.template.orders;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 import org.junit.Assert;
@@ -13,10 +15,14 @@ import org.slf4j.LoggerFactory;
 
 import com.vaadin.template.orders.ui.CurrentDriver;
 import com.vaadin.template.orders.ui.view.orders.ElementUtil;
+import com.vaadin.testbench.By;
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.TestBenchTestCase;
+import com.vaadin.testbench.elements.GridElement;
+import com.vaadin.testbench.elements.GridElement.GridCellElement;
+import com.vaadin.testbench.elements.GridElement.GridRowElement;
 import com.vaadin.testbench.elementsbase.AbstractElement;
 
 import ch.qos.logback.classic.Level;
@@ -93,8 +99,76 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 		}
 	}
 
+	/**
+	 * Checks if the given element has the given class name.
+	 *
+	 * @param element
+	 *            the element to check
+	 * @param className
+	 *            the class name to check for
+	 * @return <code>true</code> if the element has the given class name,
+	 *         <code>false</code> otherwise
+	 */
 	protected boolean hasClassName(TestBenchElement element, String className) {
 		return element.getClassNames().contains(className);
+	}
+
+	/**
+	 * Gets all visible cell contents from the given grid.
+	 *
+	 * @param grid
+	 *            the grid to check
+	 * @return text contents of all cells in the grid
+	 */
+	public static List<String[]> getData(GridElement grid) {
+		int cols = getColumnCount(grid);
+		ArrayList<String[]> ret = new ArrayList<>();
+		for (GridRowElement row : grid.getRows()) {
+			String[] rowData = new String[cols];
+			for (int i = 0; i < cols; i++) {
+				rowData[i] = row.getCell(i).getText();
+			}
+			ret.add(rowData);
+		}
+		return ret;
+	}
+
+	/**
+	 * Gets the number of columns shown in the grid.
+	 * <p>
+	 * Assumes that the grid contains at least one row.
+	 *
+	 * @param grid
+	 *            the grid to query
+	 * @return the number of columns in the grid
+	 */
+	public static int getColumnCount(GridElement grid) {
+		return grid.getRow(0).findElements(By.xpath("./td")).size();
+	}
+
+	/**
+	 * Finds the cell with the given content and returns it.
+	 *
+	 * @param grid
+	 *            the grid to search through
+	 * @param contents
+	 *            the contents to look for
+	 * @return the first cell with a matching content
+	 * @throws NoSuchElementException
+	 *             if no cell was found
+	 */
+	public static TestBenchElement getCell(GridElement grid, String contents) throws NoSuchElementException {
+		int columns = getColumnCount(grid);
+		for (GridRowElement row : grid.getRows()) {
+			for (int i = 0; i < columns; i++) {
+				GridCellElement cell = row.getCell(i);
+				if (contents.equals(cell.getText())) {
+					return cell;
+				}
+			}
+		}
+
+		throw new NoSuchElementException("No cell with text '" + contents + "' found");
 	}
 
 }

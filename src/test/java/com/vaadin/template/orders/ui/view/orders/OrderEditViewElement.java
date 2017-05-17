@@ -9,6 +9,7 @@ import org.hamcrest.beans.SamePropertyValuesAs;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 
+import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
@@ -27,7 +28,7 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 		Customer customer;
 		String pickupLocation;
 		List<ProductOrderData> products;
-		String total;	
+		String total;
 	}
 
 	public void setState(OrderState state) {
@@ -108,6 +109,10 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 
 			getProductInfo(i).setProduct(product);
 		}
+	}
+
+	public static OrderEditViewElement get() {
+		return AbstractOrdersIT.findFirstElement(OrderEditViewElement.class);
 	}
 
 }

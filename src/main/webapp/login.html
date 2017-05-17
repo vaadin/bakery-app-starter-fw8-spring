@@ -205,7 +205,7 @@ input[type='password'] {
 <script type="text/javascript">
 	var preserveFragment = function() {
 		if (window.location.hash) {
-			document.getElementById("form").action += window.location.hash;
+			document.getElementById("theform").action += window.location.hash;
 		}
 	}
 </script>
@@ -218,7 +218,7 @@ input[type='password'] {
         </div>
         
         <div id="form">
-            <form method="post" action="login">
+            <form method="post" action="login" id="theform">
             	<h2>Sign in</h2>
 		        <label id="login-label" for="login">Email</label>
 				<input type="text" id="login" name="username" aria-labelledby="login-label" autofocus>
