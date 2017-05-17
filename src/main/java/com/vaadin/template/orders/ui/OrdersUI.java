@@ -1,8 +1,6 @@
 package com.vaadin.template.orders.ui;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Viewport;
@@ -25,26 +23,14 @@ public class OrdersUI extends UI {
 
 	@Autowired
 	private MainView mainView;
-	private String username;
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 		viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
-		// Store the user for later reference when we might not have a request
-		UsernamePasswordAuthenticationToken p = (UsernamePasswordAuthenticationToken) vaadinRequest.getUserPrincipal();
-		UserDetails userDetails = (UserDetails) p.getPrincipal();
-		username = userDetails.getUsername();
 		setContent(mainView);
 		mainView.populateMenu();
 
 		navigationManager.navigateToDefaultView();
 	}
 
-	public static OrdersUI get() {
-		return (OrdersUI) UI.getCurrent();
-	}
-
-	public String getUsername() {
-		return username;
-	}
 }
