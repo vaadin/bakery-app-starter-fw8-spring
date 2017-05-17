@@ -22,9 +22,8 @@ public class OrdersGrid extends Grid<Order> {
 		setSizeFull();
 		addStyleName("two-row");
 		setColumnResizeMode(ColumnResizeMode.ANIMATED);
-		Column<Order, String> dueColumn = addColumn(
-				order -> twoRowCell(getTimeHeader(order.getDueDate()), order.getDueDate().format(dueDateFormat)),
-				new HtmlRenderer());
+		Column<Order, String> dueColumn = addColumn(order -> dueCell(getTimeHeader(order.getDueDate()),
+				String.valueOf(order.getDueTime()), getTimeStyle(order.getDueDate())), new HtmlRenderer());
 		dueColumn.setCaption("Due").setWidthUndefined();
 
 		addColumn(order -> {
@@ -44,11 +43,22 @@ public class OrdersGrid extends Grid<Order> {
 			// Show weekday for upcoming days
 			LocalDate todayNextWeek = today.plusDays(7);
 			if (dueDate.isAfter(today) && dueDate.isBefore(todayNextWeek)) {
-				return dueDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US);
+				// "Mon 7"
+				return dueDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US) + " "
+						+ dueDate.getDayOfMonth();
 			} else {
 				// In the past or more than a week in the future
-				return "";
+				return dueDate.getDayOfMonth() + " " + dueDate.getMonth().getDisplayName(TextStyle.SHORT, Locale.US);
 			}
+		}
+	}
+
+	private String getTimeStyle(LocalDate dueDate) {
+		int i = LocalDate.now().until(dueDate).getDays();
+		if (i < 7) {
+			return "in" + i;
+		} else {
+			return "";
 		}
 	}
 
@@ -56,6 +66,10 @@ public class OrdersGrid extends Grid<Order> {
 		Stream<String> quantityAndName = order.getItems().stream()
 				.map(item -> item.getQuantity() + "x " + item.getProduct().getName());
 		return quantityAndName.collect(Collectors.joining(", "));
+	}
+
+	private String dueCell(String header, String content, String styleName) {
+		return "<div class=\"due " + styleName + "\"><b>" + header + "</b>" + content + "</div>";
 	}
 
 	private String twoRowCell(String header, String content) {
