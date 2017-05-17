@@ -1,5 +1,7 @@
 package com.vaadin.template.orders.ui.view.orders;
 
+import java.io.Serializable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
 
@@ -12,7 +14,7 @@ import com.vaadin.template.orders.ui.PrototypeScope;
 
 @SpringComponent
 @PrototypeScope
-public class OrderStateWindowController {
+public class OrderStateWindowController implements Serializable {
 
 	private transient OrderService orderService;
 

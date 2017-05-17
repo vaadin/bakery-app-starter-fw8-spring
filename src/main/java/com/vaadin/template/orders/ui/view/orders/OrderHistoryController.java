@@ -1,5 +1,7 @@
 package com.vaadin.template.orders.ui.view.orders;
 
+import java.io.Serializable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
 
@@ -10,7 +12,7 @@ import com.vaadin.template.orders.ui.PrototypeScope;
 
 @SpringComponent
 @PrototypeScope
-public class OrderHistoryController {
+public class OrderHistoryController implements Serializable {
 
 	private OrderHistory view;
 
