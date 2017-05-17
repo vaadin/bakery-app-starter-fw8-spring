@@ -17,7 +17,7 @@ import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
 @PrototypeScope
 public class ProductAdminDataProvider extends PageableDataProvider<Product, Object> {
 
-	private transient ProductService service;
+	private transient ProductService productService;
 
 	private Optional<String> filter = Optional.empty();
 
@@ -46,6 +46,9 @@ public class ProductAdminDataProvider extends PageableDataProvider<Product, Obje
 	}
 
 	protected ProductService getProductService() {
-		return service = BeanLocator.use(service).orElseFindInstance(ProductService.class);
+		if (productService == null) {
+			productService = BeanLocator.find(ProductService.class);
+		}
+		return productService;
 	}
 }

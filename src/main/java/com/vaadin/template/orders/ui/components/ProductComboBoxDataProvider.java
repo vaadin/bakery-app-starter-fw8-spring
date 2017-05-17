@@ -26,6 +26,9 @@ public class ProductComboBoxDataProvider extends PageableDataProvider<Product, S
 	}
 
 	protected ProductService getProductService() {
-		return productService = BeanLocator.use(productService).orElseFindInstance(ProductService.class);
+		if (productService == null) {
+			productService = BeanLocator.find(ProductService.class);
+		}
+		return productService;
 	}
 }

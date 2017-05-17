@@ -66,7 +66,10 @@ public class UserService {
 	}
 
 	protected UserRepository getUserRepository() {
-		return userRepository = BeanLocator.use(userRepository).orElseFindInstance(UserRepository.class);
+		if (userRepository == null) {
+			userRepository = BeanLocator.find(UserRepository.class);
+		}
+		return userRepository;
 	}
 
 	public String encodePassword(String value) {

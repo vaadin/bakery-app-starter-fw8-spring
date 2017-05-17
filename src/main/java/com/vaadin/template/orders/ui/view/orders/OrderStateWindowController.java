@@ -32,6 +32,9 @@ public class OrderStateWindowController {
 	}
 
 	protected OrderService getOrderService() {
-		return orderService = BeanLocator.use(orderService).orElseFindInstance(OrderService.class);
+		if (orderService == null) {
+			orderService = BeanLocator.find(OrderService.class);
+		}
+		return orderService;
 	}
 }

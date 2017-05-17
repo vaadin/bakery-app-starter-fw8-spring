@@ -16,7 +16,7 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 	@Autowired
 	private ProductAdminDataProvider userAdminDataProvider;
 
-	private transient ProductService service;
+	private transient ProductService productService;
 
 	@Override
 	protected Product getCopy(Product entity) {
@@ -49,6 +49,9 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 	}
 
 	protected ProductService getProductService() {
-		return service = BeanLocator.use(service).orElseFindInstance(ProductService.class);
+		if (productService == null) {
+			productService = BeanLocator.find(ProductService.class);
+		}
+		return productService;
 	}
 }

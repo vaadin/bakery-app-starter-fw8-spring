@@ -54,6 +54,9 @@ public class ProductService {
 	}
 
 	protected ProductRepository getProductRepository() {
-		return productRepository = BeanLocator.use(productRepository).orElseFindInstance(ProductRepository.class);
+		if (productRepository == null) {
+			productRepository = BeanLocator.find(ProductRepository.class);
+		}
+		return productRepository;
 	}
 }

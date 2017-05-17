@@ -17,7 +17,7 @@ import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
 @PrototypeScope
 public class UserAdminDataProvider extends PageableDataProvider<User, Object> {
 
-	private transient UserService service;
+	private transient UserService userService;
 
 	private Optional<String> filter = Optional.empty();
 
@@ -46,6 +46,9 @@ public class UserAdminDataProvider extends PageableDataProvider<User, Object> {
 	}
 
 	protected UserService getUserService() {
-		return service = BeanLocator.use(service).orElseFindInstance(UserService.class);
+		if (userService == null) {
+			userService = BeanLocator.find(UserService.class);
+		}
+		return userService;
 	}
 }

@@ -39,7 +39,9 @@ public class PickupLocationService {
 	}
 
 	protected PickupLocationRepository getPickupLocationRepository() {
-		return pickupLocationRepository = BeanLocator.use(pickupLocationRepository)
-				.orElseFindInstance(PickupLocationRepository.class);
+		if (pickupLocationRepository == null) {
+			pickupLocationRepository = BeanLocator.find(PickupLocationRepository.class);
+		}
+		return pickupLocationRepository;
 	}
 }

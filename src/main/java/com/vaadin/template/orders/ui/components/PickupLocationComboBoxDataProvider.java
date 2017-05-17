@@ -13,7 +13,7 @@ import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
 @SpringComponent
 public class PickupLocationComboBoxDataProvider extends PageableDataProvider<PickupLocation, String> {
 
-	private transient PickupLocationService service;
+	private transient PickupLocationService pickupLocationService;
 
 	@Override
 	protected Page<PickupLocation> fetchFromBackEnd(Query<PickupLocation, String> query, Pageable pageable) {
@@ -26,6 +26,9 @@ public class PickupLocationComboBoxDataProvider extends PageableDataProvider<Pic
 	}
 
 	protected PickupLocationService getPickupLocationService() {
-		return service = BeanLocator.use(service).orElseFindInstance(PickupLocationService.class);
+		if (pickupLocationService == null) {
+			pickupLocationService = BeanLocator.find(PickupLocationService.class);
+		}
+		return pickupLocationService;
 	}
 }

@@ -56,6 +56,9 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 	}
 
 	protected UserService getUserService() {
-		return userService = BeanLocator.use(userService).orElseFindInstance(UserService.class);
+		if (userService == null) {
+			userService = BeanLocator.find(UserService.class);
+		}
+		return userService;
 	}
 }

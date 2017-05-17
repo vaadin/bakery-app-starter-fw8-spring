@@ -173,14 +173,23 @@ public class OrderService {
 	}
 
 	protected OrderRepository getOrderRepository() {
-		return orderRepository = BeanLocator.use(orderRepository).orElseFindInstance(OrderRepository.class);
+		if (orderRepository == null) {
+			orderRepository = BeanLocator.find(OrderRepository.class);
+		}
+		return orderRepository;
 	}
 
 	protected CustomerRepository getCustomerRepository() {
-		return customerRepository = BeanLocator.use(customerRepository).orElseFindInstance(CustomerRepository.class);
+		if (customerRepository == null) {
+			customerRepository = BeanLocator.find(CustomerRepository.class);
+		}
+		return customerRepository;
 	}
 
 	protected UserService getUserService() {
-		return userService = BeanLocator.use(userService).orElseFindInstance(UserService.class);
+		if (userService == null) {
+			userService = BeanLocator.find(UserService.class);
+		}
+		return userService;
 	}
 }

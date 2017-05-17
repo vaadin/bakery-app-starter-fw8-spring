@@ -204,11 +204,16 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 	}
 
 	protected OrderService getOrderService() {
-		return orderService = BeanLocator.use(orderService).orElseFindInstance(OrderService.class);
+		if (orderService == null) {
+			orderService = BeanLocator.find(OrderService.class);
+		}
+		return orderService;
 	}
 
 	protected PickupLocationService getPickupLocationService() {
-		return pickupLocationService = BeanLocator.use(pickupLocationService)
-				.orElseFindInstance(PickupLocationService.class);
+		if (pickupLocationService == null) {
+			pickupLocationService = BeanLocator.find(PickupLocationService.class);
+		}
+		return pickupLocationService;
 	}
 }
