@@ -12,11 +12,11 @@ import com.vaadin.testbench.elementsbase.ServerClass;
 public class OrderHistoryElement extends OrderHistoryDesignElement {
 
 	private TextFieldElement getCommentInput() {
-		return $(TextFieldElement.class).id(OrderHistory.COMMENT_INPUT);
+		return $(TextFieldElement.class).id(OrderHistory.COMMENT_INPUT_ID);
 	}
 
 	private ButtonElement getSaveComment() {
-		return $(ButtonElement.class).id(OrderHistory.SAVE_COMMENT);
+		return $(ButtonElement.class).id(OrderHistory.COMMIT_COMMENT_ID);
 	}
 
 	public List<OrderHistoryItemObject> getHistoryItems() {
@@ -25,15 +25,14 @@ public class OrderHistoryElement extends OrderHistoryDesignElement {
 		ElementUtil.scrollIntoView(layout);
 		for (int i = 0; i < layout.getRowCount(); i++) {
 			String date = layout.getCell(i, 0).getText();
-			String message = layout.getCell(i, 1).getText();
-			String author = layout.getCell(i, 2).getText();
+			String author = layout.getCell(i, 1).getText();
+			String message = layout.getCell(i, 2).getText();
 			history.add(new OrderHistoryItemObject(date, message, author));
 		}
 		return history;
 	}
 
 	public void addComment(String message) {
-		ElementUtil.click(getAddComment());
 		TextFieldElement input = getCommentInput();
 		input.setValue(message);
 

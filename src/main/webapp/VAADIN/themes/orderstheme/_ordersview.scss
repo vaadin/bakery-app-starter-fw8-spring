@@ -11,7 +11,7 @@
 	}
 
 	.order-form {
-		max-width: 900px;
+		max-width: 768px;
 	  	display: flex;
 	  	flex-wrap: wrap;
 
@@ -22,6 +22,12 @@
 		.total {
 			text-align: right;
 			border-top: 2px solid black;
+		}
+		.header {
+			font-weight: bold;
+			text-transform: uppercase;
+			font-size: 12px;
+			margin-bottom: 0;
 		}
 	}
 	.order-form > * {
@@ -44,7 +50,25 @@
 
 	.product-row {
 		border-bottom: 1px solid rgba(0,0,0,.05);
+		padding-bottom: 8px;
 		margin-bottom: 16px;
+	}
+	.product-row:last-child {
+			border-bottom: 0;
+			margin-bottom: 0;
+	}
+
+	.confirmation {
+		.header {
+			border-bottom: 2px solid rgba(0, 0, 0, .3);
+		}
+		.v-gridlayout-spacing-on {
+			padding-top: 0;
+		}
+		.product-row .v-label {
+			white-space: pre-wrap;
+			padding-left: 8px;
+		}
 	}
 
 

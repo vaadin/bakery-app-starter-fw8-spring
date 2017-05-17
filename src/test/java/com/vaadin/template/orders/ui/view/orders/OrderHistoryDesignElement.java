@@ -20,8 +20,4 @@ public class OrderHistoryDesignElement extends VerticalLayoutElement {
 				"items");
 	}
 
-	public ButtonElement getAddComment() {
-		return $(com.vaadin.testbench.elements.ButtonElement.class).id(
-				"addComment");
-	}
 }

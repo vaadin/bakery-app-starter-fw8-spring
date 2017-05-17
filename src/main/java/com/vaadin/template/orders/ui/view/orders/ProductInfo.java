@@ -19,6 +19,7 @@ import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
+import com.vaadin.ui.Label;
 
 @SpringComponent
 @PrototypeScope
@@ -31,6 +32,11 @@ public class ProductInfo extends ProductInfoDesign {
 	private ViewEventBus viewEventBus;
 
 	private BeanValidationBinder<OrderItem> binder;
+
+	// Use Label instead of TextArea in "report mode" for a better presentation
+	private Label readOnlyComment = new Label();
+
+	private boolean reportMode = false;
 
 	@PostConstruct
 	public void init() {
@@ -50,6 +56,8 @@ public class ProductInfo extends ProductInfoDesign {
 			updatePrice(productPrice);
 		});
 
+		readOnlyComment.setWidth("100%");
+		readOnlyComment.setId(comment.getId());
 	}
 
 	private void updatePrice(int productPrice) {
@@ -70,8 +78,20 @@ public class ProductInfo extends ProductInfoDesign {
 	}
 
 	public void setReportMode(boolean reportMode) {
+		if (reportMode == this.reportMode) {
+			return;
+		}
+		this.reportMode = reportMode;
 		binder.setReadOnly(reportMode);
-		comment.setVisible(!(reportMode && comment.isEmpty()));
+
+		// Swap the TextArea for a Label in report mode
+		if (reportMode) {
+			readOnlyComment.setVisible(!comment.isEmpty());
+			readOnlyComment.setValue(comment.getValue());
+			replaceComponent(comment, readOnlyComment);
+		} else {
+			replaceComponent(readOnlyComment, comment);
+		}
 	}
 
 	/**

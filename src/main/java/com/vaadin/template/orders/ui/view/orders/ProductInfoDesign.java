@@ -5,6 +5,7 @@ import com.vaadin.annotations.DesignRoot;
 import com.vaadin.template.orders.ui.components.ProductComboBox;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.declarative.Design;
 
@@ -23,7 +24,7 @@ public class ProductInfoDesign extends GridLayout {
 	protected ProductComboBox product;
 	protected TextField quantity;
 	protected Label price;
-	protected TextField comment;
+	protected TextArea comment;
 
 	public ProductInfoDesign() {
 		Design.read(this);
