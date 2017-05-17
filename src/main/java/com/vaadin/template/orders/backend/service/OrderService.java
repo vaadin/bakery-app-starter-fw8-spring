@@ -30,11 +30,11 @@ import com.vaadin.template.orders.ui.view.dashboard.DeliveryStats;
 @Service
 public class OrderService {
 
-	private transient OrderRepository orderRepository;
+	private OrderRepository orderRepository;
 
-	private transient CustomerRepository customerRepository;
+	private CustomerRepository customerRepository;
 
-	private transient UserService userService;
+	private UserService userService;
 
 	private static Set<OrderState> notAvailableStates;
 

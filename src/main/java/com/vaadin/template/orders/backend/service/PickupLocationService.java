@@ -14,7 +14,7 @@ import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 @Service
 public class PickupLocationService {
 
-	private transient PickupLocationRepository pickupLocationRepository;
+	private PickupLocationRepository pickupLocationRepository;
 
 	public Page<PickupLocation> findAnyMatching(Optional<String> filter, Pageable pageable) {
 		if (filter.isPresent()) {

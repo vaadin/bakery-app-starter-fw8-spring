@@ -16,7 +16,7 @@ import com.vaadin.template.orders.ui.OrdersUI;
 @Service
 public class UserService {
 
-	private transient UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;

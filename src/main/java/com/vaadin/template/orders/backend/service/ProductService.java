@@ -13,7 +13,7 @@ import com.vaadin.template.orders.backend.data.entity.Product;
 @Service
 public class ProductService {
 
-	private transient ProductRepository productRepository;
+	private ProductRepository productRepository;
 
 	public Page<Product> find(Pageable pageable) {
 		return getProductRepository().findBy(pageable);
