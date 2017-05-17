@@ -42,12 +42,6 @@
 	.order-form[width-range~="600px-"] > .half {
 		width: calc(50% - 16px) !important;
 	}
-
-	.history {
-		border-top: 1px solid rgba(0,0,0,.1);
-		background-color: rgba(0,0,0,.05);
-	}
-
 	.product-row {
 		border-bottom: 1px solid rgba(0,0,0,.05);
 		padding-bottom: 8px;
@@ -57,7 +51,6 @@
 			border-bottom: 0;
 			margin-bottom: 0;
 	}
-
 	.confirmation {
 		.header {
 			border-bottom: 2px solid rgba(0, 0, 0, .3);
