@@ -28,13 +28,19 @@ public abstract class PageableDataProvider<T, F> extends AbstractBackEndDataProv
 
 	protected abstract Page<T> fetchFromBackEnd(Query<T, F> query, Pageable pageable);
 
-	private static <T, F> Pageable getPageable(Query<T, F> q) {
+	private Pageable getPageable(Query<T, F> q) {
 		Pair<Integer, Integer> pageSizeAndNumber = limitAndOffsetToPageSizeAndNumber(q.getOffset(), q.getLimit());
 		return new PageRequest(pageSizeAndNumber.getSecond(), pageSizeAndNumber.getFirst(), createSpringSort(q));
 	}
 
-	private static <T, F> Sort createSpringSort(Query<T, F> q) {
-		List<Order> orders = q.getSortOrders().stream().map(PageableDataProvider::queryOrderToSpringOrder)
+	private <T, F> Sort createSpringSort(Query<T, F> q) {
+		List<QuerySortOrder> sortOrders;
+		if (q.getSortOrders().isEmpty()) {
+			sortOrders = getDefaultSortOrders();
+		} else {
+			sortOrders = q.getSortOrders();
+		}
+		List<Order> orders = sortOrders.stream().map(PageableDataProvider::queryOrderToSpringOrder)
 				.collect(Collectors.toList());
 		if (orders.isEmpty()) {
 			return null;
@@ -42,6 +48,8 @@ public abstract class PageableDataProvider<T, F> extends AbstractBackEndDataProv
 			return new Sort(orders);
 		}
 	}
+
+	protected abstract List<QuerySortOrder> getDefaultSortOrders();
 
 	private static Order queryOrderToSpringOrder(QuerySortOrder queryOrder) {
 		return new Order(queryOrder.getDirection() == SortDirection.ASCENDING ? Direction.ASC : Direction.DESC,
@@ -66,7 +74,7 @@ public abstract class PageableDataProvider<T, F> extends AbstractBackEndDataProv
 		return Pair.of(maxPageSize, 0);
 	}
 
-	private static <T> Stream<T> fromPageable(Page<T> result, Pageable pageable, Query<T, ?> query) {
+	private <T> Stream<T> fromPageable(Page<T> result, Pageable pageable, Query<T, ?> query) {
 		List<T> items = result.getContent();
 
 		int firstRequested = query.getOffset();

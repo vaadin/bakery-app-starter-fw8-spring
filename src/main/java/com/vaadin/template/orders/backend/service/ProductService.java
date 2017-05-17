@@ -26,7 +26,7 @@ public class ProductService {
 	public Page<Product> findAnyMatching(Optional<String> filter, Pageable pageable) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
-			return getProductRepository().findByNameLikeIgnoreCaseOrderByName(repositoryFilter, pageable);
+			return getProductRepository().findByNameLikeIgnoreCase(repositoryFilter, pageable);
 		} else {
 			return find(pageable);
 		}
