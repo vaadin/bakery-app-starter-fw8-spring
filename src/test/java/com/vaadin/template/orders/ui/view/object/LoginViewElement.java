@@ -14,22 +14,26 @@ import com.vaadin.testbench.TestBenchElement;
 
 public class LoginViewElement extends TestBenchElement {
 
-	private static final String APP_URL = "http://localhost:8080/";
+	public static final String APP_URL = "http://localhost:8080/";
 
-	public static LoginViewElement open() {
+	public static LoginViewElement open(String url) {
 		TestBenchDriverProxy driver = CurrentDriver.get();
-		driver.get(APP_URL);
+		driver.get(url);
 		TestBenchElement body = (TestBenchElement) driver.findElement(By.tagName("body"));
 		return TestBench.createElement(LoginViewElement.class, body.getWrappedElement(), driver.getCommandExecutor());
 	}
 
 	public static OrdersListViewElement loginAsBarista() {
-		open().login("barista@vaadin.com", "barista");
+		open(APP_URL).login("barista@vaadin.com", "barista");
 		return AbstractOrdersIT.findFirstElement(OrdersListViewElement.class);
 	}
 
+	public static void loginAsBarista(String url) {
+		open(url).login("barista@vaadin.com", "barista");
+	}
+
 	public static DashboardViewElement loginAsAdmin() {
-		open().login("admin@vaadin.com", "admin");
+		open(APP_URL).login("admin@vaadin.com", "admin");
 		return AbstractOrdersIT.findFirstElement(DashboardViewElement.class);
 	}
 
