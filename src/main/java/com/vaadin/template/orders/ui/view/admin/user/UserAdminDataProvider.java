@@ -1,11 +1,15 @@
 package com.vaadin.template.orders.ui.view.admin.user;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.vaadin.data.provider.Query;
+import com.vaadin.data.provider.QuerySortOrder;
+import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.entity.User;
@@ -51,4 +55,12 @@ public class UserAdminDataProvider extends PageableDataProvider<User, Object> {
 		}
 		return userService;
 	}
+
+	@Override
+	protected List<QuerySortOrder> getDefaultSortOrders() {
+		List<QuerySortOrder> sortOrders = new ArrayList<>();
+		sortOrders.add(new QuerySortOrder("name", SortDirection.ASCENDING));
+		return sortOrders;
+	}
+
 }

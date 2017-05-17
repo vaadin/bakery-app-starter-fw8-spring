@@ -19,9 +19,9 @@ public class PickupLocationService {
 	public Page<PickupLocation> findAnyMatching(Optional<String> filter, Pageable pageable) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
-			return getPickupLocationRepository().findByNameLikeIgnoreCaseOrderByName(repositoryFilter, pageable);
+			return getPickupLocationRepository().findByNameLikeIgnoreCase(repositoryFilter, pageable);
 		} else {
-			return getPickupLocationRepository().findByNameLikeIgnoreCaseOrderByName("%", pageable);
+			return getPickupLocationRepository().findByNameLikeIgnoreCase("%", pageable);
 		}
 	}
 

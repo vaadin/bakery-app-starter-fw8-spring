@@ -10,7 +10,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	Page<Product> findBy(Pageable page);
 
-	Page<Product> findByNameLikeIgnoreCaseOrderByName(String name, Pageable page);
+	Page<Product> findByNameLikeIgnoreCase(String name, Pageable page);
 
 	int countByNameLikeIgnoreCase(String name);
 
