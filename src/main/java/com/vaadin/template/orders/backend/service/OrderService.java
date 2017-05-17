@@ -99,8 +99,7 @@ public class OrderService {
 	}
 
 	public Page<Order> findAfterDueDateWithState(LocalDate filterDate, List<OrderState> states, Pageable pageable) {
-		return orderRepository.findByDueDateAfterAndStateInOrderByDueDateAscDueTimeDescIdDesc(filterDate, states,
-				pageable);
+		return orderRepository.findByDueDateAfterAndStateIn(filterDate, states, pageable);
 	}
 
 	public long countAfterDueDateWithState(LocalDate filterDate, List<OrderState> states) {

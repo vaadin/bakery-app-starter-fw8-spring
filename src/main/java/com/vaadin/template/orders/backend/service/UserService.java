@@ -26,7 +26,7 @@ public class UserService {
 	}
 
 	public Page<User> find(Pageable pageable) {
-		return userRepository.findByOrderByEmail(pageable);
+		return userRepository.findBy(pageable);
 	}
 
 	public long count() {
@@ -36,8 +36,8 @@ public class UserService {
 	public Page<User> findAnyMatching(Optional<String> filter, Pageable pageable) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
-			return userRepository.findByEmailLikeIgnoreCaseOrNameLikeIgnoreCaseOrderByEmail(repositoryFilter,
-					repositoryFilter, pageable);
+			return userRepository.findByEmailLikeIgnoreCaseOrNameLikeIgnoreCase(repositoryFilter, repositoryFilter,
+					pageable);
 		} else {
 			return find(pageable);
 		}

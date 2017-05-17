@@ -39,7 +39,7 @@ public class ProductAdminView extends AbstractCrudView<Product> implements Order
 		getGrid().setColumns("name", "price");
 		getGrid().removeColumn("price");
 		getGrid().addColumn(product -> priceToStringConverter.convertToPresentation(product.getPrice(),
-				new ValueContext(getGrid())));
+				new ValueContext(getGrid()))).setSortProperty("price");
 		getBinder().forField(getViewComponent().price).withConverter(priceToStringConverter).bind("price");
 		getBinder().bindInstanceFields(getViewComponent());
 
