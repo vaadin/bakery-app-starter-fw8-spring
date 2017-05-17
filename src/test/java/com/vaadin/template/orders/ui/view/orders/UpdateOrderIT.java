@@ -29,7 +29,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(0);
 
-		Assert.assertEquals(OrderState.READY_FOR_PICKUP, orderEdit.getCurrentState());
+		Assert.assertEquals(OrderState.READY, orderEdit.getCurrentState());
 		orderEdit.setState(OrderState.DELIVERED);
 		Assert.assertEquals(OrderState.DELIVERED, orderEdit.getCurrentState());
 	}

@@ -29,7 +29,7 @@ public class OrdersDataProvider extends PageableDataProvider<Order, Object> {
 	}
 
 	private List<OrderState> getStates() {
-		return Arrays.asList(OrderState.CONFIRMED, OrderState.NEW, OrderState.PROBLEM, OrderState.READY_FOR_PICKUP);
+		return Arrays.asList(OrderState.CONFIRMED, OrderState.NEW, OrderState.PROBLEM, OrderState.READY);
 	}
 
 	private LocalDate getFilterDate() {

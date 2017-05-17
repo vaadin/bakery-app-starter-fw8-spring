@@ -156,7 +156,7 @@ public class DataGenerator implements HasLogger {
 					random.nextInt((int) orderPlaced.until(dueDate.atTime(order.getDueTime()), ChronoUnit.DAYS))));
 			order.getHistory().add(item);
 		} else if (order.getState() == OrderState.CONFIRMED || order.getState() == OrderState.DELIVERED
-				|| order.getState() == OrderState.PROBLEM || order.getState() == OrderState.READY_FOR_PICKUP) {
+				|| order.getState() == OrderState.PROBLEM || order.getState() == OrderState.READY) {
 			item = new HistoryItem(getBaker(), "Order confirmed");
 			item.setNewState(OrderState.CONFIRMED);
 			item.setTimestamp(orderPlaced.plusDays(random.nextInt(2)).plusHours(random.nextInt(5)));
@@ -167,9 +167,9 @@ public class DataGenerator implements HasLogger {
 				item.setNewState(OrderState.PROBLEM);
 				item.setTimestamp(dueDate.atTime(random.nextInt(4) + 4, 0));
 				order.getHistory().add(item);
-			} else if (order.getState() == OrderState.READY_FOR_PICKUP || order.getState() == OrderState.DELIVERED) {
+			} else if (order.getState() == OrderState.READY || order.getState() == OrderState.DELIVERED) {
 				item = new HistoryItem(getBaker(), "Order ready for pickup");
-				item.setNewState(OrderState.READY_FOR_PICKUP);
+				item.setNewState(OrderState.READY);
 				item.setTimestamp(dueDate.atTime(random.nextInt(2) + 8, random.nextBoolean() ? 0 : 30));
 				order.getHistory().add(item);
 				if (order.getState() == OrderState.DELIVERED) {
@@ -227,7 +227,7 @@ public class DataGenerator implements HasLogger {
 			} else {
 				double resolution = random.nextDouble();
 				if (resolution < 0.6) {
-					return OrderState.READY_FOR_PICKUP;
+					return OrderState.READY;
 				} else if (resolution < 0.8) {
 					return OrderState.DELIVERED;
 				} else if (resolution < 0.9) {

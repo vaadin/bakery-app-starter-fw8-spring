@@ -76,11 +76,26 @@
     height: 55px;
     line-height: 25px;
   }
-  .status {
-    padding-top: 16px;
-    &.problem {
-        color: red;
+ 
+  .v-grid-cell.status div {
+  	margin-top: 16px;
+  	border-radius: 3px;
+  	background-color: #ccc;
+  	font-size: 10px;
+  	padding: 3px 5px;
+  	color: rgba(255,255,255,.6);
+  	border: 1px solid rgba(0,0,0,.1);
+  }
+  .v-grid-cell.status {
+  	&.ready div {
+    	background-color: $v-friendly-color;
     }
+   &.new div {
+   		background-color: #ffc800;
+   }
+   &.problem div {
+   		background-color: $v-error-indicator-color;
+   }
   }
   .v-textfield.v-readonly {
     // Hide placeholder in readonly fields

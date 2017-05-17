@@ -46,7 +46,7 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 	private NavigationManager navigationManager;
 
 	private static final List<OrderState> happyPath = Arrays.asList(OrderState.NEW, OrderState.CONFIRMED,
-			OrderState.READY_FOR_PICKUP, OrderState.DELIVERED);
+			OrderState.READY, OrderState.DELIVERED);
 	private final EventBus.ViewEventBus shouldBeGlobalEventBus;
 
 	@Autowired

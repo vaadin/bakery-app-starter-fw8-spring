@@ -22,17 +22,23 @@ public class OrdersGrid extends Grid<Order> {
 		setSizeFull();
 		addStyleName("two-row");
 		setColumnResizeMode(ColumnResizeMode.ANIMATED);
+
+		// Due
 		Column<Order, String> dueColumn = addColumn(
 				order -> twoRowCell(getTimeHeader(order.getDueDate()), order.getDueDate().format(dueDateFormat)),
-				new HtmlRenderer());
-		dueColumn.setCaption("Due").setWidthUndefined();
+				new HtmlRenderer()).setWidth(90);
+		// dueColumn.setCaption("Due").setWidthUndefined();
 
+		// Order
 		addColumn(order -> {
 			Customer customer = order.getCustomer();
 			return twoRowCell(customer.getFullName(), getOrderSummary(order));
-		}, new HtmlRenderer()).setExpandRatio(1);
+		}, new HtmlRenderer());
 
-		Column<Order, String> stateColumn = addColumn(order -> order.getState().toString());
+		// Status
+		Column<Order, String> stateColumn = addColumn(order -> "<div>" + order.getState() + "</div>")
+				.setRenderer(new HtmlRenderer()).setWidth(97);
+
 		stateColumn.setStyleGenerator(order -> "status " + order.getState().name().toLowerCase());
 	}
 

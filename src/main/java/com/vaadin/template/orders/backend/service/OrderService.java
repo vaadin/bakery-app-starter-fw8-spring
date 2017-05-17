@@ -41,7 +41,7 @@ public class OrderService {
 	static {
 		notAvailableStates = new HashSet<>(Arrays.asList(OrderState.values()));
 		notAvailableStates.remove(OrderState.DELIVERED);
-		notAvailableStates.remove(OrderState.READY_FOR_PICKUP);
+		notAvailableStates.remove(OrderState.READY);
 		notAvailableStates.remove(OrderState.CANCELLED);
 	}
 
