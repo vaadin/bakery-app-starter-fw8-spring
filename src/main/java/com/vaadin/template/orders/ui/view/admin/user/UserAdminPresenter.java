@@ -50,4 +50,8 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 	public void filterGrid(String filter) {
 		getGridDataProvider().setFilter(filter);
 	}
+
+	public String encodePassword(String value) {
+		return service.encodePassword(value);
+	}
 }

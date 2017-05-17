@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.UserRepository;
@@ -16,6 +17,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public User getCurrentUser() {
 		return userRepository.findByEmail(OrdersUI.get().getUsername());
@@ -58,5 +62,9 @@ public class UserService {
 
 	public User save(User product) {
 		return userRepository.save(product);
+	}
+
+	public String encodePassword(String value) {
+		return passwordEncoder.encode(value);
 	}
 }
