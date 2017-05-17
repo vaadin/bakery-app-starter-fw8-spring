@@ -173,13 +173,14 @@
       }
 
       .navigation {
-        display: none;
+        /* disable visibility by default, delay to enable clicks */
+        visibility: hidden;
+        transition: visibility 0.1s;
       }
 
-      .navigation:hover, .navigation:active, .menu:focus + .navigation {
-        display: inline-block;
+      .menu:focus + .navigation {
+        visibility: visible;
       }
-
       .navigation-bar {
         position: fixed;
         width: 100%;
