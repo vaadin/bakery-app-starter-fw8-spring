@@ -32,11 +32,13 @@ $v-focus-color: #5a6054;
 @import '../valo/valo.scss';
 @import 'ordersview';
 @import 'dashboardview';
+@import 'menu';
 
 @mixin orderstheme {
   @include valo;
   @include ordersview;
   @include dashboardview;
+  @include menu;
 
   .v-errorindicator {
     display: none; // Only show validation errors using field styles
