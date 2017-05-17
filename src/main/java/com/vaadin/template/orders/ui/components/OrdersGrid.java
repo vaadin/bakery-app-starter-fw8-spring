@@ -24,10 +24,8 @@ public class OrdersGrid extends Grid<Order> {
 		setColumnResizeMode(ColumnResizeMode.ANIMATED);
 
 		// Due
-		Column<Order, String> dueColumn = addColumn(
-				order -> twoRowCell(getTimeHeader(order.getDueDate()), order.getDueDate().format(dueDateFormat)),
+		addColumn(order -> twoRowCell(getTimeHeader(order.getDueDate()), order.getDueDate().format(dueDateFormat)),
 				new HtmlRenderer()).setWidth(90);
-		// dueColumn.setCaption("Due").setWidthUndefined();
 
 		// Order
 		addColumn(order -> {
