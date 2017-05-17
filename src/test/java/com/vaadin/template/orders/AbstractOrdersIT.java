@@ -47,7 +47,7 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 	}
 
 	protected void assertEnabledWithText(String text, TestBenchElement element) {
-		Assert.assertFalse(hasAttribute(element, "disabled"));
+		assertEnabled(true, element);
 		Assert.assertEquals(text, ElementUtil.getText(element));
 	}
 
@@ -74,6 +74,27 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 	public static <T extends AbstractElement> T findFirstElement(Class<T> elementType) {
 		WebDriver driver = CurrentDriver.get();
 		return new ElementQuery<>(elementType).context(driver).first();
+	}
+
+	protected void assertEnabled(boolean expectedEnabled, TestBenchElement element) {
+		if (expectedEnabled) {
+			if (hasAttribute(element, "disabled")) {
+				throw new AssertionError("Expected element to be enabled but it has a 'disabled' attribute");
+			}
+			if (hasClassName(element, "v-disabled")) {
+				throw new AssertionError("Expected element to be enabled but it has a 'v-disabled' class");
+			}
+		} else {
+			if (!hasAttribute(element, "disabled") && !hasClassName(element, "v-disabled")) {
+				throw new AssertionError(
+						"Expected element to be disabled but it does not have a 'disabled' attribute nor a 'v-disabled' class");
+			}
+
+		}
+	}
+
+	protected boolean hasClassName(TestBenchElement element, String className) {
+		return element.getClassNames().contains(className);
 	}
 
 }

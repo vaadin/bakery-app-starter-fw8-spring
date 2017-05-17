@@ -32,6 +32,13 @@ public class UserAdminView extends AbstractCrudView<User> implements OrdersView 
 	public void init() {
 		super.init();
 		getGrid().setColumns("email", "name", "role");
+		getBinder().bind(getViewComponent().password, bean -> "", (bean, value) -> {
+			if (value.isEmpty()) {
+				// If nothing is entered in the password field, do nothing
+			} else {
+				getBinder().getBean().setPassword(presenter.encodePassword(value));
+			}
+		});
 		getBinder().bindInstanceFields(getViewComponent());
 
 		presenter.init(this);
