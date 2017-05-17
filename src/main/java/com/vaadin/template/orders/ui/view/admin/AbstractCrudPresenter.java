@@ -1,10 +1,13 @@
 package com.vaadin.template.orders.ui.view.admin;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.vaadin.data.HasValue;
 import com.vaadin.template.orders.ui.HasLogger;
+import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 
@@ -41,23 +44,30 @@ public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> im
 	}
 
 	public void addNewClicked() {
+		getView().getGrid().deselectAll();
 		T entity = createEntity();
 		getView().editItem(entity, true);
 	}
 
 	public void updateClicked(boolean isNew) {
+		Optional<HasValue<?>> firstErrorField = view.validate().findFirst();
+		if (firstErrorField.isPresent()) {
+			((Focusable) firstErrorField.get()).focus();
+			return;
+		}
+
 		T entity = view.getEditItem();
 		try {
 			entity = saveEntity(entity);
 		} catch (Exception e) {
 			// This could be either that somebody else edited the item -> should
-			// tell to refresh
-			// or then invalid data -> should not happen if validators are in
-			// place
+			// tell to refresh or then invalid data -> should not happen if
+			// validators are in place
 			Notification.show("A problem occured while saving the data. Please check the fields.", Type.ERROR_MESSAGE);
 			getLogger().error("Unable to save entity of type " + entity.getClass().getName(), e);
 			return;
 		}
+
 		if (isNew) {
 			getGridDataProvider().refreshAll();
 		} else {
@@ -82,5 +92,9 @@ public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> im
 
 	public void cancelClicked() {
 		getView().stopEditing();
+	}
+
+	public void formValidationStatusChanged(boolean hasValidationErrors) {
+		getView().getUpdate().setEnabled(!hasValidationErrors);
 	}
 }

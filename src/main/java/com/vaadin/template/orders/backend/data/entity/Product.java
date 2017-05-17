@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
 
 @Entity
 public class Product implements Serializable {
@@ -16,6 +17,7 @@ public class Product implements Serializable {
 	private String name;
 
 	// Real price * 100 as an int to avoid rounding errors
+	@Min(0)
 	private int price;
 
 	public Product() {

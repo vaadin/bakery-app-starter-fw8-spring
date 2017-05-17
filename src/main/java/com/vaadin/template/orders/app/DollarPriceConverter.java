@@ -13,6 +13,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 public class DollarPriceConverter extends StringToIntegerConverter {
 
 	private static final String ERROR_MSG = "Invalid prices, please re-check the value";
+	private StringToDoubleConverter doubleConverter = new StringToDoubleConverter(ERROR_MSG);
 	private StringToDoubleConverter currencyConverter = new StringToDoubleConverter(ERROR_MSG) {
 		@Override
 		protected NumberFormat getFormat(Locale locale) {
@@ -28,7 +29,11 @@ public class DollarPriceConverter extends StringToIntegerConverter {
 	public Result<Integer> convertToModel(String value, ValueContext context) {
 		// $1.00 -> 100
 		Result<Double> price = currencyConverter.convertToModel(value, context);
-		return price.map(dbl -> (int) (dbl * 100.0));
+		if (price.isError()) {
+			// Try without dollar sign
+			price = doubleConverter.convertToModel(value, context);
+		}
+		return price.map(dbl -> dbl == null ? null : (int) (dbl * 100.0));
 	}
 
 	@Override
