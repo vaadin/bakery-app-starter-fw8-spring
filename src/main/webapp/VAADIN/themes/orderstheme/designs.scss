@@ -178,6 +178,10 @@
         transition: visibility 0.1s;
       }
 
+      .menu:focus {
+        /* Allow closing the menu by clicking it again */
+        pointer-events: none;
+      }
       .menu:focus + .navigation {
         visibility: visible;
       }
