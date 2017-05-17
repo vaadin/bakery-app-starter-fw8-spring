@@ -8,7 +8,7 @@ import com.vaadin.template.orders.backend.data.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-	Page<Product> findByOrderByName(Pageable page);
+	Page<Product> findBy(Pageable page);
 
 	Page<Product> findByNameLikeIgnoreCaseOrderByName(String name, Pageable page);
 

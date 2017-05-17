@@ -26,14 +26,16 @@ public class OrdersGrid extends Grid<Order> {
 				order -> twoRowCell(getTimeHeader(order.getDueDate()), order.getDueDate().format(dueDateFormat)),
 				new HtmlRenderer());
 		dueColumn.setCaption("Due").setWidthUndefined();
+		dueColumn.setSortProperty("dueDate", "dueTime");
 
 		addColumn(order -> {
 			Customer customer = order.getCustomer();
 			return twoRowCell(customer.getFullName(), getOrderSummary(order));
-		}, new HtmlRenderer()).setExpandRatio(1);
+		}, new HtmlRenderer()).setExpandRatio(1).setSortProperty("customer.fullName");
 
 		Column<Order, String> stateColumn = addColumn(order -> order.getState().toString());
 		stateColumn.setStyleGenerator(order -> "status " + order.getState().name().toLowerCase());
+		stateColumn.setSortProperty("state");
 	}
 
 	private String getTimeHeader(LocalDate dueDate) {

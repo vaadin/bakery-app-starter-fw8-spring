@@ -17,7 +17,7 @@ public class ProductService {
 	private ProductRepository productRepository;
 
 	public Page<Product> find(Pageable pageable) {
-		return productRepository.findByOrderByName(pageable);
+		return productRepository.findBy(pageable);
 	}
 
 	public long count() {
