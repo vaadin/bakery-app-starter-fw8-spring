@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.backend.data.entity.User;
 import com.vaadin.template.orders.backend.service.UserService;
@@ -18,12 +19,11 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 	@Autowired
 	private UserAdminDataProvider userAdminDataProvider;
 
-	@Autowired
-	private UserService service;
+	private transient UserService userService;
 
 	@Override
 	protected User getCopy(User entity) {
-		return service.get(entity.getId());
+		return getUserService().get(entity.getId());
 	}
 
 	@Override
@@ -33,12 +33,12 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 
 	@Override
 	protected void deleteEntity(User entity) {
-		service.delete(entity.getId());
+		getUserService().delete(entity.getId());
 	}
 
 	@Override
 	protected User saveEntity(User editItem) {
-		return service.save(editItem);
+		return getUserService().save(editItem);
 	}
 
 	@Override
@@ -52,6 +52,13 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 	}
 
 	public String encodePassword(String value) {
-		return service.encodePassword(value);
+		return getUserService().encodePassword(value);
+	}
+
+	protected UserService getUserService() {
+		if (userService == null) {
+			userService = BeanLocator.find(UserService.class);
+		}
+		return userService;
 	}
 }
