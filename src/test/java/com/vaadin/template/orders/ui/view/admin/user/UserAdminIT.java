@@ -1,5 +1,8 @@
 package com.vaadin.template.orders.ui.view.admin.user;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.NoSuchElementException;
@@ -19,13 +22,75 @@ import com.vaadin.testbench.elements.TextFieldElement;
 
 public class UserAdminIT extends AbstractOrdersIT {
 
-	@Test
-	public void updatePassword() {
+	private UserAdminViewElement loginAndNavigateToAdmin() {
 		DashboardViewElement dashboard = LoginViewElement.loginAsAdmin();
 		MenuElement menu = dashboard.getMainView().getMenu();
 		ElementUtil.click(menu.getMenuLink("Users"));
-		UserAdminViewElement userAdmin = UserAdminViewElement.get();
+		return UserAdminViewElement.get();
 
+	}
+
+	@Test
+	public void filterGrid() {
+		UserAdminViewElement userAdmin = loginAndNavigateToAdmin();
+		GridElement grid = userAdmin.getList();
+		List<String[]> currentData = getData(grid);
+
+		userAdmin.getSearch().setValue("bak");
+		List<String[]> shouldMatch = filter(currentData, "bak");
+		Assert.assertEquals(shouldMatch.size(), grid.getRowCount());
+
+		userAdmin.getSearch().setValue("ba");
+		shouldMatch = filter(currentData, "ba");
+		Assert.assertEquals(shouldMatch.size(), grid.getRowCount());
+
+		userAdmin.getSearch().setValue("a");
+		shouldMatch = filter(currentData, "a");
+		Assert.assertEquals(shouldMatch.size(), grid.getRowCount());
+	}
+
+	private List<String[]> filter(List<String[]> haystack, String needle) {
+		List<String[]> matches = new ArrayList<>();
+		for (String[] data : haystack) {
+			if (anyContains(data, needle)) {
+				matches.add(data);
+			}
+		}
+		return matches;
+	}
+
+	private boolean anyContains(String[] data, String needle) {
+		for (int i = 0; i < data.length; i++) {
+			if (data[i].contains(needle)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Gets all visible cell contents from the given grid.
+	 *
+	 * @param grid
+	 *            the grid to check
+	 * @return text contents of all cells in the grid
+	 */
+	private List<String[]> getData(GridElement grid) {
+		int cols = getColumnCount(grid);
+		ArrayList<String[]> ret = new ArrayList<>();
+		for (GridRowElement row : grid.getRows()) {
+			String[] rowData = new String[cols];
+			for (int i = 0; i < cols; i++) {
+				rowData[i] = row.getCell(i).getText();
+			}
+			ret.add(rowData);
+		}
+		return ret;
+	}
+
+	@Test
+	public void updatePassword() {
+		UserAdminViewElement userAdmin = loginAndNavigateToAdmin();
 		// Change the password for baker to foo and back to baker
 		TestBenchElement bakerCell = getCell(userAdmin.getList(), "baker@vaadin.com");
 		bakerCell.click();
