@@ -9,6 +9,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.vaadin.ui.UI;
 
@@ -21,6 +22,18 @@ public class SecurityUtils {
 
 	private SecurityUtils() {
 		// Util methods only
+	}
+
+	/**
+	 * Gets the user name of the currently signed in user.
+	 *
+	 * @return the user name of the current user or <code>null</code> if the
+	 *         user has not signed in
+	 */
+	public static String getUsername() {
+		SecurityContext context = SecurityContextHolder.getContext();
+		UserDetails userDetails = (UserDetails) context.getAuthentication().getPrincipal();
+		return userDetails.getUsername();
 	}
 
 	/**
@@ -63,4 +76,5 @@ public class SecurityUtils {
 
 		return Arrays.asList(viewSecured.value()).stream().anyMatch(SecurityUtils::isCurrentUserInRole);
 	}
+
 }

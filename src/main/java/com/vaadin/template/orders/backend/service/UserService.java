@@ -9,9 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.vaadin.template.orders.app.BeanLocator;
+import com.vaadin.template.orders.app.security.SecurityUtils;
 import com.vaadin.template.orders.backend.UserRepository;
 import com.vaadin.template.orders.backend.data.entity.User;
-import com.vaadin.template.orders.ui.OrdersUI;
 
 @Service
 public class UserService {
@@ -22,7 +22,7 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 
 	public User getCurrentUser() {
-		return getUserRepository().findByEmail(OrdersUI.get().getUsername());
+		return getUserRepository().findByEmail(SecurityUtils.getUsername());
 	}
 
 	public Page<User> find(Pageable pageable) {
