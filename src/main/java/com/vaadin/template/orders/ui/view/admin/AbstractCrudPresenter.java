@@ -112,7 +112,7 @@ public abstract class AbstractCrudPresenter<T extends Serializable, V extends Ab
 			return;
 		}
 		getGridDataProvider().refreshAll();
-		// getView().stopEditing();
+		getView().showInitialState();
 	}
 
 	public void formStatusChanged(boolean hasValidationErrors, boolean hasChanges) {
