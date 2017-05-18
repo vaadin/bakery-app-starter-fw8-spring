@@ -10,7 +10,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.template.orders.AbstractOrdersIT;
+import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
 import com.vaadin.template.orders.ui.view.admin.product.CrudViewElement;
+import com.vaadin.template.orders.ui.view.object.MenuElement;
 import com.vaadin.testbench.elements.GridElement;
 import com.vaadin.testbench.elements.GridElement.GridRowElement;
 import com.vaadin.testbench.elements.TextFieldElement;
@@ -231,4 +233,42 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 		assertEditState(view, false);
 	}
 
+	@Test
+	public void confirmationDialogShownWhenAboutToLoseData() {
+		T view = loginAndNavigateToView();
+
+		// Open some entity and change something
+		view.getList().getCell(0, 0).click();
+		TextFieldElement field = getFirstFormTextField(view);
+		String oldValue = field.getValue();
+		String newValue = oldValue + "-updated";
+		field.setValue(newValue);
+
+		// Navigate away and check that we did not move away and cancel the
+		// confirmation dialog
+
+		// Navigate away to another view
+		if (false) {
+			MenuElement.get().navigateToStorefront();
+			Assert.assertTrue(view.isOpen());
+			ConfirmationDialogDesignElement.get().getCancel().click();
+
+			// Logout
+			MenuElement.get().logout();
+			Assert.assertTrue(view.isOpen());
+			ConfirmationDialogDesignElement.get().getCancel().click();
+		}
+
+		// Create a new entity
+		view.getAdd().click();
+		assertEditState(view, true);
+		ConfirmationDialogDesignElement.get().getCancel().click();
+
+		// Select another entity
+		view.getList().getCell(1, 0).click();
+		assertEditState(view, true);
+		ConfirmationDialogDesignElement.get().getCancel().click();
+		Assert.assertFalse(view.getList().getRow(1).isSelected());
+		// Assert.assertTrue(view.getList().getRow(0).isSelected());
+	}
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.entity.User;
-import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -16,7 +15,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 
 @SpringView
-public class UserAdminView extends AbstractCrudView<User> implements OrdersView {
+public class UserAdminView extends AbstractCrudView<User> {
 
 	@Autowired
 	private UserAdminPresenter presenter;

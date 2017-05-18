@@ -16,6 +16,11 @@ public class MenuElement extends AbstractComponentElement {
 		return AbstractOrdersIT.findFirstElement(OrdersListViewElement.class);
 	}
 
+	public void logout() {
+		WebElement menuLink = getMenuLink("Logout");
+		menuLink.click();
+	}
+
 	public WebElement getMenuLink(String caption) {
 		try {
 			// ../.. is because WebDriver refuses to click on a covered element
@@ -23,6 +28,11 @@ public class MenuElement extends AbstractComponentElement {
 		} catch (NoSuchElementException e) {
 			return null;
 		}
+	}
+
+	public static MenuElement get() {
+		return AbstractOrdersIT.findFirstElement(MenuElement.class);
+
 	}
 
 }
