@@ -7,7 +7,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.template.orders.ui.HasLogger;
+import com.vaadin.template.orders.ui.components.ConfirmationDialog;
 import com.vaadin.ui.Component.Focusable;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 
@@ -40,15 +42,58 @@ public abstract class AbstractCrudPresenter<T extends Serializable, V extends Ab
 	}
 
 	public void editRequest(T entity) {
-		// Fetch a fresh item so we have the latest changes (less optimistic
-		// locking problems)
-		T freshCopy = getCopy(entity);
-		getView().editItem(freshCopy, false);
+		runIfNoUnsavedChanges(() -> {
+			// Fetch a fresh item so we have the latest changes (less optimistic
+			// locking problems)
+			T freshCopy = getCopy(entity);
+			getView().editItem(freshCopy, false);
+		}, () -> {
+			// Revert selection in grid
+			T editItem = getView().getEditItem();
+			Grid<T> grid = getView().getGrid();
+			if (editItem == null) {
+				grid.deselectAll();
+			} else {
+				grid.select(editItem);
+			}
+		});
 	}
 
 	public void addNewClicked() {
-		T entity = createEntity();
-		getView().editItem(entity, true);
+		runIfNoUnsavedChanges(() -> {
+			T entity = createEntity();
+			getView().editItem(entity, true);
+		});
+	}
+
+	/**
+	 * Runs the given command if the form contains no unsaved changes or if the
+	 * user clicks ok in the confirmation dialog telling about unsaved changes.
+	 *
+	 * @param onOk
+	 *            the command to run
+	 */
+	private void runIfNoUnsavedChanges(Runnable onOk) {
+		runIfNoUnsavedChanges(onOk, () -> {
+		});
+	}
+
+	/**
+	 * Runs the given command if the form contains no unsaved changes or if the
+	 * user clicks ok in the confirmation dialog telling about unsaved changes.
+	 *
+	 * @param onOk
+	 *            the command to run if there are not changes or user pushes ok
+	 * @param onCancel
+	 *            the command to run if there are changes and the user pushes
+	 *            cancel
+	 */
+	private void runIfNoUnsavedChanges(Runnable onOk, Runnable onCancel) {
+		if (view.containsUnsavedChanges()) {
+			ConfirmationDialog.show(getView().getViewComponent().getUI(), onOk, onCancel);
+		} else {
+			onOk.run();
+		}
 	}
 
 	public void updateClicked() {

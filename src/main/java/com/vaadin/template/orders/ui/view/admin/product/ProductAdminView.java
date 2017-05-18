@@ -9,7 +9,6 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.entity.Product;
-import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -18,7 +17,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 
 @SpringView
-public class ProductAdminView extends AbstractCrudView<Product> implements OrdersView {
+public class ProductAdminView extends AbstractCrudView<Product> {
 
 	@Autowired
 	private ProductAdminPresenter presenter;

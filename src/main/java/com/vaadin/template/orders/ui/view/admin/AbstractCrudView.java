@@ -10,6 +10,7 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
 import com.vaadin.template.orders.backend.data.Role;
+import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Component.Focusable;
@@ -49,7 +50,7 @@ import com.vaadin.ui.components.grid.SingleSelectionModel;
  *            the type of entity which can be edited in the view
  */
 @Secured(Role.ADMIN)
-public abstract class AbstractCrudView<T extends Serializable> implements Serializable {
+public abstract class AbstractCrudView<T extends Serializable> implements Serializable, OrdersView {
 
 	public static final String CAPTION_DISCARD = "Discard";
 	public static final String CAPTION_CANCEL = "Cancel";
@@ -95,6 +96,10 @@ public abstract class AbstractCrudView<T extends Serializable> implements Serial
 
 	private boolean isFormModified() {
 		return getBinder().hasChanges();
+	}
+
+	public boolean containsUnsavedChanges() {
+		return editItem != null && isFormModified();
 	}
 
 	public Stream<HasValue<?>> validate() {

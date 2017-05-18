@@ -19,4 +19,6 @@ public interface CrudViewElement {
 	TestBenchElement getDelete();
 
 	TestBenchElement getAdd();
+
+	boolean isOpen();
 }
