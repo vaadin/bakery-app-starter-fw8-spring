@@ -137,4 +137,15 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	}
 
+	@Test
+	public void newOrderVisual() throws Exception {
+		OrderListViewObject ordersList = LoginViewObject.loginAsBarista();
+		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
+
+		// Shutterbug.shootElement(getDriver(), orderEditView)
+		if (!testBench().compareScreen("neworder")) {
+			// if (!orderEditView.compareScreen("neworder")) {
+			throw new RuntimeException("Storefront does not look like it should");
+		}
+	}
 }
