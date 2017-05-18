@@ -14,7 +14,14 @@
 		max-width: 768px;
 	  	display: flex;
 	  	flex-wrap: wrap;
-
+	  	
+	  	> .v-widget {
+			margin: 8px;
+		}
+		.v-caption-half {
+			margin: -1px;
+		}
+	
 		.add-items {
 			text-align: left;
 			border: 1px dashed rgba(0,0,0,.2);
@@ -30,10 +37,6 @@
 			margin-bottom: 0;
 		}
 	}
-	.order-form > * {
-		margin: 8px;
-	}
-
 	.order-form[width-range~="-599px"] {
 		.cancel {
 			order: 99;
@@ -42,6 +45,7 @@
 	.order-form[width-range~="600px-"] > .half {
 		width: calc(50% - 16px) !important;
 	}
+
 	.product-row {
 		border-bottom: 1px solid rgba(0,0,0,.05);
 		padding-bottom: 8px;
@@ -90,6 +94,7 @@
    		background-color: $v-error-indicator-color;
    }
   }
+ 
   .v-textfield.v-readonly {
     // Hide placeholder in readonly fields
     &::placeholder {
