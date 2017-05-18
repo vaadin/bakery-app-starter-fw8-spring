@@ -10,6 +10,8 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
 import com.vaadin.template.orders.backend.data.Role;
+import com.vaadin.template.orders.ui.components.ConfirmationDialog;
+import com.vaadin.template.orders.ui.view.NavigationEvent;
 import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -166,4 +168,18 @@ public abstract class AbstractCrudView<T extends Serializable> implements Serial
 
 	protected abstract Focusable getFirstFormField();
 
+	@Override
+	public void beforeLeave(NavigationEvent event) {
+		if (containsUnsavedChanges()) {
+			Runnable onOk = () -> {
+				event.navigate();
+			};
+			Runnable onCancel = () -> {
+				// Nothing to do, navigation was already prevented
+			};
+			ConfirmationDialog.show(getViewComponent().getUI(), onOk, onCancel);
+		} else {
+			event.navigate();
+		}
+	}
 }

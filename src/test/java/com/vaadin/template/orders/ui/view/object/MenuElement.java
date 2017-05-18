@@ -17,7 +17,7 @@ public class MenuElement extends AbstractComponentElement {
 	}
 
 	public void logout() {
-		WebElement menuLink = getMenuLink("Logout");
+		WebElement menuLink = getMenuLink("Log out");
 		menuLink.click();
 	}
 

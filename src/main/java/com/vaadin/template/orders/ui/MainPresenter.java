@@ -8,6 +8,8 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.app.Application;
 import com.vaadin.template.orders.app.security.SecuredViewAccessControl;
+import com.vaadin.template.orders.ui.view.OrdersView;
+import com.vaadin.template.orders.ui.view.NavigationEvent;
 
 @SpringComponent
 @PrototypeScope
@@ -37,10 +39,18 @@ public class MainPresenter {
 	}
 
 	public void logout() {
-		view.getUI().getSession().getSession().invalidate();
-		String contextPath = ((VaadinServletService) VaadinServletService.getCurrent()).getServlet().getServletContext()
-				.getContextPath();
-		view.getUI().getPage().setLocation(contextPath + Application.LOGOUT_URL);
+		Runnable doLogout = () -> {
+			view.getUI().getSession().getSession().invalidate();
+			String contextPath = ((VaadinServletService) VaadinServletService.getCurrent()).getServlet()
+					.getServletContext().getContextPath();
+			view.getUI().getPage().setLocation(contextPath + Application.LOGOUT_URL);
+		};
+		View currentView = view.getUI().getNavigator().getCurrentView();
+		if (currentView instanceof OrdersView) {
+			((OrdersView) currentView).beforeLeave(new NavigationEvent(doLogout));
+		} else {
+			doLogout.run();
+		}
 	}
 
 	public boolean hasAccess(Class<? extends View> viewClass) {
