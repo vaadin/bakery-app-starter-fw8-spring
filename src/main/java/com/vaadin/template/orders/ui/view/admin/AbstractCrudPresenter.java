@@ -56,19 +56,30 @@ public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> im
 			return;
 		}
 
+		if (!view.commitEditItem()) {
+			// Commit failed because of validation errors - which should never
+			// happen as validation is checked above
+			Notification.show(
+					"An unexpected problem occured while saving the data. Please try refreshing the view or contact the administrator.",
+					Type.ERROR_MESSAGE);
+			getLogger().error("Unable to commit entity of type " + view.getEditItem().getClass().getName());
+			return;
+		}
+
 		T entity = view.getEditItem();
 		try {
 			entity = saveEntity(entity);
 		} catch (Exception e) {
-			// This could be either that somebody else edited the item -> should
-			// tell to refresh or then invalid data -> should not happen if
-			// validators are in place
+			// The most likely cause is an optimistic locking error, i.e.
+			// somebody else edited the data
 			Notification.show("A problem occured while saving the data. Please check the fields.", Type.ERROR_MESSAGE);
 			getLogger().error("Unable to save entity of type " + entity.getClass().getName(), e);
 			return;
 		}
 
-		if (isNew) {
+		if (isNew)
+
+		{
 			getGridDataProvider().refreshAll();
 		} else {
 			getGridDataProvider().refreshItem(entity);
@@ -94,7 +105,8 @@ public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> im
 		getView().stopEditing();
 	}
 
-	public void formValidationStatusChanged(boolean hasValidationErrors) {
-		getView().getUpdate().setEnabled(!hasValidationErrors);
+	public void formStatusChanged(boolean hasValidationErrors, boolean hasChanges) {
+		getView().getUpdate().setEnabled(hasChanges && !hasValidationErrors);
+		getView().getCancel().setEnabled(hasChanges);
 	}
 }

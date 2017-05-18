@@ -21,19 +21,25 @@ import com.vaadin.ui.components.grid.SingleSelectionModel;
 public abstract class AbstractCrudView<T> implements Serializable {
 
 	private final BeanValidationBinder<T> binder;
+	private T editItem;
 
 	protected AbstractCrudView(Class<T> entityType) {
 		this.binder = new BeanValidationBinder<>(entityType);
+		getBinder().addStatusChangeListener(
+				statusChange -> getPresenter().formStatusChanged(statusChange.hasValidationErrors(), isFormModified()));
 	}
 
-	public void editItem(T entity, boolean isNew) {
-		getBinder().setBean(entity);
+	public void editItem(T editItem, boolean isNew) {
+		this.editItem = editItem;
+		getBinder().readBean(editItem);
 		getForm().setEnabled(true);
 		getDelete().setEnabled(!isNew);
 		getUpdate().setCaption(isNew ? "Add" : "Update");
 		getFirstFormField().focus();
-		getBinder().addStatusChangeListener(
-				statusChange -> getPresenter().formValidationStatusChanged(statusChange.hasValidationErrors()));
+	}
+
+	private boolean isFormModified() {
+		return getBinder().hasChanges();
 	}
 
 	public Stream<HasValue<?>> validate() {
@@ -41,7 +47,11 @@ public abstract class AbstractCrudView<T> implements Serializable {
 	}
 
 	public T getEditItem() {
-		return getBinder().getBean();
+		return editItem;
+	}
+
+	public boolean commitEditItem() {
+		return getBinder().writeBeanIfValid(editItem);
 	}
 
 	protected Binder<T> getBinder() {
@@ -50,7 +60,7 @@ public abstract class AbstractCrudView<T> implements Serializable {
 
 	public void stopEditing() {
 		getForm().setEnabled(false);
-		getBinder().setBean(null);
+		getBinder().readBean(null);
 		getGrid().deselectAll();
 	}
 
