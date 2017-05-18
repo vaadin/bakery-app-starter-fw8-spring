@@ -13,6 +13,7 @@ import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 
@@ -99,6 +100,11 @@ public class ProductAdminView extends AbstractCrudView<Product> implements Order
 	@Override
 	protected TextField getSearch() {
 		return getViewComponent().search;
+	}
+
+	@Override
+	protected Focusable getFirstFormField() {
+		return getViewComponent().name;
 	}
 
 }

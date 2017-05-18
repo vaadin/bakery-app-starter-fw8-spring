@@ -9,5 +9,6 @@ public class RoleSelect extends ComboBox<String> {
 		setCaption("Role");
 		setEmptySelectionAllowed(false);
 		setItems(Role.getAllRoles());
+		setTextInputAllowed(false);
 	}
 }

@@ -1,13 +1,18 @@
 package com.vaadin.template.orders.ui.view.admin;
 
 import java.io.Serializable;
+import java.util.stream.Stream;
 
 import org.springframework.security.access.annotation.Secured;
 
+import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
+import com.vaadin.data.BindingValidationStatus;
+import com.vaadin.data.HasValue;
 import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.components.grid.SingleSelectionModel;
@@ -15,20 +20,24 @@ import com.vaadin.ui.components.grid.SingleSelectionModel;
 @Secured(Role.ADMIN)
 public abstract class AbstractCrudView<T> implements Serializable {
 
-	private final Class<T> entityType;
-	private final Binder<T> binder;
+	private final BeanValidationBinder<T> binder;
 
 	protected AbstractCrudView(Class<T> entityType) {
-		this.entityType = entityType;
-		this.binder = new Binder<>(entityType);
+		this.binder = new BeanValidationBinder<>(entityType);
 	}
 
 	public void editItem(T entity, boolean isNew) {
 		getBinder().setBean(entity);
 		getForm().setEnabled(true);
-		getAdd().setEnabled(false);
 		getDelete().setEnabled(!isNew);
 		getUpdate().setCaption(isNew ? "Add" : "Update");
+		getFirstFormField().focus();
+		getBinder().addStatusChangeListener(
+				statusChange -> getPresenter().formValidationStatusChanged(statusChange.hasValidationErrors()));
+	}
+
+	public Stream<HasValue<?>> validate() {
+		return binder.validate().getFieldValidationErrors().stream().map(BindingValidationStatus::getField);
 	}
 
 	public T getEditItem() {
@@ -41,7 +50,6 @@ public abstract class AbstractCrudView<T> implements Serializable {
 
 	public void stopEditing() {
 		getForm().setEnabled(false);
-		getAdd().setEnabled(true);
 		getBinder().setBean(null);
 		getGrid().deselectAll();
 	}
@@ -94,5 +102,7 @@ public abstract class AbstractCrudView<T> implements Serializable {
 	protected abstract Button getUpdate();
 
 	protected abstract TextField getSearch();
+
+	protected abstract Focusable getFirstFormField();
 
 }
