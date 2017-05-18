@@ -190,7 +190,7 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 	}
 
 	@Test
-	public void createEntity() {
+	public void createAndDeleteEntity() {
 		T view = loginAndNavigateToView();
 		view.getAdd().click();
 		assertAddState(view, false);
@@ -206,6 +206,9 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 		view.getUpdate().click();
 		assertEditState(view, false);
 		Assert.assertEquals(newValue, field.getValue());
+
+		view.getDelete().click();
+		assertInitialState(view);
 	}
 
 	@Test
@@ -227,4 +230,5 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 		view.getUpdate().click();
 		assertEditState(view, false);
 	}
+
 }
