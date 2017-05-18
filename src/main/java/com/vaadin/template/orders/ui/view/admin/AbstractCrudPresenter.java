@@ -11,7 +11,8 @@ import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 
-public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> implements HasLogger, Serializable {
+public abstract class AbstractCrudPresenter<T extends Serializable, V extends AbstractCrudView<T>>
+		implements HasLogger, Serializable {
 
 	private V view;
 
@@ -23,12 +24,15 @@ public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> im
 
 	protected abstract T createEntity();
 
+	protected abstract boolean isNew(T entity);
+
 	protected abstract T saveEntity(T editItem);
 
 	protected abstract void deleteEntity(T entity);
 
 	public void init(V view) {
 		this.view = view;
+		view.showInitialState();
 	}
 
 	protected V getView() {
@@ -37,43 +41,64 @@ public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> im
 
 	public void editRequest(T entity) {
 		// Fetch a fresh item so we have the latest changes (less optimistic
-		// locking problems) and so that we are not editing the data shown in
-		// the grid (change data -> cancel should not update the grid)
+		// locking problems)
 		T freshCopy = getCopy(entity);
 		getView().editItem(freshCopy, false);
 	}
 
 	public void addNewClicked() {
-		getView().getGrid().deselectAll();
 		T entity = createEntity();
 		getView().editItem(entity, true);
 	}
 
-	public void updateClicked(boolean isNew) {
+	public void updateClicked() {
 		Optional<HasValue<?>> firstErrorField = view.validate().findFirst();
 		if (firstErrorField.isPresent()) {
 			((Focusable) firstErrorField.get()).focus();
 			return;
 		}
 
+		if (!view.commitEditItem()) {
+			// Commit failed because of validation errors - which should never
+			// happen as validation is checked above
+			Notification.show(
+					"An unexpected problem occured while saving the data. Please try refreshing the view or contact the administrator.",
+					Type.ERROR_MESSAGE);
+			getLogger().error("Unable to commit entity of type " + view.getEditItem().getClass().getName());
+			return;
+		}
+
 		T entity = view.getEditItem();
+		boolean isNew = isNew(entity);
 		try {
 			entity = saveEntity(entity);
 		} catch (Exception e) {
-			// This could be either that somebody else edited the item -> should
-			// tell to refresh or then invalid data -> should not happen if
-			// validators are in place
+			// The most likely cause is an optimistic locking error, i.e.
+			// somebody else edited the data
 			Notification.show("A problem occured while saving the data. Please check the fields.", Type.ERROR_MESSAGE);
 			getLogger().error("Unable to save entity of type " + entity.getClass().getName(), e);
 			return;
 		}
 
 		if (isNew) {
+			// Move to the "Updating an entity" state
 			getGridDataProvider().refreshAll();
+			getView().getGrid().select(entity);
+			editRequest(entity);
 		} else {
+			// Stay in the "Updating an entity" state
 			getGridDataProvider().refreshItem(entity);
+			editRequest(entity);
 		}
-		view.stopEditing();
+	}
+
+	public void cancelClicked() {
+		T entity = getView().getEditItem();
+		if (isNew(entity)) {
+			getView().showInitialState();
+		} else {
+			getView().editItem(entity, false);
+		}
 	}
 
 	public void deleteClicked() {
@@ -87,14 +112,11 @@ public abstract class AbstractCrudPresenter<T, V extends AbstractCrudView<T>> im
 			return;
 		}
 		getGridDataProvider().refreshAll();
-		getView().stopEditing();
+		// getView().stopEditing();
 	}
 
-	public void cancelClicked() {
-		getView().stopEditing();
-	}
-
-	public void formValidationStatusChanged(boolean hasValidationErrors) {
-		getView().getUpdate().setEnabled(!hasValidationErrors);
+	public void formStatusChanged(boolean hasValidationErrors, boolean hasChanges) {
+		getView().getUpdate().setEnabled(hasChanges && !hasValidationErrors);
+		getView().getCancel().setEnabled(hasChanges);
 	}
 }

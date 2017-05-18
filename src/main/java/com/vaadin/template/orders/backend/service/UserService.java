@@ -36,8 +36,8 @@ public class UserService {
 	public Page<User> findAnyMatching(Optional<String> filter, Pageable pageable) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
-			return getUserRepository().findByEmailLikeIgnoreCaseOrNameLikeIgnoreCase(repositoryFilter, repositoryFilter,
-					pageable);
+			return getUserRepository().findByEmailLikeIgnoreCaseOrNameLikeIgnoreCaseOrRoleLikeIgnoreCase(
+					repositoryFilter, repositoryFilter, repositoryFilter, pageable);
 		} else {
 			return find(pageable);
 		}

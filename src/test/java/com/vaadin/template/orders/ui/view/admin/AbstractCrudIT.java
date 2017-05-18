@@ -3,6 +3,8 @@ package com.vaadin.template.orders.ui.view.admin;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,47 +12,18 @@ import org.junit.Test;
 import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.ui.view.admin.product.CrudViewElement;
 import com.vaadin.testbench.elements.GridElement;
+import com.vaadin.testbench.elements.GridElement.GridRowElement;
+import com.vaadin.testbench.elements.TextFieldElement;
 
-public abstract class AbstractCrudIT extends AbstractOrdersIT {
+public abstract class AbstractCrudIT<T extends CrudViewElement> extends AbstractOrdersIT {
 
-	@Test
-	public void sortGrid() {
-		CrudViewElement userAdmin = loginAndNavigateToView();
-		GridElement grid = userAdmin.getList();
-		List<String[]> currentData = getData(grid);
+	protected abstract T loginAndNavigateToView();
 
-		int columnCount = getColumnCount(grid);
-		for (int i = 0; i < columnCount; i++) {
-			sort(currentData, i, false);
-			grid.getHeaderCell(0, i).click();
-			assertData(currentData, getData(grid));
+	protected abstract void assertFormFieldsEmpty(T view);
 
-			sort(currentData, i, true);
-			grid.getHeaderCell(0, i).click();
-			assertData(currentData, getData(grid));
-		}
-	}
+	protected abstract void populateNewEntity(T view);
 
-	@Test
-	public void filterGrid() {
-		CrudViewElement view = loginAndNavigateToView();
-		GridElement grid = view.getList();
-		List<String[]> currentData = getData(grid);
-
-		view.getSearch().setValue("bak");
-		List<String[]> shouldMatch = filter(currentData, "bak");
-		Assert.assertEquals(shouldMatch.size(), grid.getRowCount());
-
-		view.getSearch().setValue("ba");
-		shouldMatch = filter(currentData, "ba");
-		Assert.assertEquals(shouldMatch.size(), grid.getRowCount());
-
-		view.getSearch().setValue("a");
-		shouldMatch = filter(currentData, "a");
-		Assert.assertEquals(shouldMatch.size(), grid.getRowCount());
-	}
-
-	protected abstract CrudViewElement loginAndNavigateToView();
+	protected abstract TextFieldElement getFirstFormTextField(T view);
 
 	protected static void assertData(List<String[]> expected, List<String[]> data) {
 		Assert.assertEquals(expected.size(), data.size());
@@ -92,4 +65,166 @@ public abstract class AbstractCrudIT extends AbstractOrdersIT {
 		return false;
 	}
 
+	protected void assertInitialState(T view) {
+
+		// Grid enabled, contains data but has nothing selected
+		GridElement grid = view.getList();
+		assertEnabled(true, grid);
+		Assert.assertTrue(grid.getRowCount() > 0);
+		for (GridRowElement row : grid.getRows()) {
+			Assert.assertFalse(row.isSelected());
+		}
+
+		// Form and buttons are disabled
+		assertEnabled(false, view.getForm());
+		assertEnabled(false, view.getUpdate());
+		assertEnabled(false, view.getCancel());
+		assertEnabled(false, view.getDelete());
+
+		assertFormFieldsEmpty(view);
+		Assert.assertEquals(AbstractCrudView.CAPTION_UPDATE, view.getUpdate().getText());
+		Assert.assertEquals(AbstractCrudView.CAPTION_DISCARD, view.getCancel().getText());
+	}
+
+	protected void assertEditState(T view, boolean hasChanges) {
+		// Grid enabled, contains data and has one row selected
+		GridElement grid = view.getList();
+		assertEnabled(true, grid);
+		Assert.assertTrue(grid.getRowCount() > 0);
+		int selectedCount = 0;
+		for (GridRowElement row : grid.getRows()) {
+			if (row.isSelected()) {
+				selectedCount++;
+			}
+		}
+		Assert.assertEquals(1, selectedCount);
+
+		// Form and delete are always enabled
+		assertEnabled(true, view.getForm());
+		assertEnabled(true, view.getDelete());
+
+		assertEnabled(hasChanges, view.getUpdate());
+		assertEnabled(hasChanges, view.getCancel());
+
+		Assert.assertEquals(AbstractCrudView.CAPTION_UPDATE, view.getUpdate().getText());
+		Assert.assertEquals(AbstractCrudView.CAPTION_DISCARD, view.getCancel().getText());
+	}
+
+	private void assertAddState(T view, boolean hasChanges) {
+		// Grid enabled, contains data but has nothing selected
+		GridElement grid = view.getList();
+		assertEnabled(true, grid);
+		Assert.assertTrue(grid.getRowCount() > 0);
+		for (GridRowElement row : grid.getRows()) {
+			Assert.assertFalse(row.isSelected());
+		}
+
+		// Form is always enabled, delete is always disabled
+		assertEnabled(true, view.getForm());
+		assertEnabled(false, view.getDelete());
+
+		assertEnabled(hasChanges, view.getUpdate());
+		assertEnabled(hasChanges, view.getCancel());
+
+		Assert.assertEquals("Add", view.getUpdate().getText());
+		Assert.assertEquals("Cancel", view.getCancel().getText());
+	}
+
+	@Test
+	public void sortGrid() {
+		T view = loginAndNavigateToView();
+		GridElement grid = view.getList();
+		List<String[]> currentData = getData(grid);
+
+		List<Integer> testableColumns = getUniquelySortableColumnIndexes(view);
+
+		for (Integer i : testableColumns) {
+			sort(currentData, i, false);
+			grid.getHeaderCell(0, i).click();
+			assertData(currentData, getData(grid));
+
+			sort(currentData, i, true);
+			grid.getHeaderCell(0, i).click();
+			assertData(currentData, getData(grid));
+		}
+	}
+
+	protected List<Integer> getUniquelySortableColumnIndexes(T view) {
+		int columnCount = getColumnCount(view.getList());
+		return IntStream.range(0, columnCount).mapToObj(i -> i).collect(Collectors.toList());
+	}
+
+	@Test
+	public void filterGrid() {
+		T view = loginAndNavigateToView();
+		GridElement grid = view.getList();
+		List<String[]> currentData = getData(grid);
+
+		view.getSearch().setValue("bak");
+		List<String[]> shouldMatch = filter(currentData, "bak");
+		Assert.assertEquals(shouldMatch.size(), grid.getRowCount());
+
+		view.getSearch().setValue("ba");
+		shouldMatch = filter(currentData, "ba");
+		Assert.assertEquals(shouldMatch.size(), grid.getRowCount());
+
+		view.getSearch().setValue("a");
+		shouldMatch = filter(currentData, "a");
+		Assert.assertEquals(shouldMatch.size(), grid.getRowCount());
+	}
+
+	@Test
+	public void initialState() {
+		T view = loginAndNavigateToView();
+		assertInitialState(view);
+	}
+
+	@Test
+	public void createEntityButCancel() {
+		T view = loginAndNavigateToView();
+		view.getAdd().click();
+		assertAddState(view, false);
+		populateNewEntity(view);
+		view.getCancel().click();
+		assertInitialState(view);
+	}
+
+	@Test
+	public void createEntity() {
+		T view = loginAndNavigateToView();
+		view.getAdd().click();
+		assertAddState(view, false);
+		populateNewEntity(view);
+		assertAddState(view, true);
+		view.getUpdate().click();
+		assertEditState(view, false);
+
+		TextFieldElement field = getFirstFormTextField(view);
+		String newValue = field.getValue() + "-updated";
+		field.setValue(newValue);
+		assertEditState(view, true);
+		view.getUpdate().click();
+		assertEditState(view, false);
+		Assert.assertEquals(newValue, field.getValue());
+	}
+
+	@Test
+	public void updateEntity() {
+		T view = loginAndNavigateToView();
+		view.getList().getCell(0, 0).click();
+		assertEditState(view, false);
+
+		TextFieldElement field = getFirstFormTextField(view);
+		String oldValue = field.getValue();
+		String newValue = oldValue + "-updated";
+		field.setValue(newValue);
+		assertEditState(view, true);
+		view.getUpdate().click();
+		assertEditState(view, false);
+		Assert.assertEquals(newValue, field.getValue());
+		field.setValue(oldValue);
+		assertEditState(view, true);
+		view.getUpdate().click();
+		assertEditState(view, false);
+	}
 }

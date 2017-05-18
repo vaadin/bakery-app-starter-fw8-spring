@@ -61,4 +61,9 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 		}
 		return userService;
 	}
+
+	@Override
+	protected boolean isNew(User entity) {
+		return entity.getId() == null;
+	}
 }

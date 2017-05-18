@@ -54,4 +54,9 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 		}
 		return productService;
 	}
+
+	@Override
+	protected boolean isNew(Product entity) {
+		return entity.getId() == null;
+	}
 }
