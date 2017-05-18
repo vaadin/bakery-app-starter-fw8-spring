@@ -1,5 +1,6 @@
 package com.vaadin.template.orders.ui.view.admin.product;
 
+import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.elements.GridElement;
 import com.vaadin.testbench.elements.TextFieldElement;
 
@@ -9,4 +10,13 @@ public interface CrudViewElement {
 
 	TextFieldElement getSearch();
 
+	TestBenchElement getForm();
+
+	TestBenchElement getUpdate();
+
+	TestBenchElement getCancel();
+
+	TestBenchElement getDelete();
+
+	TestBenchElement getAdd();
 }

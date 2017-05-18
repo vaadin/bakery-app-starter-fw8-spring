@@ -17,23 +17,84 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.components.grid.SingleSelectionModel;
 
+/**
+ * Base class for a CRUD (Create, read, update, delete) view.
+ * <p>
+ * The view has three states it can be in and the user can navigate between the
+ * states with the controls present:
+ * <ol>
+ * <li>Initial state
+ * <ul>
+ * <li>Form is disabled
+ * <li>Nothing is selected in grid
+ * </ul>
+ * <li>Adding an entity
+ * <ul>
+ * <li>Form is enabled
+ * <li>"Delete" has no function
+ * <li>"Discard" moves to the "Initial state"
+ * <li>"Save" creates the entity and moves to the "Updating an entity" state
+ * </ul>
+ * <li>Updating an entity
+ * <ul>
+ * <li>Entity highlighted in Grid
+ * <li>Form is enabled
+ * <li>"Delete" deletes the entity from the database
+ * <li>"Discard" resets the form contents to what is in the database
+ * <li>"Save" updates the entity and keeps the form open
+ * <li>"Save" and "Discard" are only enabled when changes have been made
+ * </ol>
+ *
+ * @param <T>
+ *            the type of entity which can be edited in the view
+ */
 @Secured(Role.ADMIN)
-public abstract class AbstractCrudView<T> implements Serializable {
+public abstract class AbstractCrudView<T extends Serializable> implements Serializable {
 
+	public static final String CAPTION_DISCARD = "Discard";
+	public static final String CAPTION_CANCEL = "Cancel";
+	public static final String CAPTION_UPDATE = "Update";
+	public static final String CAPTION_ADD = "Add";
 	private final BeanValidationBinder<T> binder;
+	private T editItem;
 
 	protected AbstractCrudView(Class<T> entityType) {
 		this.binder = new BeanValidationBinder<>(entityType);
+		getBinder().addStatusChangeListener(
+				statusChange -> getPresenter().formStatusChanged(statusChange.hasValidationErrors(), isFormModified()));
 	}
 
-	public void editItem(T entity, boolean isNew) {
-		getBinder().setBean(entity);
+	public void showInitialState() {
+		this.editItem = null;
+		getForm().setEnabled(false);
+		getGrid().deselectAll();
+		getBinder().readBean(null);
+		getUpdate().setCaption(CAPTION_UPDATE);
+		getCancel().setCaption(CAPTION_DISCARD);
+	}
+
+	public void editItem(T editItem, boolean isNew) {
+		if (editItem == null) {
+			throw new IllegalArgumentException("The entity to edit cannot be null");
+		}
+		this.editItem = editItem;
+		if (isNew) {
+			getGrid().deselectAll();
+			getUpdate().setCaption(CAPTION_ADD);
+			getCancel().setCaption(CAPTION_CANCEL);
+		} else {
+			getUpdate().setCaption(CAPTION_UPDATE);
+			getCancel().setCaption(CAPTION_DISCARD);
+		}
+
+		getBinder().readBean(editItem);
 		getForm().setEnabled(true);
 		getDelete().setEnabled(!isNew);
-		getUpdate().setCaption(isNew ? "Add" : "Update");
 		getFirstFormField().focus();
-		getBinder().addStatusChangeListener(
-				statusChange -> getPresenter().formValidationStatusChanged(statusChange.hasValidationErrors()));
+	}
+
+	private boolean isFormModified() {
+		return getBinder().hasChanges();
 	}
 
 	public Stream<HasValue<?>> validate() {
@@ -41,17 +102,15 @@ public abstract class AbstractCrudView<T> implements Serializable {
 	}
 
 	public T getEditItem() {
-		return getBinder().getBean();
+		return editItem;
+	}
+
+	public boolean commitEditItem() {
+		return getBinder().writeBeanIfValid(editItem);
 	}
 
 	protected Binder<T> getBinder() {
 		return binder;
-	}
-
-	public void stopEditing() {
-		getForm().setEnabled(false);
-		getBinder().setBean(null);
-		getGrid().deselectAll();
 	}
 
 	protected void init() {
@@ -72,12 +131,9 @@ public abstract class AbstractCrudView<T> implements Serializable {
 		getGrid().setDataProvider(getPresenter().getGridDataProvider());
 
 		// Button logic
-		getUpdate().addClickListener(event -> {
-			boolean isNew = getGrid().getSelectedItems().isEmpty();
-			getPresenter().updateClicked(isNew);
-		});
-		getDelete().addClickListener(event -> getPresenter().deleteClicked());
+		getUpdate().addClickListener(event -> getPresenter().updateClicked());
 		getCancel().addClickListener(event -> getPresenter().cancelClicked());
+		getDelete().addClickListener(event -> getPresenter().deleteClicked());
 		getAdd().addClickListener(event -> getPresenter().addNewClicked());
 
 		// Search functionality

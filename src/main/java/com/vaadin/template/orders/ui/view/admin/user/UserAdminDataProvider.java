@@ -59,7 +59,7 @@ public class UserAdminDataProvider extends PageableDataProvider<User, Object> {
 	@Override
 	protected List<QuerySortOrder> getDefaultSortOrders() {
 		List<QuerySortOrder> sortOrders = new ArrayList<>();
-		sortOrders.add(new QuerySortOrder("name", SortDirection.ASCENDING));
+		sortOrders.add(new QuerySortOrder("email", SortDirection.ASCENDING));
 		return sortOrders;
 	}
 
