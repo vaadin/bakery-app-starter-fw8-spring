@@ -30,7 +30,7 @@ public class NavigationManagerBean extends SpringNavigator implements Navigation
 				return true;
 			}
 			String navigationState;
-			if (e.getParameters() == null) {
+			if (e.getParameters() == null || e.getParameters().isEmpty()) {
 				navigationState = e.getViewName();
 			} else {
 				navigationState = e.getViewName() + "/" + e.getParameters();
@@ -38,12 +38,11 @@ public class NavigationManagerBean extends SpringNavigator implements Navigation
 			if (viewAlreadyConfirmed) {
 				return true;
 			} else {
-				((OrdersView) oldView).beforeLeave(new NavigationEvent(() -> {
+				return ((OrdersView) oldView).beforeLeave(new NavigationEvent(() -> {
 					viewAlreadyConfirmed = true;
 					navigateTo(navigationState);
 					viewAlreadyConfirmed = false;
 				}));
-				return false;
 			}
 		});
 	}
