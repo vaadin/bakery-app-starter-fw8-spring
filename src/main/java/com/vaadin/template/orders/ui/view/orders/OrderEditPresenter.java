@@ -17,6 +17,7 @@ import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 
 import com.vaadin.data.HasValue;
+import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.OrderState;
@@ -134,7 +135,14 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 			Order order = saveOrder();
 			if (order != null) {
 				// Navigate to edit view so URL is updated correctly
-				navigationManager.navigateTo(OrderEditView.class, order.getId());
+				// navigateTo can be used once
+				Page page = view.getUI().getPage();
+				page.setUriFragment("!order/" + order.getId());
+				page.reload();
+				// The code above can be replaced with
+				// navigationManager.navigateTo(OrderEditView.class,
+				// order.getId());
+				// once https://github.com/vaadin/spring/issues/214 is fixed
 			}
 		} else if (view.getMode() == Mode.EDIT) {
 			Optional<HasValue<?>> firstErrorField = view.validate().findFirst();

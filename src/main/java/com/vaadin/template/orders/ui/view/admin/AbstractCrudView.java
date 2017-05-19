@@ -169,17 +169,19 @@ public abstract class AbstractCrudView<T extends Serializable> implements Serial
 	protected abstract Focusable getFirstFormField();
 
 	@Override
-	public void beforeLeave(NavigationEvent event) {
-		if (containsUnsavedChanges()) {
-			Runnable onOk = () -> {
-				event.navigate();
-			};
-			Runnable onCancel = () -> {
-				// Nothing to do, navigation was already prevented
-			};
-			ConfirmationDialog.show(getViewComponent().getUI(), onOk, onCancel);
-		} else {
-			event.navigate();
+	public boolean beforeLeave(NavigationEvent event) {
+		if (!containsUnsavedChanges()) {
+			return true;
 		}
+
+		Runnable onOk = () -> {
+			event.navigate();
+		};
+		Runnable onCancel = () -> {
+			// Nothing to do, navigation was already prevented
+		};
+		ConfirmationDialog.show(getViewComponent().getUI(), onOk, onCancel);
+
+		return false;
 	}
 }
