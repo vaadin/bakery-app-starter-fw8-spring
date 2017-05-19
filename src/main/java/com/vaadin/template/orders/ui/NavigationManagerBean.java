@@ -1,5 +1,7 @@
 package com.vaadin.template.orders.ui;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.stereotype.Component;
 
 import com.vaadin.navigator.View;
@@ -9,12 +11,42 @@ import com.vaadin.spring.internal.Conventions;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.template.orders.app.security.SecurityUtils;
 import com.vaadin.template.orders.backend.data.Role;
+import com.vaadin.template.orders.ui.view.NavigationEvent;
+import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
 import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 
 @Component
 @UIScope
 public class NavigationManagerBean extends SpringNavigator implements NavigationManager {
+
+	boolean viewAlreadyConfirmed = false;
+
+	@PostConstruct
+	public void init() {
+		addViewChangeListener(e -> {
+			View oldView = e.getOldView();
+			if (!(oldView instanceof OrdersView)) {
+				return true;
+			}
+			String navigationState;
+			if (e.getParameters() == null) {
+				navigationState = e.getViewName();
+			} else {
+				navigationState = e.getViewName() + "/" + e.getParameters();
+			}
+			if (viewAlreadyConfirmed) {
+				return true;
+			} else {
+				((OrdersView) oldView).beforeLeave(new NavigationEvent(() -> {
+					viewAlreadyConfirmed = true;
+					navigateTo(navigationState);
+					viewAlreadyConfirmed = false;
+				}));
+				return false;
+			}
+		});
+	}
 
 	/**
 	 * Find the view id (URI fragment) used for a given view class.

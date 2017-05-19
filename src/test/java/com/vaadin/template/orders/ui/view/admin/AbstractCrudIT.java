@@ -13,6 +13,7 @@ import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
 import com.vaadin.template.orders.ui.view.admin.product.CrudViewElement;
 import com.vaadin.template.orders.ui.view.object.MenuElement;
+import com.vaadin.template.orders.ui.view.orders.OrdersListViewElement;
 import com.vaadin.testbench.elements.GridElement;
 import com.vaadin.testbench.elements.GridElement.GridRowElement;
 import com.vaadin.testbench.elements.TextFieldElement;
@@ -248,16 +249,14 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 		// confirmation dialog
 
 		// Navigate away to another view
-		if (false) {
-			MenuElement.get().navigateToStorefront();
-			Assert.assertTrue(view.isOpen());
-			ConfirmationDialogDesignElement.get().getCancel().click();
+		MenuElement.get().getMenuLink("Storefront").click();
+		Assert.assertTrue(view.isOpen());
+		ConfirmationDialogDesignElement.get().getCancel().click();
 
-			// Logout
-			MenuElement.get().logout();
-			Assert.assertTrue(view.isOpen());
-			ConfirmationDialogDesignElement.get().getCancel().click();
-		}
+		// Logout
+		MenuElement.get().logout();
+		Assert.assertTrue(view.isOpen());
+		ConfirmationDialogDesignElement.get().getCancel().click();
 
 		// Create a new entity
 		view.getAdd().click();
@@ -271,4 +270,22 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 		Assert.assertFalse(view.getList().getRow(1).isSelected());
 		// Assert.assertTrue(view.getList().getRow(0).isSelected());
 	}
+
+	@Test
+	public void confirmationDialogCanBeDismissed() {
+		T view = loginAndNavigateToView();
+
+		// Open some entity and change something
+		view.getList().getCell(0, 0).click();
+		TextFieldElement field = getFirstFormTextField(view);
+		String oldValue = field.getValue();
+		String newValue = oldValue + "-updated";
+		field.setValue(newValue);
+
+		// Navigate away and check that we can actually move away
+		MenuElement.get().getMenuLink("Storefront").click();
+		ConfirmationDialogDesignElement.get().getOk().click();
+		Assert.assertNotNull(OrdersListViewElement.get());
+	}
+
 }
