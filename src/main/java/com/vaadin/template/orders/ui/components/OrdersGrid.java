@@ -1,8 +1,6 @@
 package com.vaadin.template.orders.ui.components;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -16,12 +14,11 @@ import com.vaadin.ui.renderers.HtmlRenderer;
 
 public class OrdersGrid extends Grid<Order> {
 
-	private final transient DateTimeFormatter dueDateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
-
 	public OrdersGrid() {
 		setSizeFull();
 		addStyleName("two-row");
 		setColumnResizeMode(ColumnResizeMode.ANIMATED);
+		removeHeaderRow(0);
 
 		// Due
 		Column<Order, String> dueColumn = addColumn(order -> dueCell(getTimeHeader(order.getDueDate()),
