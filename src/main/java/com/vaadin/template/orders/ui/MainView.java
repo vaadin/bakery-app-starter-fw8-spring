@@ -63,7 +63,12 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 		content.addComponent(((NavigableView) view).getViewComponent());
 
 		navigationButtons.forEach((viewClass, button) -> button.setStyleName("selected", viewClass == view.getClass()));
-
+		Button menuItem = navigationButtons.get(view.getClass());
+		String viewName = "";
+		if (menuItem != null) {
+			viewName = menuItem.getCaption();
+		}
+		activeViewName.setValue(viewName);
 	}
 
 }
