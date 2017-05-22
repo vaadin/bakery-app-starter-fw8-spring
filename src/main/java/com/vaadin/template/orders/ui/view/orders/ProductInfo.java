@@ -59,9 +59,7 @@ public class ProductInfo extends ProductInfoDesign {
 		readOnlyComment.setWidth("100%");
 		readOnlyComment.setId(comment.getId());
 
-		delete.addClickListener(e -> {
-			fireOrderItemDeleted();
-		});
+		delete.addClickListener(e -> fireOrderItemDeleted());
 	}
 
 	private void updatePrice(int productPrice) {
