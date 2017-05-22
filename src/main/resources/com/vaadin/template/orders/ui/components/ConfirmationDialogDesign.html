@@ -7,13 +7,12 @@
  </head>
  <body>
   <vaadin-vertical-layout size-auto>
-   <vaadin-label id="text" _id="text">
-     You have unsaved changes. 
-    <p> Are you sure you want to navigate away?</p>
+   <vaadin-label id="text" plain-text _id="text">
+     You have unsaved changes that will be discarded if you navigate away. 
    </vaadin-label>
    <vaadin-horizontal-layout :bottom :right>
-    <vaadin-button style-name="danger" id="ok" plain-text _id="ok">
-      OK 
+    <vaadin-button style-name="danger" id="discardChanges" plain-text _id="discardChanges">
+      Discard Changes 
     </vaadin-button>
     <vaadin-button id="cancel" plain-text _id="cancel">
       Cancel 

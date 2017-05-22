@@ -20,7 +20,7 @@ import com.vaadin.ui.declarative.Design;
 @SuppressWarnings("serial")
 public class ConfirmationDialogDesign extends VerticalLayout {
 	protected Label text;
-	protected Button ok;
+	protected Button discardChanges;
 	protected Button cancel;
 
 	public ConfirmationDialogDesign() {

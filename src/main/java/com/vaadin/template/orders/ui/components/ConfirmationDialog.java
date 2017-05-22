@@ -9,15 +9,15 @@ public class ConfirmationDialog {
 		// Use show()
 	}
 
-	public static void show(UI ui, Runnable onOk, Runnable onCancel) {
+	public static void show(UI ui, Runnable onDiscard, Runnable onCancel) {
 		Window window = new Window("Please confirm");
 		window.setModal(true);
 		ConfirmationDialogDesign content = new ConfirmationDialogDesign();
 		window.setContent(content);
 
-		content.ok.addClickListener(e -> {
+		content.discardChanges.addClickListener(e -> {
 			window.close();
-			onOk.run();
+			onDiscard.run();
 		});
 		content.cancel.addClickListener(e -> {
 			onCancel.run();
