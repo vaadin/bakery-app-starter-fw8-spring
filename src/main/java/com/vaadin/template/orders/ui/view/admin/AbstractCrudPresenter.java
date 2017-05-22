@@ -3,10 +3,12 @@ package com.vaadin.template.orders.ui.view.admin;
 import java.io.Serializable;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.template.orders.ui.HasLogger;
+import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.components.ConfirmationDialog;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Grid;
@@ -18,15 +20,18 @@ public abstract class AbstractCrudPresenter<T extends Serializable, V extends Ab
 
 	private V view;
 
+	@Autowired
+	private NavigationManager navigationManager;
+
 	public abstract void filterGrid(String filter);
 
-	protected abstract T getCopy(T entity);
+	protected abstract T loadEntity(Long id);
 
 	protected abstract PageableDataProvider<T, Object> getGridDataProvider();
 
 	protected abstract T createEntity();
 
-	protected abstract boolean isNew(T entity);
+	protected abstract Long getId(T entity);
 
 	protected abstract T saveEntity(T editItem);
 
@@ -41,12 +46,31 @@ public abstract class AbstractCrudPresenter<T extends Serializable, V extends Ab
 		return view;
 	}
 
+	public void editRequest(String parameters) {
+		long id;
+		try {
+			id = Long.parseLong(parameters);
+		} catch (NumberFormatException e) {
+			id = -1;
+		}
+
+		if (id == -1) {
+			editItem(createEntity());
+		} else {
+			selectAndEditEntity(loadEntity(id));
+		}
+	}
+
+	private void selectAndEditEntity(T entity) {
+		getView().getGrid().select(entity);
+		editRequest(entity);
+	}
+
 	public void editRequest(T entity) {
 		runIfNoUnsavedChanges(() -> {
 			// Fetch a fresh item so we have the latest changes (less optimistic
 			// locking problems)
-			T freshCopy = getCopy(entity);
-			getView().editItem(freshCopy, false);
+			editItem(loadEntity(getId(entity)));
 		}, () -> {
 			// Revert selection in grid
 			T editItem = getView().getEditItem();
@@ -59,10 +83,21 @@ public abstract class AbstractCrudPresenter<T extends Serializable, V extends Ab
 		});
 	}
 
+	private void editItem(T item) {
+		boolean isNew = isNew(item);
+		if (isNew) {
+			navigationManager.updateViewParameter("new");
+		} else {
+			Long id = getId(item);
+			navigationManager.updateViewParameter(String.valueOf(id));
+		}
+		getView().editItem(item, isNew);
+	}
+
 	public void addNewClicked() {
 		runIfNoUnsavedChanges(() -> {
 			T entity = createEntity();
-			getView().editItem(entity, true);
+			editItem(entity);
 		});
 	}
 
@@ -128,8 +163,7 @@ public abstract class AbstractCrudPresenter<T extends Serializable, V extends Ab
 		if (isNew) {
 			// Move to the "Updating an entity" state
 			getGridDataProvider().refreshAll();
-			getView().getGrid().select(entity);
-			editRequest(entity);
+			selectAndEditEntity(entity);
 		} else {
 			// Stay in the "Updating an entity" state
 			getGridDataProvider().refreshItem(entity);
@@ -140,10 +174,15 @@ public abstract class AbstractCrudPresenter<T extends Serializable, V extends Ab
 	public void cancelClicked() {
 		T entity = getView().getEditItem();
 		if (isNew(entity)) {
-			getView().showInitialState();
+			showInitialState();
 		} else {
-			getView().editItem(entity, false);
+			editItem(entity);
 		}
+	}
+
+	private void showInitialState() {
+		getView().showInitialState();
+		navigationManager.updateViewParameter("");
 	}
 
 	public void deleteClicked() {
@@ -157,11 +196,16 @@ public abstract class AbstractCrudPresenter<T extends Serializable, V extends Ab
 			return;
 		}
 		getGridDataProvider().refreshAll();
-		getView().showInitialState();
+		showInitialState();
 	}
 
 	public void formStatusChanged(boolean hasValidationErrors, boolean hasChanges) {
 		getView().getUpdate().setEnabled(hasChanges && !hasValidationErrors);
 		getView().getCancel().setEnabled(hasChanges);
 	}
+
+	protected boolean isNew(T item) {
+		return getId(item) == null;
+	}
+
 }

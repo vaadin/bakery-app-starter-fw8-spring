@@ -22,8 +22,8 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 	private transient UserService userService;
 
 	@Override
-	protected User getCopy(User entity) {
-		return getUserService().get(entity.getId());
+	protected User loadEntity(Long id) {
+		return getUserService().get(id);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 	}
 
 	@Override
-	protected boolean isNew(User entity) {
-		return entity.getId() == null;
+	protected Long getId(User entity) {
+		return entity.getId();
 	}
 }

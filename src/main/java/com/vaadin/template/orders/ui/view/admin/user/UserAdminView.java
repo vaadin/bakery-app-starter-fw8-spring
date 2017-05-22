@@ -4,7 +4,6 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.entity.User;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudView;
@@ -42,11 +41,6 @@ public class UserAdminView extends AbstractCrudView<User> {
 		});
 		getBinder().bindInstanceFields(getViewComponent());
 
-	}
-
-	@Override
-	public void enter(ViewChangeEvent event) {
-		// Nothing to do here
 	}
 
 	@Override

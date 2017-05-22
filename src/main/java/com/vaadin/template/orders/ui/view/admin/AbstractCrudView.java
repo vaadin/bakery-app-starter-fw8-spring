@@ -9,6 +9,7 @@ import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.ui.components.ConfirmationDialog;
 import com.vaadin.template.orders.ui.view.NavigationEvent;
@@ -65,6 +66,14 @@ public abstract class AbstractCrudView<T extends Serializable> implements Serial
 		this.binder = new BeanValidationBinder<>(entityType);
 		getBinder().addStatusChangeListener(
 				statusChange -> getPresenter().formStatusChanged(statusChange.hasValidationErrors(), isFormModified()));
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		if (!event.getParameters().isEmpty()) {
+			getPresenter().editRequest(event.getParameters());
+		}
+
 	}
 
 	public void showInitialState() {

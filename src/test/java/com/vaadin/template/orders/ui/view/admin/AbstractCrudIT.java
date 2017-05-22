@@ -12,7 +12,10 @@ import org.junit.Test;
 import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
 import com.vaadin.template.orders.ui.view.admin.product.CrudViewElement;
+import com.vaadin.template.orders.ui.view.dashboard.DashboardViewElement;
+import com.vaadin.template.orders.ui.view.object.LoginViewElement;
 import com.vaadin.template.orders.ui.view.object.MenuElement;
+import com.vaadin.template.orders.ui.view.orders.ElementUtil;
 import com.vaadin.template.orders.ui.view.orders.OrdersListViewElement;
 import com.vaadin.testbench.elements.GridElement;
 import com.vaadin.testbench.elements.GridElement.GridRowElement;
@@ -20,13 +23,22 @@ import com.vaadin.testbench.elements.TextFieldElement;
 
 public abstract class AbstractCrudIT<T extends CrudViewElement> extends AbstractOrdersIT {
 
-	protected abstract T loginAndNavigateToView();
-
 	protected abstract void assertFormFieldsEmpty(T view);
 
 	protected abstract void populateNewEntity(T view);
 
 	protected abstract TextFieldElement getFirstFormTextField(T view);
+
+	protected abstract String getViewName();
+
+	protected abstract T getViewElement();
+
+	protected T loginAndNavigateToView() {
+		DashboardViewElement dashboard = LoginViewElement.loginAsAdmin();
+		MenuElement menu = dashboard.getMainView().getMenu();
+		ElementUtil.click(menu.getMenuLink(getViewName()));
+		return getViewElement();
+	}
 
 	protected static void assertData(List<String[]> expected, List<String[]> data) {
 		Assert.assertEquals(expected.size(), data.size());
@@ -87,6 +99,12 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 		assertFormFieldsEmpty(view);
 		Assert.assertEquals(AbstractCrudView.CAPTION_UPDATE, view.getUpdate().getText());
 		Assert.assertEquals(AbstractCrudView.CAPTION_DISCARD, view.getCancel().getText());
+
+		assertViewParameter("");
+	}
+
+	private void assertViewParameter(String expected) {
+		Assert.assertEquals(expected, getViewParameter());
 	}
 
 	protected void assertEditState(T view, boolean hasChanges) {
@@ -111,6 +129,9 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 
 		Assert.assertEquals(AbstractCrudView.CAPTION_UPDATE, view.getUpdate().getText());
 		Assert.assertEquals(AbstractCrudView.CAPTION_DISCARD, view.getCancel().getText());
+
+		String viewParam = getViewParameter();
+		Assert.assertTrue(Integer.parseInt(viewParam) > 0);
 	}
 
 	private void assertAddState(T view, boolean hasChanges) {
@@ -131,6 +152,8 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 
 		Assert.assertEquals("Add", view.getUpdate().getText());
 		Assert.assertEquals("Cancel", view.getCancel().getText());
+
+		Assert.assertEquals("new", getViewParameter());
 	}
 
 	@Test
@@ -286,6 +309,18 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 		MenuElement.get().getMenuLink("Storefront").click();
 		ConfirmationDialogDesignElement.get().getDiscardChanges().click();
 		Assert.assertNotNull(OrdersListViewElement.get());
+	}
+
+	@Test
+	public void enterEditUsingParameter() {
+		loginAndNavigateToView();
+		getDriver().get(getDriver().getCurrentUrl() + "/1");
+		T viewElement = getViewElement();
+		TextFieldElement firstField = getFirstFormTextField(viewElement);
+		Assert.assertNotEquals("", firstField.getValue());
+		firstField.setValue(firstField.getValue() + "_upd");
+		viewElement.getUpdate().click();
+		assertEditState(viewElement, false);
 	}
 
 }
