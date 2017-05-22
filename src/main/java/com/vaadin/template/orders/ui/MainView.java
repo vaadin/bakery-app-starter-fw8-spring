@@ -24,6 +24,7 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 
 	@Autowired
 	private MainPresenter presenter;
+
 	private Map<Class<? extends View>, Button> navigationButtons = new HashMap<>();
 
 	@PostConstruct
@@ -59,7 +60,12 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 		content.addComponent(((OrdersView) view).getViewComponent());
 
 		navigationButtons.forEach((viewClass, button) -> button.setStyleName("selected", viewClass == view.getClass()));
-
+		Button menuItem = navigationButtons.get(view.getClass());
+		String viewName = "";
+		if (menuItem != null) {
+			viewName = menuItem.getCaption();
+		}
+		activeViewName.setValue(viewName);
 	}
 
 }

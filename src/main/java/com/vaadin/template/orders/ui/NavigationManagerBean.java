@@ -45,6 +45,7 @@ public class NavigationManagerBean extends SpringNavigator implements Navigation
 				}));
 			}
 		});
+
 	}
 
 	/**
