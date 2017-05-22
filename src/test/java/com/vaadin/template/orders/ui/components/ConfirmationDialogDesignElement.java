@@ -16,8 +16,8 @@ public class ConfirmationDialogDesignElement extends VerticalLayoutElement {
 		return $(ButtonElement.class).id("cancel");
 	}
 
-	public ButtonElement getOk() {
-		return $(ButtonElement.class).id("ok");
+	public ButtonElement getDiscardChanges() {
+		return $(ButtonElement.class).id("discardChanges");
 	}
 
 }

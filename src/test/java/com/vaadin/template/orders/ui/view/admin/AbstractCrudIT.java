@@ -284,7 +284,7 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 
 		// Navigate away and check that we can actually move away
 		MenuElement.get().getMenuLink("Storefront").click();
-		ConfirmationDialogDesignElement.get().getOk().click();
+		ConfirmationDialogDesignElement.get().getDiscardChanges().click();
 		Assert.assertNotNull(OrdersListViewElement.get());
 	}
 
