@@ -87,6 +87,20 @@ public class AddOrderIT extends AbstractOrdersIT {
 		// Check total sum
 		Assert.assertEquals(testOrder.total, ElementUtil.getText(orderEditView.getTotal()));
 
+		// Add empty row
+		ElementUtil.click(orderEditView.getAddItems());
+
+		// Add + delete row
+		ElementUtil.click(orderEditView.getAddItems());
+		ProductOrderData product = testOrder.products.get(0);
+		ProductInfoElement productInfo = orderEditView.getProductInfo(orderEditView.getNumberOfProducts() - 1);
+		productInfo.setProduct(product);
+		Assert.assertEquals(testOrder.products.size() + 2, orderEditView.getNumberOfProducts());
+		ElementUtil.click(orderEditView.getProductInfo(orderEditView.getNumberOfProducts() - 1).getDelete());
+
+		// One extra row at the bottom, but it should not affect the result
+		Assert.assertEquals(testOrder.products.size() + 1, orderEditView.getNumberOfProducts());
+
 		// Done -> go to confirmation screen
 		ElementUtil.click(orderEditView.getOk());
 		// Ensure that that we are on the confirmation screen
@@ -94,6 +108,9 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 		// Order info intact
 		orderEditView.assertOrder(testOrder);
+
+		// Empty rows should have been removed
+		Assert.assertEquals(testOrder.products.size(), orderEditView.getNumberOfProducts());
 
 		// Place order -> go to order report screen
 		// This causes a reload so we need first wait until the refresh is done

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.Order;
+import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.backend.service.PickupLocationService;
 import com.vaadin.template.orders.ui.HasLogger;
@@ -52,6 +54,7 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 	@Autowired
 	public OrderEditPresenter(ViewEventBus viewEventBus, EventBus.ViewEventBus shouldBeGlobalEventBus) {
 		viewEventBus.subscribe(ProductInfoChange.class, change -> updateTotalSum());
+		viewEventBus.subscribe(OrderItemDeleted.class, deleted -> removeOrderItem(deleted.getOrderItem()));
 		this.shouldBeGlobalEventBus = shouldBeGlobalEventBus;
 		shouldBeGlobalEventBus.subscribe(this);
 	}
@@ -145,6 +148,7 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 			// New order should still show a confirmation page
 			Order order = view.getOrder();
 			if (order.getId() == null) {
+				filterEmptyProducts();
 				view.setMode(Mode.CONFIRMATION);
 			} else {
 				order = saveOrder();
@@ -175,11 +179,20 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 		}
 	}
 
+	private void filterEmptyProducts() {
+		LinkedList<OrderItem> emptyRows = new LinkedList<>();
+		view.getOrder().getItems().forEach(orderItem -> {
+			if (orderItem.getProduct() == null) {
+				emptyRows.add(orderItem);
+			}
+		});
+		emptyRows.forEach(orderItem -> removeOrderItem(orderItem));
+	}
+
 	private Order saveOrder() {
 		try {
+			filterEmptyProducts();
 			Order order = view.getOrder();
-			// Filter out empty products
-			order.getItems().removeIf(orderItem -> orderItem.getProduct() == null);
 			return getOrderService().saveOrder(order);
 
 		} catch (ValidationException e) {
@@ -215,5 +228,10 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 			pickupLocationService = BeanLocator.find(PickupLocationService.class);
 		}
 		return pickupLocationService;
+	}
+
+	private void removeOrderItem(OrderItem orderItem) {
+		view.removeOrderItem(orderItem);
+		updateTotalSum();
 	}
 }

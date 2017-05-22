@@ -58,6 +58,10 @@ public class ProductInfo extends ProductInfoDesign {
 
 		readOnlyComment.setWidth("100%");
 		readOnlyComment.setId(comment.getId());
+
+		delete.addClickListener(e -> {
+			fireOrderItemDeleted();
+		});
 	}
 
 	private void updatePrice(int productPrice) {
@@ -68,13 +72,21 @@ public class ProductInfo extends ProductInfoDesign {
 		viewEventBus.publish(new ProductInfoChange());
 	}
 
+	private void fireOrderItemDeleted() {
+		viewEventBus.publish(new OrderItemDeleted(getItem()));
+	}
+
 	public int getSum() {
-		OrderItem item = binder.getBean();
+		OrderItem item = getItem();
 		return item.getQuantity() * item.getProduct().getPrice();
 	}
 
 	public void setItem(OrderItem item) {
 		binder.setBean(item);
+	}
+
+	public OrderItem getItem() {
+		return binder.getBean();
 	}
 
 	public void setReportMode(boolean reportMode) {
@@ -83,6 +95,7 @@ public class ProductInfo extends ProductInfoDesign {
 		}
 		this.reportMode = reportMode;
 		binder.setReadOnly(reportMode);
+		delete.setVisible(!reportMode);
 
 		// Swap the TextArea for a Label in report mode
 		if (reportMode) {
