@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 import org.junit.Assert;
@@ -100,7 +101,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		// and then fetch a new orderEditView reference
 		ElementUtil.click(orderEditView.getOk());
 		// Re-fetch the orderEditView reference as the whole view was updated
-		orderEditView = new ElementQuery<>(OrderEditViewElement.class).context(getDriver()).first();
+		orderEditView = OrderEditViewElement.get();
 
 		// ID is of type #1234
 		String orderIdText = ElementUtil.getText(orderEditView.getOrderId());
@@ -130,6 +131,29 @@ public class AddOrderIT extends AbstractOrdersIT {
 		orderEditView = new ElementQuery<>(OrderEditViewElement.class).context(getDriver()).first();
 		orderEditView.assertOrder(testOrder);
 
+	}
+
+	@Test
+	public void changeStateForNewOrder() {
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
+
+		orderEditView.getFullName().setValue("fullname");
+		orderEditView.getPhone().setValue("phone");
+		orderEditView.getDetails().setValue("detailss");
+		orderEditView
+				.setProducts(Collections.singletonList(new ProductOrderData("Bacon Cheese Cake", 12, "A comment")));
+
+		ElementUtil.click(orderEditView.getOk());
+		ElementUtil.click(orderEditView.getOk());
+
+		// Re-fetch the orderEditView reference as the whole view was updated
+		orderEditView = OrderEditViewElement.get();
+
+		Assert.assertEquals(OrderState.NEW, orderEditView.getCurrentState());
+
+		orderEditView.setState(OrderState.CONFIRMED);
+		Assert.assertEquals(OrderState.CONFIRMED, orderEditView.getCurrentState());
 	}
 
 	private String format(LocalDate date) {

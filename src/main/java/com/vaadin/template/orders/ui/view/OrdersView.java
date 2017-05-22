@@ -28,10 +28,12 @@ public interface OrdersView extends View {
 	 *
 	 * @param event
 	 *            the navigation event object
-	 *
+	 * @return <code>true</code> if navigation should take place,
+	 *         <code>false</code> to prevent navigation (can be invoked later
+	 *         using {@link NavigationEvent#navigate()})
 	 */
-	public default void beforeLeave(NavigationEvent event) {
-		event.navigate();
+	public default boolean beforeLeave(NavigationEvent event) {
+		return true;
 	}
 
 }
