@@ -8,8 +8,8 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.app.Application;
 import com.vaadin.template.orders.app.security.SecuredViewAccessControl;
-import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.template.orders.ui.view.NavigationEvent;
+import com.vaadin.template.orders.ui.view.OrdersView;
 
 @SpringComponent
 @PrototypeScope
@@ -47,7 +47,9 @@ public class MainPresenter {
 		};
 		View currentView = view.getUI().getNavigator().getCurrentView();
 		if (currentView instanceof OrdersView) {
-			((OrdersView) currentView).beforeLeave(new NavigationEvent(doLogout));
+			if (((OrdersView) currentView).beforeLeave(new NavigationEvent(doLogout))) {
+				doLogout.run();
+			}
 		} else {
 			doLogout.run();
 		}
