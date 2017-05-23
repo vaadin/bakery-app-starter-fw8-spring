@@ -1,18 +1,10 @@
 package com.vaadin.template.orders.backend.data.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.Min;
 
 @Entity
-public class Product implements Serializable {
-
-	@Id
-	@GeneratedValue
-	private Long id;
+public class Product extends AbstractEntity {
 
 	private String name;
 
@@ -38,10 +30,6 @@ public class Product implements Serializable {
 
 	public void setPrice(int price) {
 		this.price = price;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 }

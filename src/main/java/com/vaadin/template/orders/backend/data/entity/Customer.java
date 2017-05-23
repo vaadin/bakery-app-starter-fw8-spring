@@ -1,20 +1,12 @@
 package com.vaadin.template.orders.backend.data.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-public class Customer implements Serializable {
-
-	@Id
-	@GeneratedValue
-	private Long id;
+public class Customer extends AbstractEntity {
 
 	@NotNull
 	@NotEmpty
@@ -26,10 +18,6 @@ public class Customer implements Serializable {
 
 	public Customer() {
 		// Empty constructor is needed by Spring Data / JPA
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getFullName() {

@@ -55,8 +55,4 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 		return productService;
 	}
 
-	@Override
-	protected Long getId(Product entity) {
-		return entity.getId();
-	}
 }

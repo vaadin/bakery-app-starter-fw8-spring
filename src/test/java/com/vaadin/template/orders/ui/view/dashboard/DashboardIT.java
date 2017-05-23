@@ -13,7 +13,6 @@ import org.openqa.selenium.WebElement;
 import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardViewElement.BoardBoxElement;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardViewElement.ChartElement;
-import com.vaadin.template.orders.ui.view.object.LoginViewElement;
 import com.vaadin.testbench.By;
 
 public class DashboardIT extends AbstractOrdersIT {
@@ -23,8 +22,7 @@ public class DashboardIT extends AbstractOrdersIT {
 
 	@Test
 	public void containsCharts() {
-		DashboardViewElement dashboardView = LoginViewElement.loginAsAdmin();
-
+		DashboardViewElement dashboardView = loginAsAdmin();
 		ChartElement deliveriesThisMonth = dashboardView.getDeliveriesThisMonth();
 		String thisMonth = YearMonth.now().getMonth().getDisplayName(TextStyle.FULL, Locale.US);
 		Assert.assertEquals("Deliveries in " + thisMonth, deliveriesThisMonth.getTitle());
@@ -49,7 +47,7 @@ public class DashboardIT extends AbstractOrdersIT {
 
 	@Test
 	public void boxesContainData() {
-		DashboardViewElement dashboardView = LoginViewElement.loginAsAdmin();
+		DashboardViewElement dashboardView = loginAsAdmin();
 		List<BoardBoxElement> boxes = dashboardView.getBoxes();
 		Assert.assertEquals(4, boxes.size());
 
@@ -76,7 +74,7 @@ public class DashboardIT extends AbstractOrdersIT {
 
 	@Test
 	public void gridContainsData() {
-		DashboardViewElement dashboardView = LoginViewElement.loginAsAdmin();
+		DashboardViewElement dashboardView = loginAsAdmin();
 		Assert.assertTrue("With the generated data, there should be at least ten rows in the grid",
 				dashboardView.getGrid().getRowCount() > 10);
 	}

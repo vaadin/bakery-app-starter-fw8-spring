@@ -13,10 +13,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.LoggerFactory;
 
-import com.vaadin.template.orders.ui.CurrentDriver;
+import com.vaadin.template.orders.ui.view.dashboard.DashboardViewElement;
+import com.vaadin.template.orders.ui.view.object.LoginViewElement;
+import com.vaadin.template.orders.ui.view.orders.OrdersListViewElement;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.ElementQuery;
+import com.vaadin.testbench.HasDriver;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
+import com.vaadin.testbench.TestBench;
+import com.vaadin.testbench.TestBenchDriverProxy;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.AbstractComponentElement;
@@ -29,6 +34,9 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 
 public class AbstractOrdersIT extends TestBenchTestCase {
+
+	public static final String APP_URL = "http://localhost:8080/";
+
 	static {
 		// Prevent debug logging from Apache HTTP client
 		Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -38,10 +46,17 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 	public ScreenshotOnFailureRule screenshotOnFailure = new ScreenshotOnFailureRule(this, true);
 
 	@Before
-	public void createDriver() {
-		WebDriver driver = new ChromeDriver();
-		setDriver(driver);
-		CurrentDriver.set(driver);
+	public void setup() {
+		setDriver(createDriver());
+	}
+
+	protected WebDriver createDriver() {
+		return TestBench.createDriver(new ChromeDriver());
+	}
+
+	@Override
+	public TestBenchDriverProxy getDriver() {
+		return (TestBenchDriverProxy) super.getDriver();
 	}
 
 	protected boolean hasAttribute(WebElement element, String name) {
@@ -77,9 +92,8 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 
 	}
 
-	public static <T extends AbstractElement> T findFirstElement(Class<T> elementType) {
-		WebDriver driver = CurrentDriver.get();
-		return new ElementQuery<>(elementType).context(driver).first();
+	public static <T extends AbstractElement> T findFirstElement(HasDriver hasDriver, Class<T> elementType) {
+		return new ElementQuery<>(elementType).context(hasDriver.getDriver()).first();
 	}
 
 	protected void assertEnabled(boolean expectedEnabled, TestBenchElement element) {
@@ -181,6 +195,26 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 			}
 		}
 		return "";
+	}
+
+	protected OrdersListViewElement loginAsBarista() {
+		openLoginView(APP_URL).login("barista@vaadin.com", "barista");
+		return $(OrdersListViewElement.class).first();
+	}
+
+	protected DashboardViewElement loginAsAdmin() {
+		openLoginView(APP_URL).login("admin@vaadin.com", "admin");
+		return $(DashboardViewElement.class).first();
+	}
+
+	protected LoginViewElement openLoginView(String url) {
+		return openLoginView(getDriver(), url);
+	}
+
+	protected LoginViewElement openLoginView(WebDriver driver, String url) {
+		driver.get(url);
+		TestBenchElement body = (TestBenchElement) driver.findElement(By.tagName("body"));
+		return TestBench.createElement(LoginViewElement.class, body.getWrappedElement(), getCommandExecutor());
 	}
 
 }

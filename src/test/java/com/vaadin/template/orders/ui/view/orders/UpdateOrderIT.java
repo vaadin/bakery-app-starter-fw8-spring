@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
 
 import com.vaadin.data.ValueContext;
 import com.vaadin.template.orders.AbstractOrdersIT;
@@ -18,18 +19,18 @@ import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
-import com.vaadin.template.orders.ui.view.object.LoginViewElement;
 import com.vaadin.template.orders.ui.view.object.MenuElement;
 import com.vaadin.template.orders.ui.view.orders.OrderEditViewElement.OrderInfo;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
 import com.vaadin.testbench.ElementQuery;
+import com.vaadin.testbench.elements.NotificationElement;
 import com.vaadin.testbench.elements.TextFieldElement;
 
 public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateOrderState() throws IOException {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
+		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(0);
 
 		Assert.assertEquals(OrderState.READY, orderEdit.getCurrentState());
@@ -39,7 +40,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void addHistoryComment() throws IOException {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
+		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 
 		OrderHistoryElement history = orderEdit.getHistory();
@@ -79,9 +80,9 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateOrderInfo() {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
+		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
-		ElementUtil.click(orderEdit.getCancel());
+		ElementUtil.click(orderEdit.getEditOrCancel());
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
 		OrderInfo updatedOrder = new OrderInfo();
 
@@ -126,9 +127,9 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateButCancel() {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
+		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
-		ElementUtil.click(orderEdit.getCancel());
+		ElementUtil.click(orderEdit.getEditOrCancel());
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
 
 		Customer currentCustomer = currentOrder.customer;
@@ -156,15 +157,15 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 		orderEdit.setProducts(products);
 
-		ElementUtil.click(orderEdit.getCancel());
+		ElementUtil.click(orderEdit.getEditOrCancel());
 		orderEdit.assertOrder(currentOrder);
 	}
 
 	@Test
 	public void emptyProductRowsDoNotPreventSave() {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
+		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
-		ElementUtil.click(orderEdit.getCancel()); // "Edit"
+		ElementUtil.click(orderEdit.getEditOrCancel()); // "Edit"
 
 		int nrProducts = orderEdit.getNumberOfProducts();
 		for (int i = 0; i < 3; i++) {
@@ -174,16 +175,17 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 		ElementUtil.click(orderEdit.getOk());
 
 		// Assert saved
-		Assert.assertEquals("Save failed", "Edit", orderEdit.getCancel().getCaption());
+		Assert.assertEquals("Save failed", "Edit", orderEdit.getEditOrCancel().getCaption());
+
 		// Should still have the same products
 		Assert.assertEquals(nrProducts, orderEdit.getNumberOfProducts());
 	}
 
 	@Test
 	public void confirmDialogAfterCustomerChanges() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
-		ElementUtil.click(orderEditView.getCancel());
+		ElementUtil.click(orderEditView.getEditOrCancel());
 
 		TextFieldElement fullName = orderEditView.getFullName();
 		fullName.setValue(fullName.getValue() + "foo");
@@ -193,9 +195,9 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogAfterProductChanges() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
-		ElementUtil.click(orderEditView.getCancel());
+		ElementUtil.click(orderEditView.getEditOrCancel());
 
 		TextFieldElement quantity = orderEditView.getProductInfo(0).getQuantity();
 		quantity.setValue(String.valueOf(Integer.parseInt(quantity.getValue()) + 1));
@@ -206,9 +208,9 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogAfterProductAdd() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
-		ElementUtil.click(orderEditView.getCancel());
+		ElementUtil.click(orderEditView.getEditOrCancel());
 		ElementUtil.click(orderEditView.getAddItems());
 
 		ProductInfoElement productInfo = orderEditView.getProductInfo(orderEditView.getNumberOfProducts() - 1);
@@ -219,9 +221,9 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogAfterProductDelete() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
-		ElementUtil.click(orderEditView.getCancel());
+		ElementUtil.click(orderEditView.getEditOrCancel());
 
 		ProductInfoElement productInfo = orderEditView.getProductInfo(0);
 		productInfo.getDelete().click();
@@ -231,15 +233,48 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	private void assertConfirmationDialogBlocksLeaving(OrderEditViewElement view) {
 		// Navigate away to another view
-		MenuElement.get().getMenuLink("Storefront").click();
+		$(MenuElement.class).first().getMenuLink("Storefront").click();
 		Assert.assertTrue(view.isDisplayed());
-		ConfirmationDialogDesignElement.get().getCancel().click();
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 
 		// Logout
-		MenuElement.get().logout();
+		$(MenuElement.class).first().logout();
 		Assert.assertTrue(view.isDisplayed());
-		ConfirmationDialogDesignElement.get().getCancel().click();
-
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 	}
 
+	@Test
+	public void concurrentEditing() {
+		OrdersListViewElement ordersList = loginAsBarista();
+		OrderEditViewElement orderEditView = ordersList.selectOrder(0);
+		ElementUtil.click(orderEditView.getEditOrCancel());
+		TextFieldElement fullName = orderEditView.getFullName();
+		fullName.setValue(fullName.getValue() + "-edited-by-user-1");
+
+		WebDriver otherUser = createDriver();
+		try {
+			openLoginView(otherUser, APP_URL).login("baker@vaadin.com", "baker");
+
+			OrdersListViewElement otherUserOrderListView = new ElementQuery<>(OrdersListViewElement.class)
+					.context(otherUser).first();
+			OrderEditViewElement otherUserOrderEditView = otherUserOrderListView.selectOrder(0);
+			ElementUtil.click(otherUserOrderEditView.getEditOrCancel());
+			TextFieldElement otherUserFullName = otherUserOrderEditView.getFullName();
+			String newValue = otherUserFullName.getValue() + "-edited-by-user-2";
+			otherUserFullName.setValue(newValue);
+			ElementUtil.click(otherUserOrderEditView.getOk());
+
+			// Ensure that the changes were saved
+			Assert.assertEquals("Edit", otherUserOrderEditView.getEditOrCancel().getCaption());
+			Assert.assertEquals(newValue, otherUserFullName.getValue());
+
+			// Switch back to user 1 and try to save -> assert we are still in
+			// edit mode
+			ElementUtil.click(orderEditView.getOk());
+			Assert.assertEquals("Cancel", orderEditView.getEditOrCancel().getCaption());
+			Assert.assertEquals(1, $(NotificationElement.class).all().size());
+		} finally {
+			otherUser.close();
+		}
+	}
 }

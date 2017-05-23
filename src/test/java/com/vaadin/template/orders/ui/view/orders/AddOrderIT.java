@@ -17,7 +17,6 @@ import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
-import com.vaadin.template.orders.ui.view.object.LoginViewElement;
 import com.vaadin.template.orders.ui.view.object.MenuElement;
 import com.vaadin.template.orders.ui.view.orders.OrderEditViewElement.OrderInfo;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
@@ -27,15 +26,16 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void emptyAddOrderView() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 		assertNotFound("Order state should not be shown", () -> orderEditView.getOrderState());
 		assertNotFound("Order id should not be shown", () -> orderEditView.getOrderId());
 		assertNotFound("Set state button should not be shown", () -> orderEditView.getSetState());
 
-		assertEnabledWithCaption("Cancel", orderEditView.getCancel());
+		assertEnabledWithCaption("Cancel", orderEditView.getEditOrCancel());
 		assertEnabledWithCaption("Review order", orderEditView.getOk());
 		assertEnabledWithCaption("Add item", orderEditView.getAddItems());
+
 	}
 
 	public static class TestOrder extends OrderInfo {
@@ -63,7 +63,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void addOrder() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 
 		OrderInfo testOrder = new TestOrder();
@@ -120,7 +120,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		// and then fetch a new orderEditView reference
 		ElementUtil.click(orderEditView.getOk());
 		// Re-fetch the orderEditView reference as the whole view was updated
-		orderEditView = OrderEditViewElement.get();
+		orderEditView = $(OrderEditViewElement.class).first();
 
 		// ID is of type #1234
 		String orderIdText = ElementUtil.getText(orderEditView.getOrderId());
@@ -139,7 +139,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		String url = getDriver().getCurrentUrl();
 		Assert.assertTrue("Url " + url + " should end with #!order/" + orderId, url.endsWith("#!order/" + orderId));
 
-		Assert.assertEquals("Edit", orderEditView.getCancel().getCaption());
+		Assert.assertEquals("Edit", orderEditView.getEditOrCancel().getCaption());
 		Assert.assertEquals("Mark as Confirmed", orderEditView.getOk().getCaption());
 
 		// Reload and verify the order was stored in DB and shown correctly
@@ -154,7 +154,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void changeStateForNewOrder() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 
 		orderEditView.getFullName().setValue("fullname");
@@ -167,7 +167,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		ElementUtil.click(orderEditView.getOk());
 
 		// Re-fetch the orderEditView reference as the whole view was updated
-		orderEditView = OrderEditViewElement.get();
+		orderEditView = $(OrderEditViewElement.class).first();
 
 		Assert.assertEquals(OrderState.NEW, orderEditView.getCurrentState());
 
@@ -182,7 +182,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogWhenAbandoningNewOrder() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 
 		orderEditView.getFullName().setValue("Something");
@@ -191,14 +191,14 @@ public class AddOrderIT extends AbstractOrdersIT {
 		// confirmation dialog
 
 		// Navigate away to another view
-		MenuElement.get().getMenuLink("Storefront").click();
+		$(MenuElement.class).first().getMenuLink("Storefront").click();
 		Assert.assertTrue(orderEditView.isDisplayed());
-		ConfirmationDialogDesignElement.get().getCancel().click();
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 
 		// Logout
-		MenuElement.get().logout();
+		$(MenuElement.class).first().logout();
 		Assert.assertTrue(orderEditView.isDisplayed());
-		ConfirmationDialogDesignElement.get().getCancel().click();
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 
 	}
 

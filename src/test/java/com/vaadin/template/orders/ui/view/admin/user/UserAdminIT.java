@@ -13,13 +13,14 @@ import com.vaadin.testbench.elements.TextFieldElement;
 
 public class UserAdminIT extends AbstractCrudIT<UserAdminViewElement> {
 
+	@Override
 	protected String getViewName() {
 		return "Users";
 	}
 
 	@Override
 	protected UserAdminViewElement getViewElement() {
-		return UserAdminViewElement.get();
+		return $(UserAdminViewElement.class).first();
 	}
 
 	@Override
