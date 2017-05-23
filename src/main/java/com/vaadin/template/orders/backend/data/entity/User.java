@@ -1,21 +1,14 @@
 package com.vaadin.template.orders.backend.data.entity;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-public class User implements Serializable {
-
-	@Id
-	@GeneratedValue
-	private Long id;
+public class User extends AbstractEntity {
 
 	@NotNull
 	@NotEmpty
@@ -46,10 +39,6 @@ public class User implements Serializable {
 		this.name = name;
 		this.password = password;
 		this.role = role;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getPassword() {
