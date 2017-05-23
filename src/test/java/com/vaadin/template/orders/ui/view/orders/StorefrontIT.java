@@ -11,7 +11,7 @@ public class StorefrontIT extends AbstractOrdersIT {
 
 	@Test
 	public void gridContainsData() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
 
 		GridElement grid = ordersList.getList();
 		Assert.assertTrue("With the generated data, there should be at least twenty rows in the grid",

@@ -5,9 +5,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.vaadin.template.orders.ui.MainViewElement;
 import com.vaadin.template.orders.ui.view.orders.ElementUtil;
-import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.elements.AbstractComponentElement;
 import com.vaadin.testbench.elements.CssLayoutElement;
 import com.vaadin.testbench.elements.GridElement;
@@ -19,11 +17,11 @@ public class DashboardViewElement extends DashboardViewDesignElement {
 	public static class BoardBoxElement extends CssLayoutElement {
 
 		public String getHeader() {
-			return ElementUtil.getText((TestBenchElement) findElement(By.className("board-box-small-text")));
+			return ElementUtil.getText(findElement(By.className("board-box-small-text")));
 		}
 
 		public String getContent() {
-			return ElementUtil.getText((TestBenchElement) findElement(By.className("board-box-big-text")));
+			return ElementUtil.getText(findElement(By.className("board-box-big-text")));
 		}
 	}
 
@@ -83,7 +81,4 @@ public class DashboardViewElement extends DashboardViewDesignElement {
 		return $(GridElement.class).id("dueGrid");
 	}
 
-	public MainViewElement getMainView() {
-		return MainViewElement.get();
-	}
 }

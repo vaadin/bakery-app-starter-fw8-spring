@@ -13,11 +13,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.LoggerFactory;
 
-import com.vaadin.template.orders.ui.CurrentDriver;
 import com.vaadin.template.orders.ui.view.orders.ElementUtil;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.ElementQuery;
+import com.vaadin.testbench.HasDriver;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
+import com.vaadin.testbench.TestBenchDriverProxy;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.GridElement;
@@ -41,7 +42,11 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 	public void createDriver() {
 		WebDriver driver = new ChromeDriver();
 		setDriver(driver);
-		CurrentDriver.set(driver);
+	}
+
+	@Override
+	public TestBenchDriverProxy getDriver() {
+		return (TestBenchDriverProxy) super.getDriver();
 	}
 
 	protected boolean hasAttribute(WebElement element, String name) {
@@ -77,9 +82,8 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 
 	}
 
-	public static <T extends AbstractElement> T findFirstElement(Class<T> elementType) {
-		WebDriver driver = CurrentDriver.get();
-		return new ElementQuery<>(elementType).context(driver).first();
+	public static <T extends AbstractElement> T findFirstElement(HasDriver hasDriver, Class<T> elementType) {
+		return new ElementQuery<>(elementType).context(hasDriver.getDriver()).first();
 	}
 
 	protected void assertEnabled(boolean expectedEnabled, TestBenchElement element) {

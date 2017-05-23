@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.vaadin.template.orders.AbstractOrdersIT;
-import com.vaadin.template.orders.ui.CurrentDriver;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardViewElement;
 import com.vaadin.template.orders.ui.view.orders.OrdersListViewElement;
 import com.vaadin.testbench.TestBench;
@@ -16,25 +15,25 @@ public class LoginViewElement extends TestBenchElement {
 
 	public static final String APP_URL = "http://localhost:8080/";
 
-	public static LoginViewElement open(String url) {
-		TestBenchDriverProxy driver = CurrentDriver.get();
+	public static LoginViewElement open(TestBenchDriverProxy driver, String url) {
 		driver.get(url);
 		TestBenchElement body = (TestBenchElement) driver.findElement(By.tagName("body"));
 		return TestBench.createElement(LoginViewElement.class, body.getWrappedElement(), driver.getCommandExecutor());
 	}
 
-	public static OrdersListViewElement loginAsBarista() {
-		open(APP_URL).login("barista@vaadin.com", "barista");
-		return AbstractOrdersIT.findFirstElement(OrdersListViewElement.class);
+	public static OrdersListViewElement loginAsBarista(TestBenchDriverProxy driver) {
+		LoginViewElement loginView = open(driver, APP_URL);
+		loginView.login("barista@vaadin.com", "barista");
+		return AbstractOrdersIT.findFirstElement(loginView, OrdersListViewElement.class);
 	}
 
-	public static void loginAsBarista(String url) {
-		open(url).login("barista@vaadin.com", "barista");
+	public static void loginAsBarista(TestBenchDriverProxy driver, String url) {
+		open(driver, url).login("barista@vaadin.com", "barista");
 	}
 
-	public static DashboardViewElement loginAsAdmin() {
-		open(APP_URL).login("admin@vaadin.com", "admin");
-		return AbstractOrdersIT.findFirstElement(DashboardViewElement.class);
+	public static DashboardViewElement loginAsAdmin(TestBenchDriverProxy driver) {
+		open(driver, APP_URL).login("admin@vaadin.com", "admin");
+		return AbstractOrdersIT.findFirstElement(driver, DashboardViewElement.class);
 	}
 
 	private void login(String username, String password) {

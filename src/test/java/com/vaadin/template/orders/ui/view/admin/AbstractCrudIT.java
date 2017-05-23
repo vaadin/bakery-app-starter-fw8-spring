@@ -34,8 +34,8 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 	protected abstract T getViewElement();
 
 	protected T loginAndNavigateToView() {
-		DashboardViewElement dashboard = LoginViewElement.loginAsAdmin();
-		MenuElement menu = dashboard.getMainView().getMenu();
+		DashboardViewElement dashboard = LoginViewElement.loginAsAdmin(getDriver());
+		MenuElement menu = $(MenuElement.class).first();
 		ElementUtil.click(menu.getMenuLink(getViewName()));
 		return getViewElement();
 	}
@@ -272,24 +272,24 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 		// confirmation dialog
 
 		// Navigate away to another view
-		MenuElement.get().getMenuLink("Storefront").click();
-		Assert.assertTrue(view.isOpen());
-		ConfirmationDialogDesignElement.get().getCancel().click();
+		$(MenuElement.class).first().getMenuLink("Storefront").click();
+		Assert.assertTrue(view.isDisplayed());
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 
 		// Logout
-		MenuElement.get().logout();
-		Assert.assertTrue(view.isOpen());
-		ConfirmationDialogDesignElement.get().getCancel().click();
+		$(MenuElement.class).first().logout();
+		Assert.assertTrue(view.isDisplayed());
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 
 		// Create a new entity
 		view.getAdd().click();
 		assertEditState(view, true);
-		ConfirmationDialogDesignElement.get().getCancel().click();
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 
 		// Select another entity
 		view.getList().getCell(1, 0).click();
 		assertEditState(view, true);
-		ConfirmationDialogDesignElement.get().getCancel().click();
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 		Assert.assertFalse(view.getList().getRow(1).isSelected());
 		// Assert.assertTrue(view.getList().getRow(0).isSelected());
 	}
@@ -306,9 +306,9 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 		field.setValue(newValue);
 
 		// Navigate away and check that we can actually move away
-		MenuElement.get().getMenuLink("Storefront").click();
-		ConfirmationDialogDesignElement.get().getDiscardChanges().click();
-		Assert.assertNotNull(OrdersListViewElement.get());
+		$(MenuElement.class).first().getMenuLink("Storefront").click();
+		$(ConfirmationDialogDesignElement.class).first().getDiscardChanges().click();
+		Assert.assertNotNull($(OrdersListViewElement.class).first());
 	}
 
 	@Test
