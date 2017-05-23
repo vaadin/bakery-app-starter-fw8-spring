@@ -14,6 +14,7 @@ import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
 import com.vaadin.testbench.ElementQuery;
+import com.vaadin.testbench.HasDriver;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.CssLayoutElement;
 import com.vaadin.testbench.elements.WindowElement;
@@ -111,8 +112,8 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 		}
 	}
 
-	public static OrderEditViewElement get() {
-		return AbstractOrdersIT.findFirstElement(OrderEditViewElement.class);
+	public static OrderEditViewElement get(HasDriver hasDriver) {
+		return AbstractOrdersIT.findFirstElement(hasDriver, OrderEditViewElement.class);
 	}
 
 }

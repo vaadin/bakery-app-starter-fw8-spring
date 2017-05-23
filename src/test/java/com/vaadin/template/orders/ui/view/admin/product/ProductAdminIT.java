@@ -8,13 +8,14 @@ import com.vaadin.testbench.elements.TextFieldElement;
 
 public class ProductAdminIT extends AbstractCrudIT<ProductAdminViewElement> {
 
+	@Override
 	protected String getViewName() {
 		return "Products";
 	}
 
 	@Override
 	protected ProductAdminViewElement getViewElement() {
-		return ProductAdminViewElement.get();
+		return $(ProductAdminViewElement.class).first();
 	}
 
 	@Override

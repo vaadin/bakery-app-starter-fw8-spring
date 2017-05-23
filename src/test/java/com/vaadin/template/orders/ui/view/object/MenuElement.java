@@ -13,7 +13,7 @@ public class MenuElement extends AbstractComponentElement {
 	public OrdersListViewElement navigateToStorefront() {
 		WebElement menuLink = getMenuLink("Storefront");
 		menuLink.click();
-		return AbstractOrdersIT.findFirstElement(OrdersListViewElement.class);
+		return AbstractOrdersIT.findFirstElement(this, OrdersListViewElement.class);
 	}
 
 	public void logout() {
@@ -28,11 +28,6 @@ public class MenuElement extends AbstractComponentElement {
 		} catch (NoSuchElementException e) {
 			return null;
 		}
-	}
-
-	public static MenuElement get() {
-		return AbstractOrdersIT.findFirstElement(MenuElement.class);
-
 	}
 
 }

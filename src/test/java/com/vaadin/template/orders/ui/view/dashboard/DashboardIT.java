@@ -23,7 +23,7 @@ public class DashboardIT extends AbstractOrdersIT {
 
 	@Test
 	public void containsCharts() {
-		DashboardViewElement dashboardView = LoginViewElement.loginAsAdmin();
+		DashboardViewElement dashboardView = LoginViewElement.loginAsAdmin(getDriver());
 
 		ChartElement deliveriesThisMonth = dashboardView.getDeliveriesThisMonth();
 		String thisMonth = YearMonth.now().getMonth().getDisplayName(TextStyle.FULL, Locale.US);
@@ -49,7 +49,7 @@ public class DashboardIT extends AbstractOrdersIT {
 
 	@Test
 	public void boxesContainData() {
-		DashboardViewElement dashboardView = LoginViewElement.loginAsAdmin();
+		DashboardViewElement dashboardView = LoginViewElement.loginAsAdmin(getDriver());
 		List<BoardBoxElement> boxes = dashboardView.getBoxes();
 		Assert.assertEquals(4, boxes.size());
 
@@ -76,7 +76,7 @@ public class DashboardIT extends AbstractOrdersIT {
 
 	@Test
 	public void gridContainsData() {
-		DashboardViewElement dashboardView = LoginViewElement.loginAsAdmin();
+		DashboardViewElement dashboardView = LoginViewElement.loginAsAdmin(getDriver());
 		Assert.assertTrue("With the generated data, there should be at least ten rows in the grid",
 				dashboardView.getGrid().getRowCount() > 10);
 	}

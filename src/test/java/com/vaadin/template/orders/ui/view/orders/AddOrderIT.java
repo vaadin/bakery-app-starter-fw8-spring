@@ -27,7 +27,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void emptyAddOrderView() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 		assertNotFound("Order state should not be shown", () -> orderEditView.getOrderState());
 		assertNotFound("Order id should not be shown", () -> orderEditView.getOrderId());
@@ -63,7 +63,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void addOrder() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 
 		OrderInfo testOrder = new TestOrder();
@@ -120,7 +120,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		// and then fetch a new orderEditView reference
 		ElementUtil.click(orderEditView.getOk());
 		// Re-fetch the orderEditView reference as the whole view was updated
-		orderEditView = OrderEditViewElement.get();
+		orderEditView = $(OrderEditViewElement.class).first();
 
 		// ID is of type #1234
 		String orderIdText = ElementUtil.getText(orderEditView.getOrderId());
@@ -154,7 +154,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void changeStateForNewOrder() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 
 		orderEditView.getFullName().setValue("fullname");
@@ -167,7 +167,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		ElementUtil.click(orderEditView.getOk());
 
 		// Re-fetch the orderEditView reference as the whole view was updated
-		orderEditView = OrderEditViewElement.get();
+		orderEditView = $(OrderEditViewElement.class).first();
 
 		Assert.assertEquals(OrderState.NEW, orderEditView.getCurrentState());
 
@@ -182,7 +182,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogWhenAbandoningNewOrder() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 
 		orderEditView.getFullName().setValue("Something");
@@ -191,14 +191,14 @@ public class AddOrderIT extends AbstractOrdersIT {
 		// confirmation dialog
 
 		// Navigate away to another view
-		MenuElement.get().getMenuLink("Storefront").click();
+		$(MenuElement.class).first().getMenuLink("Storefront").click();
 		Assert.assertTrue(orderEditView.isDisplayed());
-		ConfirmationDialogDesignElement.get().getCancel().click();
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 
 		// Logout
-		MenuElement.get().logout();
+		$(MenuElement.class).first().logout();
 		Assert.assertTrue(orderEditView.isDisplayed());
-		ConfirmationDialogDesignElement.get().getCancel().click();
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 
 	}
 

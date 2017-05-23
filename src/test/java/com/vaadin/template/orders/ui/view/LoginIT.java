@@ -13,15 +13,14 @@ public class LoginIT extends AbstractOrdersIT {
 
 	@Test
 	public void userIsRedirectedToRequestedView() {
-		LoginViewElement.loginAsBarista(LoginViewElement.APP_URL + "#!order/1");
-		OrderEditViewElement orderEditView = OrderEditViewElement.get();
-		Assert.assertEquals("#1", orderEditView.getOrderId().getText());
+		LoginViewElement.loginAsBarista(getDriver(), LoginViewElement.APP_URL + "#!order/1");
+		Assert.assertEquals("#1", $(OrderEditViewElement.class).first().getOrderId().getText());
 	}
 
 	@Test
 	public void logoutWorks() {
-		LoginViewElement.loginAsBarista();
-		MenuElement.get().logout();
+		LoginViewElement.loginAsBarista(getDriver());
+		$(MenuElement.class).first().logout();
 		Assert.assertEquals("Email", findElement(By.id("login-label")).getText());
 	}
 

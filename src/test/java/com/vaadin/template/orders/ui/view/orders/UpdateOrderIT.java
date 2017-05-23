@@ -29,7 +29,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateOrderState() throws IOException {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
+		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEdit = storeFront.selectOrder(0);
 
 		Assert.assertEquals(OrderState.READY, orderEdit.getCurrentState());
@@ -39,7 +39,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void addHistoryComment() throws IOException {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
+		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 
 		OrderHistoryElement history = orderEdit.getHistory();
@@ -79,7 +79,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateOrderInfo() {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
+		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 		ElementUtil.click(orderEdit.getCancel());
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
@@ -126,7 +126,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateButCancel() {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
+		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 		ElementUtil.click(orderEdit.getCancel());
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
@@ -162,7 +162,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void emptyProductRowsDoNotPreventSave() {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista();
+		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 		ElementUtil.click(orderEdit.getCancel()); // "Edit"
 
@@ -181,7 +181,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogAfterCustomerChanges() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
 		ElementUtil.click(orderEditView.getCancel());
 
@@ -193,7 +193,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogAfterProductChanges() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
 		ElementUtil.click(orderEditView.getCancel());
 
@@ -206,7 +206,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogAfterProductAdd() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
 		ElementUtil.click(orderEditView.getCancel());
 		ElementUtil.click(orderEditView.getAddItems());
@@ -219,7 +219,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogAfterProductDelete() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
 		ElementUtil.click(orderEditView.getCancel());
 
@@ -231,15 +231,18 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	private void assertConfirmationDialogBlocksLeaving(OrderEditViewElement view) {
 		// Navigate away to another view
-		MenuElement.get().getMenuLink("Storefront").click();
+		$(MenuElement.class).first().getMenuLink("Storefront").click();
 		Assert.assertTrue(view.isDisplayed());
-		ConfirmationDialogDesignElement.get().getCancel().click();
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 
 		// Logout
-		MenuElement.get().logout();
+		$(MenuElement.class).first().logout();
 		Assert.assertTrue(view.isDisplayed());
-		ConfirmationDialogDesignElement.get().getCancel().click();
-
+		$(ConfirmationDialogDesignElement.class).first().getCancel().click();
 	}
 
+	@Test
+	public void concurrentEditing() {
+
+	}
 }

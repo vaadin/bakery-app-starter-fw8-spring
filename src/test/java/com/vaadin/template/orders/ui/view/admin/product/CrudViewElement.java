@@ -20,5 +20,5 @@ public interface CrudViewElement {
 
 	TestBenchElement getAdd();
 
-	boolean isOpen();
+	boolean isDisplayed();
 }
