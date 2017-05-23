@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.vaadin.data.HasValue;
+import com.vaadin.template.orders.backend.data.entity.AbstractEntity;
 import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.components.ConfirmationDialog;
@@ -15,7 +16,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 
-public abstract class AbstractCrudPresenter<T extends Serializable, V extends AbstractCrudView<T>>
+public abstract class AbstractCrudPresenter<T extends AbstractEntity, V extends AbstractCrudView<T>>
 		implements HasLogger, Serializable {
 
 	private V view;
@@ -30,8 +31,6 @@ public abstract class AbstractCrudPresenter<T extends Serializable, V extends Ab
 	protected abstract PageableDataProvider<T, Object> getGridDataProvider();
 
 	protected abstract T createEntity();
-
-	protected abstract Long getId(T entity);
 
 	protected abstract T saveEntity(T editItem);
 
@@ -206,6 +205,10 @@ public abstract class AbstractCrudPresenter<T extends Serializable, V extends Ab
 
 	protected boolean isNew(T item) {
 		return getId(item) == null;
+	}
+
+	protected Long getId(AbstractEntity entity) {
+		return entity.getId();
 	}
 
 }
