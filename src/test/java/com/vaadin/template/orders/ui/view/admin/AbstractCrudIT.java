@@ -12,8 +12,6 @@ import org.junit.Test;
 import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
 import com.vaadin.template.orders.ui.view.admin.product.CrudViewElement;
-import com.vaadin.template.orders.ui.view.dashboard.DashboardViewElement;
-import com.vaadin.template.orders.ui.view.object.LoginViewElement;
 import com.vaadin.template.orders.ui.view.object.MenuElement;
 import com.vaadin.template.orders.ui.view.orders.ElementUtil;
 import com.vaadin.template.orders.ui.view.orders.OrdersListViewElement;
@@ -34,7 +32,7 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 	protected abstract T getViewElement();
 
 	protected T loginAndNavigateToView() {
-		DashboardViewElement dashboard = LoginViewElement.loginAsAdmin(getDriver());
+		loginAsAdmin();
 		MenuElement menu = $(MenuElement.class).first();
 		ElementUtil.click(menu.getMenuLink(getViewName()));
 		return getViewElement();

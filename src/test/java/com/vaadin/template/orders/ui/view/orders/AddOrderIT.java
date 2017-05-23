@@ -17,7 +17,6 @@ import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
-import com.vaadin.template.orders.ui.view.object.LoginViewElement;
 import com.vaadin.template.orders.ui.view.object.MenuElement;
 import com.vaadin.template.orders.ui.view.orders.OrderEditViewElement.OrderInfo;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
@@ -27,7 +26,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void emptyAddOrderView() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 		assertNotFound("Order state should not be shown", () -> orderEditView.getOrderState());
 		assertNotFound("Order id should not be shown", () -> orderEditView.getOrderId());
@@ -63,7 +62,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void addOrder() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 
 		OrderInfo testOrder = new TestOrder();
@@ -154,7 +153,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void changeStateForNewOrder() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 
 		orderEditView.getFullName().setValue("fullname");
@@ -182,7 +181,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogWhenAbandoningNewOrder() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
 
 		orderEditView.getFullName().setValue("Something");

@@ -4,14 +4,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.template.orders.AbstractOrdersIT;
-import com.vaadin.template.orders.ui.view.object.LoginViewElement;
 import com.vaadin.testbench.elements.GridElement;
 
 public class StorefrontIT extends AbstractOrdersIT {
 
 	@Test
 	public void gridContainsData() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement ordersList = loginAsBarista();
 
 		GridElement grid = ordersList.getList();
 		Assert.assertTrue("With the generated data, there should be at least twenty rows in the grid",

@@ -18,7 +18,6 @@ import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
-import com.vaadin.template.orders.ui.view.object.LoginViewElement;
 import com.vaadin.template.orders.ui.view.object.MenuElement;
 import com.vaadin.template.orders.ui.view.orders.OrderEditViewElement.OrderInfo;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
@@ -29,7 +28,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateOrderState() throws IOException {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(0);
 
 		Assert.assertEquals(OrderState.READY, orderEdit.getCurrentState());
@@ -39,7 +38,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void addHistoryComment() throws IOException {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 
 		OrderHistoryElement history = orderEdit.getHistory();
@@ -79,7 +78,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateOrderInfo() {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 		ElementUtil.click(orderEdit.getCancel());
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
@@ -126,7 +125,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void updateButCancel() {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 		ElementUtil.click(orderEdit.getCancel());
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
@@ -162,7 +161,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void emptyProductRowsDoNotPreventSave() {
-		OrdersListViewElement storeFront = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 		ElementUtil.click(orderEdit.getCancel()); // "Edit"
 
@@ -181,7 +180,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogAfterCustomerChanges() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
 		ElementUtil.click(orderEditView.getCancel());
 
@@ -193,7 +192,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogAfterProductChanges() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
 		ElementUtil.click(orderEditView.getCancel());
 
@@ -206,7 +205,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogAfterProductAdd() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
 		ElementUtil.click(orderEditView.getCancel());
 		ElementUtil.click(orderEditView.getAddItems());
@@ -219,7 +218,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
 	public void confirmDialogAfterProductDelete() {
-		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista(getDriver());
+		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
 		ElementUtil.click(orderEditView.getCancel());
 
