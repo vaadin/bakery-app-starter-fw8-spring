@@ -1,20 +1,12 @@
 package com.vaadin.template.orders.backend.data.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class OrderItem implements Serializable {
-
-	@Id
-	@GeneratedValue
-	private Long id;
+public class OrderItem extends AbstractEntity {
 
 	@OneToOne
 	@NotNull
@@ -25,10 +17,6 @@ public class OrderItem implements Serializable {
 
 	public OrderItem() {
 		// Empty constructor is needed by Spring Data / JPA
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public Product getProduct() {

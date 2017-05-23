@@ -46,9 +46,12 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 	public ScreenshotOnFailureRule screenshotOnFailure = new ScreenshotOnFailureRule(this, true);
 
 	@Before
-	public void createDriver() {
-		WebDriver driver = new ChromeDriver();
-		setDriver(driver);
+	public void setup() {
+		setDriver(createDriver());
+	}
+
+	protected WebDriver createDriver() {
+		return TestBench.createDriver(new ChromeDriver());
 	}
 
 	@Override
@@ -205,7 +208,11 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 	}
 
 	protected LoginViewElement openLoginView(String url) {
-		getDriver().get(url);
+		return openLoginView(getDriver(), url);
+	}
+
+	protected LoginViewElement openLoginView(WebDriver driver, String url) {
+		driver.get(url);
 		TestBenchElement body = (TestBenchElement) driver.findElement(By.tagName("body"));
 		return TestBench.createElement(LoginViewElement.class, body.getWrappedElement(), getCommandExecutor());
 	}

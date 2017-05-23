@@ -1,6 +1,5 @@
 package com.vaadin.template.orders.backend.data.entity;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -8,8 +7,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
@@ -18,11 +15,7 @@ import javax.validation.constraints.NotNull;
 import com.vaadin.template.orders.backend.data.OrderState;
 
 @Entity(name = "OrderInfo") // "Order" is a reserved word
-public class Order implements Serializable {
-
-	@Id
-	@GeneratedValue
-	private Long id;
+public class Order extends AbstractEntity {
 
 	@NotNull
 	private LocalDate dueDate;
@@ -49,10 +42,6 @@ public class Order implements Serializable {
 
 	public Order() {
 		// Empty constructor is needed by Spring Data / JPA
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public LocalDate getDueDate() {

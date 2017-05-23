@@ -76,7 +76,7 @@ public class OrderEditViewDesignElement extends VerticalLayoutElement {
 		return $(com.vaadin.template.orders.ui.view.orders.OrderHistoryElement.class).id("history");
 	}
 
-	public ButtonElement getCancel() {
+	public ButtonElement getEditOrCancel() {
 		return $(com.vaadin.testbench.elements.ButtonElement.class).id("cancel");
 	}
 

@@ -1,22 +1,15 @@
 package com.vaadin.template.orders.backend.data.entity;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.vaadin.template.orders.backend.data.OrderState;
 
 @Entity
-public class HistoryItem implements Serializable {
-
-	@Id
-	@GeneratedValue
-	private Long id;
+public class HistoryItem extends AbstractEntity {
 
 	private OrderState newState;
 	private String message;
@@ -34,10 +27,6 @@ public class HistoryItem implements Serializable {
 		this.createdBy = createdBy;
 		this.message = message;
 		timestamp = LocalDateTime.now();
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public OrderState getNewState() {

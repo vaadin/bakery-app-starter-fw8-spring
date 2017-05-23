@@ -32,7 +32,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		assertNotFound("Order id should not be shown", () -> orderEditView.getOrderId());
 		assertNotFound("Set state button should not be shown", () -> orderEditView.getSetState());
 
-		assertEnabledWithText("Cancel", orderEditView.getCancel());
+		assertEnabledWithText("Cancel", orderEditView.getEditOrCancel());
 		assertEnabledWithText("Done", orderEditView.getOk());
 		assertEnabledWithText("Add item", orderEditView.getAddItems());
 	}
@@ -138,7 +138,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		String url = getDriver().getCurrentUrl();
 		Assert.assertTrue("Url " + url + " should end with #!order/" + orderId, url.endsWith("#!order/" + orderId));
 
-		Assert.assertEquals("Edit", ElementUtil.getText(orderEditView.getCancel()));
+		Assert.assertEquals("Edit", ElementUtil.getText(orderEditView.getEditOrCancel()));
 		Assert.assertEquals("Confirmed", ElementUtil.getText(orderEditView.getOk()));
 
 		// Reload and verify the order was stored in DB and shown correctly
