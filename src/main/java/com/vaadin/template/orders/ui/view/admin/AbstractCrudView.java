@@ -94,6 +94,7 @@ public abstract class AbstractCrudView<T extends Serializable> implements Serial
 			getGrid().deselectAll();
 			getUpdate().setCaption(CAPTION_ADD);
 			getCancel().setCaption(CAPTION_CANCEL);
+			getFirstFormField().focus();
 		} else {
 			getUpdate().setCaption(CAPTION_UPDATE);
 			getCancel().setCaption(CAPTION_DISCARD);
@@ -102,7 +103,6 @@ public abstract class AbstractCrudView<T extends Serializable> implements Serial
 		getBinder().readBean(editItem);
 		getForm().setEnabled(true);
 		getDelete().setEnabled(!isNew);
-		getFirstFormField().focus();
 	}
 
 	private boolean isFormModified() {
