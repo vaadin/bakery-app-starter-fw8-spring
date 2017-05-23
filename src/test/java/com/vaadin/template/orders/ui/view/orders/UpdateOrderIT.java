@@ -17,10 +17,13 @@ import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
+import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
 import com.vaadin.template.orders.ui.view.object.LoginViewElement;
+import com.vaadin.template.orders.ui.view.object.MenuElement;
 import com.vaadin.template.orders.ui.view.orders.OrderEditViewElement.OrderInfo;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
 import com.vaadin.testbench.ElementQuery;
+import com.vaadin.testbench.elements.TextFieldElement;
 
 public class UpdateOrderIT extends AbstractOrdersIT {
 
@@ -153,7 +156,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 		orderEdit.setProducts(products);
 
-		orderEdit.getCancel().click();
+		ElementUtil.click(orderEdit.getCancel());
 		orderEdit.assertOrder(currentOrder);
 	}
 
@@ -175,4 +178,68 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 		// Should still have the same products
 		Assert.assertEquals(nrProducts, orderEdit.getNumberOfProducts());
 	}
+
+	@Test
+	public void confirmDialogAfterCustomerChanges() {
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
+		ElementUtil.click(orderEditView.getCancel());
+
+		TextFieldElement fullName = orderEditView.getFullName();
+		fullName.setValue(fullName.getValue() + "foo");
+
+		assertConfirmationDialogBlocksLeaving(orderEditView);
+	}
+
+	@Test
+	public void confirmDialogAfterProductChanges() {
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
+		ElementUtil.click(orderEditView.getCancel());
+
+		TextFieldElement quantity = orderEditView.getProductInfo(0).getQuantity();
+		quantity.setValue(String.valueOf(Integer.parseInt(quantity.getValue()) + 1));
+
+		assertConfirmationDialogBlocksLeaving(orderEditView);
+
+	}
+
+	@Test
+	public void confirmDialogAfterProductAdd() {
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
+		ElementUtil.click(orderEditView.getCancel());
+		ElementUtil.click(orderEditView.getAddItems());
+
+		ProductInfoElement productInfo = orderEditView.getProductInfo(orderEditView.getNumberOfProducts() - 1);
+		productInfo.getProduct().selectByText("Bacon Cheese Cake");
+
+		assertConfirmationDialogBlocksLeaving(orderEditView);
+	}
+
+	@Test
+	public void confirmDialogAfterProductDelete() {
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrderEditViewElement orderEditView = ordersList.selectOrder(2);
+		ElementUtil.click(orderEditView.getCancel());
+
+		ProductInfoElement productInfo = orderEditView.getProductInfo(0);
+		productInfo.getDelete().click();
+
+		assertConfirmationDialogBlocksLeaving(orderEditView);
+	}
+
+	private void assertConfirmationDialogBlocksLeaving(OrderEditViewElement view) {
+		// Navigate away to another view
+		MenuElement.get().getMenuLink("Storefront").click();
+		Assert.assertTrue(view.isDisplayed());
+		ConfirmationDialogDesignElement.get().getCancel().click();
+
+		// Logout
+		MenuElement.get().logout();
+		Assert.assertTrue(view.isDisplayed());
+		ConfirmationDialogDesignElement.get().getCancel().click();
+
+	}
+
 }

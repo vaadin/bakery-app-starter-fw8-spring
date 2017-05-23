@@ -21,6 +21,8 @@ import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.data.entity.OrderItem;
+import com.vaadin.template.orders.ui.components.ConfirmationDialog;
+import com.vaadin.template.orders.ui.view.NavigationEvent;
 import com.vaadin.template.orders.ui.view.OrdersView;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
@@ -43,6 +45,8 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 
 	@Autowired
 	private ObjectProvider<OrderStateWindow> windowProvider;
+
+	private boolean hasChanges;
 
 	@PostConstruct
 	public void init() {
@@ -73,6 +77,10 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 		binder.bind(phone, "customer.phoneNumber");
 		binder.bind(details, "customer.details");
 
+		binder.addValueChangeListener(e -> {
+			// Track changes manually as we use setBean and nested binders
+			hasChanges = true;
+		});
 		addItems.addClickListener(e -> addEmptyOrderItem());
 		cancel.addClickListener(e -> presenter.editBackCancelPressed());
 		ok.addClickListener(e -> presenter.okPressed());
@@ -114,6 +122,7 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 			}
 			history.setOrder(order);
 		}
+		hasChanges = false;
 	}
 
 	private void addEmptyOrderItem() {
@@ -215,4 +224,23 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 		}
 		return errorFields;
 	}
+
+	@Override
+	public boolean beforeLeave(NavigationEvent event) {
+		if (!containsUnsavedChanges()) {
+			return true;
+		}
+
+		ConfirmationDialog.show(getViewComponent().getUI(), event::navigate);
+		return false;
+	}
+
+	public void onProductInfoChanged() {
+		hasChanges = true;
+	}
+
+	public boolean containsUnsavedChanges() {
+		return hasChanges;
+	}
+
 }

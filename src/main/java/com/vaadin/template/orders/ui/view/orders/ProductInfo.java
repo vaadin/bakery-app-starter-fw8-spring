@@ -45,9 +45,7 @@ public class ProductInfo extends ProductInfoDesign {
 		binder.forField(quantity).withConverter(new StringToIntegerConverter("Please enter a number")).bind("quantity");
 		binder.bindInstanceFields(this);
 		binder.addValueChangeListener(e -> {
-			if (e.getComponent() == quantity || e.getComponent() == product) {
-				fireProductInfoChanged();
-			}
+			fireProductInfoChanged();
 		});
 
 		product.addSelectionListener(e -> {
