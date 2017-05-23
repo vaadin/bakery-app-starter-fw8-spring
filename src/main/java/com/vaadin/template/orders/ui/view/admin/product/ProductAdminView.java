@@ -5,7 +5,6 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.ValueContext;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.entity.Product;
@@ -44,11 +43,6 @@ public class ProductAdminView extends AbstractCrudView<Product> {
 		getBinder().forField(getViewComponent().price).withConverter(priceToStringConverter).bind("price");
 		getBinder().bindInstanceFields(getViewComponent());
 
-	}
-
-	@Override
-	public void enter(ViewChangeEvent event) {
-		// Nothing to do here
 	}
 
 	@Override

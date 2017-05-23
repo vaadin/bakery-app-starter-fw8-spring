@@ -171,4 +171,16 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 		throw new NoSuchElementException("No cell with text '" + contents + "' found");
 	}
 
+	protected String getViewParameter() {
+		String url = getDriver().getCurrentUrl();
+		if (url.contains("#")) {
+			String fragment = url.substring(url.indexOf("#") + 1);
+			if (fragment.contains("/")) {
+				String params = fragment.substring(fragment.indexOf("/") + 1);
+				return params;
+			}
+		}
+		return "";
+	}
+
 }

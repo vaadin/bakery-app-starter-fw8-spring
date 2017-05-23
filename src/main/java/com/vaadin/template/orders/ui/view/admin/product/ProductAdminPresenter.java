@@ -19,8 +19,8 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 	private transient ProductService productService;
 
 	@Override
-	protected Product getCopy(Product entity) {
-		return getProductService().get(entity.getId());
+	protected Product loadEntity(Long id) {
+		return getProductService().get(id);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 	}
 
 	@Override
-	protected boolean isNew(Product entity) {
-		return entity.getId() == null;
+	protected Long getId(Product entity) {
+		return entity.getId();
 	}
 }

@@ -5,6 +5,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.internal.Conventions;
@@ -88,4 +89,18 @@ public class NavigationManagerBean extends SpringNavigator implements Navigation
 
 		navigateTo(SecurityUtils.isCurrentUserInRole(Role.ADMIN) ? DashboardView.class : OrdersListView.class);
 	}
+
+	@Override
+	public void updateViewParameter(String parameter) {
+		String viewName = getViewId(getCurrentView().getClass());
+		String parameters;
+		if (parameter == null) {
+			parameters = "";
+		} else {
+			parameters = parameter;
+		}
+
+		updateNavigationState(new ViewChangeEvent(this, getCurrentView(), getCurrentView(), viewName, parameters));
+	}
+
 }

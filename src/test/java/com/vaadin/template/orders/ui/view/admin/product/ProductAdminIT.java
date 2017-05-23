@@ -3,18 +3,17 @@ package com.vaadin.template.orders.ui.view.admin.product;
 import org.junit.Assert;
 
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudIT;
-import com.vaadin.template.orders.ui.view.dashboard.DashboardViewElement;
-import com.vaadin.template.orders.ui.view.object.LoginViewElement;
-import com.vaadin.template.orders.ui.view.object.MenuElement;
 import com.vaadin.template.orders.ui.view.orders.ElementUtil;
 import com.vaadin.testbench.elements.TextFieldElement;
 
 public class ProductAdminIT extends AbstractCrudIT<ProductAdminViewElement> {
+
+	protected String getViewName() {
+		return "Products";
+	}
+
 	@Override
-	protected ProductAdminViewElement loginAndNavigateToView() {
-		DashboardViewElement dashboard = LoginViewElement.loginAsAdmin();
-		MenuElement menu = dashboard.getMainView().getMenu();
-		ElementUtil.click(menu.getMenuLink("Products"));
+	protected ProductAdminViewElement getViewElement() {
 		return ProductAdminViewElement.get();
 	}
 
