@@ -14,6 +14,7 @@ import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.components.DateTimeFormatter;
 import com.vaadin.ui.Button.ClickShortcut;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.themes.ValoTheme;
 
 @SpringComponent
 @PrototypeScope
@@ -41,7 +42,7 @@ public class OrderHistory extends OrderHistoryDesign {
 		commitNewComment.addClickListener(e -> controller.addNewComment(newCommentInput.getValue()));
 
 		// We don't want a global shortcut for enter, scope it to the panel
-		historyPanel.addAction(new ClickShortcut(commitNewComment, KeyCode.ENTER, null));
+		addAction(new ClickShortcut(commitNewComment, KeyCode.ENTER, null));
 	}
 
 	public void setOrder(Order order) {
@@ -49,9 +50,11 @@ public class OrderHistory extends OrderHistoryDesign {
 		newCommentInput.setValue("");
 		items.removeAllComponents();
 		order.getHistory().forEach(historyItem -> {
-			items.addComponent(new Label(formatTimestamp(historyItem)));
-			items.addComponent(new Label(historyItem.getCreatedBy().getName()));
-			items.addComponent(new Label(formatMessage(historyItem)));
+			Label l = new Label(formatMessage(historyItem));
+			l.addStyleName(ValoTheme.LABEL_SMALL);
+			l.setCaption(formatTimestamp(historyItem) + " by " + historyItem.getCreatedBy().getName());
+			l.setWidth("100%");
+			items.addComponent(l);
 		});
 	}
 

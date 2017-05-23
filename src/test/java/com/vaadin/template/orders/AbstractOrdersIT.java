@@ -14,12 +14,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.LoggerFactory;
 
 import com.vaadin.template.orders.ui.CurrentDriver;
-import com.vaadin.template.orders.ui.view.orders.ElementUtil;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.TestBenchTestCase;
+import com.vaadin.testbench.elements.AbstractComponentElement;
 import com.vaadin.testbench.elements.GridElement;
 import com.vaadin.testbench.elements.GridElement.GridCellElement;
 import com.vaadin.testbench.elements.GridElement.GridRowElement;
@@ -52,9 +52,9 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 		return getCommandExecutor().executeScript("return arguments[0].getAttribute(arguments[1]);", element, name);
 	}
 
-	protected void assertEnabledWithText(String text, TestBenchElement element) {
+	protected void assertEnabledWithCaption(String text, AbstractComponentElement element) {
 		assertEnabled(true, element);
-		Assert.assertEquals(text, ElementUtil.getText(element));
+		Assert.assertEquals(text, element.getCaption());
 	}
 
 	/**

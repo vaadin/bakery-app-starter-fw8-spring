@@ -174,7 +174,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 		ElementUtil.click(orderEdit.getOk());
 
 		// Assert saved
-		Assert.assertEquals("Save failed", "Edit", ElementUtil.getText(orderEdit.getCancel()));
+		Assert.assertEquals("Save failed", "Edit", orderEdit.getCancel().getCaption());
 		// Should still have the same products
 		Assert.assertEquals(nrProducts, orderEdit.getNumberOfProducts());
 	}
