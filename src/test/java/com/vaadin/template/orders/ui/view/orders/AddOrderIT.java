@@ -16,7 +16,9 @@ import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
+import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
 import com.vaadin.template.orders.ui.view.object.LoginViewElement;
+import com.vaadin.template.orders.ui.view.object.MenuElement;
 import com.vaadin.template.orders.ui.view.orders.OrderEditViewElement.OrderInfo;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
 import com.vaadin.testbench.ElementQuery;
@@ -175,6 +177,28 @@ public class AddOrderIT extends AbstractOrdersIT {
 
 	private String format(LocalDate date) {
 		return date.format(DateTimeFormatter.ofPattern("M/dd/yy"));
+
+	}
+
+	@Test
+	public void confirmDialogWhenAbandoningNewOrder() {
+		OrdersListViewElement ordersList = LoginViewElement.loginAsBarista();
+		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
+
+		orderEditView.getFullName().setValue("Something");
+
+		// Navigate away and check that we did not move away and cancel the
+		// confirmation dialog
+
+		// Navigate away to another view
+		MenuElement.get().getMenuLink("Storefront").click();
+		Assert.assertTrue(orderEditView.isDisplayed());
+		ConfirmationDialogDesignElement.get().getCancel().click();
+
+		// Logout
+		MenuElement.get().logout();
+		Assert.assertTrue(orderEditView.isDisplayed());
+		ConfirmationDialogDesignElement.get().getCancel().click();
 
 	}
 

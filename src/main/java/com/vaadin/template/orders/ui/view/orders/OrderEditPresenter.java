@@ -18,7 +18,6 @@ import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 
 import com.vaadin.data.HasValue;
-import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.OrderState;
@@ -54,10 +53,17 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 
 	@Autowired
 	public OrderEditPresenter(ViewEventBus viewEventBus, EventBus.ViewEventBus shouldBeGlobalEventBus) {
-		viewEventBus.subscribe(ProductInfoChange.class, change -> updateTotalSum());
-		viewEventBus.subscribe(OrderItemDeleted.class, deleted -> removeOrderItem(deleted.getOrderItem()));
+		viewEventBus.subscribe(ProductInfoChange.class, change -> {
+			updateTotalSum();
+			view.onProductInfoChanged();
+		});
+		viewEventBus.subscribe(OrderItemDeleted.class, deleted -> {
+			removeOrderItem(deleted.getOrderItem());
+			view.onProductInfoChanged();
+		});
 		this.shouldBeGlobalEventBus = shouldBeGlobalEventBus;
 		shouldBeGlobalEventBus.subscribe(this);
+
 	}
 
 	@PreDestroy
@@ -138,14 +144,8 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 			Order order = saveOrder();
 			if (order != null) {
 				// Navigate to edit view so URL is updated correctly
-				// navigateTo can be used once
-				Page page = view.getUI().getPage();
-				page.setUriFragment("!order/" + order.getId());
-				page.reload();
-				// The code above can be replaced with
-				// navigationManager.navigateTo(OrderEditView.class,
-				// order.getId());
-				// once https://github.com/vaadin/spring/issues/214 is fixed
+				navigationManager.updateViewParameter("" + order.getId());
+				enterView(order.getId());
 			}
 		} else if (view.getMode() == Mode.EDIT) {
 			Optional<HasValue<?>> firstErrorField = view.validate().findFirst();
