@@ -13,11 +13,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.LoggerFactory;
 
+import com.vaadin.template.orders.ui.view.dashboard.DashboardViewElement;
+import com.vaadin.template.orders.ui.view.object.LoginViewElement;
 import com.vaadin.template.orders.ui.view.orders.ElementUtil;
+import com.vaadin.template.orders.ui.view.orders.OrdersListViewElement;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.HasDriver;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
+import com.vaadin.testbench.TestBench;
 import com.vaadin.testbench.TestBenchDriverProxy;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.TestBenchTestCase;
@@ -30,6 +34,9 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 
 public class AbstractOrdersIT extends TestBenchTestCase {
+
+	public static final String APP_URL = "http://localhost:8080/";
+
 	static {
 		// Prevent debug logging from Apache HTTP client
 		Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -185,6 +192,22 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 			}
 		}
 		return "";
+	}
+
+	protected OrdersListViewElement loginAsBarista() {
+		openLoginView(APP_URL).login("barista@vaadin.com", "barista");
+		return $(OrdersListViewElement.class).first();
+	}
+
+	protected DashboardViewElement loginAsAdmin() {
+		openLoginView(APP_URL).login("admin@vaadin.com", "admin");
+		return $(DashboardViewElement.class).first();
+	}
+
+	protected LoginViewElement openLoginView(String url) {
+		getDriver().get(url);
+		TestBenchElement body = (TestBenchElement) driver.findElement(By.tagName("body"));
+		return TestBench.createElement(LoginViewElement.class, body.getWrappedElement(), getCommandExecutor());
 	}
 
 }
