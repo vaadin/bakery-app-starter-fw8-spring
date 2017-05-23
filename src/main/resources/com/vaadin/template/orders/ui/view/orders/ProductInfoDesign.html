@@ -7,30 +7,21 @@
   <meta name="package-mapping" content="orders:com.vaadin.template.orders.ui.components">
  </head>
  <body>
-  <vaadin-grid-layout style-name="product-row" spacing width-full>
-   <row>
-    <column expand="1">
-     <orders-product-combo-box id="product" width-full _id="product"></orders-product-combo-box>
-    </column>
-    <column>
-     <vaadin-text-field id="quantity" width="5em" _id="quantity"></vaadin-text-field>
-    </column>
-    <column>
-     <vaadin-label plain-text>
-       x 
-     </vaadin-label>
-    </column>
-    <column>
-     <vaadin-label id="price" plain-text _id="price">
-       0.00 
-     </vaadin-label>
-    </column>
-   </row>
-   <row>
-    <column>
-     <vaadin-text-area rows="2" id="comment" placeholder="Details" width-full _id="comment"></vaadin-text-area>
-    </column>
-   </row>
-  </vaadin-grid-layout>
+  <vaadin-css-layout style-name="product-row responsive" responsive width-full>
+   <vaadin-horizontal-layout style-name="long" spacing="false" width-full>
+    <vaadin-button icon="fonticon://Vaadin-Icons/e80b" style-name="delete" id="delete" plain-text _id="delete" :middle></vaadin-button>
+    <orders-product-combo-box style-name="product" id="product" width-full _id="product" :middle :expand></orders-product-combo-box>
+   </vaadin-horizontal-layout>
+   <vaadin-horizontal-layout style-name="short" spacing="false" width="150px" height="37px">
+    <vaadin-text-field style-name="quantity" id="quantity" width="4em" _id="quantity"></vaadin-text-field>
+    <vaadin-label style-name="times" width-full plain-text :middle :center :expand>
+      x 
+    </vaadin-label>
+    <vaadin-label style-name="price" id="price" plain-text _id="price" :middle :right>
+      0.00 
+    </vaadin-label>
+   </vaadin-horizontal-layout>
+   <vaadin-text-area rows="2" style-name="long" id="comment" placeholder="Details" width-full _id="comment"></vaadin-text-area>
+  </vaadin-css-layout>
  </body>
 </html>

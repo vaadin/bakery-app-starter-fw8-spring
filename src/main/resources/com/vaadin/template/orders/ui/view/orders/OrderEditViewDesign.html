@@ -9,7 +9,7 @@
  </head>
  <body>
   <vaadin-vertical-layout>
-   <vaadin-css-layout style-name="order-form" responsive width-full>
+   <vaadin-css-layout style-name="order-form responsive" responsive width-full>
     <vaadin-horizontal-layout id="reportHeader" width-full _id="reportHeader">
      <vaadin-label style-name="h2" id="orderId" plain-text _id="orderId">
        #182 
@@ -32,7 +32,7 @@
      <vaadin-label style-name="large" plain-text :middle>
        @ 
      </vaadin-label>
-     <com_vaadin_template_orders_ui_components-pickup-location-combo-box id="pickupLocation" width-full _id="pickupLocation" :expand></com_vaadin_template_orders_ui_components-pickup-location-combo-box>
+     <com_vaadin_template_orders_ui_components-pickup-location-combo-box id="pickupLocation" width-full _id="pickupLocation" :middle :expand></com_vaadin_template_orders_ui_components-pickup-location-combo-box>
     </vaadin-horizontal-layout>
     <vaadin-label style-name="header" width-full plain-text>
       Customer 
@@ -43,7 +43,7 @@
     <vaadin-label style-name="header" width-full plain-text>
       Products 
     </vaadin-label>
-    <vaadin-css-layout id="productInfoContainer" width-full _id="productInfoContainer"></vaadin-css-layout>
+    <vaadin-css-layout style-name="product-container" id="productInfoContainer" width-full _id="productInfoContainer"></vaadin-css-layout>
     <vaadin-button icon="fonticon://Vaadin-Icons/e7fe" style-name="add-items link" id="addItems" width-full height="100px" _id="addItems">
       Add item 
     </vaadin-button>

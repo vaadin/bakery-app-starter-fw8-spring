@@ -124,6 +124,17 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 		getOrder().getItems().add(orderItem);
 	}
 
+	protected void removeOrderItem(OrderItem orderItem) {
+		getOrder().getItems().remove(orderItem);
+
+		for (Component c : productInfoContainer) {
+			if (c instanceof ProductInfo && ((ProductInfo) c).getItem() == orderItem) {
+				productInfoContainer.removeComponent(c);
+				break;
+			}
+		}
+	}
+
 	/**
 	 * Create a ProductInfo instance using Spring so that it is injected and can
 	 * in turn inject a ProductComboBox and its data provider.

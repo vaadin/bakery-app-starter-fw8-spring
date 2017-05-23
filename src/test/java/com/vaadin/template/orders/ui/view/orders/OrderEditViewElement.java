@@ -15,7 +15,7 @@ import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.elements.ButtonElement;
-import com.vaadin.testbench.elements.GridLayoutElement;
+import com.vaadin.testbench.elements.CssLayoutElement;
 import com.vaadin.testbench.elements.WindowElement;
 import com.vaadin.testbench.elementsbase.ServerClass;
 
@@ -50,7 +50,7 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 	}
 
 	public ProductInfoElement getProductInfo(int i) {
-		return getProductInfoContainer().$(GridLayoutElement.class).get(i).wrap(ProductInfoElement.class);
+		return getProductInfoContainer().$(CssLayoutElement.class).get(i).wrap(ProductInfoElement.class);
 	}
 
 	public void setCustomerInfo(Customer customer) {
