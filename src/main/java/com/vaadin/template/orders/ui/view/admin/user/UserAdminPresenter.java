@@ -62,8 +62,4 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 		return userService;
 	}
 
-	@Override
-	protected Long getId(User entity) {
-		return entity.getId();
-	}
 }
