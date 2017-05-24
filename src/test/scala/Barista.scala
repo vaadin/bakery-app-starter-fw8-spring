@@ -34,13 +34,6 @@ class Barista extends Simulation {
   val clientIdExtract = regex("""clientId": ([0-9]*),""").saveAs("clientId")
   val xsrfTokenExtract = regex("""Vaadin-Security-Key\\":\\"([^\\]+)""").saveAs("seckey")
   
-  val logIds = exec((session) => {
-      println("SyncId: "+(session("syncId").as[String]))
-      println("ClientId: "+(session("clientId").as[String]))
-      println("XSRF: "+(session("seckey").as[String]))
-      session
-  })
-  
 	val scn = scenario("Barista")
 		.exec(http("request_0")
 			.get("/")
@@ -71,7 +64,6 @@ class Barista extends Simulation {
 			.formParam("v-loc", "http://localhost:8080/")
 			.formParam("v-wn", "ROOT-2521314-0.6857735007173337")
     .check(xsrfTokenExtract))
-	  .exec(logIds)
 		.pause(1)
 		.exec(http("request_6")
 			.post("/vaadinServlet/UIDL/?v-uiId=0")
