@@ -53,8 +53,12 @@ public class UserAdminIT extends AbstractCrudIT<UserAdminViewElement> {
 		TextFieldElement passwordField = userAdmin.getPassword();
 		Assert.assertEquals("", passwordField.getValue());
 
+		// Too short password
 		passwordField.setValue("foo");
 		ButtonElement update = userAdmin.getUpdate();
+		update.click();
+		Assert.assertTrue(passwordField.hasClassName("v-textfield-error"));
+		passwordField.setValue("foobar");
 		update.click();
 		assertEditState(userAdmin, false);
 
@@ -72,6 +76,17 @@ public class UserAdminIT extends AbstractCrudIT<UserAdminViewElement> {
 		Assert.assertEquals("", ElementUtil.getText(view.getName()));
 		Assert.assertEquals("", ElementUtil.getText(view.getPassword()));
 		Assert.assertEquals("", view.getRole().getValue());
+	}
+
+	@Test
+	public void passwordRequiredForNewUser() {
+		UserAdminViewElement userAdmin = loginAndNavigateToView();
+		userAdmin.getAdd().click();
+		userAdmin.getEmail().setValue("foo");
+		userAdmin.getName().setValue("bar");
+		ButtonElement update = userAdmin.getUpdate();
+		update.click();
+		Assert.assertTrue(userAdmin.getPassword().hasClassName("v-textfield-error"));
 	}
 
 }
