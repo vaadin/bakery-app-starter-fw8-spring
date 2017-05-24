@@ -4,6 +4,10 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.data.ValidationResult;
+import com.vaadin.data.Validator;
+import com.vaadin.data.ValueContext;
+import com.vaadin.data.validator.BeanValidator;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.entity.User;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudView;
@@ -21,6 +25,30 @@ public class UserAdminView extends AbstractCrudView<User> {
 
 	private final UserAdminViewDesign userAdminViewDesign;
 
+	private boolean passwordRequired;
+
+	/**
+	 * Custom validator to be able to decide dynamically whether the password
+	 * field is required or not (empty value when updating the user is
+	 * interpreted as 'do not change the password').
+	 */
+	private Validator<String> passwordValidator = new Validator<String>() {
+
+		BeanValidator passwordBeanValidator = new BeanValidator(User.class, "password");
+
+		@Override
+		public ValidationResult apply(String value, ValueContext context) {
+			if (!passwordRequired && value.isEmpty()) {
+				// No password required and field is empty
+				// OK regardless of other restrictions as the empty value will
+				// not be used
+				return ValidationResult.ok();
+			} else {
+				return passwordBeanValidator.apply(value, context);
+			}
+		}
+	};
+
 	public UserAdminView() {
 		super(User.class);
 		userAdminViewDesign = new UserAdminViewDesign();
@@ -32,15 +60,23 @@ public class UserAdminView extends AbstractCrudView<User> {
 		super.init();
 		presenter.init(this);
 		getGrid().setColumns("email", "name", "role");
-		getBinder().bind(getViewComponent().password, bean -> "", (bean, value) -> {
-			if (value.isEmpty()) {
-				// If nothing is entered in the password field, do nothing
-			} else {
-				bean.setPassword(presenter.encodePassword(value));
-			}
-		});
+
+		getBinder().forField(getViewComponent().password).withValidator(passwordValidator).bind(bean -> "",
+				(bean, value) -> {
+					if (value.isEmpty()) {
+						// If nothing is entered in the password field, do
+						// nothing
+					} else {
+						bean.setPassword(presenter.encodePassword(value));
+					}
+				});
 		getBinder().bindInstanceFields(getViewComponent());
 
+	}
+
+	public void setPasswordRequired(boolean passwordRequired) {
+		this.passwordRequired = passwordRequired;
+		getViewComponent().password.setRequiredIndicatorVisible(passwordRequired);
 	}
 
 	@Override

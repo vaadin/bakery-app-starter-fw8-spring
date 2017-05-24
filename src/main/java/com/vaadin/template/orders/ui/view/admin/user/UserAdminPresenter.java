@@ -62,4 +62,9 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 		return userService;
 	}
 
+	@Override
+	protected void editItem(User item) {
+		super.editItem(item);
+		getView().setPasswordRequired(isNew(item));
+	}
 }
