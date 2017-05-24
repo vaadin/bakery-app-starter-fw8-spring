@@ -209,6 +209,12 @@
 			<artifactId>vaadin-testbench-api</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.gatling.highcharts</groupId>
+			<artifactId>gatling-charts-highcharts</artifactId>
+			<version>2.2.5</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -339,7 +345,12 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			<!--  For running Gatling tests with Maven -->
+			<plugin>
+				<groupId>io.gatling</groupId>
+				<artifactId>gatling-maven-plugin</artifactId>
+				<version>2.2.4</version>
+			</plugin>
 		</plugins>
 	</build>
 
