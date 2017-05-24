@@ -2,7 +2,6 @@ package com.vaadin.template.orders.ui.components;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -13,7 +12,6 @@ import com.vaadin.data.provider.QuerySortOrder;
 import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.app.BeanLocator;
-import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.ui.PrototypeScope;
@@ -27,11 +25,7 @@ public class OrdersDataProvider extends PageableDataProvider<Order, Object> {
 
 	@Override
 	protected Page<Order> fetchFromBackEnd(Query<Order, Object> query, Pageable pageable) {
-		return getOrderService().findAfterDueDateWithState(getFilterDate(), getStates(), pageable);
-	}
-
-	private List<OrderState> getStates() {
-		return Arrays.asList(OrderState.CONFIRMED, OrderState.NEW, OrderState.PROBLEM, OrderState.READY);
+		return getOrderService().findAfterDueDate(getFilterDate(), pageable);
 	}
 
 	private LocalDate getFilterDate() {
@@ -40,7 +34,7 @@ public class OrdersDataProvider extends PageableDataProvider<Order, Object> {
 
 	@Override
 	protected int sizeInBackEnd(Query<Order, Object> query) {
-		return (int) getOrderService().countAfterDueDateWithState(getFilterDate(), getStates());
+		return (int) getOrderService().countAfterDueDate(getFilterDate());
 	}
 
 	protected OrderService getOrderService() {

@@ -103,8 +103,16 @@ public class OrderService {
 		return getOrderRepository().findByDueDateAfterAndStateIn(filterDate, states, pageable);
 	}
 
+	public Page<Order> findAfterDueDate(LocalDate filterDate, Pageable pageable) {
+		return getOrderRepository().findByDueDateAfter(filterDate, pageable);
+	}
+
 	public long countAfterDueDateWithState(LocalDate filterDate, List<OrderState> states) {
 		return getOrderRepository().countByDueDateAfterAndStateIn(filterDate, states);
+	}
+
+	public long countAfterDueDate(LocalDate filterDate) {
+		return getOrderRepository().countByDueDateAfter(filterDate);
 	}
 
 	private DeliveryStats getDeliveryStats() {
