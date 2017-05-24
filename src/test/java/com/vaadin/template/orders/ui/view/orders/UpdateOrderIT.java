@@ -175,7 +175,8 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 		ElementUtil.click(orderEdit.getOk());
 
 		// Assert saved
-		Assert.assertEquals("Save failed", "Edit", ElementUtil.getText(orderEdit.getEditOrCancel()));
+		Assert.assertEquals("Save failed", "Edit", ElementUtil.getCaption(orderEdit.getEditOrCancel()));
+
 		// Should still have the same products
 		Assert.assertEquals(nrProducts, orderEdit.getNumberOfProducts());
 	}
@@ -264,13 +265,13 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 			ElementUtil.click(otherUserOrderEditView.getOk());
 
 			// Ensure that the changes were saved
-			Assert.assertEquals("Edit", otherUserOrderEditView.getEditOrCancel().getText());
+			assertEnabledWithCaption("Edit", otherUserOrderEditView.getEditOrCancel());
 			Assert.assertEquals(newValue, otherUserFullName.getValue());
 
 			// Switch back to user 1 and try to save -> assert we are still in
 			// edit mode
 			ElementUtil.click(orderEditView.getOk());
-			Assert.assertEquals("Cancel", orderEditView.getEditOrCancel().getText());
+			assertEnabledWithCaption("Cancel", orderEditView.getEditOrCancel());
 			Assert.assertEquals(1, $(NotificationElement.class).all().size());
 		} finally {
 			otherUser.close();

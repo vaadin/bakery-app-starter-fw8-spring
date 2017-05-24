@@ -25,6 +25,7 @@ import com.vaadin.testbench.TestBench;
 import com.vaadin.testbench.TestBenchDriverProxy;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.TestBenchTestCase;
+import com.vaadin.testbench.elements.AbstractComponentElement;
 import com.vaadin.testbench.elements.GridElement;
 import com.vaadin.testbench.elements.GridElement.GridCellElement;
 import com.vaadin.testbench.elements.GridElement.GridRowElement;
@@ -59,17 +60,18 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 		return (TestBenchDriverProxy) super.getDriver();
 	}
 
-	protected boolean hasAttribute(WebElement element, String name) {
+	protected static boolean hasAttribute(TestBenchElement element, String name) {
 		return internalGetAttribute(element, name) != null;
 	}
 
-	protected Object internalGetAttribute(WebElement element, String name) {
-		return getCommandExecutor().executeScript("return arguments[0].getAttribute(arguments[1]);", element, name);
+	protected static Object internalGetAttribute(TestBenchElement element, String name) {
+		return element.getCommandExecutor().executeScript("return arguments[0].getAttribute(arguments[1]);", element,
+				name);
 	}
 
-	protected void assertEnabledWithText(String text, TestBenchElement element) {
+	protected static void assertEnabledWithCaption(String text, AbstractComponentElement element) {
 		assertEnabled(true, element);
-		Assert.assertEquals(text, ElementUtil.getText(element));
+		Assert.assertEquals(text, ElementUtil.getCaption(element));
 	}
 
 	/**
@@ -96,7 +98,7 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 		return new ElementQuery<>(elementType).context(hasDriver.getDriver()).first();
 	}
 
-	protected void assertEnabled(boolean expectedEnabled, TestBenchElement element) {
+	protected static void assertEnabled(boolean expectedEnabled, TestBenchElement element) {
 		if (expectedEnabled) {
 			if (hasAttribute(element, "disabled")) {
 				throw new AssertionError("Expected element to be enabled but it has a 'disabled' attribute");
@@ -123,7 +125,7 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 	 * @return <code>true</code> if the element has the given class name,
 	 *         <code>false</code> otherwise
 	 */
-	protected boolean hasClassName(TestBenchElement element, String className) {
+	protected static boolean hasClassName(TestBenchElement element, String className) {
 		return element.getClassNames().contains(className);
 	}
 

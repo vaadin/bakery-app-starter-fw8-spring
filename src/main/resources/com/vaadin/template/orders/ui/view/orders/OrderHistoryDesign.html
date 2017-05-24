@@ -6,25 +6,14 @@
   <meta name="vaadin-version" content="8.0.5">
  </head>
  <body>
-  <vaadin-vertical-layout spacing="false" size-auto margin="false">
-   <vaadin-label style-name="bold large" plain-text>
-     History 
-   </vaadin-label>
-   <vaadin-panel style-name="well" _id="historyPanel">
-    <vaadin-vertical-layout style-name="history">
-     <vaadin-grid-layout spacing id="items" _id="items">
-      <row>
-       <column></column>
-       <column></column>
-       <column></column>
-      </row>
-     </vaadin-grid-layout>
-     <vaadin-horizontal-layout spacing="false" width-full>
-      <vaadin-text-field width-full _id="newCommentInput" :expand></vaadin-text-field>
-      <vaadin-button icon="fonticon://Vaadin-Icons/e921" style-name="quiet" plain-text _id="commitNewComment"></vaadin-button>
-     </vaadin-horizontal-layout>
-    </vaadin-vertical-layout>
-   </vaadin-panel>
-  </vaadin-vertical-layout>
+  <vaadin-panel caption="History" style-name="well">
+   <vaadin-vertical-layout style-name="history">
+    <vaadin-css-layout id="items" width-full _id="items"></vaadin-css-layout>
+    <vaadin-horizontal-layout spacing="false" width-full>
+     <vaadin-text-field placeholder="Message" width-full _id="newCommentInput" :expand></vaadin-text-field>
+     <vaadin-button icon="fonticon://Vaadin-Icons/e921" style-name="quiet" plain-text _id="commitNewComment"></vaadin-button>
+    </vaadin-horizontal-layout>
+   </vaadin-vertical-layout>
+  </vaadin-panel>
  </body>
 </html>

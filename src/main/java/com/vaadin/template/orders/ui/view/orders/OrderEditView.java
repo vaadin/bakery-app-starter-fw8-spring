@@ -15,6 +15,7 @@ import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValueContext;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.app.DollarPriceConverter;
@@ -192,16 +193,19 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 
 		if (mode == Mode.REPORT) {
 			cancel.setCaption("Edit");
+			cancel.setIcon(VaadinIcons.EDIT);
 			Optional<OrderState> nextState = presenter.getNextHappyPathState(getOrder().getState());
-			ok.setCaption(nextState.map(OrderState::getDisplayName).orElse("?"));
+			ok.setCaption("Mark as " + nextState.map(OrderState::getDisplayName).orElse("?"));
 			ok.setVisible(nextState.isPresent());
 		} else if (mode == Mode.CONFIRMATION) {
-			cancel.setCaption("< Back");
+			cancel.setCaption("Back");
+			cancel.setIcon(VaadinIcons.ANGLE_LEFT);
 			ok.setCaption("Place order");
 			ok.setVisible(true);
 		} else {
 			cancel.setCaption("Cancel");
-			ok.setCaption("Done");
+			cancel.setIcon(VaadinIcons.CLOSE);
+			ok.setCaption("Review order");
 			ok.setVisible(true);
 		}
 	}
