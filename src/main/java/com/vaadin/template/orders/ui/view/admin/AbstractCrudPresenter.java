@@ -82,7 +82,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, V extends 
 		});
 	}
 
-	private void editItem(T item) {
+	protected void editItem(T item) {
 		boolean isNew = isNew(item);
 		if (isNew) {
 			navigationManager.updateViewParameter("new");
