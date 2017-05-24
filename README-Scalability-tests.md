@@ -7,7 +7,7 @@ Quick Start Guide
 -----------------
 
 1. Make sure Orders is running in the load test mode by setting load test mode true in the application.properties:
-	```loadtestmode.enabled=true```
+	```orders.loadtestmode.enabled=true```
 	
 2. Configure wished amout of concurrent users with suitable ramp up time in end of the *.scala files, e.g.: 
 	```setUp(scn.inject( rampUsers(50) over (60 seconds)) ).protocols(httpProtocol)```
