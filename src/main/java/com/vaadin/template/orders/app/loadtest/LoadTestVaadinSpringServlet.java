@@ -8,20 +8,10 @@ import com.vaadin.template.orders.app.ApplicationConfiguration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
-
 /**
  * Customized SpringVaadinServlet for enabling the LoadTestServletService
  */
 public class LoadTestVaadinSpringServlet extends SpringVaadinServlet {
-
-    public LoadTestVaadinSpringServlet() {
-    }
-
-    @Override
-    protected void servletInitialized() throws ServletException {
-        super.servletInitialized();
-    }
 
     @Override
     protected VaadinServletService createServletService(

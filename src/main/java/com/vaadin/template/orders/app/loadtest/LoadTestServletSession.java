@@ -23,6 +23,14 @@ public class LoadTestServletSession extends VaadinSession {
         super(service);
     }
 
+    /**
+     * Override default implementation for making the connector ids more suitable
+     * for load testing
+     *
+     * @param connector
+     * @deprecated do not use unless in load testing mode
+     * @return
+     */
     @Deprecated
     @Override
     public String createConnectorId(ClientConnector connector) {
