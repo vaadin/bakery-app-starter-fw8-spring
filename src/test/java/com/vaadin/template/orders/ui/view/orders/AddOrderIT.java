@@ -107,7 +107,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		// Done -> go to confirmation screen
 		ElementUtil.click(orderEditView.getOk());
 		// Ensure that that we are on the confirmation screen
-		Assert.assertEquals("Place order", orderEditView.getOk().getCaption());
+		assertEnabledWithCaption("Place order", orderEditView.getOk());
 
 		// Order info intact
 		orderEditView.assertOrder(testOrder);
@@ -139,8 +139,8 @@ public class AddOrderIT extends AbstractOrdersIT {
 		String url = getDriver().getCurrentUrl();
 		Assert.assertTrue("Url " + url + " should end with #!order/" + orderId, url.endsWith("#!order/" + orderId));
 
-		Assert.assertEquals("Edit", orderEditView.getEditOrCancel().getCaption());
-		Assert.assertEquals("Mark as Confirmed", orderEditView.getOk().getCaption());
+		assertEnabledWithCaption("Edit", orderEditView.getEditOrCancel());
+		assertEnabledWithCaption("Mark as Confirmed", orderEditView.getOk());
 
 		// Reload and verify the order was stored in DB and shown correctly
 		getDriver().navigate().refresh();

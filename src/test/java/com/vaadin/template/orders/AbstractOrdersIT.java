@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.vaadin.template.orders.ui.view.dashboard.DashboardViewElement;
 import com.vaadin.template.orders.ui.view.object.LoginViewElement;
+import com.vaadin.template.orders.ui.view.orders.ElementUtil;
 import com.vaadin.template.orders.ui.view.orders.OrdersListViewElement;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.ElementQuery;
@@ -69,7 +70,7 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 
 	protected void assertEnabledWithCaption(String text, AbstractComponentElement element) {
 		assertEnabled(true, element);
-		Assert.assertEquals(text, element.getCaption());
+		Assert.assertEquals(text, ElementUtil.getCaption(element));
 	}
 
 	/**
