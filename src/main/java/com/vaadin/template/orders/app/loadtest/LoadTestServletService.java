@@ -1,7 +1,11 @@
 package com.vaadin.template.orders.app.loadtest;
 
-import com.vaadin.server.*;
-import org.vaadin.spring.servlet.*;
+import com.vaadin.server.DeploymentConfiguration;
+import com.vaadin.server.ServiceException;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinSession;
+import org.vaadin.spring.servlet.Vaadin4SpringServletService;
 
 /**
  * Extended VaadinServletService to create LoadTestServletSession to enable
@@ -10,7 +14,7 @@ import org.vaadin.spring.servlet.*;
 public class LoadTestServletService extends Vaadin4SpringServletService {
 
     public LoadTestServletService(VaadinServlet servlet,
-                                  DeploymentConfiguration deploymentConfiguration, String serviceUrl)
+            DeploymentConfiguration deploymentConfiguration, String serviceUrl)
             throws ServiceException {
         super(servlet, deploymentConfiguration, serviceUrl);
     }

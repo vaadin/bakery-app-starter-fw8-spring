@@ -16,14 +16,14 @@ import java.util.Set;
  */
 public class LoadTestServletSession extends VaadinSession {
 
+    private Map<Class<? extends ClientConnector>, Integer> sequences = new HashMap<>();
+    private Set<String> usedConnectorIds = new HashSet<>();
+
     public LoadTestServletSession(VaadinService service) {
         super(service);
     }
 
-    private Map<Class<? extends ClientConnector>, Integer> sequences = new HashMap<Class<? extends ClientConnector>, Integer>();
-    private Set<String> usedConnectorIds = new HashSet<String>();
-
-    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public String createConnectorId(ClientConnector connector) {
         String connectorId = "";
@@ -32,16 +32,17 @@ public class LoadTestServletSession extends VaadinSession {
             Component component = (Component) connector;
 
             if (!usedConnectorIds.contains(component.getId())) {
-                connectorId = component.getId() == null ? super
-                        .createConnectorId(connector) : component.getId();
-            }
-            else {
+                connectorId = component.getId() == null
+                        ? super.createConnectorId(connector)
+                        : component.getId();
+            } else {
                 // prevent two accidentally identical connector ids
-                connectorId = component.getId() == null ? super
-                        .createConnectorId(connector) : component.getId()
-                        + nextId(connector.getClass());
+                connectorId = component.getId() == null
+                        ? super.createConnectorId(connector)
+                        : component.getId() + nextId(connector.getClass());
             }
         } else if (connector.getClass().equals(DataCommunicator.class)) {
+            // treat separately since it's not possible set id for this
             connectorId = "datareqrpc-" + nextId(connector.getClass());
         } else {
             connectorId = super.createConnectorId(connector);
@@ -51,11 +52,11 @@ public class LoadTestServletSession extends VaadinSession {
     }
 
     private int nextId(Class<? extends ClientConnector> c) {
-        Integer nextid = 0;
+        Integer nextId = 0;
         if (sequences.get(c) != null) {
-            nextid = sequences.get(c);
+            nextId = sequences.get(c);
         }
-        sequences.put(c, nextid + 1);
-        return nextid;
+        sequences.put(c, nextId + 1);
+        return nextId;
     }
 }
