@@ -7,16 +7,16 @@ Quick Start Guide
 -----------------
 
 1. Make sure Orders is running in the load test mode by setting load test mode true in the application.properties:
-	loadtestmode.enabled=true
+	```loadtestmode.enabled=true```
 	
 2. Configure wished amout of concurrent users with suitable ramp up time in end of the *.scala files, e.g.: 
-	setUp(scn.inject( rampUsers(50) over (60 seconds)) ).protocols(httpProtocol)
+	```setUp(scn.inject( rampUsers(50) over (60 seconds)) ).protocols(httpProtocol)```
 
 3. Configure correct baseUrl in the beginning of the *.scala scripts, e.g.:
-	val baseUrl = "http://localhost:8080"
+	```val baseUrl = "http://localhost:8080"```
 
 4. Start the test from the command line, e.g.:
-	 mvn gatling:execute -Dgatling.simulationClass=com.vaadin.template.orders.Barista
+	 ```mvn gatling:execute -Dgatling.simulationClass=com.vaadin.template.orders.Barista```
 	 
 5. Test results are stored into target folder, e.g.:
-	target/gatling/Barista-1487784042461/index.html
+	```target/gatling/Barista-1487784042461/index.html```
