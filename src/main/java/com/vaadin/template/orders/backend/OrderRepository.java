@@ -15,7 +15,11 @@ import com.vaadin.template.orders.backend.data.entity.Order;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 	Page<Order> findByDueDateAfterAndStateIn(LocalDate dueDate, Collection<OrderState> states, Pageable page);
 
+	Page<Order> findByDueDateAfter(LocalDate filterDate, Pageable pageable);
+
 	long countByDueDateAfterAndStateIn(LocalDate dueDate, Collection<OrderState> states);
+
+	long countByDueDateAfter(LocalDate dueDate);
 
 	long countByDueDate(LocalDate dueDate);
 
@@ -34,4 +38,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 	@Query("SELECT sum(oi.quantity),p FROM OrderInfo o JOIN o.items oi JOIN oi.product p WHERE o.state=?1 AND year(o.dueDate)=?2 AND month(o.dueDate)=?3 GROUP BY p.id ORDER BY p.id")
 	List<Object[]> countPerProduct(OrderState orderState, int year, int month);
+
 }
