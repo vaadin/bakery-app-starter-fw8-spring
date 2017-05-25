@@ -33,7 +33,10 @@ class Barista extends Simulation {
   val syncIdExtract = regex("""syncId": ([0-9]*),""").saveAs("syncId")
   val clientIdExtract = regex("""clientId": ([0-9]*),""").saveAs("clientId")
   val xsrfTokenExtract = regex("""Vaadin-Security-Key\\":\\"([^\\]+)""").saveAs("seckey")
-  
+
+	val checkOrderStatusRegExp = regex("""caption":"Mark as Confirmed""")
+	val checkProductListRegExp = regex("""com.vaadin.shared.data.DataCommunicatorClientRpc","setData""")
+
 	val scn = scenario("Barista")
 		.exec(http("GET /")
 			.get("/")
@@ -117,7 +120,8 @@ class Barista extends Simulation {
 			.post("/vaadinServlet/UIDL/?v-uiId=0")
 			.headers(headers_6)
       .check(syncIdExtract).check(clientIdExtract)
-			.body(ElFileBody("Barista_0018_request.txt")))
+			.body(ElFileBody("Barista_0018_request.txt"))
+		  .check(checkOrderStatusRegExp))
 		.pause(2)
 		.exec(http("Open orders list")
 			.post("/vaadinServlet/UIDL/?v-uiId=0")
@@ -129,7 +133,8 @@ class Barista extends Simulation {
 			.post("/vaadinServlet/UIDL/?v-uiId=0")
 			.headers(headers_6)
       .check(syncIdExtract).check(clientIdExtract)
-			.body(ElFileBody("Barista_0020_request.txt")))
+			.body(ElFileBody("Barista_0020_request.txt"))
+			.check(checkProductListRegExp))
 
-	setUp(scn.inject( rampUsers(1000) over (60 seconds)) ).protocols(httpProtocol)
+	setUp(scn.inject( rampUsers(1000) over (120 seconds)) ).protocols(httpProtocol)
 }
