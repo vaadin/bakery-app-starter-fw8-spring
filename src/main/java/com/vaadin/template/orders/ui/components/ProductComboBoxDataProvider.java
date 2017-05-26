@@ -12,13 +12,14 @@ import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.entity.Product;
+import com.vaadin.template.orders.backend.service.CrudService;
 import com.vaadin.template.orders.backend.service.ProductService;
 import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
 
 @SpringComponent
 public class ProductComboBoxDataProvider extends PageableDataProvider<Product, String> {
 
-	private transient ProductService productService;
+	private transient CrudService<Product> productService;
 
 	@Override
 	protected Page<Product> fetchFromBackEnd(Query<Product, String> query, Pageable pageable) {
@@ -30,7 +31,7 @@ public class ProductComboBoxDataProvider extends PageableDataProvider<Product, S
 		return (int) getProductService().countAnyMatching(query.getFilter());
 	}
 
-	protected ProductService getProductService() {
+	protected CrudService<Product> getProductService() {
 		if (productService == null) {
 			productService = BeanLocator.find(ProductService.class);
 		}
