@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class OrderItem extends AbstractEntity {
@@ -13,6 +14,7 @@ public class OrderItem extends AbstractEntity {
 	private Product product;
 	@Min(1)
 	private int quantity = 1;
+	@Size(max = 255)
 	private String comment;
 
 	public OrderItem() {

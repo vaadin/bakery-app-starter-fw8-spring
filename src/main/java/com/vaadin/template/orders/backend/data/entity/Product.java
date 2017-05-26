@@ -2,10 +2,12 @@ package com.vaadin.template.orders.backend.data.entity;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Product extends AbstractEntity {
 
+	@Size(max = 255)
 	private String name;
 
 	// Real price * 100 as an int to avoid rounding errors

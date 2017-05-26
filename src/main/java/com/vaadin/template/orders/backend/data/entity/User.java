@@ -13,18 +13,21 @@ public class User extends AbstractEntity {
 
 	@NotNull
 	@NotEmpty
+	@Size(max = 255)
 	private String email;
 
 	@NotNull
 	@NotEmpty
-	@Size(min = 4)
+	@Size(min = 4, max = 255)
 	private String password;
 
 	@NotNull
 	@NotEmpty
+	@Size(max = 255)
 	private String name;
 
 	@NotNull
+	@Size(max = 255)
 	private String role;
 
 	protected User() {

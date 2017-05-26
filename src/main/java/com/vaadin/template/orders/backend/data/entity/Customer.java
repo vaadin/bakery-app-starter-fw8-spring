@@ -2,6 +2,7 @@ package com.vaadin.template.orders.backend.data.entity;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -10,10 +11,13 @@ public class Customer extends AbstractEntity {
 
 	@NotNull
 	@NotEmpty
+	@Size(max = 255)
 	private String fullName;
 	@NotNull
 	@NotEmpty
+	@Size(max = 255)
 	private String phoneNumber;
+	@Size(max = 255)
 	private String details;
 
 	public Customer() {

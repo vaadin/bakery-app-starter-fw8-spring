@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.vaadin.template.orders.backend.data.OrderState;
 
@@ -12,6 +15,9 @@ import com.vaadin.template.orders.backend.data.OrderState;
 public class HistoryItem extends AbstractEntity {
 
 	private OrderState newState;
+
+	@NotEmpty
+	@Size(max = 255)
 	private String message;
 
 	@NotNull
