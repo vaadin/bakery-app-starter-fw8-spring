@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ResolvableType;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.vaadin.data.HasValue;
+import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.entity.AbstractEntity;
+import com.vaadin.template.orders.backend.service.CrudService;
 import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.components.ConfirmationDialog;
@@ -16,7 +19,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 
-public abstract class AbstractCrudPresenter<T extends AbstractEntity, V extends AbstractCrudView<T>>
+public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends CrudService<T>, V extends AbstractCrudView<T>>
 		implements HasLogger, Serializable {
 
 	private V view;
@@ -24,17 +27,42 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, V extends 
 	@Autowired
 	private NavigationManager navigationManager;
 
+	private final Class<S> serviceType;
+
+	protected AbstractCrudPresenter() {
+		this.serviceType = discoverServiceType();
+	}
+
+	@SuppressWarnings("unchecked")
+	private Class<S> discoverServiceType() {
+		ResolvableType forClass = ResolvableType.forClass(getClass());
+		ResolvableType resolvableGeneric = forClass.getSuperType().getGeneric(1);
+		return (Class<S>) resolvableGeneric.resolve();
+	}
+
+	protected S getService() {
+		return BeanLocator.find(serviceType);
+	}
+
 	public abstract void filterGrid(String filter);
 
-	protected abstract T loadEntity(Long id);
+	protected T loadEntity(Long id) {
+		return getService().get(id);
+	}
 
 	protected abstract PageableDataProvider<T, Object> getGridDataProvider();
 
 	protected abstract T createEntity();
 
-	protected abstract T saveEntity(T editItem);
+	protected T saveEntity(T editItem) {
+		return getService().save(editItem);
+	}
 
-	protected abstract void deleteEntity(T entity);
+	protected void deleteEntity(T entity) {
+		if (entity.isPersisted()) {
+			getService().delete(entity.getId());
+		}
+	}
 
 	public void init(V view) {
 		this.view = view;

@@ -74,7 +74,6 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 		if (!event.getParameters().isEmpty()) {
 			getPresenter().editRequest(event.getParameters());
 		}
-
 	}
 
 	public void showInitialState() {
@@ -158,7 +157,7 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 
 	}
 
-	protected abstract AbstractCrudPresenter<T, ? extends AbstractCrudView<T>> getPresenter();
+	protected abstract AbstractCrudPresenter<T, ?, ? extends AbstractCrudView<T>> getPresenter();
 
 	protected abstract Grid<T> getGrid();
 

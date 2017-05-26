@@ -14,30 +14,20 @@ import com.vaadin.template.orders.backend.UserRepository;
 import com.vaadin.template.orders.backend.data.entity.User;
 
 @Service
-public class UserService {
-
-	private UserRepository userRepository;
+public class UserService implements CrudService<User> {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	public User getCurrentUser() {
-		return getUserRepository().findByEmail(SecurityUtils.getUsername());
-	}
-
-	public Page<User> find(Pageable pageable) {
-		return getUserRepository().findBy(pageable);
-	}
-
-	public long count() {
-		return getUserRepository().count();
+		return getRepository().findByEmail(SecurityUtils.getUsername());
 	}
 
 	public Page<User> findAnyMatching(Optional<String> filter, Pageable pageable) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
-			return getUserRepository().findByEmailLikeIgnoreCaseOrNameLikeIgnoreCaseOrRoleLikeIgnoreCase(
-					repositoryFilter, repositoryFilter, repositoryFilter, pageable);
+			return getRepository().findByEmailLikeIgnoreCaseOrNameLikeIgnoreCaseOrRoleLikeIgnoreCase(repositoryFilter,
+					repositoryFilter, repositoryFilter, pageable);
 		} else {
 			return find(pageable);
 		}
@@ -46,30 +36,19 @@ public class UserService {
 	public long countAnyMatching(Optional<String> filter) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
-			return getUserRepository().countByEmailLikeIgnoreCaseOrNameLikeIgnoreCase(repositoryFilter,
-					repositoryFilter);
+			return getRepository().countByEmailLikeIgnoreCaseOrNameLikeIgnoreCase(repositoryFilter, repositoryFilter);
 		} else {
-			return getUserRepository().count();
+			return getRepository().count();
 		}
 	}
 
-	public User get(Long id) {
-		return getUserRepository().findOne(id);
+	public UserRepository getRepository() {
+		return BeanLocator.find(UserRepository.class);
 	}
 
-	public void delete(Long id) {
-		getUserRepository().delete(id);
-	}
-
-	public User save(User product) {
-		return getUserRepository().save(product);
-	}
-
-	protected UserRepository getUserRepository() {
-		if (userRepository == null) {
-			userRepository = BeanLocator.find(UserRepository.class);
-		}
-		return userRepository;
+	@Override
+	public Page<User> find(Pageable pageable) {
+		return getRepository().findBy(pageable);
 	}
 
 	public String encodePassword(String value) {

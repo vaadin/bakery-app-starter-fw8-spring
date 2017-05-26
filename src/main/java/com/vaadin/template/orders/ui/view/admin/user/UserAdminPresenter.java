@@ -5,40 +5,24 @@ import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.backend.data.entity.User;
 import com.vaadin.template.orders.backend.service.UserService;
+import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudPresenter;
 
 @SpringComponent
 @PrototypeScope
-public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminView> implements Serializable {
+public class UserAdminPresenter extends AbstractCrudPresenter<User, UserService, UserAdminView>
+		implements Serializable {
 
 	@Autowired
 	private UserAdminDataProvider userAdminDataProvider;
 
-	private transient UserService userService;
-
-	@Override
-	protected User loadEntity(Long id) {
-		return getService().get(id);
-	}
-
 	@Override
 	protected UserAdminDataProvider getGridDataProvider() {
 		return userAdminDataProvider;
-	}
-
-	@Override
-	protected void deleteEntity(User entity) {
-		getService().delete(entity.getId());
-	}
-
-	@Override
-	protected User saveEntity(User editItem) {
-		return getService().save(editItem);
 	}
 
 	@Override
@@ -53,13 +37,6 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 
 	public String encodePassword(String value) {
 		return getService().encodePassword(value);
-	}
-
-	protected UserService getService() {
-		if (userService == null) {
-			userService = BeanLocator.find(UserService.class);
-		}
-		return userService;
 	}
 
 	@Override
