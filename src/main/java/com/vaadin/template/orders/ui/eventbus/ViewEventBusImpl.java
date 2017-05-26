@@ -3,7 +3,6 @@ package com.vaadin.template.orders.ui.eventbus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -15,7 +14,7 @@ import com.vaadin.spring.annotation.ViewScope;
 @ViewScope
 public class ViewEventBusImpl implements ViewEventBus {
 
-	private Map<Class<?>, List<Consumer<?>>> listeners = new HashMap<>();
+	private HashMap<Class<?>, List<Consumer<?>>> listeners = new HashMap<>();
 
 	@Override
 	@SuppressWarnings("unchecked")

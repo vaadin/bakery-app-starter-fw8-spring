@@ -15,6 +15,9 @@ import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 import com.vaadin.template.orders.backend.service.PickupLocationService;
 import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
 
+/**
+ * A singleton data provider which knows which products are available.
+ */
 @SpringComponent
 public class PickupLocationComboBoxDataProvider extends PageableDataProvider<PickupLocation, String> {
 
