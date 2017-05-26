@@ -24,7 +24,7 @@ public interface CrudService<T extends AbstractEntity> {
 		return getRepository().count();
 	}
 
-	default T get(long id) {
+	default T load(long id) {
 		return getRepository().findOne(id);
 	}
 

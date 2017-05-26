@@ -47,7 +47,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	public abstract void filterGrid(String filter);
 
 	protected T loadEntity(Long id) {
-		return getService().get(id);
+		return getService().load(id);
 	}
 
 	protected abstract PageableDataProvider<T, Object> getGridDataProvider();
@@ -61,6 +61,8 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	protected void deleteEntity(T entity) {
 		if (entity.isPersisted()) {
 			getService().delete(entity.getId());
+		} else {
+			throw new IllegalArgumentException("Cannot delete an entity which is not in the database");
 		}
 	}
 
