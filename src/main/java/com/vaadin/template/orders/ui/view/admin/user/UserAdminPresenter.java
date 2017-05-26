@@ -23,7 +23,7 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 
 	@Override
 	protected User loadEntity(Long id) {
-		return getUserService().get(id);
+		return getService().get(id);
 	}
 
 	@Override
@@ -33,12 +33,12 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 
 	@Override
 	protected void deleteEntity(User entity) {
-		getUserService().delete(entity.getId());
+		getService().delete(entity.getId());
 	}
 
 	@Override
 	protected User saveEntity(User editItem) {
-		return getUserService().save(editItem);
+		return getService().save(editItem);
 	}
 
 	@Override
@@ -52,10 +52,10 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserAdminVie
 	}
 
 	public String encodePassword(String value) {
-		return getUserService().encodePassword(value);
+		return getService().encodePassword(value);
 	}
 
-	protected UserService getUserService() {
+	protected UserService getService() {
 		if (userService == null) {
 			userService = BeanLocator.find(UserService.class);
 		}
