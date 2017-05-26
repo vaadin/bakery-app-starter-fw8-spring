@@ -107,7 +107,7 @@ public class DataGenerator implements HasLogger {
 	}
 
 	private void createOrders(OrderRepository orderRepo) {
-		LocalDate twoYearsAgo = LocalDate.now().minusDays(2 * 365);
+		LocalDate twoYearsAgo = LocalDate.now().minusDays(2L * 365);
 		LocalDate oneMonthInTheFuture = LocalDate.now().plusDays(30);
 		for (LocalDate dueDate = twoYearsAgo; dueDate.isBefore(oneMonthInTheFuture); dueDate = dueDate.plusDays(1)) {
 			int ordersThisDay = random.nextInt(10);
@@ -148,46 +148,52 @@ public class DataGenerator implements HasLogger {
 		}
 		order.setItems(items);
 
-		order.setHistory(new ArrayList<>());
+		order.setHistory(createOrderHistory(order));
+
+		return order;
+	}
+
+	private List<HistoryItem> createOrderHistory(Order order) {
+		ArrayList<HistoryItem> history = new ArrayList<>();
 		HistoryItem item = new HistoryItem(getBarista(), "Order placed");
 		item.setNewState(OrderState.NEW);
-		LocalDateTime orderPlaced = dueDate.minusDays(random.nextInt(5) + 2).atTime(random.nextInt(10) + 7, 00);
+		LocalDateTime orderPlaced = order.getDueDate().minusDays(random.nextInt(5) + 2L).atTime(random.nextInt(10) + 7,
+				00);
 		item.setTimestamp(orderPlaced);
-		order.getHistory().add(item);
+		history.add(item);
 		if (order.getState() == OrderState.CANCELLED) {
 			item = new HistoryItem(getBarista(), "Order cancelled");
 			item.setNewState(OrderState.CANCELLED);
-			item.setTimestamp(orderPlaced.plusDays(
-					random.nextInt((int) orderPlaced.until(dueDate.atTime(order.getDueTime()), ChronoUnit.DAYS))));
-			order.getHistory().add(item);
+			item.setTimestamp(orderPlaced.plusDays(random
+					.nextInt((int) orderPlaced.until(order.getDueDate().atTime(order.getDueTime()), ChronoUnit.DAYS))));
+			history.add(item);
 		} else if (order.getState() == OrderState.CONFIRMED || order.getState() == OrderState.DELIVERED
 				|| order.getState() == OrderState.PROBLEM || order.getState() == OrderState.READY) {
 			item = new HistoryItem(getBaker(), "Order confirmed");
 			item.setNewState(OrderState.CONFIRMED);
 			item.setTimestamp(orderPlaced.plusDays(random.nextInt(2)).plusHours(random.nextInt(5)));
-			order.getHistory().add(item);
+			history.add(item);
 
 			if (order.getState() == OrderState.PROBLEM) {
 				item = new HistoryItem(getBaker(), "Can't make it. Did not get any ingredients this morning");
 				item.setNewState(OrderState.PROBLEM);
-				item.setTimestamp(dueDate.atTime(random.nextInt(4) + 4, 0));
-				order.getHistory().add(item);
+				item.setTimestamp(order.getDueDate().atTime(random.nextInt(4) + 4, 0));
+				history.add(item);
 			} else if (order.getState() == OrderState.READY || order.getState() == OrderState.DELIVERED) {
 				item = new HistoryItem(getBaker(), "Order ready for pickup");
 				item.setNewState(OrderState.READY);
-				item.setTimestamp(dueDate.atTime(random.nextInt(2) + 8, random.nextBoolean() ? 0 : 30));
-				order.getHistory().add(item);
+				item.setTimestamp(order.getDueDate().atTime(random.nextInt(2) + 8, random.nextBoolean() ? 0 : 30));
+				history.add(item);
 				if (order.getState() == OrderState.DELIVERED) {
 					item = new HistoryItem(getBaker(), "Order delivered");
 					item.setNewState(OrderState.DELIVERED);
-					item.setTimestamp(dueDate.atTime(order.getDueTime().minusMinutes(random.nextInt(120))));
-					order.getHistory().add(item);
+					item.setTimestamp(order.getDueDate().atTime(order.getDueTime().minusMinutes(random.nextInt(120))));
+					history.add(item);
 				}
 			}
-
 		}
 
-		return order;
+		return history;
 	}
 
 	private boolean containsProduct(List<OrderItem> items, Product product) {

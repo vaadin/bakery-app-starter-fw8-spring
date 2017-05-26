@@ -37,6 +37,8 @@ import com.vaadin.template.orders.ui.view.OrdersView;
 @SpringView
 public class DashboardView extends DashboardViewDesign implements OrdersView, HasLogger {
 
+	private static final String BOARD_ROW_PANELS = "board-row-panels";
+
 	@Autowired
 	private DashboardPresenter presenter;
 
@@ -67,13 +69,13 @@ public class DashboardView extends DashboardViewDesign implements OrdersView, Ha
 		row.addStyleName("board-row-group");
 
 		row = board.addRow(new BoardBox(deliveriesThisMonthGraph), new BoardBox(deliveriesThisYearGraph));
-		row.addStyleName("board-row-panels");
+		row.addStyleName(BOARD_ROW_PANELS);
 
 		row = board.addRow(new BoardBox(yearlySalesGraph));
-		row.addStyleName("board-row-panels");
+		row.addStyleName(BOARD_ROW_PANELS);
 
 		row = board.addRow(new BoardBox(monthlyProductSplit), new BoardBox(dueGrid, "due-grid"));
-		row.addStyleName("board-row-panels");
+		row.addStyleName(BOARD_ROW_PANELS);
 
 		initDeliveriesGraphs();
 		initProductSplitMonthlyGraph();
