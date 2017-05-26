@@ -72,7 +72,6 @@ public class OrderService {
 
 	@Transactional(rollbackOn = Exception.class)
 	public Order saveOrder(Order order) {
-		// FIXME Use existing customer maybe
 		Customer customer = getCustomerRepository().save(order.getCustomer());
 		order.setCustomer(customer);
 

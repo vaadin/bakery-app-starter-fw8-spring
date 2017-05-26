@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.data.entity.HistoryItem;
@@ -39,7 +40,17 @@ public class OrderHistory extends OrderHistoryDesign {
 		newCommentInput.setId(COMMENT_INPUT_ID);
 		commitNewComment.setId(COMMIT_COMMENT_ID);
 
-		commitNewComment.addClickListener(e -> controller.addNewComment(newCommentInput.getValue()));
+		// Uses binder to get bean validation for the message
+		BeanValidationBinder<HistoryItem> binder = new BeanValidationBinder<>(HistoryItem.class);
+		binder.setRequiredConfigurator(null); // Don't show a *
+		binder.bind(newCommentInput, "message");
+		commitNewComment.addClickListener(e -> {
+			if (binder.isValid()) {
+				controller.addNewComment(newCommentInput.getValue());
+			} else {
+				newCommentInput.focus();
+			}
+		});
 
 		// We don't want a global shortcut for enter, scope it to the panel
 		addAction(new ClickShortcut(commitNewComment, KeyCode.ENTER, null));

@@ -1,10 +1,12 @@
 package com.vaadin.template.orders.backend.data.entity;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.Size;
 
 @Entity
 public class PickupLocation extends AbstractEntity {
 
+	@Size(max = 255)
 	private String name;
 
 	public PickupLocation() {
