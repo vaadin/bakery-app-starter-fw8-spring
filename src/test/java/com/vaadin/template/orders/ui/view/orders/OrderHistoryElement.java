@@ -15,11 +15,11 @@ import com.vaadin.testbench.elementsbase.ServerClass;
 public class OrderHistoryElement extends OrderHistoryDesignElement {
 
 	private TextFieldElement getCommentInput() {
-		return $(TextFieldElement.class).id(OrderHistory.COMMENT_INPUT_ID);
+		return $(TextFieldElement.class).id("newCommentInput");
 	}
 
 	private ButtonElement getSaveComment() {
-		return $(ButtonElement.class).id(OrderHistory.COMMIT_COMMENT_ID);
+		return $(ButtonElement.class).id("commitNewComment");
 	}
 
 	public List<OrderHistoryItemObject> getHistoryItems() {

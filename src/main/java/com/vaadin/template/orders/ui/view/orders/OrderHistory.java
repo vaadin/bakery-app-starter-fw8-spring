@@ -21,10 +21,6 @@ import com.vaadin.ui.themes.ValoTheme;
 @PrototypeScope
 public class OrderHistory extends OrderHistoryDesign {
 
-	// IDs for testing purposes
-	public static final String COMMENT_INPUT_ID = "commentInput";
-	public static final String COMMIT_COMMENT_ID = "commitCommentButton";
-
 	@Autowired
 	private DateTimeFormatter dateTimeFormatter;
 
@@ -36,9 +32,6 @@ public class OrderHistory extends OrderHistoryDesign {
 	@PostConstruct
 	public void init() {
 		controller.init(this);
-
-		newCommentInput.setId(COMMENT_INPUT_ID);
-		commitNewComment.setId(COMMIT_COMMENT_ID);
 
 		// Uses binder to get bean validation for the message
 		BeanValidationBinder<HistoryItem> binder = new BeanValidationBinder<>(HistoryItem.class);
