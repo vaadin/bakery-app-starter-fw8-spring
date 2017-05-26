@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.vaadin.spring.events.annotation.EnableEventBus;
 
 import com.vaadin.template.orders.app.security.SecurityConfig;
 import com.vaadin.template.orders.backend.OrderRepository;
@@ -19,7 +18,6 @@ import com.vaadin.template.orders.ui.eventbus.ViewEventBusImpl;
 		SecurityConfig.class, ViewEventBusImpl.class })
 @EnableJpaRepositories(basePackageClasses = { OrderRepository.class })
 @EntityScan(basePackageClasses = { Order.class })
-@EnableEventBus
 public class Application extends SpringBootServletInitializer {
 
 	public static final String APP_URL = "/";

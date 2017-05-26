@@ -3,12 +3,12 @@ package com.vaadin.template.orders.ui.view.orders;
 import java.io.Serializable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.events.EventBus;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.ui.PrototypeScope;
+import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
 
 @SpringComponent
 @PrototypeScope
@@ -19,7 +19,7 @@ public class OrderHistoryController implements Serializable {
 	private transient OrderService orderService;
 
 	@Autowired
-	private EventBus.ViewEventBus eventBus;
+	private ViewEventBus eventBus;
 
 	public void init(OrderHistory view) {
 		this.view = view;
@@ -27,7 +27,7 @@ public class OrderHistoryController implements Serializable {
 
 	public void addNewComment(String comment) {
 		getOrderService().addHistoryItem(view.getOrder(), comment);
-		eventBus.publish(this, new OrderUpdated());
+		eventBus.publish(new OrderUpdated());
 	}
 
 	protected OrderService getOrderService() {

@@ -13,7 +13,6 @@
 		<vaadin.version>8.1.0.beta1</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<springboot.version>1.5.1.RELEASE</springboot.version>
-		<org.vaadin.spring.version>0.0.7.RELEASE</org.vaadin.spring.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -191,11 +190,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.vaadin.spring.addons</groupId>
-			<artifactId>vaadin-spring-addon-eventbus</artifactId>
-			<version>${org.vaadin.spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
