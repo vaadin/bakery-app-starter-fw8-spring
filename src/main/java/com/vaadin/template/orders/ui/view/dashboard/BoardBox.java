@@ -12,4 +12,13 @@ public class BoardBox extends CssLayout {
 		inner.addComponent(component);
 		addComponent(inner);
 	}
+
+	public BoardBox(Component component, String styleName) {
+		this(component);
+		addStyleName(styleName);
+	}
+
+	public void setNeedsAttention(boolean needsAttention) {
+		setStyleName("board-box-needs-attention", needsAttention);
+	}
 }

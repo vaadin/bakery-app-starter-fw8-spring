@@ -17,11 +17,11 @@ public class DashboardViewElement extends DashboardViewDesignElement {
 	public static class BoardBoxElement extends CssLayoutElement {
 
 		public String getHeader() {
-			return ElementUtil.getText(findElement(By.className("board-box-small-text")));
+			return ElementUtil.getText(findElement(By.tagName("h4")));
 		}
 
 		public String getContent() {
-			return ElementUtil.getText(findElement(By.className("board-box-big-text")));
+			return ElementUtil.getText(findElement(By.tagName("h1")));
 		}
 	}
 

@@ -19,7 +19,14 @@ import com.vaadin.addon.charts.model.ChartType;
 import com.vaadin.addon.charts.model.Configuration;
 import com.vaadin.addon.charts.model.DataSeries;
 import com.vaadin.addon.charts.model.DataSeriesItem;
+import com.vaadin.addon.charts.model.Labels;
 import com.vaadin.addon.charts.model.ListSeries;
+import com.vaadin.addon.charts.model.PlotOptionsColumn;
+import com.vaadin.addon.charts.model.PlotOptionsPie;
+import com.vaadin.addon.charts.model.YAxis;
+import com.vaadin.addon.charts.model.style.SolidColor;
+import com.vaadin.addon.charts.model.style.Style;
+import com.vaadin.board.Row;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.entity.Product;
@@ -33,12 +40,14 @@ public class DashboardView extends DashboardViewDesign implements OrdersView, Ha
 	@Autowired
 	private DashboardPresenter presenter;
 
-	private final BoardLabel todayLabel = new BoardLabel("Today", "3/7");
-	private final BoardLabel notAvailableLabel = new BoardLabel("N/A", "1");
-	private final BoardLabel newLabel = new BoardLabel("New", "2");
-	private final BoardLabel tomorrowLabel = new BoardLabel("Tomorrow", "4");
-	private final Chart deliveriesThisMonthGraph = new Chart(ChartType.LINE);
-	private final Chart deliveriesThisYearGraph = new Chart(ChartType.LINE);
+	private final BoardLabel todayLabel = new BoardLabel("Today", "3/7", "today");
+	private final BoardLabel notAvailableLabel = new BoardLabel("N/A", "1", "na");
+	private final BoardBox notAvailableBox = new BoardBox(notAvailableLabel);
+	private final BoardLabel newLabel = new BoardLabel("New", "2", "new");
+	private final BoardLabel tomorrowLabel = new BoardLabel("Tomorrow", "4", "tomorrow");
+
+	private final Chart deliveriesThisMonthGraph = new Chart(ChartType.COLUMN);
+	private final Chart deliveriesThisYearGraph = new Chart(ChartType.COLUMN);
 	private final Chart yearlySalesGraph = new Chart(ChartType.LINE);
 	private final Chart monthlyProductSplit = new Chart(ChartType.PIE);
 	private final OrdersGrid dueGrid = new OrdersGrid();
@@ -51,30 +60,38 @@ public class DashboardView extends DashboardViewDesign implements OrdersView, Ha
 
 	@PostConstruct
 	public void init() {
-		board.addRow(new BoardBox(todayLabel), new BoardBox(notAvailableLabel), new BoardBox(newLabel),
+		Row row = board.addRow(new BoardBox(todayLabel), notAvailableBox, new BoardBox(newLabel),
 				new BoardBox(tomorrowLabel));
-		board.addRow(deliveriesThisMonthGraph, deliveriesThisYearGraph);
-		board.addRow(yearlySalesGraph);
-		board.addRow(monthlyProductSplit, dueGrid);
+		row.addStyleName("board-group");
+
+		row = board.addRow(new BoardBox(deliveriesThisMonthGraph), new BoardBox(deliveriesThisYearGraph));
+		row.addStyleName("board-panels");
+
+		row = board.addRow(new BoardBox(yearlySalesGraph));
+		row.addStyleName("board-panels");
+
+		row = board.addRow(new BoardBox(monthlyProductSplit), new BoardBox(dueGrid, "due-grid"));
+		row.addStyleName("board-panels");
 
 		initDeliveriesGraphs();
 		initProductSplitMonthlyGraph();
 		initYearlySalesGraph();
 
 		dueGrid.setId("dueGrid");
-		dueGrid.setHeight("300px");
-		dueGrid.addStyleName("border");
+		dueGrid.setHeight("100%");
 
 		dueGrid.setDataProvider(presenter.getOrdersProvider());
 	}
 
 	private void initYearlySalesGraph() {
 		yearlySalesGraph.setId("yearlySales");
-		yearlySalesGraph.setHeight("400px");
+		yearlySalesGraph.setHeight("300px");
+		yearlySalesGraph.addStyleName("v-clip");
 		int year = Year.now().getValue();
 
 		Configuration conf = yearlySalesGraph.getConfiguration();
 		conf.setTitle("Sales last years");
+		configureTitleStyle(conf);
 		conf.getxAxis().setCategories(getMonthNames());
 
 		salesPerYear = new ListSeries[3];
@@ -87,46 +104,76 @@ public class DashboardView extends DashboardViewDesign implements OrdersView, Ha
 	private void initProductSplitMonthlyGraph() {
 		monthlyProductSplit.setId("monthlyProductSplit");
 		monthlyProductSplit.setHeight("300px");
-		monthlyProductSplit.setWidth("300px");
+		monthlyProductSplit.addStyleName("v-clip");
 
 		LocalDate today = LocalDate.now();
 
 		Configuration conf = monthlyProductSplit.getConfiguration();
 		String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL, Locale.US);
 		conf.setTitle("Products delivered in " + thisMonth);
+		configureTitleStyle(conf);
 		deliveriesPerProductSeries = new DataSeries();
 		conf.addSeries(deliveriesPerProductSeries);
+
+		PlotOptionsPie options = new PlotOptionsPie();
+		options.setShowInLegend(true);
+		options.getDataLabels().setEnabled(false);
+		conf.setPlotOptions(options);
+
 	}
 
 	private void initDeliveriesGraphs() {
 		LocalDate today = LocalDate.now();
 
 		deliveriesThisMonthGraph.setId("deliveriesThisMonth");
-		deliveriesThisMonthGraph.setHeight("200px");
+		deliveriesThisMonthGraph.setHeight("150px");
 		deliveriesThisMonthGraph.addStyleName("v-clip");
 		deliveriesThisYearGraph.setId("deliveriesThisYear");
-		deliveriesThisYearGraph.setHeight("200px");
+		deliveriesThisYearGraph.setHeight("150px");
 		deliveriesThisYearGraph.addStyleName("v-clip");
 
 		Configuration yearConf = deliveriesThisYearGraph.getConfiguration();
 
 		yearConf.setTitle("Deliveries in " + today.getYear());
+		configureTitleStyle(yearConf);
 		yearConf.getxAxis().setCategories(getMonthNames());
 		yearConf.getLegend().setEnabled(false);
 		deliveriesThisYearSeries = new ListSeries("Deliveries");
 		yearConf.addSeries(deliveriesThisYearSeries);
+		configureColumnSeries(deliveriesThisYearSeries);
 
 		Configuration monthConf = deliveriesThisMonthGraph.getConfiguration();
 		String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL, Locale.US);
 		monthConf.setTitle("Deliveries in " + thisMonth);
+		configureTitleStyle(monthConf);
 		monthConf.getLegend().setEnabled(false);
 		deliveriesThisMonthSeries = new ListSeries("Deliveries");
 		monthConf.addSeries(deliveriesThisMonthSeries);
+		configureColumnSeries(deliveriesThisMonthSeries);
+
 		int daysInMonth = YearMonth.of(today.getYear(), today.getMonthValue()).lengthOfMonth();
 		String[] categories = IntStream.rangeClosed(1, daysInMonth).mapToObj(Integer::toString)
 				.toArray(size -> new String[size]);
 		deliveriesThisMonthSeries.getConfiguration().getxAxis().setCategories(categories);
 
+	}
+
+	protected void configureColumnSeries(ListSeries series) {
+		PlotOptionsColumn options = new PlotOptionsColumn();
+		options.setBorderWidth(1);
+		options.setGroupPadding(0);
+		series.setPlotOptions(options);
+
+		YAxis yaxis = series.getConfiguration().getyAxis();
+		yaxis.setGridLineWidth(0);
+		yaxis.setLabels(new Labels(false));
+		yaxis.setTitle("");
+	}
+
+	private void configureTitleStyle(Configuration conf) {
+		Style titleStyle = conf.getTitle().getStyle();
+		titleStyle.setColor(new SolidColor("inherit"));
+		titleStyle.setFontSize("inherit");
 	}
 
 	private String[] getMonthNames() {
@@ -159,12 +206,9 @@ public class DashboardView extends DashboardViewDesign implements OrdersView, Ha
 	private void updateLabels(DeliveryStats deliveryStats) {
 		todayLabel.setContent(deliveryStats.getDeliveredToday() + "/" + deliveryStats.getDueToday());
 		notAvailableLabel.setContent(Integer.toString(deliveryStats.getNotAvailableToday()));
-		if (deliveryStats.getNotAvailableToday() > 0) {
-			notAvailableLabel.setNeedsAttention(true);
-		}
+		notAvailableBox.setNeedsAttention(deliveryStats.getNotAvailableToday() > 0);
 		newLabel.setContent(Integer.toString(deliveryStats.getNewOrders()));
 		tomorrowLabel.setContent(Integer.toString(deliveryStats.getDueTomorrow()));
-
-		notAvailableLabel.setStyleName("problem", deliveryStats.getNotAvailableToday() > 0);
 	}
+
 }
