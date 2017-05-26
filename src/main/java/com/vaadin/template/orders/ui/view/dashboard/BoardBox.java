@@ -7,7 +7,9 @@ public class BoardBox extends CssLayout {
 
 	public BoardBox(Component component) {
 		addStyleName("board-box");
+		setSizeFull();
 		CssLayout inner = new CssLayout();
+		inner.setSizeFull();
 		inner.addStyleName("board-box-inner");
 		inner.addComponent(component);
 		addComponent(inner);

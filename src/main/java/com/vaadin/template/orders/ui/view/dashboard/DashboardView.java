@@ -60,33 +60,34 @@ public class DashboardView extends DashboardViewDesign implements OrdersView, Ha
 
 	@PostConstruct
 	public void init() {
+		setResponsive(true);
+
 		Row row = board.addRow(new BoardBox(todayLabel), notAvailableBox, new BoardBox(newLabel),
 				new BoardBox(tomorrowLabel));
-		row.addStyleName("board-group");
+		row.addStyleName("board-row-group");
 
 		row = board.addRow(new BoardBox(deliveriesThisMonthGraph), new BoardBox(deliveriesThisYearGraph));
-		row.addStyleName("board-panels");
+		row.addStyleName("board-row-panels");
 
 		row = board.addRow(new BoardBox(yearlySalesGraph));
-		row.addStyleName("board-panels");
+		row.addStyleName("board-row-panels");
 
 		row = board.addRow(new BoardBox(monthlyProductSplit), new BoardBox(dueGrid, "due-grid"));
-		row.addStyleName("board-panels");
+		row.addStyleName("board-row-panels");
 
 		initDeliveriesGraphs();
 		initProductSplitMonthlyGraph();
 		initYearlySalesGraph();
 
 		dueGrid.setId("dueGrid");
-		dueGrid.setHeight("100%");
+		dueGrid.setSizeFull();
 
 		dueGrid.setDataProvider(presenter.getOrdersProvider());
 	}
 
 	private void initYearlySalesGraph() {
 		yearlySalesGraph.setId("yearlySales");
-		yearlySalesGraph.setHeight("300px");
-		yearlySalesGraph.addStyleName("v-clip");
+		yearlySalesGraph.setSizeFull();
 		int year = Year.now().getValue();
 
 		Configuration conf = yearlySalesGraph.getConfiguration();
@@ -99,12 +100,13 @@ public class DashboardView extends DashboardViewDesign implements OrdersView, Ha
 			salesPerYear[i] = new ListSeries(Integer.toString(year - i));
 			conf.addSeries(salesPerYear[i]);
 		}
+		conf.getyAxis().setTitle("");
+
 	}
 
 	private void initProductSplitMonthlyGraph() {
 		monthlyProductSplit.setId("monthlyProductSplit");
-		monthlyProductSplit.setHeight("300px");
-		monthlyProductSplit.addStyleName("v-clip");
+		monthlyProductSplit.setSizeFull();
 
 		LocalDate today = LocalDate.now();
 
@@ -120,22 +122,26 @@ public class DashboardView extends DashboardViewDesign implements OrdersView, Ha
 		options.getDataLabels().setEnabled(false);
 		conf.setPlotOptions(options);
 
+		conf.getyAxis().setTitle("");
+
 	}
 
 	private void initDeliveriesGraphs() {
 		LocalDate today = LocalDate.now();
 
 		deliveriesThisMonthGraph.setId("deliveriesThisMonth");
-		deliveriesThisMonthGraph.setHeight("150px");
-		deliveriesThisMonthGraph.addStyleName("v-clip");
+		deliveriesThisMonthGraph.setSizeFull();
+		// deliveriesThisMonthGraph.addStyleName("v-clip");
+
 		deliveriesThisYearGraph.setId("deliveriesThisYear");
-		deliveriesThisYearGraph.setHeight("150px");
-		deliveriesThisYearGraph.addStyleName("v-clip");
+		deliveriesThisYearGraph.setSizeFull();
+		// deliveriesThisYearGraph.addStyleName("v-clip");
 
 		Configuration yearConf = deliveriesThisYearGraph.getConfiguration();
 
 		yearConf.setTitle("Deliveries in " + today.getYear());
 		configureTitleStyle(yearConf);
+		yearConf.getChart().setMargin(12, 12, 24, 12);
 		yearConf.getxAxis().setCategories(getMonthNames());
 		yearConf.getLegend().setEnabled(false);
 		deliveriesThisYearSeries = new ListSeries("Deliveries");
@@ -146,6 +152,7 @@ public class DashboardView extends DashboardViewDesign implements OrdersView, Ha
 		String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL, Locale.US);
 		monthConf.setTitle("Deliveries in " + thisMonth);
 		configureTitleStyle(monthConf);
+		monthConf.getChart().setMargin(12, 12, 24, 12);
 		monthConf.getLegend().setEnabled(false);
 		deliveriesThisMonthSeries = new ListSeries("Deliveries");
 		monthConf.addSeries(deliveriesThisMonthSeries);
@@ -154,7 +161,7 @@ public class DashboardView extends DashboardViewDesign implements OrdersView, Ha
 		int daysInMonth = YearMonth.of(today.getYear(), today.getMonthValue()).lengthOfMonth();
 		String[] categories = IntStream.rangeClosed(1, daysInMonth).mapToObj(Integer::toString)
 				.toArray(size -> new String[size]);
-		deliveriesThisMonthSeries.getConfiguration().getxAxis().setCategories(categories);
+		monthConf.getxAxis().setCategories(categories);
 
 	}
 

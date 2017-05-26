@@ -2,22 +2,43 @@
 	
 	vaadin-board {
 		padding: $view-padding;
-		
-		.board-group {
+
+		vaadin-board-row:nth-child(2) {
+			height: 15vh;
+			min-height: 130px;
+			max-height: 160px;
+		}
+		vaadin-board-row:nth-child(3) {
+			height: 20vh;
+			min-height: 250px;
+		}
+		vaadin-board-row:nth-child(4) {
+			height: 30vh;
+			min-height: 400px;
+		}
+
+  		.board-box {
+  			padding: round($view-padding / 3);
+  		}	
+		.board-box-needs-attention {
+			background-color: rgba(255,0,0,.04);
+			h1, h4 {
+				color: $orders-problem-color;
+			}
+		}
+
+  		.board-box-label {
+  			text-align: center;
+  			h1, 
+  			h4 {
+  				margin: $v-layout-spacing-vertical $v-layout-spacing-horizontal !important;
+  				margin-top: round($v-layout-spacing-vertical / 2) !important;
+  			}
+  		}
+
+		.board-row-group {
 			@include valo-panel-style;
       		margin-bottom: round($view-padding / 3);
-
-      		.board-box {
-      			padding: $v-layout-spacing-vertical $v-layout-spacing-horizontal; 
-      			text-align: center;
-      			overflow: hidden;
-      		}
-      		.board-box-label {
-      			text-align: center;
-      			h1 {
-      				margin: 0;
-      			}
-      		}
 
       		.today h4 {
       			color: $orders-ok-color;
@@ -29,37 +50,27 @@
       			color: $orders-problem-color;
       		}
 
-			.board-box-needs-attention {
-				background-color: rgba(255,0,0,.04);
-				 h1, h2, h3, h4 {
-					color: $orders-problem-color;
-				}
-			}
-
       		&.large {
       			.board-box:not(:first-child) {
-      				border-left: valo-border($strength: 0.3);
+      				border-left: valo-border($strength: .3);
       			}
       		}
       		&.medium {
       			.board-box:nth-child(even) {
-      				border-left: valo-border($strength: 0.3);
+      				border-left: valo-border($strength: .3);
       			}
       			.board-box:nth-child(1n+3) {
-      				border-top: valo-border($strength: 0.3);
+      				border-top: valo-border($strength: .3);
       			}
       		}
       		&.small {
       			.board-box:nth-child(1n+2) {
-      				border-top: valo-border($strength: 0.3);
+      				border-top: valo-border($strength: .3);
       			}
       		}
 		}
 	
-		.board-panels {
-			.board-box {
-				padding: round($view-padding / 3);
-			}
+		.board-row-panels {
 			.board-box:first-child {
 				padding-left: 0;
 			}
@@ -72,7 +83,6 @@
       			}
       		}
       		.board-box-inner {
-				width: 100%;
 				@include valo-panel-style;
 				position: relative;
 				z-index: 0;
@@ -82,18 +92,20 @@
 			.due-grid {
 				.board-box-inner {
 					padding: 0;
-					height: 100%;
 				}
-				.v-grid > * {
+				.v-grid > div {
 					border: 0;
 				}
 			}
 		}
-	
+
 		text.highcharts-title {
 			@extend .v-label-h4;
-			@extend .v-label-colored;
-			fill: $v-font-color--colored;
+		}
+	}
+	.dashboard-view[width-range~="-599px"] {
+		vaadin-board {
+			padding: round($view-padding / 3);
 		}
 	}
 
