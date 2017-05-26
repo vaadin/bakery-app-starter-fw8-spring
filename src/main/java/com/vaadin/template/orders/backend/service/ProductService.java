@@ -11,7 +11,7 @@ import com.vaadin.template.orders.backend.ProductRepository;
 import com.vaadin.template.orders.backend.data.entity.Product;
 
 @Service
-public class ProductService {
+public class ProductService implements CrudService<Product> {
 
 	private ProductRepository productRepository;
 

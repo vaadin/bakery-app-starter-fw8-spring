@@ -20,7 +20,7 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 
 	@Override
 	protected Product loadEntity(Long id) {
-		return getProductService().get(id);
+		return getService().get(id);
 	}
 
 	@Override
@@ -30,12 +30,12 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 
 	@Override
 	protected void deleteEntity(Product entity) {
-		getProductService().delete(entity.getId());
+		getService().delete(entity.getId());
 	}
 
 	@Override
 	protected Product saveEntity(Product editItem) {
-		return getProductService().save(editItem);
+		return getService().save(editItem);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 		getGridDataProvider().setFilter(filter);
 	}
 
-	protected ProductService getProductService() {
+	protected ProductService getService() {
 		if (productService == null) {
 			productService = BeanLocator.find(ProductService.class);
 		}
