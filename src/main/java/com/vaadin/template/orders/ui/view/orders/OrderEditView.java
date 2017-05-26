@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.BeanValidationBinder;
@@ -18,6 +17,7 @@ import com.vaadin.data.ValueContext;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Order;
@@ -35,17 +35,11 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 	private OrderEditPresenter presenter;
 
 	@Autowired
-	private ObjectProvider<ProductInfo> productInfoProvider;
-
-	@Autowired
 	private DollarPriceConverter priceConverter;
 
 	private BeanValidationBinder<Order> binder;
 
 	private Mode mode;
-
-	@Autowired
-	private ObjectProvider<OrderStateWindow> windowProvider;
 
 	private boolean hasChanges;
 
@@ -87,7 +81,7 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 		ok.addClickListener(e -> presenter.okPressed());
 
 		setState.addClickListener(e -> {
-			OrderStateWindow w = windowProvider.getObject();
+			OrderStateWindow w = BeanLocator.find(OrderStateWindow.class);
 			w.setOrder(getOrder());
 			getUI().addWindow(w);
 		});
@@ -155,7 +149,7 @@ public class OrderEditView extends OrderEditViewDesign implements OrdersView {
 	 * @return a new product info instance
 	 */
 	private ProductInfo createProductInfo(OrderItem orderItem) {
-		ProductInfo productInfo = productInfoProvider.getObject();
+		ProductInfo productInfo = BeanLocator.find(ProductInfo.class);
 		productInfo.setItem(orderItem);
 		return productInfo;
 	}

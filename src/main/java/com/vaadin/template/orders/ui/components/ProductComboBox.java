@@ -26,7 +26,7 @@ public class ProductComboBox extends ComboBox<Product> {
 	}
 
 	@PostConstruct
-	public void init() {
+	public void initDataProvider() {
 		setDataProvider(dataProvider);
 	}
 
