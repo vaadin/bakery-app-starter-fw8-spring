@@ -1,5 +1,7 @@
 package com.vaadin.template.orders.ui;
 
+import java.io.Serializable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
@@ -13,7 +15,7 @@ import com.vaadin.template.orders.ui.view.OrdersView;
 
 @SpringComponent
 @PrototypeScope
-public class MainPresenter {
+public class MainPresenter implements Serializable {
 
 	@Autowired
 	private NavigationManager navigationManager;
