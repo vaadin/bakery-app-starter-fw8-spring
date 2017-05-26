@@ -63,6 +63,11 @@ public class DataGenerator implements HasLogger {
 	public CommandLineRunner loadData(OrderRepository orders, UserRepository users, ProductRepository products,
 			CustomerRepository customers, PickupLocationRepository pickupLocations, PasswordEncoder passwordEncoder) {
 		return args -> {
+			if (users.count() != 0L) {
+				getLogger().info("Using existing database");
+				return;
+			}
+
 			getLogger().info("Generating demo data");
 			getLogger().info("... generating users");
 			createUsers(users);
