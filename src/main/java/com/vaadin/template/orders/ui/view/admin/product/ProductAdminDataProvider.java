@@ -2,7 +2,6 @@ package com.vaadin.template.orders.ui.view.admin.product;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,33 +15,22 @@ import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.backend.service.CrudService;
 import com.vaadin.template.orders.backend.service.ProductService;
 import com.vaadin.template.orders.ui.PrototypeScope;
-import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
+import com.vaadin.template.orders.ui.view.admin.FilterablePageableDataProvider;
 
 @SpringComponent
 @PrototypeScope
-public class ProductAdminDataProvider extends PageableDataProvider<Product, Object> {
+public class ProductAdminDataProvider extends FilterablePageableDataProvider<Product, Object> {
 
 	private transient CrudService<Product> productService;
 
-	private Optional<String> filter = Optional.empty();
-
 	@Override
 	protected Page<Product> fetchFromBackEnd(Query<Product, Object> query, Pageable pageable) {
-		return getProductService().findAnyMatching(filter, pageable);
+		return getProductService().findAnyMatching(getOptionalFilter(), pageable);
 	}
 
 	@Override
 	protected int sizeInBackEnd(Query<Product, Object> query) {
-		return (int) getProductService().countAnyMatching(filter);
-	}
-
-	public void setFilter(String filter) {
-		if ("".equals(filter)) {
-			this.filter = Optional.empty();
-		} else {
-			this.filter = Optional.of(filter);
-		}
-		refreshAll();
+		return (int) getProductService().countAnyMatching(getOptionalFilter());
 	}
 
 	@Override
