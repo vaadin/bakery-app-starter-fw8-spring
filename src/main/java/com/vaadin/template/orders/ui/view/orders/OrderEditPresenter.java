@@ -10,12 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.annotation.PreDestroy;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
@@ -49,10 +46,9 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 
 	private static final List<OrderState> happyPath = Arrays.asList(OrderState.NEW, OrderState.CONFIRMED,
 			OrderState.READY, OrderState.DELIVERED);
-	private final EventBus.ViewEventBus shouldBeGlobalEventBus;
 
 	@Autowired
-	public OrderEditPresenter(ViewEventBus viewEventBus, EventBus.ViewEventBus shouldBeGlobalEventBus) {
+	public OrderEditPresenter(ViewEventBus viewEventBus) {
 		viewEventBus.subscribe(ProductInfoChange.class, change -> {
 			updateTotalSum();
 			view.onProductInfoChanged();
@@ -61,14 +57,9 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 			removeOrderItem(deleted.getOrderItem());
 			view.onProductInfoChanged();
 		});
-		this.shouldBeGlobalEventBus = shouldBeGlobalEventBus;
-		shouldBeGlobalEventBus.subscribe(this);
-
-	}
-
-	@PreDestroy
-	public void destroy() {
-		shouldBeGlobalEventBus.unsubscribe(this);
+		viewEventBus.subscribe(OrderUpdated.class, deleted -> {
+			refresh(view.getOrder().getId());
+		});
 	}
 
 	void init(OrderEditView view) {
@@ -98,11 +89,6 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 		}
 
 		refreshView(order);
-	}
-
-	@EventBusListenerMethod
-	private void orderUpdated(OrderUpdated event) {
-		refresh(view.getOrder().getId());
 	}
 
 	private void updateTotalSum() {

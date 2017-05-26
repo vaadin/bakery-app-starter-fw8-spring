@@ -3,7 +3,6 @@ package com.vaadin.template.orders.ui.view.orders;
 import java.io.Serializable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.events.EventBus;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.app.BeanLocator;
@@ -12,6 +11,7 @@ import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.PrototypeScope;
+import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 
@@ -24,7 +24,7 @@ public class OrderStateWindowController implements HasLogger, Serializable {
 	private OrderStateWindow view;
 
 	@Autowired
-	private EventBus.ViewEventBus eventBus;
+	private ViewEventBus eventBus;
 
 	public void setState(Order order, OrderState state) {
 		try {
@@ -36,7 +36,7 @@ public class OrderStateWindowController implements HasLogger, Serializable {
 			return;
 		}
 		view.close();
-		eventBus.publish(this, new OrderUpdated());
+		eventBus.publish(new OrderUpdated());
 	}
 
 	public void init(OrderStateWindow view) {
