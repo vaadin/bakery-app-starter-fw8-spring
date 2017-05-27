@@ -25,12 +25,13 @@ public class DashboardIT extends AbstractOrdersIT {
 		DashboardViewElement dashboardView = loginAsAdmin();
 		ChartElement deliveriesThisMonth = dashboardView.getDeliveriesThisMonth();
 		String thisMonth = YearMonth.now().getMonth().getDisplayName(TextStyle.FULL, Locale.US);
-		Assert.assertEquals("Deliveries in " + thisMonth, deliveriesThisMonth.getTitle());
+		Assert.assertEquals(("Deliveries in " + thisMonth).toUpperCase(), deliveriesThisMonth.getTitle().toUpperCase());
 		Assert.assertEquals(1, deliveriesThisMonth.getSeries().size());
 		Assert.assertTrue(deliveriesThisMonth.hasData());
 
 		ChartElement deliveriesThisYear = dashboardView.getDeliveriesThisYear();
-		Assert.assertEquals("Deliveries in " + Year.now().getValue(), deliveriesThisYear.getTitle());
+		Assert.assertEquals(("Deliveries in " + Year.now().getValue()).toUpperCase(),
+				deliveriesThisYear.getTitle().toUpperCase());
 		Assert.assertEquals(1, deliveriesThisYear.getSeries().size());
 		Assert.assertTrue(deliveriesThisYear.hasData());
 
@@ -49,7 +50,7 @@ public class DashboardIT extends AbstractOrdersIT {
 	public void boxesContainData() {
 		DashboardViewElement dashboardView = loginAsAdmin();
 		List<BoardBoxElement> boxes = dashboardView.getBoxes();
-		Assert.assertEquals(4, boxes.size());
+		Assert.assertEquals(9, boxes.size()); // "widgets" in dashboard
 
 		BoardBoxElement todayBox = dashboardView.getTodayBox();
 		String[] todayValues = todayBox.getContent().split("/", 2);

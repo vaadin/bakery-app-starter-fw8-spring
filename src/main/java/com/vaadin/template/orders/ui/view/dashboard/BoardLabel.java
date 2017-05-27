@@ -16,6 +16,11 @@ public class BoardLabel extends Label {
 		setContent(content);
 	}
 
+	public BoardLabel(String header, String content, String styleName) {
+		this(header, content);
+		addStyleName(styleName);
+	}
+
 	private void setHeader(String header) {
 		this.header = header;
 		updateValue();
@@ -26,13 +31,9 @@ public class BoardLabel extends Label {
 		updateValue();
 	}
 
-	public void setNeedsAttention(boolean needsAttention) {
-		setStyleName("board-box-needs-attention", needsAttention);
-	}
-
 	private void updateValue() {
-		setValue("<div class=\"board-box-small-text\">" + header + "</div>" //
-				+ "<div class=\"board-box-big-text\">" + content + "</div>");
+		setValue("<h1>" + content + "</h1>" //
+				+ "<h4>" + header + "</h4>");
 	}
 
 }
