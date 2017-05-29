@@ -8,10 +8,10 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.annotation.ViewScope;
-import com.vaadin.template.orders.ui.view.OrdersView;
+import com.vaadin.template.orders.ui.view.NavigableView;
 
 @SpringView
-public class OrdersListView extends OrdersListViewDesign implements OrdersView {
+public class OrdersListView extends OrdersListViewDesign implements NavigableView {
 
 	@Autowired
 	private OrdersListPresenter presenter;

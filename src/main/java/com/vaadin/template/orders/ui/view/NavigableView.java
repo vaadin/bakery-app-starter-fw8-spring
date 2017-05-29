@@ -4,9 +4,12 @@ import com.vaadin.navigator.View;
 import com.vaadin.ui.Component;
 
 /**
- * An improved view interface which can provide the component for the view.
+ * A view which is connected to a URL and can be navigated to by the user.
+ * <p>
+ * Note that this {@code view} is not related to a {@code view} in MVP/MVC or
+ * other patterns.
  */
-public interface OrdersView extends View {
+public interface NavigableView extends View {
 
 	/**
 	 * Gets the component to show when navigating to the view.

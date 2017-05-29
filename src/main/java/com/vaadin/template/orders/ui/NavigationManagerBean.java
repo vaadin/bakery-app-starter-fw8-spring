@@ -13,7 +13,7 @@ import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.template.orders.app.security.SecurityUtils;
 import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.ui.view.NavigationEvent;
-import com.vaadin.template.orders.ui.view.OrdersView;
+import com.vaadin.template.orders.ui.view.NavigableView;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
 import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 
@@ -27,7 +27,7 @@ public class NavigationManagerBean extends SpringNavigator implements Navigation
 	public void init() {
 		addViewChangeListener(e -> {
 			View oldView = e.getOldView();
-			if (!(oldView instanceof OrdersView)) {
+			if (!(oldView instanceof NavigableView)) {
 				return true;
 			}
 			String navigationState;
@@ -39,7 +39,7 @@ public class NavigationManagerBean extends SpringNavigator implements Navigation
 			if (viewAlreadyConfirmed) {
 				return true;
 			} else {
-				return ((OrdersView) oldView).beforeLeave(new NavigationEvent(() -> {
+				return ((NavigableView) oldView).beforeLeave(new NavigationEvent(() -> {
 					viewAlreadyConfirmed = true;
 					navigateTo(navigationState);
 					viewAlreadyConfirmed = false;

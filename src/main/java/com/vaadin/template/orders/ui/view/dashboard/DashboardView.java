@@ -32,10 +32,10 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.components.OrdersGrid;
-import com.vaadin.template.orders.ui.view.OrdersView;
+import com.vaadin.template.orders.ui.view.NavigableView;
 
 @SpringView
-public class DashboardView extends DashboardViewDesign implements OrdersView, HasLogger {
+public class DashboardView extends DashboardViewDesign implements NavigableView, HasLogger {
 
 	private static final String BOARD_ROW_PANELS = "board-row-panels";
 
