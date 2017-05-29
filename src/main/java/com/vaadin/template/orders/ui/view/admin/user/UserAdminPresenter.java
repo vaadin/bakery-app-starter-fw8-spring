@@ -5,15 +5,14 @@ import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.backend.data.entity.User;
 import com.vaadin.template.orders.backend.service.UserService;
-import com.vaadin.template.orders.ui.NavigationManager;
-import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudPresenter;
 
 @SpringComponent
-@PrototypeScope
+@ViewScope
 public class UserAdminPresenter extends AbstractCrudPresenter<User, UserService, UserAdminView>
 		implements Serializable {
 

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
@@ -25,14 +26,13 @@ import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.backend.service.PickupLocationService;
 import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.NavigationManager;
-import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 
 @SpringComponent
-@PrototypeScope
+@ViewScope
 public class OrderEditPresenter implements Serializable, HasLogger {
 
 	private OrderEditView view;
