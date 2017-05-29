@@ -8,13 +8,14 @@ import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinServletService;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.template.orders.app.Application;
 import com.vaadin.template.orders.app.security.SecuredViewAccessControl;
-import com.vaadin.template.orders.ui.view.NavigationEvent;
 import com.vaadin.template.orders.ui.view.NavigableView;
+import com.vaadin.template.orders.ui.view.NavigationEvent;
 
 @SpringComponent
-@PrototypeScope
+@UIScope
 public class MainPresenter implements Serializable {
 
 	@Autowired

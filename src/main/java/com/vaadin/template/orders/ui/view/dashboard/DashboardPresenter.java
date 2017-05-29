@@ -5,13 +5,13 @@ import java.time.MonthDay;
 import java.time.Year;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.service.OrderService;
-import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.components.OrdersDataProvider;
 
 @SpringComponent
-@PrototypeScope
+@ViewScope
 public class DashboardPresenter implements Serializable {
 
 	private transient OrdersDataProvider ordersDataProvider;
