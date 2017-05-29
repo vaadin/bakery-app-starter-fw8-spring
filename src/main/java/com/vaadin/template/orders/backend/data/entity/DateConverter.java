@@ -11,7 +11,7 @@ import javax.persistence.Converter;
  * LocalDate into format it can handle.
  */
 @Converter(autoApply = true)
-public class DateTimeConverter implements AttributeConverter<LocalDate, Date> {
+public class DateConverter implements AttributeConverter<LocalDate, Date> {
 
 	@Override
 	public Date convertToDatabaseColumn(LocalDate date) {
