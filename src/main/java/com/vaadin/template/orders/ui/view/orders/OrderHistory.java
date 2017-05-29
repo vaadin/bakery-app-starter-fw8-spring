@@ -23,12 +23,12 @@ public class OrderHistory extends OrderHistoryDesign {
 
 	private final DateTimeFormatter dateTimeFormatter;
 
-	private final OrderHistoryController controller;
+	private final OrderHistoryPresenter controller;
 
 	private Order order;
 
 	@Autowired
-	public OrderHistory(DateTimeFormatter dateTimeFormatter, OrderHistoryController controller) {
+	public OrderHistory(DateTimeFormatter dateTimeFormatter, OrderHistoryPresenter controller) {
 		this.dateTimeFormatter = dateTimeFormatter;
 		this.controller = controller;
 	}

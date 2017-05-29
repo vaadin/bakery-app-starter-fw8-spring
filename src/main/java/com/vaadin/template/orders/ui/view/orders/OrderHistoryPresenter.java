@@ -12,7 +12,7 @@ import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
 
 @SpringComponent
 @PrototypeScope
-public class OrderHistoryController implements Serializable {
+public class OrderHistoryPresenter implements Serializable {
 
 	private OrderHistory view;
 
@@ -21,7 +21,7 @@ public class OrderHistoryController implements Serializable {
 	private final ViewEventBus eventBus;
 
 	@Autowired
-	public OrderHistoryController(ViewEventBus eventBus) {
+	public OrderHistoryPresenter(ViewEventBus eventBus) {
 		this.eventBus = eventBus;
 	}
 
