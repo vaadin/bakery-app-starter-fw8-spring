@@ -61,10 +61,10 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	}
 
 	protected void deleteEntity(T entity) {
-		if (entity.isPersisted()) {
-			getService().delete(entity.getId());
-		} else {
+		if (entity.isNew()) {
 			throw new IllegalArgumentException("Cannot delete an entity which is not in the database");
+		} else {
+			getService().delete(entity.getId());
 		}
 	}
 
@@ -101,7 +101,8 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		runIfNoUnsavedChanges(() -> {
 			// Fetch a fresh item so we have the latest changes (less optimistic
 			// locking problems)
-			editItem(loadEntity(getId(entity)));
+			T freshEntity = loadEntity(entity.getId());
+			editItem(freshEntity);
 		}, () -> {
 			// Revert selection in grid
 			T editItem = getView().getEditItem();
@@ -115,12 +116,11 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	}
 
 	protected void editItem(T item) {
-		boolean isNew = isNew(item);
+		boolean isNew = item.isNew();
 		if (isNew) {
 			navigationManager.updateViewParameter("new");
 		} else {
-			Long id = getId(item);
-			navigationManager.updateViewParameter(String.valueOf(id));
+			navigationManager.updateViewParameter(String.valueOf(item.getId()));
 		}
 		getView().editItem(item, isNew);
 	}
@@ -180,7 +180,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		}
 
 		T entity = view.getEditItem();
-		boolean isNew = isNew(entity);
+		boolean isNew = entity.isNew();
 		try {
 			entity = saveEntity(entity);
 		} catch (Exception e) {
@@ -204,7 +204,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 
 	public void cancelClicked() {
 		T entity = getView().getEditItem();
-		if (isNew(entity)) {
+		if (entity.isNew()) {
 			showInitialState();
 		} else {
 			editItem(entity);
@@ -233,14 +233,6 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	public void formStatusChanged(boolean hasValidationErrors, boolean hasChanges) {
 		getView().getUpdate().setEnabled(hasChanges && !hasValidationErrors);
 		getView().getCancel().setEnabled(hasChanges);
-	}
-
-	protected boolean isNew(T item) {
-		return getId(item) == null;
-	}
-
-	protected Long getId(AbstractEntity entity) {
-		return entity.getId();
 	}
 
 }

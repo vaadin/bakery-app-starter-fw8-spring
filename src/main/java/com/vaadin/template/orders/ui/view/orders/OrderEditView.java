@@ -76,10 +76,9 @@ public class OrderEditView extends OrderEditViewDesign implements NavigableView 
 		binder.bind(phone, "customer.phoneNumber");
 		binder.bind(details, "customer.details");
 
-		binder.addValueChangeListener(e -> {
-			// Track changes manually as we use setBean and nested binders
-			hasChanges = true;
-		});
+		// Track changes manually as we use setBean and nested binders
+		binder.addValueChangeListener(e -> hasChanges = true);
+
 		addItems.addClickListener(e -> addEmptyOrderItem());
 		cancel.addClickListener(e -> presenter.editBackCancelPressed());
 		ok.addClickListener(e -> presenter.okPressed());

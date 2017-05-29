@@ -23,6 +23,7 @@ public class ConfirmationDialog {
 	 */
 	public static void show(UI ui, Runnable onDiscard) {
 		show(ui, onDiscard, () -> {
+			// No action on cancel
 		});
 	}
 
