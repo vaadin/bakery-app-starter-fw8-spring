@@ -22,7 +22,6 @@ import com.vaadin.addon.charts.model.DataSeriesItem;
 import com.vaadin.addon.charts.model.Labels;
 import com.vaadin.addon.charts.model.ListSeries;
 import com.vaadin.addon.charts.model.PlotOptionsColumn;
-import com.vaadin.addon.charts.model.PlotOptionsPie;
 import com.vaadin.addon.charts.model.YAxis;
 import com.vaadin.addon.charts.model.style.SolidColor;
 import com.vaadin.addon.charts.model.style.Style;
@@ -49,7 +48,7 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 
 	private final Chart deliveriesThisMonthGraph = new Chart(ChartType.COLUMN);
 	private final Chart deliveriesThisYearGraph = new Chart(ChartType.COLUMN);
-	private final Chart yearlySalesGraph = new Chart(ChartType.LINE);
+	private final Chart yearlySalesGraph = new Chart(ChartType.AREASPLINE);
 	private final Chart monthlyProductSplit = new Chart(ChartType.PIE);
 	private final OrdersGrid dueGrid = new OrdersGrid();
 
@@ -100,9 +99,11 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 		conf.setTitle("Sales last years");
 		configureTitleStyle(conf);
 		conf.getxAxis().setCategories(getMonthNames());
+		conf.getChart().setMarginBottom(6);
 
-		salesPerYear = new ListSeries[3];
-		for (int i = 0; i < 3; i++) {
+		final int nYears = 3;
+		salesPerYear = new ListSeries[nYears];
+		for (int i = nYears - 1; i >= 0; i--) {
 			salesPerYear[i] = new ListSeries(Integer.toString(year - i));
 			conf.addSeries(salesPerYear[i]);
 		}
@@ -123,11 +124,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 		deliveriesPerProductSeries = new DataSeries();
 		conf.addSeries(deliveriesPerProductSeries);
 
-		PlotOptionsPie options = new PlotOptionsPie();
-		options.setShowInLegend(true);
-		options.getDataLabels().setEnabled(false);
-		conf.setPlotOptions(options);
-
 		conf.getyAxis().setTitle("");
 
 	}
@@ -137,18 +133,17 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 
 		deliveriesThisMonthGraph.setId("deliveriesThisMonth");
 		deliveriesThisMonthGraph.setSizeFull();
-		// deliveriesThisMonthGraph.addStyleName("v-clip");
 
 		deliveriesThisYearGraph.setId("deliveriesThisYear");
 		deliveriesThisYearGraph.setSizeFull();
-		// deliveriesThisYearGraph.addStyleName("v-clip");
 
 		Configuration yearConf = deliveriesThisYearGraph.getConfiguration();
 
 		yearConf.setTitle("Deliveries in " + today.getYear());
 		configureTitleStyle(yearConf);
-		yearConf.getChart().setMargin(12, 12, 24, 12);
+		yearConf.getChart().setMarginBottom(6);
 		yearConf.getxAxis().setCategories(getMonthNames());
+		yearConf.getxAxis().setLabels(new Labels(null));
 		yearConf.getLegend().setEnabled(false);
 		deliveriesThisYearSeries = new ListSeries("Deliveries");
 		yearConf.addSeries(deliveriesThisYearSeries);
@@ -158,7 +153,7 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 		String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL, Locale.US);
 		monthConf.setTitle("Deliveries in " + thisMonth);
 		configureTitleStyle(monthConf);
-		monthConf.getChart().setMargin(12, 12, 24, 12);
+		monthConf.getChart().setMarginBottom(6);
 		monthConf.getLegend().setEnabled(false);
 		deliveriesThisMonthSeries = new ListSeries("Deliveries");
 		monthConf.addSeries(deliveriesThisMonthSeries);
@@ -168,6 +163,7 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 		String[] categories = IntStream.rangeClosed(1, daysInMonth).mapToObj(Integer::toString)
 				.toArray(size -> new String[size]);
 		monthConf.getxAxis().setCategories(categories);
+		monthConf.getxAxis().setLabels(new Labels(false));
 
 	}
 
