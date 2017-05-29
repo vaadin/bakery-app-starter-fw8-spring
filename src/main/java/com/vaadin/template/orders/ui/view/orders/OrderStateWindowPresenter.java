@@ -17,7 +17,7 @@ import com.vaadin.ui.Notification.Type;
 
 @SpringComponent
 @PrototypeScope
-public class OrderStateWindowController implements HasLogger, Serializable {
+public class OrderStateWindowPresenter implements HasLogger, Serializable {
 
 	private transient OrderService orderService;
 
@@ -26,7 +26,7 @@ public class OrderStateWindowController implements HasLogger, Serializable {
 	private final ViewEventBus eventBus;
 
 	@Autowired
-	public OrderStateWindowController(ViewEventBus eventBus) {
+	public OrderStateWindowPresenter(ViewEventBus eventBus) {
 		this.eventBus = eventBus;
 	}
 
