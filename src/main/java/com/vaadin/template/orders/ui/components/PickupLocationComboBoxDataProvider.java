@@ -13,7 +13,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.entity.PickupLocation;
 import com.vaadin.template.orders.backend.service.PickupLocationService;
-import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
+import com.vaadin.template.orders.ui.dataprovider.PageableDataProvider;
 
 /**
  * A singleton data provider which knows which products are available.

@@ -14,6 +14,7 @@ import com.vaadin.template.orders.backend.service.CrudService;
 import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.components.ConfirmationDialog;
+import com.vaadin.template.orders.ui.dataprovider.PageableDataProvider;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Notification;

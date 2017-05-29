@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui.view.admin;
+package com.vaadin.template.orders.ui.dataprovider;
 
 import java.util.List;
 import java.util.stream.Collectors;

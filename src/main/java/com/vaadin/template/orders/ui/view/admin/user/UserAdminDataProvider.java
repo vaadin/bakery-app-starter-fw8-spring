@@ -14,7 +14,7 @@ import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.entity.User;
 import com.vaadin.template.orders.backend.service.UserService;
 import com.vaadin.template.orders.ui.PrototypeScope;
-import com.vaadin.template.orders.ui.view.admin.FilterablePageableDataProvider;
+import com.vaadin.template.orders.ui.dataprovider.FilterablePageableDataProvider;
 
 @SpringComponent
 @PrototypeScope
