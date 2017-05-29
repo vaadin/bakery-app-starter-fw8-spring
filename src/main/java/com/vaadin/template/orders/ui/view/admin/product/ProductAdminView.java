@@ -26,6 +26,8 @@ public class ProductAdminView extends AbstractCrudView<Product> {
 	@Autowired
 	private DollarPriceConverter priceToStringConverter;
 
+	private static final String PRICE_PROPERTY = "price";
+
 	public ProductAdminView() {
 		super(Product.class);
 		userAdminViewDesign = new ProductAdminViewDesign();
@@ -36,11 +38,11 @@ public class ProductAdminView extends AbstractCrudView<Product> {
 	public void init() {
 		super.init();
 		presenter.init(this);
-		getGrid().setColumns("name", "price");
-		getGrid().removeColumn("price");
+		getGrid().setColumns("name", PRICE_PROPERTY);
+		getGrid().removeColumn(PRICE_PROPERTY);
 		getGrid().addColumn(product -> priceToStringConverter.convertToPresentation(product.getPrice(),
-				new ValueContext(getGrid()))).setSortProperty("price");
-		getBinder().forField(getViewComponent().price).withConverter(priceToStringConverter).bind("price");
+				new ValueContext(getGrid()))).setSortProperty(PRICE_PROPERTY);
+		getBinder().forField(getViewComponent().price).withConverter(priceToStringConverter).bind(PRICE_PROPERTY);
 		getBinder().bindInstanceFields(getViewComponent());
 
 	}
