@@ -46,7 +46,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 
 	public abstract void filterGrid(String filter);
 
-	protected T loadEntity(Long id) {
+	protected T loadEntity(long id) {
 		return getService().load(id);
 	}
 
