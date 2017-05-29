@@ -1,112 +1,112 @@
 @mixin dashboardview {
-	
-	vaadin-board {
-		padding: $view-padding;
 
-		vaadin-board-row:nth-child(2) {
-			height: 15vh;
-			min-height: 130px;
-			max-height: 160px;
-		}
-		vaadin-board-row:nth-child(3) {
-			height: 20vh;
-			min-height: 250px;
-		}
-		vaadin-board-row:nth-child(4) {
-			height: 30vh;
-			min-height: 400px;
-		}
+  vaadin-board {
+    padding: $view-padding;
 
-  		.board-box {
-  			padding: round($view-padding / 3);
-  		}	
-		.board-box-needs-attention {
-			background-color: rgba(255,0,0,.04);
-			h1, h4 {
-				color: $orders-problem-color;
-			}
-		}
+    vaadin-board-row:nth-child(2) {
+      height: 15vh;
+      min-height: 130px;
+      max-height: 160px;
+    }
+    vaadin-board-row:nth-child(3) {
+      height: 20vh;
+      min-height: 250px;
+    }
+    vaadin-board-row:nth-child(4) {
+      height: 30vh;
+      min-height: 400px;
+    }
 
-  		.board-box-label {
-  			text-align: center;
-  			h1, 
-  			h4 {
-  				margin: $v-layout-spacing-vertical $v-layout-spacing-horizontal !important;
-  				margin-top: round($v-layout-spacing-vertical / 2) !important;
-  			}
-  		}
+      .board-box {
+        padding: round($view-padding / 3);
+      }
+    .board-box-needs-attention {
+      background-color: rgba(255,0,0,.04);
+      h1, h4 {
+        color: $orders-problem-color;
+      }
+    }
 
-		.board-row-group {
-			@include valo-panel-style;
-      		margin-bottom: round($view-padding / 3);
+      .board-box-label {
+        text-align: center;
+        h1,
+        h4 {
+          margin: $v-layout-spacing-vertical $v-layout-spacing-horizontal !important;
+          margin-top: round($v-layout-spacing-vertical / 2) !important;
+        }
+      }
 
-      		.today h4 {
-      			color: $orders-ok-color;
-      		}
-      	    .new h4 {
-      			color: $orders-warn-color;
-      		}
-      	    .na h4 {
-      			color: $orders-problem-color;
-      		}
+    .board-row-group {
+      @include valo-panel-style;
+          margin-bottom: round($view-padding / 3);
 
-      		&.large {
-      			.board-box:not(:first-child) {
-      				border-left: valo-border($strength: .3);
-      			}
-      		}
-      		&.medium {
-      			.board-box:nth-child(even) {
-      				border-left: valo-border($strength: .3);
-      			}
-      			.board-box:nth-child(1n+3) {
-      				border-top: valo-border($strength: .3);
-      			}
-      		}
-      		&.small {
-      			.board-box:nth-child(1n+2) {
-      				border-top: valo-border($strength: .3);
-      			}
-      		}
-		}
-	
-		.board-row-panels {
-			.board-box:first-child {
-				padding-left: 0;
-			}
-			.board-box:last-child {
-				padding-right: 0;
-			}
-      		&.small {
-      			.board-box {
-      				padding: round($view-padding / 3) 0;
-      			}
-      		}
-      		.board-box-inner {
-				@include valo-panel-style;
-				position: relative;
-				z-index: 0;
-				overflow: hidden;
-				padding: $v-layout-spacing-vertical $v-layout-spacing-horizontal;
-			}
-			.due-grid {
-				.board-box-inner {
-					padding: 0;
-				}
-				.v-grid > div {
-					border: 0;
-				}
-			}
-		}
+          .today h4 {
+            color: $orders-ok-color;
+          }
+            .new h4 {
+            color: $orders-warn-color;
+          }
+            .na h4 {
+            color: $orders-problem-color;
+          }
 
-		text.highcharts-title {
-			@extend .v-label-h4;
-		}
-	}
-	.dashboard-view[width-range~="-599px"] {
-		vaadin-board {
-			padding: round($view-padding / 3);
-		}
-	}
+          &.large {
+            .board-box:not(:first-child) {
+              border-left: valo-border($strength: .3);
+            }
+          }
+          &.medium {
+            .board-box:nth-child(even) {
+              border-left: valo-border($strength: .3);
+            }
+            .board-box:nth-child(1n+3) {
+              border-top: valo-border($strength: .3);
+            }
+          }
+          &.small {
+            .board-box:nth-child(1n+2) {
+              border-top: valo-border($strength: .3);
+            }
+          }
+    }
+
+    .board-row-panels {
+      .board-box:first-child {
+        padding-left: 0;
+      }
+      .board-box:last-child {
+        padding-right: 0;
+      }
+          &.small {
+            .board-box {
+              padding: round($view-padding / 3) 0;
+            }
+          }
+          .board-box-inner {
+        @include valo-panel-style;
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+        padding: $v-layout-spacing-vertical $v-layout-spacing-horizontal;
+      }
+      .due-grid {
+        .board-box-inner {
+          padding: 0;
+        }
+        .v-grid > div {
+          border: 0;
+        }
+      }
+    }
+
+    text.highcharts-title {
+      @extend .v-label-h4;
+    }
+  }
+  .dashboard-view[width-range~="-599px"] {
+    vaadin-board {
+      padding: round($view-padding / 3);
+    }
+  }
 
 }
