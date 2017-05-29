@@ -6,7 +6,7 @@ import com.vaadin.template.orders.ui.PrototypeScope;
 
 @SpringComponent
 @PrototypeScope
-public class AccessDeniedView extends AccessDeniedDesign implements OrdersView {
+public class AccessDeniedView extends AccessDeniedDesign implements NavigableView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {

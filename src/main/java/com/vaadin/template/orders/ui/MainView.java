@@ -11,7 +11,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.template.orders.ui.view.OrdersView;
+import com.vaadin.template.orders.ui.view.NavigableView;
 import com.vaadin.template.orders.ui.view.admin.product.ProductAdminView;
 import com.vaadin.template.orders.ui.view.admin.user.UserAdminView;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
@@ -52,11 +52,11 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 
 	@Override
 	public void showView(View view) {
-		if (!(view instanceof OrdersView)) {
+		if (!(view instanceof NavigableView)) {
 			throw new IllegalArgumentException("Only OrdersView implementations are supported");
 		}
 		content.removeAllComponents();
-		content.addComponent(((OrdersView) view).getViewComponent());
+		content.addComponent(((NavigableView) view).getViewComponent());
 
 		navigationButtons.forEach((viewClass, button) -> button.setStyleName("selected", viewClass == view.getClass()));
 

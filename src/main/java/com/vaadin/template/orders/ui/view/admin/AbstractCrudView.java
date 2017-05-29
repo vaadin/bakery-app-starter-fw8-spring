@@ -14,7 +14,7 @@ import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.backend.data.entity.AbstractEntity;
 import com.vaadin.template.orders.ui.components.ConfirmationDialog;
 import com.vaadin.template.orders.ui.view.NavigationEvent;
-import com.vaadin.template.orders.ui.view.OrdersView;
+import com.vaadin.template.orders.ui.view.NavigableView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Component.Focusable;
@@ -54,7 +54,7 @@ import com.vaadin.ui.components.grid.SingleSelectionModel;
  *            the type of entity which can be edited in the view
  */
 @Secured(Role.ADMIN)
-public abstract class AbstractCrudView<T extends AbstractEntity> implements Serializable, OrdersView {
+public abstract class AbstractCrudView<T extends AbstractEntity> implements Serializable, NavigableView {
 
 	public static final String CAPTION_DISCARD = "Discard";
 	public static final String CAPTION_CANCEL = "Cancel";
