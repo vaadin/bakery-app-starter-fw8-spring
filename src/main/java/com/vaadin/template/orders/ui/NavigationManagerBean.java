@@ -12,8 +12,8 @@ import com.vaadin.spring.internal.Conventions;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.template.orders.app.security.SecurityUtils;
 import com.vaadin.template.orders.backend.data.Role;
-import com.vaadin.template.orders.ui.view.NavigationEvent;
 import com.vaadin.template.orders.ui.view.NavigableView;
+import com.vaadin.template.orders.ui.view.NavigationEvent;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
 import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 

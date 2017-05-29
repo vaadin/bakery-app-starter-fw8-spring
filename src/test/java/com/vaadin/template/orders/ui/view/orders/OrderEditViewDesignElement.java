@@ -39,7 +39,7 @@ public class OrderEditViewDesignElement extends VerticalLayoutElement {
 	public DateFieldElement getDueDate() {
 		return $(DateFieldElement.class).id("dueDate");
 	}
-	
+
 	public ComboBoxElement getDueTime() {
 		return $(ComboBoxElement.class).id("dueTime");
 	}
