@@ -32,11 +32,6 @@ public class UserAdminDataProvider extends FilterablePageableDataProvider<User, 
 		return (int) getUserService().countAnyMatching(getOptionalFilter());
 	}
 
-	@Override
-	public Object getId(User item) {
-		return item.getId();
-	}
-
 	protected UserService getUserService() {
 		if (userService == null) {
 			userService = BeanLocator.find(UserService.class);
