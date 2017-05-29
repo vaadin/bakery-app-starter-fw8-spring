@@ -1,4 +1,6 @@
-package com.vaadin.template.orders.ui.view;
+package com.vaadin.template.orders.ui.navigation;
+
+import com.vaadin.template.orders.ui.view.NavigableView;
 
 public class NavigationEvent {
 

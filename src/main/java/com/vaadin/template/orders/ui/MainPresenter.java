@@ -11,8 +11,9 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.template.orders.app.Application;
 import com.vaadin.template.orders.app.security.SecuredViewAccessControl;
+import com.vaadin.template.orders.ui.navigation.NavigationEvent;
+import com.vaadin.template.orders.ui.navigation.NavigationManager;
 import com.vaadin.template.orders.ui.view.NavigableView;
-import com.vaadin.template.orders.ui.view.NavigationEvent;
 
 @SpringComponent
 @UIScope
