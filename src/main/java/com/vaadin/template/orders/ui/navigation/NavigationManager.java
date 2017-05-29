@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui;
+package com.vaadin.template.orders.ui.navigation;
 
 import java.io.Serializable;
 

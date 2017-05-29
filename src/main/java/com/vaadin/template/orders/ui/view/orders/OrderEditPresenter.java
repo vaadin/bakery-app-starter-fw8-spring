@@ -25,8 +25,8 @@ import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.backend.service.PickupLocationService;
 import com.vaadin.template.orders.ui.HasLogger;
-import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
+import com.vaadin.template.orders.ui.navigation.NavigationManager;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
@@ -180,7 +180,7 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 				emptyRows.add(orderItem);
 			}
 		});
-		emptyRows.forEach(orderItem -> removeOrderItem(orderItem));
+		emptyRows.forEach(this::removeOrderItem);
 	}
 
 	private Order saveOrder() {

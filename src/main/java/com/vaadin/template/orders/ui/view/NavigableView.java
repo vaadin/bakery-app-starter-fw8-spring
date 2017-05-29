@@ -1,6 +1,7 @@
 package com.vaadin.template.orders.ui.view;
 
 import com.vaadin.navigator.View;
+import com.vaadin.template.orders.ui.navigation.NavigationEvent;
 import com.vaadin.ui.Component;
 
 /**

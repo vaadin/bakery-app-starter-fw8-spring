@@ -1,10 +1,11 @@
-package com.vaadin.template.orders.ui;
+package com.vaadin.template.orders.ui.navigation;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
@@ -13,7 +14,6 @@ import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.template.orders.app.security.SecurityUtils;
 import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.ui.view.NavigableView;
-import com.vaadin.template.orders.ui.view.NavigationEvent;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
 import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 
@@ -21,21 +21,19 @@ import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 @UIScope
 public class NavigationManagerBean extends SpringNavigator implements NavigationManager {
 
-	boolean viewAlreadyConfirmed = false;
+	/**
+	 * Adds support for the beforeLeave method in NavigationEvent so views can
+	 * show a confirmation dialog before actually performing the navigation.
+	 */
+	private final class ViewChangeBeforeLeaveSupport implements ViewChangeListener {
 
-	@PostConstruct
-	public void init() {
-		addViewChangeListener(e -> {
+		@Override
+		public boolean beforeViewChange(ViewChangeEvent e) {
 			View oldView = e.getOldView();
 			if (!(oldView instanceof NavigableView)) {
 				return true;
 			}
-			String navigationState;
-			if (e.getParameters() == null || e.getParameters().isEmpty()) {
-				navigationState = e.getViewName();
-			} else {
-				navigationState = e.getViewName() + "/" + e.getParameters();
-			}
+			String navigationState = getTargetState(e);
 			if (viewAlreadyConfirmed) {
 				return true;
 			} else {
@@ -45,7 +43,22 @@ public class NavigationManagerBean extends SpringNavigator implements Navigation
 					viewAlreadyConfirmed = false;
 				}));
 			}
-		});
+		}
+
+		private String getTargetState(ViewChangeEvent e) {
+			if (e.getParameters() == null || e.getParameters().isEmpty()) {
+				return e.getViewName();
+			} else {
+				return e.getViewName() + "/" + e.getParameters();
+			}
+		}
+	}
+
+	boolean viewAlreadyConfirmed = false;
+
+	@PostConstruct
+	public void init() {
+		addViewChangeListener(new ViewChangeBeforeLeaveSupport());
 	}
 
 	/**
@@ -82,7 +95,6 @@ public class NavigationManagerBean extends SpringNavigator implements Navigation
 		// If the user wants a specific view, it's in the URL.
 		// Otherwise admin goes to DashboardView and everybody else to
 		// OrderListView
-
 		if (!getState().isEmpty()) {
 			return;
 		}
