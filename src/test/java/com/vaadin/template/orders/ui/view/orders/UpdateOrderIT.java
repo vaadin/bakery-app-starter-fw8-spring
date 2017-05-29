@@ -85,7 +85,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 		int nextStateIndex = (oldState.ordinal() + 1) % OrderState.values().length;
 		OrderState newState = OrderState.values()[nextStateIndex];
 		updatedOrder.state = newState;
-
+		orderEdit.getState().selectByText(updatedOrder.state.getDisplayName());
 		Customer currentCustomer = currentOrder.customer;
 		Customer updatedCustomer = new Customer();
 
@@ -122,6 +122,9 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 
 		DollarPriceConverter convert = new DollarPriceConverter();
 		updatedOrder.total = convert.convertToPresentation(updatedTotal, new ValueContext(Locale.US));
+
+		ElementUtil.click(orderEdit.getOk());
+		Assert.assertEquals("Save failed", "Edit", ElementUtil.getCaption(orderEdit.getEditOrCancel()));
 		orderEdit.assertOrder(updatedOrder);
 	}
 
