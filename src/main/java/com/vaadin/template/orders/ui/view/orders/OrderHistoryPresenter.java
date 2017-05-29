@@ -5,13 +5,13 @@ import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.service.OrderService;
-import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
 
 @SpringComponent
-@PrototypeScope
+@ViewScope
 public class OrderHistoryPresenter implements Serializable {
 
 	private OrderHistory view;
