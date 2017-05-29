@@ -72,8 +72,13 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 	public void updateOrderInfo() {
 		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
+
 		OrderState oldState = OrderState.forDisplayName(orderEdit.getStateLabel().getText());
 		ElementUtil.click(orderEdit.getEditOrCancel());
+		Assert.assertEquals("Cancel button has wrong caption", "Cancel",
+				ElementUtil.getCaption(orderEdit.getEditOrCancel()));
+		Assert.assertEquals("Save button has wrong caption", "Save", ElementUtil.getCaption(orderEdit.getOk()));
+
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
 		OrderInfo updatedOrder = new OrderInfo();
 
