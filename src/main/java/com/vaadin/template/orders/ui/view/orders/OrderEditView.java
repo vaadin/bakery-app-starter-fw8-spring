@@ -191,11 +191,17 @@ public class OrderEditView extends OrderEditViewDesign implements NavigableView 
 			cancel.setIcon(VaadinIcons.ANGLE_LEFT);
 			ok.setCaption("Place order");
 			ok.setVisible(true);
-		} else {
+		} else if (mode == Mode.EDIT) {
 			cancel.setCaption("Cancel");
 			cancel.setIcon(VaadinIcons.CLOSE);
-			ok.setCaption("Review order");
+			if (getOrder() != null && !getOrder().isNew()) {
+				ok.setCaption("Save");
+			} else {
+				ok.setCaption("Review order");
+			}
 			ok.setVisible(true);
+		} else {
+			throw new IllegalArgumentException("Unknown mode " + mode);
 		}
 	}
 
