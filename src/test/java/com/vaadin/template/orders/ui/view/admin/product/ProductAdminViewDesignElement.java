@@ -18,8 +18,7 @@ import com.vaadin.testbench.elementsbase.ServerClass;
 public class ProductAdminViewDesignElement extends VerticalLayoutElement {
 
 	public TextFieldElement getSearch() {
-		return $(com.vaadin.testbench.elements.TextFieldElement.class).id(
-				"search");
+		return $(com.vaadin.testbench.elements.TextFieldElement.class).id("search");
 	}
 
 	public ButtonElement getAdd() {
@@ -27,8 +26,7 @@ public class ProductAdminViewDesignElement extends VerticalLayoutElement {
 	}
 
 	public CssLayoutElement getListParent() {
-		return $(com.vaadin.testbench.elements.CssLayoutElement.class).id(
-				"listParent");
+		return $(com.vaadin.testbench.elements.CssLayoutElement.class).id("listParent");
 	}
 
 	public GridElement getList() {
@@ -36,32 +34,26 @@ public class ProductAdminViewDesignElement extends VerticalLayoutElement {
 	}
 
 	public VerticalLayoutElement getForm() {
-		return $(com.vaadin.testbench.elements.VerticalLayoutElement.class).id(
-				"form");
+		return $(com.vaadin.testbench.elements.VerticalLayoutElement.class).id("form");
 	}
 
 	public TextFieldElement getName() {
-		return $(com.vaadin.testbench.elements.TextFieldElement.class).id(
-				"name");
+		return $(com.vaadin.testbench.elements.TextFieldElement.class).id("name");
 	}
 
 	public TextFieldElement getPrice() {
-		return $(com.vaadin.testbench.elements.TextFieldElement.class).id(
-				"price");
+		return $(com.vaadin.testbench.elements.TextFieldElement.class).id("price");
 	}
 
 	public ButtonElement getUpdate() {
-		return $(com.vaadin.testbench.elements.ButtonElement.class)
-				.id("update");
+		return $(com.vaadin.testbench.elements.ButtonElement.class).id("update");
 	}
 
 	public ButtonElement getCancel() {
-		return $(com.vaadin.testbench.elements.ButtonElement.class)
-				.id("cancel");
+		return $(com.vaadin.testbench.elements.ButtonElement.class).id("cancel");
 	}
 
 	public ButtonElement getDelete() {
-		return $(com.vaadin.testbench.elements.ButtonElement.class)
-				.id("delete");
+		return $(com.vaadin.testbench.elements.ButtonElement.class).id("delete");
 	}
 }

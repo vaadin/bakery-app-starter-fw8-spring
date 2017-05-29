@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.data.util.Pair;
 
-import com.vaadin.template.orders.ui.dataprovider.PageableDataProvider;
-
 public class PageableDataProviderTest {
 
 	@Test
