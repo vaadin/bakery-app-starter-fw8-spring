@@ -29,16 +29,6 @@ import com.vaadin.testbench.elements.TextFieldElement;
 public class UpdateOrderIT extends AbstractOrdersIT {
 
 	@Test
-	public void updateOrderState() throws IOException {
-		OrdersListViewElement storeFront = loginAsBarista();
-		OrderEditViewElement orderEdit = storeFront.selectOrder(0);
-
-		Assert.assertEquals(OrderState.READY, orderEdit.getCurrentState());
-		orderEdit.setState(OrderState.DELIVERED);
-		Assert.assertEquals(OrderState.DELIVERED, orderEdit.getCurrentState());
-	}
-
-	@Test
 	public void addHistoryComment() throws IOException {
 		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
@@ -82,9 +72,14 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 	public void updateOrderInfo() {
 		OrdersListViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
+		OrderState oldState = OrderState.forDisplayName(orderEdit.getStateLabel().getText());
 		ElementUtil.click(orderEdit.getEditOrCancel());
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
 		OrderInfo updatedOrder = new OrderInfo();
+
+		int nextStateIndex = (oldState.ordinal() + 1) % OrderState.values().length;
+		OrderState newState = OrderState.values()[nextStateIndex];
+		updatedOrder.state = newState;
 
 		Customer currentCustomer = currentOrder.customer;
 		Customer updatedCustomer = new Customer();

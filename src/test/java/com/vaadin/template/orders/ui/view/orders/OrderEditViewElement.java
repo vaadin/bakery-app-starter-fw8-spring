@@ -13,11 +13,8 @@ import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
-import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.HasDriver;
-import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.CssLayoutElement;
-import com.vaadin.testbench.elements.WindowElement;
 import com.vaadin.testbench.elementsbase.ServerClass;
 
 @ServerClass("com.vaadin.template.orders.ui.view.orders.OrderEditView")
@@ -30,19 +27,11 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 		String pickupLocation;
 		List<ProductOrderData> products;
 		String total;
-	}
-
-	public void setState(OrderState state) {
-		getSetState().click();
-		// Can't use $() here as it would try to find the Window inside the view
-		// and it's attached to the body
-		WindowElement windowElement = new ElementQuery<>(WindowElement.class).context(getDriver()).first();
-		ButtonElement stateButton = windowElement.$(ButtonElement.class).id(state.name());
-		stateButton.click();
+		OrderState state;
 	}
 
 	public OrderState getCurrentState() {
-		String displayName = getOrderState().getText();
+		String displayName = ElementUtil.getText(getStateLabel());
 		return OrderState.forDisplayName(displayName);
 	}
 

@@ -14,12 +14,10 @@
      <vaadin-label style-name="h2" id="orderId" plain-text _id="orderId">
        #182 
      </vaadin-label>
-     <vaadin-label style-name="h2" id="orderState" plain-text _id="orderState">
+     <vaadin-label style-name="h2" id="stateLabel" plain-text _id="stateLabel">
        New order 
      </vaadin-label>
-     <vaadin-button id="setState" plain-text _id="setState" :right :expand>
-       Set state... 
-     </vaadin-button>
+     <com_vaadin_template_orders_ui_view_orders-order-state-select id="state" _id="state" :middle :right :expand></com_vaadin_template_orders_ui_view_orders-order-state-select>
     </vaadin-horizontal-layout>
     <vaadin-label style-name="header" width-full plain-text>
       Due 

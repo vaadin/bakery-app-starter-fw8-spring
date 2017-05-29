@@ -28,12 +28,12 @@ public class OrderEditViewDesignElement extends VerticalLayoutElement {
 		return $(com.vaadin.testbench.elements.LabelElement.class).id("orderId");
 	}
 
-	public LabelElement getOrderState() {
-		return $(com.vaadin.testbench.elements.LabelElement.class).id("orderState");
+	public LabelElement getStateLabel() {
+		return $(com.vaadin.testbench.elements.LabelElement.class).id("stateLabel");
 	}
 
-	public ButtonElement getSetState() {
-		return $(com.vaadin.testbench.elements.ButtonElement.class).id("setState");
+	public ComboBoxElement getState() {
+		return $(com.vaadin.testbench.elements.ComboBoxElement.class).id("state");
 	}
 
 	public DateFieldElement getDueDate() {

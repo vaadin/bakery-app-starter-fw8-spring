@@ -82,13 +82,6 @@ public class OrderEditView extends OrderEditViewDesign implements NavigableView 
 		addItems.addClickListener(e -> addEmptyOrderItem());
 		cancel.addClickListener(e -> presenter.editBackCancelPressed());
 		ok.addClickListener(e -> presenter.okPressed());
-
-		setState.addClickListener(e -> {
-			OrderStateWindow w = BeanLocator.find(OrderStateWindow.class);
-			w.setOrder(getOrder());
-			getUI().addWindow(w);
-		});
-
 	}
 
 	@Override
@@ -102,8 +95,7 @@ public class OrderEditView extends OrderEditViewDesign implements NavigableView 
 	}
 
 	public void setOrder(Order order) {
-		orderState.setValue(order.getState().getDisplayName());
-		setState.setVisible(order.getId() != null);
+		stateLabel.setValue(order.getState().getDisplayName());
 		binder.setBean(order);
 		productInfoContainer.removeAllComponents();
 
@@ -186,7 +178,7 @@ public class OrderEditView extends OrderEditViewDesign implements NavigableView 
 		}
 		addItems.setVisible(mode == Mode.EDIT);
 		history.setVisible(mode == Mode.REPORT);
-		setState.setVisible(mode == Mode.REPORT);
+		state.setVisible(mode == Mode.EDIT);
 
 		if (mode == Mode.REPORT) {
 			cancel.setCaption("Edit");
