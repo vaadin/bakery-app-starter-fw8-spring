@@ -23,8 +23,12 @@ public class OrderStateWindowController implements HasLogger, Serializable {
 
 	private OrderStateWindow view;
 
+	private final ViewEventBus eventBus;
+
 	@Autowired
-	private ViewEventBus eventBus;
+	public OrderStateWindowController(ViewEventBus eventBus) {
+		this.eventBus = eventBus;
+	}
 
 	public void setState(Order order, OrderState state) {
 		try {

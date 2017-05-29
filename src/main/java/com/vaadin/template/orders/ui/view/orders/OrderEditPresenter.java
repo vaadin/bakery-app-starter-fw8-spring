@@ -41,14 +41,14 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 
 	private transient PickupLocationService pickupLocationService;
 
-	@Autowired
-	private NavigationManager navigationManager;
+	private final NavigationManager navigationManager;
 
 	private static final List<OrderState> happyPath = Arrays.asList(OrderState.NEW, OrderState.CONFIRMED,
 			OrderState.READY, OrderState.DELIVERED);
 
 	@Autowired
-	public OrderEditPresenter(ViewEventBus viewEventBus) {
+	public OrderEditPresenter(ViewEventBus viewEventBus, NavigationManager navigationManager) {
+		this.navigationManager = navigationManager;
 		viewEventBus.subscribe(ProductInfoChange.class, change -> {
 			updateTotalSum();
 			view.onProductInfoChanged();

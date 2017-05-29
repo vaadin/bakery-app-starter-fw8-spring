@@ -22,9 +22,13 @@ import com.vaadin.ui.Button;
 @UIScope
 public class MainView extends MainViewDesign implements ViewDisplay {
 
+	private final MainPresenter presenter;
+	private final Map<Class<? extends View>, Button> navigationButtons = new HashMap<>();
+
 	@Autowired
-	private MainPresenter presenter;
-	private Map<Class<? extends View>, Button> navigationButtons = new HashMap<>();
+	public MainView(MainPresenter presenter) {
+		this.presenter = presenter;
+	}
 
 	@PostConstruct
 	public void init() {

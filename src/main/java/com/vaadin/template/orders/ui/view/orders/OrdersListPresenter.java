@@ -16,14 +16,14 @@ public class OrdersListPresenter implements Serializable {
 
 	private OrdersListView view;
 
-	@Autowired
-	private NavigationManager navigationManager;
+	private final NavigationManager navigationManager;
+
+	private final OrdersDataProvider ordersDataProvider;
 
 	@Autowired
-	private OrdersDataProvider ordersDataProvider;
-
-	public OrdersListPresenter() {
-		// Nothing to do here
+	public OrdersListPresenter(NavigationManager navigationManager, OrdersDataProvider ordersDataProvider) {
+		this.navigationManager = navigationManager;
+		this.ordersDataProvider = ordersDataProvider;
 	}
 
 	void init(OrdersListView view) {

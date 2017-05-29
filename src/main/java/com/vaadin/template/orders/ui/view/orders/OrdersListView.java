@@ -13,8 +13,12 @@ import com.vaadin.template.orders.ui.view.NavigableView;
 @SpringView
 public class OrdersListView extends OrdersListViewDesign implements NavigableView {
 
-	@Autowired
 	private OrdersListPresenter presenter;
+
+	@Autowired
+	public OrdersListView(OrdersListPresenter presenter) {
+		this.presenter = presenter;
+	}
 
 	/**
 	 * This method is invoked once each time an instance of the view is created.

@@ -15,14 +15,18 @@ import com.vaadin.ui.UI;
 @Viewport("width=device-width, initial-scale=1.0")
 public class OrdersUI extends UI {
 
-	@Autowired
-	private SpringViewProvider viewProvider;
+	private final SpringViewProvider viewProvider;
+
+	private final NavigationManager navigationManager;
+
+	private final MainView mainView;
 
 	@Autowired
-	private NavigationManager navigationManager;
-
-	@Autowired
-	private MainView mainView;
+	public OrdersUI(SpringViewProvider viewProvider, NavigationManager navigationManager, MainView mainView) {
+		this.viewProvider = viewProvider;
+		this.navigationManager = navigationManager;
+		this.mainView = mainView;
+	}
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {

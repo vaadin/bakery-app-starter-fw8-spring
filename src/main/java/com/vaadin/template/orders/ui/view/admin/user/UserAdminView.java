@@ -20,8 +20,7 @@ import com.vaadin.ui.TextField;
 @SpringView
 public class UserAdminView extends AbstractCrudView<User> {
 
-	@Autowired
-	private UserAdminPresenter presenter;
+	private final UserAdminPresenter presenter;
 
 	private final UserAdminViewDesign userAdminViewDesign;
 
@@ -49,8 +48,9 @@ public class UserAdminView extends AbstractCrudView<User> {
 		}
 	};
 
-	public UserAdminView() {
+	public UserAdminView(@Autowired UserAdminPresenter presenter) {
 		super(User.class);
+		this.presenter = presenter;
 		userAdminViewDesign = new UserAdminViewDesign();
 	}
 

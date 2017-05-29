@@ -18,18 +18,19 @@ import com.vaadin.ui.TextField;
 @SpringView
 public class ProductAdminView extends AbstractCrudView<Product> {
 
-	@Autowired
-	private ProductAdminPresenter presenter;
+	private final ProductAdminPresenter presenter;
 
 	private final ProductAdminViewDesign userAdminViewDesign;
 
-	@Autowired
-	private DollarPriceConverter priceToStringConverter;
+	private final DollarPriceConverter priceToStringConverter;
 
 	private static final String PRICE_PROPERTY = "price";
 
-	public ProductAdminView() {
+	@Autowired
+	public ProductAdminView(ProductAdminPresenter presenter, DollarPriceConverter priceToStringConverter) {
 		super(Product.class);
+		this.presenter = presenter;
+		this.priceToStringConverter = priceToStringConverter;
 		userAdminViewDesign = new ProductAdminViewDesign();
 	}
 

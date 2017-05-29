@@ -16,12 +16,16 @@ import com.vaadin.ui.Window;
 @PrototypeScope
 public class OrderStateWindow extends Window {
 
-	@Autowired
-	private OrderStateWindowController controller;
+	private final OrderStateWindowController controller;
 
 	private final VerticalLayout layout = new VerticalLayout();
 
 	private Order order;
+
+	@Autowired
+	public OrderStateWindow(OrderStateWindowController controller) {
+		this.controller = controller;
+	}
 
 	@PostConstruct
 	public void init() {
