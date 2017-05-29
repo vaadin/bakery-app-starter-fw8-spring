@@ -28,9 +28,9 @@ public class AddOrderIT extends AbstractOrdersIT {
 	public void emptyAddOrderView() {
 		OrdersListViewElement ordersList = loginAsBarista();
 		OrderEditViewElement orderEditView = ordersList.clickNewOrder();
-		assertNotFound("Order state should not be shown", () -> orderEditView.getOrderState());
+		assertNotFound("Order state should not be shown", () -> orderEditView.getStateLabel());
 		assertNotFound("Order id should not be shown", () -> orderEditView.getOrderId());
-		assertNotFound("Set state button should not be shown", () -> orderEditView.getSetState());
+		assertNotFound("Set state dropdown should not be shown", () -> orderEditView.getState());
 
 		assertEnabledWithCaption("Cancel", orderEditView.getEditOrCancel());
 		assertEnabledWithCaption("Review order", orderEditView.getOk());
@@ -130,9 +130,6 @@ public class AddOrderIT extends AbstractOrdersIT {
 		// Order info intact
 		orderEditView.assertOrder(testOrder);
 
-		// It's now possible to set state
-		Assert.assertNotNull(orderEditView.getSetState());
-
 		// Check URL is update correctly so we can refresh to show the same
 		// order
 		int orderId = Integer.parseInt(orderIdText.substring(1));
@@ -170,8 +167,10 @@ public class AddOrderIT extends AbstractOrdersIT {
 		orderEditView = $(OrderEditViewElement.class).first();
 
 		Assert.assertEquals(OrderState.NEW, orderEditView.getCurrentState());
-
-		orderEditView.setState(OrderState.CONFIRMED);
+		ElementUtil.click(orderEditView.getEditOrCancel());
+		ElementUtil.scrollIntoView(orderEditView.getState());
+		orderEditView.getState().selectByText(OrderState.CONFIRMED.getDisplayName());
+		ElementUtil.click(orderEditView.getOk());
 		Assert.assertEquals(OrderState.CONFIRMED, orderEditView.getCurrentState());
 	}
 
