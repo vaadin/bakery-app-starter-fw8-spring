@@ -18,13 +18,15 @@ import com.vaadin.template.orders.ui.view.NavigationEvent;
 @UIScope
 public class MainPresenter implements Serializable {
 
-	@Autowired
-	private NavigationManager navigationManager;
-
-	@Autowired
-	private SecuredViewAccessControl viewAccessControl;
-
 	private MainView view;
+	private final NavigationManager navigationManager;
+	private final SecuredViewAccessControl viewAccessControl;
+
+	public MainPresenter(@Autowired NavigationManager navigationManager,
+			@Autowired SecuredViewAccessControl viewAccessControl) {
+		this.navigationManager = navigationManager;
+		this.viewAccessControl = viewAccessControl;
+	}
 
 	void init(MainView view) {
 		this.view = view;

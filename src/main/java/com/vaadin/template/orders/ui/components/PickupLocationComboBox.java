@@ -13,10 +13,11 @@ import com.vaadin.ui.ComboBox;
 @PrototypeScope
 public class PickupLocationComboBox extends ComboBox<PickupLocation> {
 
-	@Autowired
-	private PickupLocationComboBoxDataProvider dataProvider;
+	private final PickupLocationComboBoxDataProvider dataProvider;
 
-	public PickupLocationComboBox() {
+	@Autowired
+	public PickupLocationComboBox(PickupLocationComboBoxDataProvider dataProvider) {
+		this.dataProvider = dataProvider;
 		setEmptySelectionAllowed(false);
 		setPlaceholder("Pickup location");
 		setItemCaptionGenerator(PickupLocation::getName);

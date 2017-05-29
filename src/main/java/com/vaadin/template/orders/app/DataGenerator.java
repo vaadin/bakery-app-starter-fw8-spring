@@ -45,8 +45,7 @@ public class DataGenerator implements HasLogger {
 			"Whitney", "Farmer", "Henry", "Chen", "Macias", "Rowland", "Pierce", "Cortez", "Noble", "Howard", "Nixon",
 			"Mcbride", "Leblanc", "Russell", "Carver", "Benton", "Maldonado", "Lyons" };
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
 	private final Random random = new Random(1L);
 
@@ -58,6 +57,11 @@ public class DataGenerator implements HasLogger {
 	private User baker;
 	private User barista;
 	private User admin;
+
+	@Autowired
+	public DataGenerator(PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
 
 	@Bean
 	public CommandLineRunner loadData(OrderRepository orders, UserRepository users, ProductRepository products,

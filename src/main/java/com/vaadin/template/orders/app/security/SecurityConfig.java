@@ -18,14 +18,19 @@ import com.vaadin.template.orders.backend.data.Role;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private UserDetailsService userDetailsService;
+	private final UserDetailsService userDetailsService;
+
+	private final PasswordEncoder passwordEncoder;
+
+	private final RedirectAuthenticationSuccessHandler successHandler;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	@Autowired
-	private RedirectAuthenticationSuccessHandler successHandler;
+	public SecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder,
+			RedirectAuthenticationSuccessHandler successHandler) {
+		this.userDetailsService = userDetailsService;
+		this.passwordEncoder = passwordEncoder;
+		this.successHandler = successHandler;
+	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {

@@ -16,13 +16,18 @@ import com.vaadin.template.orders.backend.data.entity.User;
 @Service
 public class UserService implements CrudService<User> {
 
+	private final PasswordEncoder passwordEncoder;
+
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	public UserService(PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
 
 	public User getCurrentUser() {
 		return getRepository().findByEmail(SecurityUtils.getUsername());
 	}
 
+	@Override
 	public Page<User> findAnyMatching(Optional<String> filter, Pageable pageable) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
@@ -33,6 +38,7 @@ public class UserService implements CrudService<User> {
 		}
 	}
 
+	@Override
 	public long countAnyMatching(Optional<String> filter) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
@@ -42,6 +48,7 @@ public class UserService implements CrudService<User> {
 		}
 	}
 
+	@Override
 	public UserRepository getRepository() {
 		return BeanLocator.find(UserRepository.class);
 	}

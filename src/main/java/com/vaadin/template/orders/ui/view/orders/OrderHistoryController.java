@@ -18,8 +18,12 @@ public class OrderHistoryController implements Serializable {
 
 	private transient OrderService orderService;
 
+	private final ViewEventBus eventBus;
+
 	@Autowired
-	private ViewEventBus eventBus;
+	public OrderHistoryController(ViewEventBus eventBus) {
+		this.eventBus = eventBus;
+	}
 
 	public void init(OrderHistory view) {
 		this.view = view;

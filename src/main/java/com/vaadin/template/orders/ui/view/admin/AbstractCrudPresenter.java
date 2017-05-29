@@ -25,13 +25,14 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 
 	private V view;
 
-	@Autowired
-	private NavigationManager navigationManager;
+	private final NavigationManager navigationManager;
 
 	private final Class<S> serviceType;
 
-	protected AbstractCrudPresenter() {
+	@Autowired
+	protected AbstractCrudPresenter(NavigationManager navigationManager) {
 		this.serviceType = discoverServiceType();
+		this.navigationManager = navigationManager;
 	}
 
 	@SuppressWarnings("unchecked")

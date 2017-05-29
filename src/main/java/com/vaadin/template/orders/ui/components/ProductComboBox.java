@@ -1,7 +1,5 @@
 package com.vaadin.template.orders.ui.components;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
@@ -13,20 +11,12 @@ import com.vaadin.ui.ComboBox;
 @PrototypeScope
 public class ProductComboBox extends ComboBox<Product> {
 
-	// Singleton data provider which knows which products are available and is
-	// informed when they are updated, deleted or new ones are added
 	@Autowired
-	private ProductComboBoxDataProvider dataProvider;
-
-	public ProductComboBox() {
+	public ProductComboBox(ProductComboBoxDataProvider dataProvider) {
 		setWidth("100%");
 		setEmptySelectionAllowed(false);
 		setPlaceholder("Product");
 		setItemCaptionGenerator(Product::getName);
-	}
-
-	@PostConstruct
-	public void initDataProvider() {
 		setDataProvider(dataProvider);
 	}
 

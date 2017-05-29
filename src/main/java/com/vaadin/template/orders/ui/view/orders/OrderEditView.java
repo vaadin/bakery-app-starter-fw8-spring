@@ -23,25 +23,29 @@ import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.ui.components.ConfirmationDialog;
-import com.vaadin.template.orders.ui.view.NavigationEvent;
 import com.vaadin.template.orders.ui.view.NavigableView;
+import com.vaadin.template.orders.ui.view.NavigationEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 
 @SpringView(name = "order")
 public class OrderEditView extends OrderEditViewDesign implements NavigableView {
 
-	@Autowired
-	private OrderEditPresenter presenter;
+	private final OrderEditPresenter presenter;
 
-	@Autowired
-	private DollarPriceConverter priceConverter;
+	private final DollarPriceConverter priceConverter;
 
 	private BeanValidationBinder<Order> binder;
 
 	private Mode mode;
 
 	private boolean hasChanges;
+
+	@Autowired
+	public OrderEditView(OrderEditPresenter presenter, DollarPriceConverter priceConverter) {
+		this.presenter = presenter;
+		this.priceConverter = priceConverter;
+	}
 
 	@PostConstruct
 	public void init() {

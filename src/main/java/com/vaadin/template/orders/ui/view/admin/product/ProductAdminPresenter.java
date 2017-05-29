@@ -6,18 +6,25 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.backend.service.ProductService;
+import com.vaadin.template.orders.ui.NavigationManager;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudPresenter;
 
 @SpringComponent
 @ViewScope
 public class ProductAdminPresenter extends AbstractCrudPresenter<Product, ProductService, ProductAdminView> {
 
+	private final ProductAdminDataProvider productAdminDataProvider;
+
 	@Autowired
-	private ProductAdminDataProvider userAdminDataProvider;
+	public ProductAdminPresenter(ProductAdminDataProvider productAdminDataProvider,
+			NavigationManager navigationManager) {
+		super(navigationManager);
+		this.productAdminDataProvider = productAdminDataProvider;
+	}
 
 	@Override
 	protected ProductAdminDataProvider getGridDataProvider() {
-		return userAdminDataProvider;
+		return productAdminDataProvider;
 	}
 
 	@Override

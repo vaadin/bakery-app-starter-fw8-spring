@@ -39,8 +39,7 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 
 	private static final String BOARD_ROW_PANELS = "board-row-panels";
 
-	@Autowired
-	private DashboardPresenter presenter;
+	private final DashboardPresenter presenter;
 
 	private final BoardLabel todayLabel = new BoardLabel("Today", "3/7", "today");
 	private final BoardLabel notAvailableLabel = new BoardLabel("N/A", "1", "na");
@@ -59,6 +58,11 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 	private ListSeries[] salesPerYear;
 
 	private DataSeries deliveriesPerProductSeries;
+
+	@Autowired
+	public DashboardView(DashboardPresenter presenter) {
+		this.presenter = presenter;
+	}
 
 	@PostConstruct
 	public void init() {

@@ -25,11 +25,9 @@ import com.vaadin.ui.Label;
 @PrototypeScope
 public class ProductInfo extends ProductInfoDesign {
 
-	@Autowired
-	private DollarPriceConverter priceFormatter;
+	private final DollarPriceConverter priceFormatter;
 
-	@Autowired
-	private ViewEventBus viewEventBus;
+	private final ViewEventBus viewEventBus;
 
 	private BeanValidationBinder<OrderItem> binder;
 
@@ -37,6 +35,13 @@ public class ProductInfo extends ProductInfoDesign {
 	private Label readOnlyComment = new Label();
 
 	private boolean reportMode = false;
+
+	@Autowired
+	public ProductInfo(DollarPriceConverter priceFormatter, ViewEventBus viewEventBus) {
+		this.priceFormatter = priceFormatter;
+		this.viewEventBus = viewEventBus;
+
+	}
 
 	@PostConstruct
 	public void init() {

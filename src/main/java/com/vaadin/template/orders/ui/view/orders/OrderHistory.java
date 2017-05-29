@@ -21,13 +21,17 @@ import com.vaadin.ui.themes.ValoTheme;
 @PrototypeScope
 public class OrderHistory extends OrderHistoryDesign {
 
-	@Autowired
-	private DateTimeFormatter dateTimeFormatter;
+	private final DateTimeFormatter dateTimeFormatter;
 
-	@Autowired
-	private OrderHistoryController controller;
+	private final OrderHistoryController controller;
 
 	private Order order;
+
+	@Autowired
+	public OrderHistory(DateTimeFormatter dateTimeFormatter, OrderHistoryController controller) {
+		this.dateTimeFormatter = dateTimeFormatter;
+		this.controller = controller;
+	}
 
 	@PostConstruct
 	public void init() {
