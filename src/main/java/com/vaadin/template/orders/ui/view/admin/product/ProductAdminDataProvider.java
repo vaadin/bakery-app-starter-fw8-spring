@@ -33,11 +33,6 @@ public class ProductAdminDataProvider extends FilterablePageableDataProvider<Pro
 		return (int) getProductService().countAnyMatching(getOptionalFilter());
 	}
 
-	@Override
-	public Object getId(Product item) {
-		return item.getId();
-	}
-
 	protected CrudService<Product> getProductService() {
 		if (productService == null) {
 			productService = BeanLocator.find(ProductService.class);
