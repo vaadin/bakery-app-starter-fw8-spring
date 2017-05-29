@@ -14,7 +14,7 @@ import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.backend.service.CrudService;
 import com.vaadin.template.orders.backend.service.ProductService;
-import com.vaadin.template.orders.ui.view.admin.PageableDataProvider;
+import com.vaadin.template.orders.ui.dataprovider.PageableDataProvider;
 
 @SpringComponent
 public class ProductComboBoxDataProvider extends PageableDataProvider<Product, String> {
