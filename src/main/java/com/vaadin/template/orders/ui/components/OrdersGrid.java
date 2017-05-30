@@ -30,7 +30,7 @@ public class OrdersGrid extends Grid<Order> {
 		addColumn(order -> {
 			Customer customer = order.getCustomer();
 			return twoRowCell(customer.getFullName(), getOrderSummary(order));
-		}, new HtmlRenderer()).setExpandRatio(1).setSortProperty("customer.fullName");
+		}, new HtmlRenderer()).setExpandRatio(1).setSortProperty("customer.fullName").setMinimumWidthFromContent(false);
 
 		// Status
 		Column<Order, String> stateColumn = addColumn(order -> "<div>" + order.getState() + "</div>")
