@@ -68,7 +68,7 @@ public class ProductInfo extends ProductInfoDesign {
 	}
 
 	private void fireProductInfoChanged() {
-		viewEventBus.publish(new ProductInfoChange());
+		viewEventBus.publish(new ProductInfoChangeEvent());
 	}
 
 	private void fireOrderItemDeleted() {
