@@ -34,7 +34,7 @@ import com.vaadin.template.orders.ui.HasLogger;
 public class DataGenerator implements HasLogger {
 
 	private static final String[] FILLING = new String[] { "Strawberry", "Chocolate", "Blueberry", "Raspberry",
-			"Vanilla", "Salami", "Bacon" };
+			"Vanilla" };
 	private static final String[] TYPE = new String[] { "Cake", "Pastry", "Tart", "Muffin", "Biscuit", "Bread", "Bagel",
 			"Bun", "Brownie", "Cookie", "Cracker", "Cheese Cake" };
 	private static final String[] FIRST_NAME = new String[] { "Ori", "Amanda", "Octavia", "Laurel", "Lael", "Delilah",

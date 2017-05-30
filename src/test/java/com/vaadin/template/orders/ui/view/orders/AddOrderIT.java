@@ -49,15 +49,16 @@ public class AddOrderIT extends AbstractOrdersIT {
 			customer.setFullName("First Last");
 			customer.setPhoneNumber("Phone");
 			customer.setDetails("Details");
-			ProductOrderData productOrderData = new ProductOrderData("Bacon Salami Tart", 2, "Lactose free");
+
+			ProductOrderData productOrderData = new ProductOrderData("Strawberry Cheese Cake", 2, "Lactose free");
 			// Price used only to verify that the UI is updated correctly
-			productOrderData.setPrice(79.05);
+			productOrderData.setPrice(78.16);
 			products.add(productOrderData);
-			productOrderData = new ProductOrderData("Bacon Cracker", 1, "");
+			productOrderData = new ProductOrderData("Vanilla Cracker", 1, "");
 			// Price used only to verify that the UI is updated correctly
 			productOrderData.setPrice(98.77);
 			products.add(productOrderData);
-			total = "$256.87"; // 79.05*2+98.77
+			total = "$255.09"; // 78.16*2+98.77
 		}
 	}
 
@@ -157,7 +158,7 @@ public class AddOrderIT extends AbstractOrdersIT {
 		orderEditView.getPhone().setValue("phone");
 		orderEditView.getDetails().setValue("detailss");
 		orderEditView
-				.setProducts(Collections.singletonList(new ProductOrderData("Bacon Cheese Cake", 12, "A comment")));
+				.setProducts(Collections.singletonList(new ProductOrderData("Blueberry Cheese Cake", 12, "A comment")));
 
 		ElementUtil.click(orderEditView.getOk());
 		ElementUtil.click(orderEditView.getOk());
