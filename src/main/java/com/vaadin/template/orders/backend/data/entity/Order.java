@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
@@ -15,6 +17,8 @@ import javax.validation.constraints.NotNull;
 import com.vaadin.template.orders.backend.data.OrderState;
 
 @Entity(name = "OrderInfo") // "Order" is a reserved word
+@NamedEntityGraph(name = "Order.gridData", attributeNodes = { @NamedAttributeNode("items"),
+		@NamedAttributeNode("customer"), @NamedAttributeNode("history") })
 public class Order extends AbstractEntity {
 
 	@NotNull

@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,6 +17,7 @@ import com.vaadin.template.orders.backend.data.entity.Order;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 	Page<Order> findByDueDateAfterAndStateIn(LocalDate dueDate, Collection<OrderState> states, Pageable page);
 
+	@EntityGraph(value = "Order.gridData", type = EntityGraphType.LOAD)
 	Page<Order> findByDueDateAfter(LocalDate filterDate, Pageable pageable);
 
 	long countByDueDateAfterAndStateIn(LocalDate dueDate, Collection<OrderState> states);
