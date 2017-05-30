@@ -49,7 +49,8 @@ public class OrdersDataProvider extends FilterablePageableDataProvider<Order, Ob
 
 	@Override
 	protected int sizeInBackEnd(Query<Order, Object> query) {
-		return (int) getOrderService().countAfterDueDate(getOptionalFilterDate());
+
+		return (int) getOrderService().countAnyMatchingAfterDueDate(getOptionalFilter(), getOptionalFilterDate());
 	}
 
 	protected OrderService getOrderService() {
