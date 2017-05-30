@@ -1,6 +1,8 @@
 package com.vaadin.template.orders.ui.view.orders;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,8 +48,35 @@ public class OrdersListPresenter implements Serializable {
 		navigationManager.navigateTo(OrderEditView.class);
 	}
 
-    public void search(String searchTerm, Boolean includePast) {
+    public void search(String searchTerm, Boolean includePast, boolean userOriginated) {
 		ordersDataProvider.setFilter(searchTerm);
 		ordersDataProvider.setIncludePast(includePast);
+		if(userOriginated) {
+			String past = "";
+			if(includePast) {
+				past = "&includePast=true";
+			}
+			navigationManager.updateViewParameter("search=" + searchTerm + past);
+			System.out.println("user originater: " + String.valueOf(userOriginated));
+
+		} else {
+			view.updateFilters(searchTerm, includePast);
+		}
+	}
+
+	public void urlChanged(String parameters) {
+		Map<String, String> map = new HashMap<String, String>();
+		String[] parametersTokenized = parameters.split("&");
+		for (int i = 0; i < parametersTokenized.length; i++) {
+			String[] parameter = parametersTokenized[i].split("=");
+			if(parameter.length > 1) {
+				map.put(parameter[0], parameter[1]);
+			} else {
+				map.put(parameter[0], "");
+			}
+		}
+		String searchTerm = map.get("search");
+		boolean includePast = map.get("includePast") != null ? true : false;
+		search(searchTerm, includePast, false);
 	}
 }
