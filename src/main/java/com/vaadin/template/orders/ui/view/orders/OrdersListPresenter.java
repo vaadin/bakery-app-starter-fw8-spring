@@ -49,6 +49,5 @@ public class OrdersListPresenter implements Serializable {
     public void search(String searchTerm, Boolean includePast) {
 		ordersDataProvider.setFilter(searchTerm);
 		ordersDataProvider.setIncludePast(includePast);
-		System.out.println("filtering data");
 	}
 }
