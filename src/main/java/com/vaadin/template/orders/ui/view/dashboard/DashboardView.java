@@ -103,9 +103,8 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 		conf.getxAxis().setCategories(getMonthNames());
 		conf.getChart().setMarginBottom(6);
 
-		final int nYears = 3;
-		salesPerYear = new ListSeries[nYears];
-		for (int i = nYears - 1; i >= 0; i--) {
+		salesPerYear = new ListSeries[3];
+		for (int i = 0; i < 3; i++) {
 			salesPerYear[i] = new ListSeries(Integer.toString(year - i));
 			conf.addSeries(salesPerYear[i]);
 		}

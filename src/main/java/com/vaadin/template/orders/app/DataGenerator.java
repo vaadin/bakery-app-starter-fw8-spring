@@ -111,10 +111,18 @@ public class DataGenerator implements HasLogger {
 	}
 
 	private void createOrders(OrderRepository orderRepo) {
-		LocalDate twoYearsAgo = LocalDate.now().minusDays(2L * 365);
-		LocalDate oneMonthInTheFuture = LocalDate.now().plusDays(30);
-		for (LocalDate dueDate = twoYearsAgo; dueDate.isBefore(oneMonthInTheFuture); dueDate = dueDate.plusDays(1)) {
-			int ordersThisDay = random.nextInt(10);
+		int yearsToInclude = 2;
+		LocalDate now = LocalDate.now();
+		LocalDate oldestDate = LocalDate.of(now.getYear() - yearsToInclude, 1, 1);
+		LocalDate newestDate = now.plusMonths(1L);
+
+		for (LocalDate dueDate = oldestDate; dueDate.isBefore(newestDate); dueDate = dueDate.plusDays(1)) {
+			// Create a slightly upwards trend - everybody wants to be
+			// successful
+			int relativeYear = dueDate.getYear() - now.getYear() + yearsToInclude;
+			int relativeMonth = relativeYear * 12 + dueDate.getMonthValue();
+			double multiplier = 1.0 + 0.03 * relativeMonth;
+			int ordersThisDay = (int) (random.nextInt(10) * multiplier);
 			for (int i = 0; i < ordersThisDay; i++) {
 				orders.add(createOrder(dueDate));
 			}
