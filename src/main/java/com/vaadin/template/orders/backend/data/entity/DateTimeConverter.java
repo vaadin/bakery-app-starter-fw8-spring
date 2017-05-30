@@ -2,6 +2,7 @@ package com.vaadin.template.orders.backend.data.entity;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -14,12 +15,12 @@ import javax.persistence.Converter;
 public class DateTimeConverter implements AttributeConverter<LocalDateTime, Timestamp> {
 
 	@Override
-	public Timestamp convertToDatabaseColumn(LocalDateTime time) {
-		if (time == null) {
+	public Timestamp convertToDatabaseColumn(LocalDateTime dateTime) {
+		if (dateTime == null) {
 			return null;
 		}
 
-		return Timestamp.valueOf(time);
+		return Timestamp.from(dateTime.toInstant(ZoneOffset.UTC));
 	}
 
 	@Override
@@ -28,7 +29,7 @@ public class DateTimeConverter implements AttributeConverter<LocalDateTime, Time
 			return null;
 		}
 
-		return time.toLocalDateTime();
+		return LocalDateTime.ofInstant(time.toInstant(), ZoneOffset.UTC);
 	}
 
 }
