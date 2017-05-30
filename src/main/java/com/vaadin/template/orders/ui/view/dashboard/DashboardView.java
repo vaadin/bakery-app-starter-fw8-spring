@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import com.vaadin.template.orders.ui.components.OrdersDataProvider;
 import com.vaadin.template.orders.ui.navigation.NavigationManager;
 import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 import org.springframework.beans.factory.annotation.Autowired;
