@@ -2,6 +2,7 @@ package com.vaadin.template.orders.ui.components;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -57,9 +58,9 @@ public class OrdersGrid extends Grid<Order> {
 	}
 
 	private String getTimeStyle(LocalDate dueDate) {
-		int i = LocalDate.now().until(dueDate).getDays();
-		if (i < 7) {
-			return "in" + i;
+		long days = LocalDate.now().until(dueDate, ChronoUnit.DAYS);
+		if (days < 7) {
+			return "in" + days;
 		} else {
 			return "";
 		}
