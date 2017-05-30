@@ -142,6 +142,10 @@ public class OrderService {
 			// year, month, deliveries
 			int y = year - (int) salesData[0];
 			int m = (int) salesData[1] - 1;
+			if (y == 0 && m == month - 1) {
+				// skip current month as it contains incomplete data
+				continue;
+			}
 			long count = (long) salesData[2];
 			salesPerMonth[y][m] = count;
 		}
