@@ -19,13 +19,13 @@ import org.springframework.stereotype.Service;
 import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.CustomerRepository;
 import com.vaadin.template.orders.backend.OrderRepository;
+import com.vaadin.template.orders.backend.data.DashboardData;
+import com.vaadin.template.orders.backend.data.DeliveryStats;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.backend.data.entity.HistoryItem;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.data.entity.Product;
-import com.vaadin.template.orders.ui.view.dashboard.DashboardData;
-import com.vaadin.template.orders.ui.view.dashboard.DeliveryStats;
 
 @Service
 public class OrderService {
