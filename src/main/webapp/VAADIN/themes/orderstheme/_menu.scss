@@ -1,21 +1,22 @@
 @mixin menu {
-  .navigation .selected {
-    background: darken($v-focus-color,10%);
-    border-radius: 0;
-    .v-icon, .v-button-caption {
-        color: lighten($v-focus-color,50%);
+  .navigation-bar {
+    color: lighten($v-focus-color,40%);
+    
+    .v-button:hover {
+      .v-icon, .v-button-caption {
+          color: lighten($v-focus-color, 60%);
+      }
     }
-  }
-  .app-shell .navigation .v-button:hover {
-    .v-icon, .v-button-caption {
-        color: lighten($v-focus-color,50%);
+    .selected {
+      background: darken($v-focus-color,10%);
+      border-radius: 0;
     }
-  }
-  .activeViewName {
-    line-height: $v-unit-size;
-    width: auto !important;
-    padding: 0 $v-unit-size / 2.5;
-    font-size: $v-font-size;
+    .activeViewName {
+      line-height: $v-unit-size;
+      width: auto !important;
+      padding: 0 $v-unit-size / 2.5;
+      font-size: $v-font-size;
+    }
   }
 
   .app-shell[width-range~="601px-"] {
@@ -23,5 +24,4 @@
       display: none;
     }
   }
-
 }
