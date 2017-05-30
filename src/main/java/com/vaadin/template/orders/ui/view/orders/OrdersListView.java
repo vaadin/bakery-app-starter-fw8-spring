@@ -38,7 +38,7 @@ public class OrdersListView extends OrdersListViewDesign implements NavigableVie
 		list.setDataProvider(presenter.getOrdersProvider());
 		list.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
 		newOrder.addClickListener(e -> presenter.newOrder());
-
+		searchButton.addClickListener(e -> presenter.search(searchField.getValue(), includePast.getValue()));
 	}
 
 	/**

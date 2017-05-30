@@ -1,5 +1,21 @@
 @mixin ordersview {
-	// Insert your own theme rules here
+
+	.orders-list .v-grid > div {
+		border-left: 0;
+		border-bottom: 0;
+	}
+	.orders-list-filters {
+		padding:12px 12px;
+		vertical-align: baseline;
+
+		.v-textfield,
+		.v-button,
+		.v-checkbox {
+			margin: 4px 4px;
+			vertical-align: baseline;
+		}
+	}
+
 	.new-order {
 		color: #5a6054;
 		font-size: 60px;

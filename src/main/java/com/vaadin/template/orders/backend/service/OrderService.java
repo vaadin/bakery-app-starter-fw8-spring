@@ -2,13 +2,7 @@ package com.vaadin.template.orders.backend.service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
@@ -106,12 +100,33 @@ public class OrderService {
 		return getOrderRepository().findByDueDateAfter(filterDate, pageable);
 	}
 
+	public Page<Order> findAnyMatchingAfterDueDate(Optional<String> optionalFilter, Optional<LocalDate> optionalFilterDate, Pageable pageable) {
+		if(optionalFilter.isPresent() && optionalFilterDate.isPresent()){
+			return getOrderRepository().findBySearchQuery(optionalFilter.get(), pageable);
+		} else if (optionalFilter.isPresent()) {
+			return getOrderRepository().findBySearchQuery(optionalFilter.get(), pageable);
+		} else if (optionalFilterDate.isPresent()){
+			return getOrderRepository().findByDueDateAfter(optionalFilterDate.get(), pageable);
+		} else {
+			return getOrderRepository().findAll(pageable);
+		}
+	}
+
+	public Page<Order> find(Pageable pageable) {
+		return getOrderRepository().findAll(pageable);
+	}
+
 	public long countAfterDueDateWithState(LocalDate filterDate, List<OrderState> states) {
 		return getOrderRepository().countByDueDateAfterAndStateIn(filterDate, states);
 	}
 
-	public long countAfterDueDate(LocalDate filterDate) {
-		return getOrderRepository().countByDueDateAfter(filterDate);
+	public long countAfterDueDate(Optional<LocalDate> filterDate) {
+		if(filterDate.isPresent()){
+			return getOrderRepository().countByDueDateAfter(filterDate.get());
+		} else {
+			return getOrderRepository().count();
+		}
+
 	}
 
 	private DeliveryStats getDeliveryStats() {
