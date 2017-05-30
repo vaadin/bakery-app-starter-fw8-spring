@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui.view.dashboard;
+package com.vaadin.template.orders.backend.data;
 
 import java.util.LinkedHashMap;
 import java.util.List;

@@ -28,6 +28,8 @@ import com.vaadin.addon.charts.model.style.Style;
 import com.vaadin.board.Row;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.template.orders.backend.data.DashboardData;
+import com.vaadin.template.orders.backend.data.DeliveryStats;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.components.OrdersGrid;

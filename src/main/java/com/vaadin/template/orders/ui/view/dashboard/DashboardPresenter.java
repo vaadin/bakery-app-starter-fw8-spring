@@ -7,6 +7,7 @@ import java.time.Year;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.template.orders.app.BeanLocator;
+import com.vaadin.template.orders.backend.data.DashboardData;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.ui.components.OrdersDataProvider;
 
