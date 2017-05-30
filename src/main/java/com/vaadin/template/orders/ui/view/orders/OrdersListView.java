@@ -4,8 +4,6 @@ import javax.annotation.PostConstruct;
 
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
-import com.vaadin.template.orders.ui.navigation.NavigationManager;
-import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -71,8 +69,6 @@ public class OrdersListView extends OrdersListViewDesign implements NavigableVie
 	}
 
 	public void updateFilters(String searchTerm, Boolean includePast) {
-		System.out.println("term: " + searchTerm);
-		System.out.println(includePast);
 		searchField.setValue(searchTerm);
 		this.includePast.setValue(includePast);
 	}
