@@ -99,14 +99,6 @@ public class OrderService {
 		return getOrderRepository().save(order);
 	}
 
-	public Page<Order> findAfterDueDateWithState(LocalDate filterDate, List<OrderState> states, Pageable pageable) {
-		return getOrderRepository().findByDueDateAfterAndStateIn(filterDate, states, pageable);
-	}
-
-	public Page<Order> findAfterDueDate(LocalDate filterDate, Pageable pageable) {
-		return getOrderRepository().findByDueDateAfter(filterDate, pageable);
-	}
-
 	public Page<Order> findAnyMatchingAfterDueDate(Optional<String> optionalFilter,
 			Optional<LocalDate> optionalFilterDate, Pageable pageable) {
 		if (optionalFilter.isPresent()) {
@@ -137,14 +129,6 @@ public class OrderService {
 			return getOrderRepository().countByCustomerFullNameContainingIgnoreCase(optionalFilter.get());
 		} else if (optionalFilterDate.isPresent()) {
 			return getOrderRepository().countByDueDateAfter(optionalFilterDate.get());
-		} else {
-			return getOrderRepository().count();
-		}
-	}
-
-	public long countAfterDueDate(Optional<LocalDate> filterDate) {
-		if (filterDate.isPresent()) {
-			return getOrderRepository().countByDueDateAfter(filterDate.get());
 		} else {
 			return getOrderRepository().count();
 		}

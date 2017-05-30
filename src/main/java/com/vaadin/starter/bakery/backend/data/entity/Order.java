@@ -7,6 +7,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
@@ -15,6 +18,9 @@ import javax.validation.constraints.NotNull;
 import com.vaadin.starter.bakery.backend.data.OrderState;
 
 @Entity(name = "OrderInfo") // "Order" is a reserved word
+@NamedEntityGraphs({ @NamedEntityGraph(name = "Order.gridData", attributeNodes = { @NamedAttributeNode("customer") }),
+		@NamedEntityGraph(name = "Order.allData", attributeNodes = { @NamedAttributeNode("customer"),
+				@NamedAttributeNode("items"), @NamedAttributeNode("history") }) })
 public class Order extends AbstractEntity {
 
 	@NotNull
@@ -36,7 +42,7 @@ public class Order extends AbstractEntity {
 
 	private boolean paid;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@OrderColumn(name = "id")
 	private List<HistoryItem> history;
 

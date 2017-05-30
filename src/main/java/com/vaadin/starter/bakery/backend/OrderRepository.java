@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,12 +15,22 @@ import com.vaadin.starter.bakery.backend.data.OrderState;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-	Page<Order> findByDueDateAfterAndStateIn(LocalDate dueDate, Collection<OrderState> states, Pageable page);
 
+	@Override
+	@EntityGraph(value = "Order.allData", type = EntityGraphType.LOAD)
+	Order findOne(Long id);
+
+	@EntityGraph(value = "Order.gridData", type = EntityGraphType.LOAD)
 	Page<Order> findByDueDateAfter(LocalDate filterDate, Pageable pageable);
 
+	@Override
+	@EntityGraph(value = "Order.gridData", type = EntityGraphType.LOAD)
+	Page<Order> findAll(Pageable pageable);
+
+	@EntityGraph(value = "Order.gridData", type = EntityGraphType.LOAD)
 	Page<Order> findByCustomerFullNameContainingIgnoreCase(String searchQuery, Pageable pageable);
 
+	@EntityGraph(value = "Order.gridData", type = EntityGraphType.LOAD)
 	Page<Order> findByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(String searchQuery, LocalDate dueDate,
 			Pageable pageable);
 
