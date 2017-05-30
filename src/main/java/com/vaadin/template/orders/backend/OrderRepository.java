@@ -17,6 +17,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 	Page<Order> findByDueDateAfter(LocalDate filterDate, Pageable pageable);
 
+	@Query("SELECT o FROM OrderInfo o JOIN o.customer c where c.fullName LIKE %?1%")
+	Page<Order> findBySearchQuery(String searchQuery, Pageable pagebale);
+
 	long countByDueDateAfterAndStateIn(LocalDate dueDate, Collection<OrderState> states);
 
 	long countByDueDateAfter(LocalDate dueDate);
