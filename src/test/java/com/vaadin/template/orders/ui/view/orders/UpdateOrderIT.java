@@ -217,7 +217,7 @@ public class UpdateOrderIT extends AbstractOrdersIT {
 		ElementUtil.click(orderEditView.getAddItems());
 
 		ProductInfoElement productInfo = orderEditView.getProductInfo(orderEditView.getNumberOfProducts() - 1);
-		productInfo.getProduct().selectByText("Bacon Cheese Cake");
+		productInfo.getProduct().selectByText("Blueberry Cheese Cake");
 
 		assertConfirmationDialogBlocksLeaving(orderEditView);
 	}
