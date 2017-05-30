@@ -11,4 +11,17 @@
         color: lighten($v-focus-color,50%);
     }
   }
+  .activeViewName {
+    line-height: $v-unit-size;
+    width: auto !important;
+    padding: 0 $v-unit-size / 2.5;
+    font-size: $v-font-size;
+  }
+
+  .app-shell[width-range~="601px-"] {
+    .activeViewName {
+      display: none;
+    }
+  }
+
 }
