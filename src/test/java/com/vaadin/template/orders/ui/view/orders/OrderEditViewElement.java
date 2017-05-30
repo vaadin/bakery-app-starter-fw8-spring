@@ -8,6 +8,7 @@ import java.util.List;
 import org.hamcrest.beans.SamePropertyValuesAs;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 
 import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.backend.data.OrderState;
@@ -15,6 +16,7 @@ import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;
 import com.vaadin.testbench.HasDriver;
 import com.vaadin.testbench.elements.CssLayoutElement;
+import com.vaadin.testbench.elements.LabelElement;
 import com.vaadin.testbench.elementsbase.ServerClass;
 
 @ServerClass("com.vaadin.template.orders.ui.view.orders.OrderEditView")
@@ -31,8 +33,14 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 	}
 
 	public OrderState getCurrentState() {
-		String displayName = ElementUtil.getText(getStateLabel());
-		return OrderState.forDisplayName(displayName);
+		try {
+			LabelElement stateLabel = getStateLabel();
+			String displayName = ElementUtil.getText(stateLabel);
+			return OrderState.forDisplayName(displayName);
+		} catch (NoSuchElementException e) {
+			// State label is not shown for the "confirmation" view
+			return OrderState.NEW;
+		}
 	}
 
 	public int getNumberOfProducts() {
@@ -72,6 +80,7 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 			order.products.add(getProductInfo(i).getProductOrderData());
 		}
 		order.total = getTotal().getText();
+		order.state = getCurrentState();
 		return order;
 	}
 
@@ -82,6 +91,7 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 		// Assert.assertEquals(order.dueDate, currentInfo.dueDate);
 		Assert.assertEquals(order.pickupLocation, currentInfo.pickupLocation);
 		Assert.assertThat(order.customer, SamePropertyValuesAs.samePropertyValuesAs(currentInfo.customer));
+		Assert.assertEquals(order.state, currentInfo.state);
 
 		for (int i = 0; i < order.products.size(); i++) {
 			Assert.assertThat(order.products.get(i),

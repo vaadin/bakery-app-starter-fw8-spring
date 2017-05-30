@@ -42,13 +42,13 @@ public class AddOrderIT extends AbstractOrdersIT {
 		public TestOrder() {
 			dueDate = LocalDate.of(2025, 12, 5);
 			dueTime = LocalTime.of(8, 00);
+			state = OrderState.NEW;
 			customer = new Customer();
 			pickupLocation = "Store";
 			products = new ArrayList<>();
 			customer.setFullName("First Last");
 			customer.setPhoneNumber("Phone");
 			customer.setDetails("Details");
-
 			ProductOrderData productOrderData = new ProductOrderData("Bacon Salami Tart", 2, "Lactose free");
 			// Price used only to verify that the UI is updated correctly
 			productOrderData.setPrice(79.05);
@@ -125,7 +125,6 @@ public class AddOrderIT extends AbstractOrdersIT {
 		// ID is of type #1234
 		String orderIdText = ElementUtil.getText(orderEditView.getOrderId());
 		Assert.assertTrue(orderIdText.matches("#\\d+"));
-		Assert.assertEquals(OrderState.NEW, orderEditView.getCurrentState());
 
 		// Order info intact
 		orderEditView.assertOrder(testOrder);
