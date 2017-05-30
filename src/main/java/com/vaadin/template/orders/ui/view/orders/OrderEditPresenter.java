@@ -49,7 +49,7 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 	@Autowired
 	public OrderEditPresenter(ViewEventBus viewEventBus, NavigationManager navigationManager) {
 		this.navigationManager = navigationManager;
-		viewEventBus.subscribe(ProductInfoChange.class, change -> {
+		viewEventBus.subscribe(ProductInfoChangeEvent.class, change -> {
 			updateTotalSum();
 			view.onProductInfoChanged();
 		});
