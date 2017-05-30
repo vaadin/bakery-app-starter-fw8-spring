@@ -12,6 +12,9 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
+import com.vaadin.template.orders.ui.components.OrdersDataProvider;
+import com.vaadin.template.orders.ui.navigation.NavigationManager;
+import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.addon.charts.Chart;
@@ -42,11 +45,17 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 
 	private final DashboardPresenter presenter;
 
+	private final NavigationManager navigationManager;
+
 	private final BoardLabel todayLabel = new BoardLabel("Today", "3/7", "today");
 	private final BoardLabel notAvailableLabel = new BoardLabel("N/A", "1", "na");
-	private final BoardBox notAvailableBox = new BoardBox(notAvailableLabel);
 	private final BoardLabel newLabel = new BoardLabel("New", "2", "new");
 	private final BoardLabel tomorrowLabel = new BoardLabel("Tomorrow", "4", "tomorrow");
+	private final BoardBox todayBox = new BoardBox(todayLabel);
+	private final BoardBox notAvailableBox = new BoardBox(notAvailableLabel);
+	private final BoardBox newBox = new BoardBox(newLabel);
+	private final BoardBox tomorrowBox = new BoardBox(tomorrowLabel);
+
 
 	private final Chart deliveriesThisMonthGraph = new Chart(ChartType.COLUMN);
 	private final Chart deliveriesThisYearGraph = new Chart(ChartType.COLUMN);
@@ -61,16 +70,18 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 	private DataSeries deliveriesPerProductSeries;
 
 	@Autowired
-	public DashboardView(DashboardPresenter presenter) {
+	public DashboardView(DashboardPresenter presenter, NavigationManager navigationManager) {
 		this.presenter = presenter;
+		this.navigationManager = navigationManager;
 	}
 
 	@PostConstruct
 	public void init() {
 		setResponsive(true);
 
-		Row row = board.addRow(new BoardBox(todayLabel), notAvailableBox, new BoardBox(newLabel),
-				new BoardBox(tomorrowLabel));
+		todayBox.addLayoutClickListener(e -> navigationManager.navigateTo(OrdersListView.class, ""));
+
+		Row row = board.addRow(todayBox, notAvailableBox, newBox, tomorrowBox);
 		row.addStyleName("board-row-group");
 
 		row = board.addRow(new BoardBox(deliveriesThisMonthGraph), new BoardBox(deliveriesThisYearGraph));

@@ -2,6 +2,10 @@ package com.vaadin.template.orders.ui.view.orders;
 
 import javax.annotation.PostConstruct;
 
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutListener;
+import com.vaadin.template.orders.ui.navigation.NavigationManager;
+import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -38,7 +42,17 @@ public class OrdersListView extends OrdersListViewDesign implements NavigableVie
 		list.setDataProvider(presenter.getOrdersProvider());
 		list.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
 		newOrder.addClickListener(e -> presenter.newOrder());
-		searchButton.addClickListener(e -> presenter.search(searchField.getValue(), includePast.getValue()));
+		searchButton.addClickListener(e -> search());
+		searchField.addShortcutListener(new ShortcutListener("Search", ShortcutAction.KeyCode.ENTER, null) {
+			@Override
+			public void handleAction(Object sender, Object target) {
+				search();
+			}
+		});
+	}
+
+	private void search(){
+		presenter.search(searchField.getValue(), includePast.getValue(), true);
 	}
 
 	/**
@@ -51,7 +65,15 @@ public class OrdersListView extends OrdersListViewDesign implements NavigableVie
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// Nothing to do
+		if (!event.getParameters().isEmpty()) {
+			presenter.urlChanged(event.getParameters());
+		}
 	}
 
+	public void updateFilters(String searchTerm, Boolean includePast) {
+		System.out.println("term: " + searchTerm);
+		System.out.println(includePast);
+		searchField.setValue(searchTerm);
+		this.includePast.setValue(includePast);
+	}
 }
