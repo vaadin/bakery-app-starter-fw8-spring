@@ -109,20 +109,20 @@ public class OrderService {
 
 	public Page<Order> findAnyMatchingAfterDueDate(Optional<String> optionalFilter,
 			Optional<LocalDate> optionalFilterDate, Pageable pageable) {
-		if (optionalFilter.isPresent() && optionalFilterDate.isPresent()) {
-			return getOrderRepository().findByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(optionalFilter.get(),
-					optionalFilterDate.get(), pageable);
-		} else if (optionalFilter.isPresent()) {
-			return getOrderRepository().findByCustomerFullNameContainingIgnoreCase(optionalFilter.get(), pageable);
-		} else if (optionalFilterDate.isPresent()) {
-			return getOrderRepository().findByDueDateAfter(optionalFilterDate.get(), pageable);
+		if (optionalFilter.isPresent()) {
+			if (optionalFilterDate.isPresent()) {
+				return getOrderRepository().findByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(
+						optionalFilter.get(), optionalFilterDate.get(), pageable);
+			} else {
+				return getOrderRepository().findByCustomerFullNameContainingIgnoreCase(optionalFilter.get(), pageable);
+			}
 		} else {
-			return getOrderRepository().findAll(pageable);
+			if (optionalFilterDate.isPresent()) {
+				return getOrderRepository().findByDueDateAfter(optionalFilterDate.get(), pageable);
+			} else {
+				return getOrderRepository().findAll(pageable);
+			}
 		}
-	}
-
-	public Page<Order> find(Pageable pageable) {
-		return getOrderRepository().findAll(pageable);
 	}
 
 	public long countAfterDueDateWithState(LocalDate filterDate, List<OrderState> states) {
@@ -148,7 +148,6 @@ public class OrderService {
 		} else {
 			return getOrderRepository().count();
 		}
-
 	}
 
 	private DeliveryStats getDeliveryStats() {

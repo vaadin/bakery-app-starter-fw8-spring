@@ -40,7 +40,7 @@ public class OrdersListView extends OrdersListViewDesign implements NavigableVie
 		list.setDataProvider(presenter.getOrdersProvider());
 		list.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
 		newOrder.addClickListener(e -> presenter.newOrder());
-		searchButton.addClickListener(e -> search());
+		searchButton.addClickListener(e -> presenter.search(searchField.getValue(), includePast.getValue()));
 		searchField.addShortcutListener(new ShortcutListener("Search", ShortcutAction.KeyCode.ENTER, null) {
 			@Override
 			public void handleAction(Object sender, Object target) {
@@ -50,7 +50,7 @@ public class OrdersListView extends OrdersListViewDesign implements NavigableVie
 	}
 
 	private void search() {
-		presenter.search(searchField.getValue(), includePast.getValue(), true);
+
 	}
 
 	/**
@@ -63,12 +63,10 @@ public class OrdersListView extends OrdersListViewDesign implements NavigableVie
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		if (!event.getParameters().isEmpty()) {
-			presenter.urlChanged(event.getParameters());
-		}
+		presenter.enter(event.getParameters());
 	}
 
-	public void updateFilters(String searchTerm, Boolean includePast) {
+	public void updateFilters(String searchTerm, boolean includePast) {
 		searchField.setValue(searchTerm);
 		this.includePast.setValue(includePast);
 	}
