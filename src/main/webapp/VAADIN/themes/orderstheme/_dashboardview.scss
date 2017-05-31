@@ -55,9 +55,14 @@
 			@include valo-panel-style;
       		margin-bottom: $spacing;
 
-      		.today h4 {
-      			color: $orders-ok-color;
-      		}
+			.today {
+				h4 {
+					color: $orders-ok-color;
+				}
+
+				cursor: pointer;
+			}
+
       	    .new h4 {
       			color: $orders-warn-color;
       		}

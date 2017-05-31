@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -106,12 +107,47 @@ public class OrderService {
 		return getOrderRepository().findByDueDateAfter(filterDate, pageable);
 	}
 
+	public Page<Order> findAnyMatchingAfterDueDate(Optional<String> optionalFilter,
+			Optional<LocalDate> optionalFilterDate, Pageable pageable) {
+		if (optionalFilter.isPresent()) {
+			if (optionalFilterDate.isPresent()) {
+				return getOrderRepository().findByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(
+						optionalFilter.get(), optionalFilterDate.get(), pageable);
+			} else {
+				return getOrderRepository().findByCustomerFullNameContainingIgnoreCase(optionalFilter.get(), pageable);
+			}
+		} else {
+			if (optionalFilterDate.isPresent()) {
+				return getOrderRepository().findByDueDateAfter(optionalFilterDate.get(), pageable);
+			} else {
+				return getOrderRepository().findAll(pageable);
+			}
+		}
+	}
+
 	public long countAfterDueDateWithState(LocalDate filterDate, List<OrderState> states) {
 		return getOrderRepository().countByDueDateAfterAndStateIn(filterDate, states);
 	}
 
-	public long countAfterDueDate(LocalDate filterDate) {
-		return getOrderRepository().countByDueDateAfter(filterDate);
+	public long countAnyMatchingAfterDueDate(Optional<String> optionalFilter, Optional<LocalDate> optionalFilterDate) {
+		if (optionalFilter.isPresent() && optionalFilterDate.isPresent()) {
+			return getOrderRepository().countByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(optionalFilter.get(),
+					optionalFilterDate.get());
+		} else if (optionalFilter.isPresent()) {
+			return getOrderRepository().countByCustomerFullNameContainingIgnoreCase(optionalFilter.get());
+		} else if (optionalFilterDate.isPresent()) {
+			return getOrderRepository().countByDueDateAfter(optionalFilterDate.get());
+		} else {
+			return getOrderRepository().count();
+		}
+	}
+
+	public long countAfterDueDate(Optional<LocalDate> filterDate) {
+		if (filterDate.isPresent()) {
+			return getOrderRepository().countByDueDateAfter(filterDate.get());
+		} else {
+			return getOrderRepository().count();
+		}
 	}
 
 	private DeliveryStats getDeliveryStats() {

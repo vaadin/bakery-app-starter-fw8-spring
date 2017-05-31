@@ -17,9 +17,17 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 	Page<Order> findByDueDateAfter(LocalDate filterDate, Pageable pageable);
 
+	Page<Order> findByCustomerFullNameContainingIgnoreCase(String searchQuery, Pageable pageable);
+
+	Page<Order> findByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(String searchQuery, LocalDate dueDate, Pageable pageable);
+
 	long countByDueDateAfterAndStateIn(LocalDate dueDate, Collection<OrderState> states);
 
 	long countByDueDateAfter(LocalDate dueDate);
+
+	long countByCustomerFullNameContainingIgnoreCase(String searchQuery);
+
+	long countByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(String searchQuery, LocalDate dueDate);
 
 	long countByDueDate(LocalDate dueDate);
 

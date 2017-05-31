@@ -23,4 +23,28 @@ public class StorefrontIT extends AbstractOrdersIT {
 		String customerAndProductsText = grid.getCell(0, 1).getText();
 		Assert.assertTrue("The customer and products part should contain data", customerAndProductsText.length() > 10);
 	}
+
+	@Test
+	public void filterUsingUrl() {
+		openLoginView(APP_URL + "#!orders-list/search=kerry").login("barista@vaadin.com", "barista");
+		OrdersListViewElement view = $(OrdersListViewElement.class).first();
+		GridElement list = view.getList();
+		long rowCount = list.getRowCount();
+		Assert.assertTrue(rowCount > 0);
+		Assert.assertTrue(rowCount < 100);
+		Assert.assertTrue(list.getCell(0, 1).getText().toLowerCase().contains("kerry"));
+	}
+
+	@Test
+	public void filterUsingSearchField() {
+		OrdersListViewElement view = loginAsBarista();
+		view.getSearchField().setValue("gallegos");
+		ElementUtil.click(view.getSearchButton());
+
+		GridElement list = view.getList();
+		long rowCount = list.getRowCount();
+		Assert.assertTrue(rowCount > 0);
+		Assert.assertTrue(rowCount < 100);
+		Assert.assertTrue(list.getCell(0, 1).getText().toLowerCase().contains("gallegos"));
+	}
 }
