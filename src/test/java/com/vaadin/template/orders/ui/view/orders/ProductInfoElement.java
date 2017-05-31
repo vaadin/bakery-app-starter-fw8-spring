@@ -81,7 +81,7 @@ public class ProductInfoElement extends ProductInfoDesignElement {
 				productOrderData.setComment("");
 			}
 		}
-		int intPrice = (int) (100 * Double.parseDouble(getPrice().getText().replace("$", "")));
+		int intPrice = (Integer.parseInt(getPrice().getText().replace("$", "").replace(".", "")));
 		productOrderData.setPrice(intPrice);
 
 		return productOrderData;
