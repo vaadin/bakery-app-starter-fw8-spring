@@ -63,7 +63,7 @@ public class OrdersDataProvider extends FilterablePageableDataProvider<Order, Ob
 	protected List<QuerySortOrder> getDefaultSortOrders() {
 		List<QuerySortOrder> sortOrders = new ArrayList<>();
 		sortOrders.add(new QuerySortOrder("dueDate", SortDirection.ASCENDING));
-		sortOrders.add(new QuerySortOrder("dueTime", SortDirection.DESCENDING));
+		sortOrders.add(new QuerySortOrder("dueTime", SortDirection.ASCENDING));
 		// id included only to always get a stable sort order
 		sortOrders.add(new QuerySortOrder("id", SortDirection.DESCENDING));
 		return sortOrders;

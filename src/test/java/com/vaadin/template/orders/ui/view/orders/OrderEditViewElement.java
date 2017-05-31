@@ -79,7 +79,7 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 		for (int i = 0; i < nrProducts; i++) {
 			order.products.add(getProductInfo(i).getProductOrderData());
 		}
-		order.total = getTotal().getText();
+		order.total = ElementUtil.getText(getTotal());
 		order.state = getCurrentState();
 		return order;
 	}

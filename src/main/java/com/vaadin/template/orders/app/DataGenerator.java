@@ -122,7 +122,7 @@ public class DataGenerator implements HasLogger {
 			int relativeYear = dueDate.getYear() - now.getYear() + yearsToInclude;
 			int relativeMonth = relativeYear * 12 + dueDate.getMonthValue();
 			double multiplier = 1.0 + 0.03 * relativeMonth;
-			int ordersThisDay = (int) (random.nextInt(10) * multiplier);
+			int ordersThisDay = (int) (random.nextInt(10) + 1 * multiplier);
 			for (int i = 0; i < ordersThisDay; i++) {
 				orders.add(createOrder(dueDate));
 			}
