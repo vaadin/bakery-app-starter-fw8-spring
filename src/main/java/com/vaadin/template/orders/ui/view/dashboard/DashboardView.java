@@ -44,12 +44,9 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 
 	private final BoardLabel todayLabel = new BoardLabel("Today", "3/7", "today");
 	private final BoardLabel notAvailableLabel = new BoardLabel("N/A", "1", "na");
+	private final BoardBox notAvailableBox = new BoardBox(notAvailableLabel);
 	private final BoardLabel newLabel = new BoardLabel("New", "2", "new");
 	private final BoardLabel tomorrowLabel = new BoardLabel("Tomorrow", "4", "tomorrow");
-	private final BoardBox todayBox = new BoardBox(todayLabel);
-	private final BoardBox notAvailableBox = new BoardBox(notAvailableLabel);
-	private final BoardBox newBox = new BoardBox(newLabel);
-	private final BoardBox tomorrowBox = new BoardBox(tomorrowLabel);
 
 	private final Chart deliveriesThisMonthGraph = new Chart(ChartType.COLUMN);
 	private final Chart deliveriesThisYearGraph = new Chart(ChartType.COLUMN);
@@ -72,9 +69,8 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 	public void init() {
 		setResponsive(true);
 
-		todayBox.addLayoutClickListener(e -> presenter.showTodayOrders());
-
-		Row row = board.addRow(todayBox, notAvailableBox, newBox, tomorrowBox);
+		Row row = board.addRow(new BoardBox(todayLabel), notAvailableBox, new BoardBox(newLabel),
+				new BoardBox(tomorrowLabel));
 		row.addStyleName("board-row-group");
 
 		row = board.addRow(new BoardBox(deliveriesThisMonthGraph), new BoardBox(deliveriesThisYearGraph));
