@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.vaadin.template.orders.ui.dataprovider.FilterablePageableDataProvider;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,7 +16,7 @@ import com.vaadin.template.orders.app.BeanLocator;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.service.OrderService;
 import com.vaadin.template.orders.ui.PrototypeScope;
-import com.vaadin.template.orders.ui.dataprovider.PageableDataProvider;
+import com.vaadin.template.orders.ui.dataprovider.FilterablePageableDataProvider;
 
 @SpringComponent
 @PrototypeScope
@@ -40,7 +39,7 @@ public class OrdersDataProvider extends FilterablePageableDataProvider<Order, Ob
 	}
 
 	public void setIncludePast(boolean includePast) {
-		if(includePast) {
+		if (includePast) {
 			filterDate = null;
 		} else {
 			filterDate = LocalDate.now().minusDays(1);

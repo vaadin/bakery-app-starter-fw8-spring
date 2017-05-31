@@ -12,8 +12,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import com.vaadin.template.orders.ui.navigation.NavigationManager;
-import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.addon.charts.Chart;
@@ -35,7 +33,9 @@ import com.vaadin.template.orders.backend.data.DeliveryStats;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.components.OrdersGrid;
+import com.vaadin.template.orders.ui.navigation.NavigationManager;
 import com.vaadin.template.orders.ui.view.NavigableView;
+import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 
 @SpringView
 public class DashboardView extends DashboardViewDesign implements NavigableView, HasLogger {
@@ -54,7 +54,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 	private final BoardBox notAvailableBox = new BoardBox(notAvailableLabel);
 	private final BoardBox newBox = new BoardBox(newLabel);
 	private final BoardBox tomorrowBox = new BoardBox(tomorrowLabel);
-
 
 	private final Chart deliveriesThisMonthGraph = new Chart(ChartType.COLUMN);
 	private final Chart deliveriesThisYearGraph = new Chart(ChartType.COLUMN);

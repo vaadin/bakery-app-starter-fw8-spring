@@ -2,7 +2,14 @@ package com.vaadin.template.orders.backend.service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -100,12 +107,14 @@ public class OrderService {
 		return getOrderRepository().findByDueDateAfter(filterDate, pageable);
 	}
 
-	public Page<Order> findAnyMatchingAfterDueDate(Optional<String> optionalFilter, Optional<LocalDate> optionalFilterDate, Pageable pageable) {
-		if(optionalFilter.isPresent() && optionalFilterDate.isPresent()){
-			return getOrderRepository().findByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(optionalFilter.get(), optionalFilterDate.get(), pageable);
+	public Page<Order> findAnyMatchingAfterDueDate(Optional<String> optionalFilter,
+			Optional<LocalDate> optionalFilterDate, Pageable pageable) {
+		if (optionalFilter.isPresent() && optionalFilterDate.isPresent()) {
+			return getOrderRepository().findByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(optionalFilter.get(),
+					optionalFilterDate.get(), pageable);
 		} else if (optionalFilter.isPresent()) {
 			return getOrderRepository().findByCustomerFullNameContainingIgnoreCase(optionalFilter.get(), pageable);
-		} else if (optionalFilterDate.isPresent()){
+		} else if (optionalFilterDate.isPresent()) {
 			return getOrderRepository().findByDueDateAfter(optionalFilterDate.get(), pageable);
 		} else {
 			return getOrderRepository().findAll(pageable);
@@ -120,13 +129,13 @@ public class OrderService {
 		return getOrderRepository().countByDueDateAfterAndStateIn(filterDate, states);
 	}
 
-
 	public long countAnyMatchingAfterDueDate(Optional<String> optionalFilter, Optional<LocalDate> optionalFilterDate) {
-		if(optionalFilter.isPresent() && optionalFilterDate.isPresent()){
-			return getOrderRepository().countByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(optionalFilter.get(), optionalFilterDate.get());
+		if (optionalFilter.isPresent() && optionalFilterDate.isPresent()) {
+			return getOrderRepository().countByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(optionalFilter.get(),
+					optionalFilterDate.get());
 		} else if (optionalFilter.isPresent()) {
 			return getOrderRepository().countByCustomerFullNameContainingIgnoreCase(optionalFilter.get());
-		} else if (optionalFilterDate.isPresent()){
+		} else if (optionalFilterDate.isPresent()) {
 			return getOrderRepository().countByDueDateAfter(optionalFilterDate.get());
 		} else {
 			return getOrderRepository().count();
@@ -134,7 +143,7 @@ public class OrderService {
 	}
 
 	public long countAfterDueDate(Optional<LocalDate> filterDate) {
-		if(filterDate.isPresent()){
+		if (filterDate.isPresent()) {
 			return getOrderRepository().countByDueDateAfter(filterDate.get());
 		} else {
 			return getOrderRepository().count();

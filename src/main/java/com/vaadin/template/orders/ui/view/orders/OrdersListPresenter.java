@@ -48,12 +48,12 @@ public class OrdersListPresenter implements Serializable {
 		navigationManager.navigateTo(OrderEditView.class);
 	}
 
-    public void search(String searchTerm, Boolean includePast, boolean userOriginated) {
+	public void search(String searchTerm, Boolean includePast, boolean userOriginated) {
 		ordersDataProvider.setFilter(searchTerm);
 		ordersDataProvider.setIncludePast(includePast);
-		if(userOriginated) {
+		if (userOriginated) {
 			String past = "";
-			if(includePast) {
+			if (includePast) {
 				past = "&includePast=true";
 			}
 			navigationManager.updateViewParameter("search=" + searchTerm + past);
@@ -65,11 +65,11 @@ public class OrdersListPresenter implements Serializable {
 	}
 
 	public void urlChanged(String parameters) {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		String[] parametersTokenized = parameters.split("&");
 		for (int i = 0; i < parametersTokenized.length; i++) {
 			String[] parameter = parametersTokenized[i].split("=");
-			if(parameter.length > 1) {
+			if (parameter.length > 1) {
 				map.put(parameter[0], parameter[1]);
 			} else {
 				map.put(parameter[0], "");

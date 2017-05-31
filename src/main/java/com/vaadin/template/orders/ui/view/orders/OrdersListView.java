@@ -2,10 +2,10 @@ package com.vaadin.template.orders.ui.view.orders;
 
 import javax.annotation.PostConstruct;
 
-import com.vaadin.event.ShortcutAction;
-import com.vaadin.event.ShortcutListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
@@ -49,7 +49,7 @@ public class OrdersListView extends OrdersListViewDesign implements NavigableVie
 		});
 	}
 
-	private void search(){
+	private void search() {
 		presenter.search(searchField.getValue(), includePast.getValue(), true);
 	}
 
