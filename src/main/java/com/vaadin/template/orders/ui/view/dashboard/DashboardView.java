@@ -33,9 +33,7 @@ import com.vaadin.template.orders.backend.data.DeliveryStats;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.HasLogger;
 import com.vaadin.template.orders.ui.components.OrdersGrid;
-import com.vaadin.template.orders.ui.navigation.NavigationManager;
 import com.vaadin.template.orders.ui.view.NavigableView;
-import com.vaadin.template.orders.ui.view.orders.OrdersListView;
 
 @SpringView
 public class DashboardView extends DashboardViewDesign implements NavigableView, HasLogger {
@@ -43,8 +41,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 	private static final String BOARD_ROW_PANELS = "board-row-panels";
 
 	private final DashboardPresenter presenter;
-
-	private final NavigationManager navigationManager;
 
 	private final BoardLabel todayLabel = new BoardLabel("Today", "3/7", "today");
 	private final BoardLabel notAvailableLabel = new BoardLabel("N/A", "1", "na");
@@ -68,16 +64,15 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 	private DataSeries deliveriesPerProductSeries;
 
 	@Autowired
-	public DashboardView(DashboardPresenter presenter, NavigationManager navigationManager) {
+	public DashboardView(DashboardPresenter presenter) {
 		this.presenter = presenter;
-		this.navigationManager = navigationManager;
 	}
 
 	@PostConstruct
 	public void init() {
 		setResponsive(true);
 
-		todayBox.addLayoutClickListener(e -> navigationManager.navigateTo(OrdersListView.class, ""));
+		todayBox.addLayoutClickListener(e -> presenter.showTodayOrders());
 
 		Row row = board.addRow(todayBox, notAvailableBox, newBox, tomorrowBox);
 		row.addStyleName("board-row-group");

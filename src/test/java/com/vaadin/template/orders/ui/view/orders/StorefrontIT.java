@@ -23,4 +23,22 @@ public class StorefrontIT extends AbstractOrdersIT {
 		String customerAndProductsText = grid.getCell(0, 1).getText();
 		Assert.assertTrue("The customer and products part should contain data", customerAndProductsText.length() > 10);
 	}
+
+	@Test
+	public void filterUsingUrl() {
+		openLoginView(APP_URL + "#!orders-list/search=kerry&includePast").login("barista@vaadin.com", "barista");
+
+		OrdersListViewElement ordersList = loginAsBarista();
+
+		GridElement grid = ordersList.getList();
+		Assert.assertTrue("With the generated data, there should be at least twenty rows in the grid",
+				grid.getRowCount() > 20);
+
+		String dueCellText = grid.getCell(0, 0).getText();
+		Assert.assertTrue("With the generated data, there should be at least one order due today",
+				dueCellText.contains("Today"));
+
+		String customerAndProductsText = grid.getCell(0, 1).getText();
+		Assert.assertTrue("The customer and products part should contain data", customerAndProductsText.length() > 10);
+	}
 }

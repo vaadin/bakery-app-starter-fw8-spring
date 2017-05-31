@@ -4,13 +4,13 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.event.ShortcutAction;
-import com.vaadin.event.ShortcutListener;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.template.orders.ui.view.NavigableView;
+import com.vaadin.ui.Button.ClickShortcut;
 
 @SpringView
 public class OrdersListView extends OrdersListViewDesign implements NavigableView {
@@ -40,17 +40,10 @@ public class OrdersListView extends OrdersListViewDesign implements NavigableVie
 		list.setDataProvider(presenter.getOrdersProvider());
 		list.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
 		newOrder.addClickListener(e -> presenter.newOrder());
-		searchButton.addClickListener(e -> search());
-		searchField.addShortcutListener(new ShortcutListener("Search", ShortcutAction.KeyCode.ENTER, null) {
-			@Override
-			public void handleAction(Object sender, Object target) {
-				search();
-			}
-		});
-	}
+		searchButton.addClickListener(e -> presenter.search(searchField.getValue(), includePast.getValue()));
 
-	private void search() {
-		presenter.search(searchField.getValue(), includePast.getValue(), true);
+		// We don't want a global shortcut for enter, scope it to the panel
+		searchPanel.addAction(new ClickShortcut(searchButton, KeyCode.ENTER, null));
 	}
 
 	/**
@@ -63,12 +56,10 @@ public class OrdersListView extends OrdersListViewDesign implements NavigableVie
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		if (!event.getParameters().isEmpty()) {
-			presenter.urlChanged(event.getParameters());
-		}
+		presenter.enter(event.getParameters());
 	}
 
-	public void updateFilters(String searchTerm, Boolean includePast) {
+	public void updateFilters(String searchTerm, boolean includePast) {
 		searchField.setValue(searchTerm);
 		this.includePast.setValue(includePast);
 	}
