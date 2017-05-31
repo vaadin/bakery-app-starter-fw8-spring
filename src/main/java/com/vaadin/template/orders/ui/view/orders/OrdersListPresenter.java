@@ -1,10 +1,10 @@
 package com.vaadin.template.orders.ui.view.orders;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
@@ -48,7 +48,7 @@ public class OrdersListPresenter implements Serializable {
 		navigationManager.navigateTo(OrderEditView.class);
 	}
 
-	public void search(String searchTerm, Boolean includePast, boolean userOriginated) {
+	public void search(String searchTerm, boolean includePast, boolean userOriginated) {
 		ordersDataProvider.setFilter(searchTerm);
 		ordersDataProvider.setIncludePast(includePast);
 		if (userOriginated) {
@@ -57,26 +57,15 @@ public class OrdersListPresenter implements Serializable {
 				past = "&includePast=true";
 			}
 			navigationManager.updateViewParameter("search=" + searchTerm + past);
-			System.out.println("user originater: " + String.valueOf(userOriginated));
-
 		} else {
 			view.updateFilters(searchTerm, includePast);
 		}
 	}
 
 	public void urlChanged(String parameters) {
-		Map<String, String> map = new HashMap<>();
-		String[] parametersTokenized = parameters.split("&");
-		for (int i = 0; i < parametersTokenized.length; i++) {
-			String[] parameter = parametersTokenized[i].split("=");
-			if (parameter.length > 1) {
-				map.put(parameter[0], parameter[1]);
-			} else {
-				map.put(parameter[0], "");
-			}
-		}
-		String searchTerm = map.get("search");
-		boolean includePast = map.get("includePast") != null ? true : false;
+		MultiValueMap<String, String> params = UriComponentsBuilder.fromPath(parameters).build().getQueryParams();
+		String searchTerm = params.getFirst("search");
+		boolean includePast = params.containsKey("includePast");
 		search(searchTerm, includePast, false);
 	}
 }
