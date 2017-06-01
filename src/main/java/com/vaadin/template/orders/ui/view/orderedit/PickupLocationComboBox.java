@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui.components;
+package com.vaadin.template.orders.ui.view.orderedit;
 
 import javax.annotation.PostConstruct;
 

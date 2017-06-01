@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui.components;
+package com.vaadin.template.orders.ui.view.orderedit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
