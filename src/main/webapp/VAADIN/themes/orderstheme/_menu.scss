@@ -19,6 +19,15 @@
     }
   }
 
+  .app-shell[width-range~="-600px"] {
+    .logo {
+      max-width: 150px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
   .app-shell[width-range~="601px-"] {
     .activeViewName {
       display: none;
