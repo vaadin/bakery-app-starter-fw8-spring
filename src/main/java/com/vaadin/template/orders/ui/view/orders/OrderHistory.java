@@ -12,7 +12,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.template.orders.backend.data.entity.HistoryItem;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.ui.PrototypeScope;
-import com.vaadin.template.orders.ui.components.DateTimeFormatter;
+import com.vaadin.template.orders.ui.util.DateTimeFormatter;
 import com.vaadin.ui.Button.ClickShortcut;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;

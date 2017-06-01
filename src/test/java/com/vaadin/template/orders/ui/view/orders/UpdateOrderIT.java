@@ -15,10 +15,10 @@ import org.openqa.selenium.WebDriver;
 
 import com.vaadin.data.ValueContext;
 import com.vaadin.template.orders.AbstractOrdersIT;
-import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.OrderState;
 import com.vaadin.template.orders.backend.data.entity.Customer;
 import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
+import com.vaadin.template.orders.ui.util.DollarPriceConverter;
 import com.vaadin.template.orders.ui.view.object.MenuElement;
 import com.vaadin.template.orders.ui.view.orders.OrderEditViewElement.OrderInfo;
 import com.vaadin.template.orders.ui.view.orders.ProductInfoElement.ProductOrderData;

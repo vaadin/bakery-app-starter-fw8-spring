@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.app;
+package com.vaadin.template.orders.ui.util;
 
 import java.text.NumberFormat;
 import java.util.Locale;
