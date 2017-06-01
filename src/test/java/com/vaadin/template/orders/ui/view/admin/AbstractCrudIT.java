@@ -11,10 +11,10 @@ import org.junit.Test;
 
 import com.vaadin.template.orders.AbstractOrdersIT;
 import com.vaadin.template.orders.ui.components.ConfirmationDialogDesignElement;
+import com.vaadin.template.orders.ui.view.MenuElement;
 import com.vaadin.template.orders.ui.view.admin.product.CrudViewElement;
-import com.vaadin.template.orders.ui.view.object.MenuElement;
-import com.vaadin.template.orders.ui.view.orders.ElementUtil;
-import com.vaadin.template.orders.ui.view.orders.OrdersListViewElement;
+import com.vaadin.template.orders.ui.view.orderedit.ElementUtil;
+import com.vaadin.template.orders.ui.view.storefront.StorefrontViewElement;
 import com.vaadin.testbench.elements.GridElement;
 import com.vaadin.testbench.elements.GridElement.GridRowElement;
 import com.vaadin.testbench.elements.TextFieldElement;
@@ -306,7 +306,7 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 		// Navigate away and check that we can actually move away
 		$(MenuElement.class).first().getMenuLink("Storefront").click();
 		$(ConfirmationDialogDesignElement.class).first().getDiscardChanges().click();
-		Assert.assertNotNull($(OrdersListViewElement.class).first());
+		Assert.assertNotNull($(StorefrontViewElement.class).first());
 	}
 
 	@Test

@@ -5,7 +5,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.vaadin.template.orders.ui.view.orders.ElementUtil;
+import com.vaadin.template.orders.ui.view.orderedit.ElementUtil;
 import com.vaadin.testbench.elements.AbstractComponentElement;
 import com.vaadin.testbench.elements.CssLayoutElement;
 import com.vaadin.testbench.elements.GridElement;

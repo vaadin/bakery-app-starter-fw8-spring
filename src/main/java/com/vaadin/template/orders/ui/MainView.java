@@ -15,7 +15,7 @@ import com.vaadin.template.orders.ui.view.NavigableView;
 import com.vaadin.template.orders.ui.view.admin.product.ProductAdminView;
 import com.vaadin.template.orders.ui.view.admin.user.UserAdminView;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
-import com.vaadin.template.orders.ui.view.orders.OrdersListView;
+import com.vaadin.template.orders.ui.view.storefront.StorefrontView;
 import com.vaadin.ui.Button;
 
 @SpringViewDisplay
@@ -40,7 +40,7 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 	}
 
 	public void populateMenu() {
-		attachNavigation(storefront, OrdersListView.class);
+		attachNavigation(storefront, StorefrontView.class);
 		attachNavigation(dashboard, DashboardView.class);
 		attachNavigation(users, UserAdminView.class);
 		attachNavigation(products, ProductAdminView.class);

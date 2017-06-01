@@ -5,8 +5,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 
 import com.vaadin.template.orders.AbstractOrdersIT;
-import com.vaadin.template.orders.ui.view.object.MenuElement;
-import com.vaadin.template.orders.ui.view.orders.OrderEditViewElement;
+import com.vaadin.template.orders.ui.view.orderedit.OrderEditViewElement;
 
 public class LoginIT extends AbstractOrdersIT {
 
