@@ -11,13 +11,14 @@ import com.vaadin.template.orders.app.security.SecurityConfig;
 import com.vaadin.template.orders.backend.OrderRepository;
 import com.vaadin.template.orders.backend.data.entity.Order;
 import com.vaadin.template.orders.backend.service.UserService;
+import com.vaadin.template.orders.backend.util.LocalDateJpaConverter;
 import com.vaadin.template.orders.ui.OrdersUI;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBusImpl;
 
 @SpringBootApplication(scanBasePackageClasses = { OrdersUI.class, Application.class, UserService.class,
 		SecurityConfig.class, ViewEventBusImpl.class })
 @EnableJpaRepositories(basePackageClasses = { OrderRepository.class })
-@EntityScan(basePackageClasses = { Order.class })
+@EntityScan(basePackageClasses = { Order.class, LocalDateJpaConverter.class })
 public class Application extends SpringBootServletInitializer {
 
 	public static final String APP_URL = "/";

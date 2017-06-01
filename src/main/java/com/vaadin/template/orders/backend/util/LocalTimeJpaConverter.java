@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.backend.data.entity;
+package com.vaadin.template.orders.backend.util;
 
 import java.sql.Time;
 import java.time.LocalTime;
@@ -11,7 +11,7 @@ import javax.persistence.Converter;
  * LocalTime into format it can handle.
  */
 @Converter(autoApply = true)
-public class TimeConverter implements AttributeConverter<LocalTime, Time> {
+public class LocalTimeJpaConverter implements AttributeConverter<LocalTime, Time> {
 
 	@Override
 	public Time convertToDatabaseColumn(LocalTime time) {

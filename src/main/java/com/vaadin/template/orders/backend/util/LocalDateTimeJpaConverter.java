@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.backend.data.entity;
+package com.vaadin.template.orders.backend.util;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import javax.persistence.Converter;
  * converts LocalDateTime into format it can handle.
  */
 @Converter(autoApply = true)
-public class DateTimeConverter implements AttributeConverter<LocalDateTime, Timestamp> {
+public class LocalDateTimeJpaConverter implements AttributeConverter<LocalDateTime, Timestamp> {
 
 	@Override
 	public Timestamp convertToDatabaseColumn(LocalDateTime dateTime) {
