@@ -14,11 +14,11 @@ import com.vaadin.data.HasValue;
 import com.vaadin.data.ValueContext;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.entity.OrderItem;
 import com.vaadin.template.orders.backend.data.entity.Product;
 import com.vaadin.template.orders.ui.PrototypeScope;
 import com.vaadin.template.orders.ui.eventbus.ViewEventBus;
+import com.vaadin.template.orders.ui.util.DollarPriceConverter;
 import com.vaadin.ui.Label;
 
 @SpringComponent

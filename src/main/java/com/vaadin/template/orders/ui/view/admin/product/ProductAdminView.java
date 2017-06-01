@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.ValueContext;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.template.orders.app.DollarPriceConverter;
 import com.vaadin.template.orders.backend.data.entity.Product;
+import com.vaadin.template.orders.ui.util.DollarPriceConverter;
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;

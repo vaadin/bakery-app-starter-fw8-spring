@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.ui.components;
+package com.vaadin.template.orders.ui.util;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
