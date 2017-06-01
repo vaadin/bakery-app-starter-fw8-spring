@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudIT;
-import com.vaadin.template.orders.ui.view.orders.ElementUtil;
+import com.vaadin.template.orders.ui.view.orderedit.ElementUtil;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.TextFieldElement;

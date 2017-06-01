@@ -15,7 +15,7 @@ import com.vaadin.template.orders.app.security.SecurityUtils;
 import com.vaadin.template.orders.backend.data.Role;
 import com.vaadin.template.orders.ui.view.NavigableView;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardView;
-import com.vaadin.template.orders.ui.view.orders.OrdersListView;
+import com.vaadin.template.orders.ui.view.storefront.StorefrontView;
 
 @Component
 @UIScope
@@ -99,7 +99,7 @@ public class NavigationManagerBean extends SpringNavigator implements Navigation
 			return;
 		}
 
-		navigateTo(SecurityUtils.isCurrentUserInRole(Role.ADMIN) ? DashboardView.class : OrdersListView.class);
+		navigateTo(SecurityUtils.isCurrentUserInRole(Role.ADMIN) ? DashboardView.class : StorefrontView.class);
 	}
 
 	@Override

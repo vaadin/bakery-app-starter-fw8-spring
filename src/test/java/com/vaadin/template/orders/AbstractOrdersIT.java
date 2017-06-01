@@ -13,10 +13,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.LoggerFactory;
 
+import com.vaadin.template.orders.ui.view.LoginViewElement;
 import com.vaadin.template.orders.ui.view.dashboard.DashboardViewElement;
-import com.vaadin.template.orders.ui.view.object.LoginViewElement;
-import com.vaadin.template.orders.ui.view.orders.ElementUtil;
-import com.vaadin.template.orders.ui.view.orders.OrdersListViewElement;
+import com.vaadin.template.orders.ui.view.orderedit.ElementUtil;
+import com.vaadin.template.orders.ui.view.storefront.StorefrontViewElement;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.HasDriver;
@@ -199,9 +199,9 @@ public class AbstractOrdersIT extends TestBenchTestCase {
 		return "";
 	}
 
-	protected OrdersListViewElement loginAsBarista() {
+	protected StorefrontViewElement loginAsBarista() {
 		openLoginView(APP_URL).login("barista@vaadin.com", "barista");
-		return $(OrdersListViewElement.class).first();
+		return $(StorefrontViewElement.class).first();
 	}
 
 	protected DashboardViewElement loginAsAdmin() {

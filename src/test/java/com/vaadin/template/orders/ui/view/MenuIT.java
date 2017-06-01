@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.template.orders.AbstractOrdersIT;
-import com.vaadin.template.orders.ui.view.object.MenuElement;
 
 public class MenuIT extends AbstractOrdersIT {
 

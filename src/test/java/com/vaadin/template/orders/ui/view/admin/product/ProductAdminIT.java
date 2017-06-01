@@ -3,7 +3,7 @@ package com.vaadin.template.orders.ui.view.admin.product;
 import org.junit.Assert;
 
 import com.vaadin.template.orders.ui.view.admin.AbstractCrudIT;
-import com.vaadin.template.orders.ui.view.orders.ElementUtil;
+import com.vaadin.template.orders.ui.view.orderedit.ElementUtil;
 import com.vaadin.testbench.elements.TextFieldElement;
 
 public class ProductAdminIT extends AbstractCrudIT<ProductAdminViewElement> {
