@@ -1,4 +1,4 @@
-package com.vaadin.template.orders.backend.data.entity;
+package com.vaadin.template.orders.backend.util;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ import javax.persistence.Converter;
  * LocalDate into format it can handle.
  */
 @Converter(autoApply = true)
-public class DateConverter implements AttributeConverter<LocalDate, Date> {
+public class LocalDateJpaConverter implements AttributeConverter<LocalDate, Date> {
 
 	@Override
 	public Date convertToDatabaseColumn(LocalDate date) {
