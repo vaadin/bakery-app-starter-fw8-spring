@@ -1,7 +1,7 @@
 @mixin menu {
   .navigation-bar {
     color: lighten($v-focus-color,40%);
-    
+
     .v-button:hover {
       .v-icon, .v-button-caption {
           color: lighten($v-focus-color, 60%);
@@ -23,9 +23,9 @@
     .activeViewName {
       display: none;
     }
+    .logo {
+      padding: 15px 8px;
+    }
   }
 
-  .app-shell .logo {
-    padding: 15px 8px;
-  }
 }
