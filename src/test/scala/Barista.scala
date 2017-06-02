@@ -1,4 +1,4 @@
-package com.vaadin.template.orders
+package com.vaadin.starter.bakery
 
 import scala.concurrent.duration._
 
