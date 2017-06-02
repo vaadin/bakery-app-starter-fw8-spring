@@ -24,7 +24,7 @@ General features:
 * Maven to manage dependencies and building
 * TestBench tests to ensure
 * Scalable, proven with Scalability tests
-* In-memory database which can easily be changed to an prodcution database
+* In-memory database which can easily be changed to an production database
 * Authorization and Authentication with Spring Security
 
 == Getting started
