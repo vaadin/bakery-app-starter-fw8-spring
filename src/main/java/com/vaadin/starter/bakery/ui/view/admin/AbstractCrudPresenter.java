@@ -9,9 +9,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.starter.bakery.app.BeanLocator;
+import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
 import com.vaadin.starter.bakery.backend.service.CrudService;
-import com.vaadin.starter.bakery.ui.HasLogger;
 import com.vaadin.starter.bakery.ui.components.ConfirmationDialog;
 import com.vaadin.starter.bakery.ui.dataprovider.PageableDataProvider;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
