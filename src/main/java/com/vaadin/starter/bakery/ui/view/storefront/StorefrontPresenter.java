@@ -11,7 +11,7 @@ import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.ui.components.OrdersDataProvider;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
-import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView;
+import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditController;
 
 @SpringComponent
 @ViewScope
@@ -46,11 +46,11 @@ public class StorefrontPresenter implements Serializable {
 	}
 
 	public void selectedOrder(Order order) {
-		navigationManager.navigateTo(OrderEditView.class, order.getId());
+		navigationManager.navigateTo(OrderEditController.class, order.getId());
 	}
 
 	public void newOrder() {
-		navigationManager.navigateTo(OrderEditView.class);
+		navigationManager.navigateTo(OrderEditController.class);
 	}
 
 	public void search(String searchTerm, boolean includePast) {
