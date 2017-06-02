@@ -28,10 +28,10 @@ import com.vaadin.addon.charts.model.style.Style;
 import com.vaadin.board.Row;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.backend.data.DashboardData;
 import com.vaadin.starter.bakery.backend.data.DeliveryStats;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
-import com.vaadin.starter.bakery.ui.HasLogger;
 import com.vaadin.starter.bakery.ui.components.OrdersGrid;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
 

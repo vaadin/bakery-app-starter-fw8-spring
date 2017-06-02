@@ -28,7 +28,6 @@ import com.vaadin.starter.bakery.backend.data.entity.OrderItem;
 import com.vaadin.starter.bakery.backend.data.entity.PickupLocation;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
 import com.vaadin.starter.bakery.backend.data.entity.User;
-import com.vaadin.starter.bakery.ui.HasLogger;
 
 @SpringComponent
 public class DataGenerator implements HasLogger {
