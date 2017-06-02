@@ -27,6 +27,7 @@ import com.vaadin.starter.bakery.backend.service.PickupLocationService;
 import com.vaadin.starter.bakery.ui.HasLogger;
 import com.vaadin.starter.bakery.ui.eventbus.ViewEventBus;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
+import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView.Mode;
 import com.vaadin.starter.bakery.ui.view.storefront.StorefrontView;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Notification;
