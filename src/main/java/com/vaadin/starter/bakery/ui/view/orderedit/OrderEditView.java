@@ -31,6 +31,10 @@ import com.vaadin.ui.Label;
 @SpringView(name = "order")
 public class OrderEditView extends OrderEditViewDesign implements NavigableView {
 
+	public enum Mode {
+		EDIT, REPORT, CONFIRMATION;
+	}
+
 	private final OrderEditPresenter presenter;
 
 	private final DollarPriceConverter priceConverter;
