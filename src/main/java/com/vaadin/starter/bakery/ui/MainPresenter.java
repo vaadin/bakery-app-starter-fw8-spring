@@ -5,15 +5,14 @@ import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
-import com.vaadin.server.VaadinServletService;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.starter.bakery.app.Application;
 import com.vaadin.starter.bakery.app.security.SecuredViewAccessControl;
 import com.vaadin.starter.bakery.ui.navigation.NavigationEvent;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
+import com.vaadin.ui.UI;
 
 @SpringComponent
 @UIScope
@@ -46,10 +45,9 @@ public class MainPresenter implements Serializable {
 
 	public void logout() {
 		Runnable doLogout = () -> {
-			view.getUI().getSession().getSession().invalidate();
-			String contextPath = ((VaadinServletService) VaadinServletService.getCurrent()).getServlet()
-					.getServletContext().getContextPath();
-			view.getUI().getPage().setLocation(contextPath + Application.LOGOUT_URL);
+			UI ui = view.getUI();
+			ui.getSession().getSession().invalidate();
+			ui.getPage().reload();
 		};
 		View currentView = view.getUI().getNavigator().getCurrentView();
 		if (currentView instanceof NavigableView) {
