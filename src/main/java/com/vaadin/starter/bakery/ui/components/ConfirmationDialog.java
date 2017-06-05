@@ -1,5 +1,6 @@
 package com.vaadin.starter.bakery.ui.components;
 
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
@@ -43,18 +44,14 @@ public class ConfirmationDialog {
 	 */
 	public static void show(UI ui, Runnable onDiscard, Runnable onCancel) {
 		Window window = new Window("Please confirm");
+		window.addCloseListener(e -> window.close());
 		window.setModal(true);
 		ConfirmationDialogDesign content = new ConfirmationDialogDesign();
 		window.setContent(content);
 
-		content.discardChanges.addClickListener(e -> {
-			window.close();
-			onDiscard.run();
-		});
-		content.cancel.addClickListener(e -> {
-			onCancel.run();
-			window.close();
-		});
+		content.discardChanges.addClickListener(e -> ui.access(onDiscard));
+		content.cancel.addClickListener(e -> ui.access(onCancel));
+
 		window.setClosable(false);
 		ui.addWindow(window);
 	}
