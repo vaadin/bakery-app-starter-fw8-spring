@@ -160,7 +160,12 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-board</artifactId>
-			<version>1.0.0-alpha3</version>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-board-precompiled</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -295,44 +300,6 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
-				<groupId>com.vaadin</groupId>
-				<artifactId>vaadin-frontend-maven-plugin</artifactId>
-				<version>0.1-SNAPSHOT</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>update</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>com.github.eirslett</groupId>
-				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.4</version>
-				<configuration>
-					<nodeVersion>v6.9.1</nodeVersion>
-					<yarnVersion>v0.22.0</yarnVersion>
-					<workingDirectory>src/main/frontend</workingDirectory>
-					<skip>${vaadin.frontend.ok}</skip>
-				</configuration>
-				<executions>
-					<execution>
-						<id>install node and yarn</id>
-						<goals>
-							<goal>install-node-and-yarn</goal>
-						</goals>
-						<configuration></configuration>
-					</execution>
-					<execution>
-						<id>yarn install</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<!-- Plugin for automatically download Chrome Driver for tests -->
 			<plugin>
 				<groupId>com.lazerycode.selenium</groupId>
@@ -370,23 +337,6 @@
 					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>com.vaadin</groupId>
-										<artifactId>
-											vaadin-frontend-maven-plugin
-										</artifactId>
-										<versionRange>
-											[0.1-SNAPSHOT,)
-										</versionRange>
-										<goals>
-											<goal>update</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>
