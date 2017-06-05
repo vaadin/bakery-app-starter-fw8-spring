@@ -1,5 +1,5 @@
-@mixin storefront {
-  .storefront .list-filters {
+@mixin ordersgrid {
+  .list-filters {
     .v-textfield,
     .v-button,
     .v-checkbox {
@@ -9,7 +9,7 @@
       vertical-align: middle;
     }
   }
-  .storefront .v-grid {
+  .v-grid.orders-grid {
      > div {
       border-left: 0;
       border-bottom: 0;

@@ -15,6 +15,7 @@ import com.vaadin.ui.renderers.HtmlRenderer;
 public class OrdersGrid extends Grid<Order> {
 
 	public OrdersGrid() {
+		addStyleName("orders-grid");
 		setSizeFull();
 		removeHeaderRow(0);
 
