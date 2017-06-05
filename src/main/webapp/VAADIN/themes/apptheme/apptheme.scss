@@ -36,14 +36,14 @@ $v-layout-margin-left: $v-layout-margin-top;
 
 
 @import '../valo/valo.scss';
-@import 'storefront';
+@import 'ordersgrid';
 @import 'ordersview';
 @import 'dashboardview';
 @import 'menu';
 
 @mixin apptheme {
   @include valo;
-  @include storefront;
+  @include ordersgrid;
   @include ordersview;
   @include dashboardview;
   @include menu;
