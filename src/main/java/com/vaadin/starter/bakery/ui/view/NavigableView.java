@@ -2,7 +2,6 @@ package com.vaadin.starter.bakery.ui.view;
 
 import java.util.Objects;
 
-import org.openqa.selenium.remote.server.handler.GetCurrentUrl;
 import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.navigator.View;
