@@ -1,0 +1,93 @@
+@mixin storefront {
+  .storefront .list-filters {
+    .v-textfield,
+    .v-button,
+    .v-checkbox {
+      // CSS-layout has no built-in spacing
+      margin-bottom: $v-layout-spacing-vertical;
+      margin-right: $v-layout-spacing-horizontal;
+      vertical-align: middle;
+    }
+  }
+  .storefront .v-grid {
+     > div {
+      border-left: 0;
+      border-bottom: 0;
+    }
+
+    .v-grid-cell {
+      height: 100px;
+    }
+
+    .summary,
+    .due {
+      padding: $v-table-cell-padding-horizontal;
+      .header,
+      .content {
+        display: block;
+      }
+    }
+
+    .due {
+      text-align: center;
+      font-size: $v-font-size--small;
+      .header {
+        font-size: 10px;
+        font-weight: bold;
+        padding: 2px 7px;
+        border-radius: 15px;
+        margin: 4px 0 6px 0;
+      }
+    }
+
+    .today.ready,
+    .today.delivered {
+      .due .header {
+        border: 1px solid rgba(0,0,0,.2);
+      }
+    }
+    .delivered .due {
+      &:after {
+        // checkmark for delivered items
+        content:'\e7c5';
+        font-family: Vaadin-Icons;
+        line-height: $v-line-height;
+        display: block;
+        margin-top: 6px;
+        opacity: 0.5;
+      }
+    }
+
+    .new .due .header {
+      border: 1px solid $v-friendly-color;
+      color: $v-friendly-color;
+    }
+
+    .problem,
+    .today.new,
+    .today.confirmed {
+      .due .header {
+        border: none;
+        background-color: $v-error-indicator-color;
+        color: valo-font-color($v-error-indicator-color);
+      }
+    }
+
+    .cancelled {
+      .header,
+      .content {
+        text-decoration: line-through;
+        opacity: .5;
+      }
+    }
+
+    .summary {
+      .header {
+        font-size: $v-font-size--large;
+      }
+      .content {
+        font-size: $v-font-size--small;
+      }
+    }
+  }
+}
