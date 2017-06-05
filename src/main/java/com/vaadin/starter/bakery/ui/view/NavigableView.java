@@ -65,8 +65,10 @@ public interface NavigableView extends View {
 	 * @param onCancel
 	 */
 	default void showLeaveViewConfirmDialog(Runnable runOnConfirm, Runnable runOnCancel) {
-		ConfirmDialog confirmDialog = ConfirmDialog.show(UI.getCurrent(), "Please confirm", null, "Discard Changes",
+		ConfirmDialog confirmDialog = ConfirmDialog.show(UI.getCurrent(), "Please confirm", "You have unsaved changes that will be discarded if you navigate away.", "Discard Changes",
 				"Cancel", Objects.requireNonNull(runOnConfirm));
+		confirmDialog.setResizable(false);
+		confirmDialog.setClosable(false);
 		if (confirmDialog.isCanceled()) {
 			UI.getCurrent().access(runOnCancel);
 		}
