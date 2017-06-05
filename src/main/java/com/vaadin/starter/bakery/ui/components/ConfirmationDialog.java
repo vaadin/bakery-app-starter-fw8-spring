@@ -44,17 +44,19 @@ public class ConfirmationDialog {
 	public static void show(UI ui, Runnable onDiscard, Runnable onCancel) {
 		Window window = new Window("Please confirm");
 		window.setModal(true);
+		
 		ConfirmationDialogDesign content = new ConfirmationDialogDesign();
 		window.setContent(content);
 
 		content.discardChanges.addClickListener(e -> {
 			window.close();
-			onDiscard.run();
+			ui.access(onDiscard);
 		});
 		content.cancel.addClickListener(e -> {
-			onCancel.run();
 			window.close();
+			ui.access(onCancel);
 		});
+
 		window.setClosable(false);
 		ui.addWindow(window);
 	}
