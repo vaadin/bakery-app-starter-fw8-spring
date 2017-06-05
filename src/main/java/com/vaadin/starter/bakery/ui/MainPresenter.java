@@ -22,8 +22,8 @@ public class MainPresenter implements Serializable {
 	private final NavigationManager navigationManager;
 	private final SecuredViewAccessControl viewAccessControl;
 
-	public MainPresenter(@Autowired NavigationManager navigationManager,
-			@Autowired SecuredViewAccessControl viewAccessControl) {
+	@Autowired
+	public MainPresenter(NavigationManager navigationManager, SecuredViewAccessControl viewAccessControl) {
 		this.navigationManager = navigationManager;
 		this.viewAccessControl = viewAccessControl;
 	}
