@@ -1,6 +1,5 @@
 package com.vaadin.starter.bakery.ui.components;
 
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
