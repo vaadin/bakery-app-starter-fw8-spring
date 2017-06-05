@@ -1,8 +1,13 @@
 package com.vaadin.starter.bakery.ui.view;
 
+import java.util.Objects;
+
+import org.openqa.selenium.remote.server.handler.GetCurrentUrl;
+import org.vaadin.dialogs.ConfirmDialog;
+
 import com.vaadin.navigator.View;
-import com.vaadin.starter.bakery.ui.navigation.NavigationEvent;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.UI;
 
 /**
  * A view which is connected to a URL and can be navigated to by the user.
@@ -36,8 +41,35 @@ public interface NavigableView extends View {
 	 *         <code>false</code> to prevent navigation (can be invoked later
 	 *         using {@link NavigationEvent#navigate()})
 	 */
-	public default boolean beforeLeave(NavigationEvent event) {
+	public default boolean beforeLeave(Runnable event) {
 		return true;
 	}
 
+	/**
+	 * Shows the standard before leave confirm dialog on given ui. If user
+	 * approves the navigation the given runOnConfirm will be executed.
+	 * 
+	 * @param ui
+	 * @param runOnConfirm
+	 */
+	default void showLeaveViewConfirmDialog(Runnable runOnConfirm) {
+		showLeaveViewConfirmDialog(runOnConfirm, () -> {
+		});
+	}
+
+	/**
+	 * Shows the standard before leave confirm dialog on given ui. If user
+	 * approves the navigation the given runOnConfirm will be executed.
+	 * 
+	 * @param ui
+	 * @param runOnConfirm
+	 * @param onCancel
+	 */
+	default void showLeaveViewConfirmDialog(Runnable runOnConfirm, Runnable runOnCancel) {
+		ConfirmDialog confirmDialog = ConfirmDialog.show(UI.getCurrent(), "Please confirm", null, "Discard Changes",
+				"Cancel", Objects.requireNonNull(runOnConfirm));
+		if (confirmDialog.isCanceled()) {
+			UI.getCurrent().access(runOnCancel);
+		}
+	}
 }

@@ -12,8 +12,6 @@ import com.vaadin.data.HasValue;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.starter.bakery.backend.data.Role;
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
-import com.vaadin.starter.bakery.ui.components.ConfirmationDialog;
-import com.vaadin.starter.bakery.ui.navigation.NavigationEvent;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -178,19 +176,12 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 	protected abstract Focusable getFirstFormField();
 
 	@Override
-	public boolean beforeLeave(NavigationEvent event) {
-		if (!containsUnsavedChanges()) {
-			return true;
-		}
+	public boolean beforeLeave(Runnable runOnLeave) {
+		if (containsUnsavedChanges()) {
+			showLeaveViewConfirmDialog(runOnLeave);
+			return false;
+		} 
 
-		Runnable onOk = () -> {
-			event.navigate();
-		};
-		Runnable onCancel = () -> {
-			// Nothing to do, navigation was already prevented
-		};
-		ConfirmationDialog.show(getViewComponent().getUI(), onOk, onCancel);
-
-		return false;
+		return true;
 	}
 }

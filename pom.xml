@@ -21,6 +21,7 @@
 		<vaadin.widgetset.mode>fetch</vaadin.widgetset.mode>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 		<selenium.version>3.4.0</selenium.version>
+		<confirm.dialog.addon.version>3.1.1</confirm.dialog.addon.version>
 	</properties>
 
 	<repositories>
@@ -57,6 +58,11 @@
 				<version>${vaadin.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.vaadin.addon</groupId>
+				<artifactId>confirmdialog</artifactId>
+				<version>${confirm.dialog.addon.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
@@ -144,6 +150,10 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.vaadin.addon</groupId>
+			<artifactId>confirmdialog</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

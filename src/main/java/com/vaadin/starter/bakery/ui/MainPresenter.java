@@ -9,7 +9,6 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.starter.bakery.app.security.SecuredViewAccessControl;
-import com.vaadin.starter.bakery.ui.navigation.NavigationEvent;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
 import com.vaadin.ui.UI;
@@ -51,9 +50,8 @@ public class MainPresenter implements Serializable {
 		};
 		View currentView = view.getUI().getNavigator().getCurrentView();
 		if (currentView instanceof NavigableView) {
-			if (((NavigableView) currentView).beforeLeave(new NavigationEvent(doLogout))) {
-				doLogout.run();
-			}
+			NavigableView view = (NavigableView) currentView;
+			view.beforeLeave(() -> doLogout.run());
 		} else {
 			doLogout.run();
 		}
