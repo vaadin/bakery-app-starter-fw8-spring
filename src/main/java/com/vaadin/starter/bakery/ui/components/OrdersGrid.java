@@ -19,7 +19,7 @@ public class OrdersGrid extends Grid<Order> {
 		removeHeaderRow(0);
 
 		// Add stylenames to rows
-		setStyleGenerator(order -> getRowStyle(order));
+		setStyleGenerator(OrdersGrid::getRowStyle);
 
 		// Due column
 		Column<Order, String> dueColumn = addColumn(
