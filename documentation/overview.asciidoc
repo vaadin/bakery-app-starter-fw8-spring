@@ -1,0 +1,40 @@
+= Bakery App Starter for FW8 and Spring
+
+Bakery is an App Starter to give you a head start building your business application based on Vaadin Framework 8 and Spring.
+
+It includes an end-to-end technology stack covering each layer that is needed the build a production grade application. The App Starter is opinionated and reflects Vaadin's view on what is the best way to build business applications.
+
+
+Front end features:
+
+* Vaadin Framework 8 for a UI layer
+* Responsive, mobile-first design
+* Many views and examples how to build your own
+* Create-Read-Update-Delete (CRUD) views to edit data objects
+* Vaadin Designer to fast build views visually
+* Vaadin Board and Vaadin Charts to build a data focused dashboard to give an overview
+
+Back end features:
+
+* Service and repository layer working with JPA
+
+General features:
+
+* Spring Boot enables easy set up, packaging, running and deploying
+* Maven to manage dependencies and building
+* TestBench tests to ensure
+* Scalable, proven with Scalability tests
+* In-memory database which can easily be changed to an production database
+* Authorization and Authentication with Spring Security
+
+== Getting started
+
+A personalized project can be downloaded from the product page [red yellow-background]*<link>* by giving group id, artifact id and developer name.
+
+A paid Pro or Prime subscription is required for creating a new software project from a Starter template. After its creation, results can be used, developed and distributed freely, but licenses for the used commercial components are required during development. The Starter or its parts cannot be redistributed as a code example or template. For full terms, see Commercial Vaadin Template License. [red yellow-background]*<link>*
+
+== Software needed
+
+* Java JDK 1.8 or higher
+* Maven is required for building, running and packaging the Software
+* Bower (and transiently NPM) is required to download web components used in the project
