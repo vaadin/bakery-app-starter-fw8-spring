@@ -1,5 +1,5 @@
 @mixin dashboardview {
-	$padding: $view-padding;
+	$padding: $v-layout-margin-top;
 	
 	$spacing: round($padding / 3);
 	$spacing-small:  round($spacing / 2);
@@ -36,9 +36,9 @@
   			padding: $spacing;
   		}	
 		.board-box-needs-attention {
-			background-color: rgba(255,0,0,.04);
+			background-color: transparentize($v-error-indicator-color, .96);
 			h1, h4 {
-				color: $orders-problem-color;
+				color: $v-error-indicator-color;
 			}
 		}
 
@@ -55,19 +55,11 @@
 			@include valo-panel-style;
       		margin-bottom: $spacing;
 
-			.today {
-				h4 {
-					color: $orders-ok-color;
-				}
-
-				cursor: pointer;
-			}
-
-      	    .new h4 {
-      			color: $orders-warn-color;
+          .new h4 {
+      			color: $v-friendly-color;
       		}
-      	    .na h4 {
-      			color: $orders-problem-color;
+          .na h4 {
+      			color: $v-error-indicator-color;
       		}
 
       		&.large {

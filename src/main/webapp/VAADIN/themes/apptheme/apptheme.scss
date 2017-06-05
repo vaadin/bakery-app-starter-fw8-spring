@@ -29,20 +29,21 @@
 
 $v-focus-color: #5a6054;
 
-$view-padding: 24px;
+$v-layout-margin-top: 12px;
+$v-layout-margin-right: $v-layout-margin-top;
+$v-layout-margin-bottom: $v-layout-margin-top;
+$v-layout-margin-left: $v-layout-margin-top;
 
-$orders-ok-color: green;
-$orders-warn-color: orange;
-$orders-problem-color: red;
-$orders-boring-color: #333;
 
 @import '../valo/valo.scss';
+@import 'storefront';
 @import 'ordersview';
 @import 'dashboardview';
 @import 'menu';
 
 @mixin apptheme {
   @include valo;
+  @include storefront;
   @include ordersview;
   @include dashboardview;
   @include menu;
