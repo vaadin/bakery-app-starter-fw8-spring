@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.vaadin.spring.events.annotation.EnableEventBus;
 
 import com.vaadin.starter.bakery.app.security.SecurityConfig;
 import com.vaadin.starter.bakery.backend.OrderRepository;
@@ -13,12 +14,12 @@ import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.service.UserService;
 import com.vaadin.starter.bakery.backend.util.LocalDateJpaConverter;
 import com.vaadin.starter.bakery.ui.AppUI;
-import com.vaadin.starter.bakery.ui.eventbus.ViewEventBusImpl;
 
 @SpringBootApplication(scanBasePackageClasses = { AppUI.class, Application.class, UserService.class,
-		SecurityConfig.class, ViewEventBusImpl.class })
+		SecurityConfig.class })
 @EnableJpaRepositories(basePackageClasses = { OrderRepository.class })
 @EntityScan(basePackageClasses = { Order.class, LocalDateJpaConverter.class })
+@EnableEventBus
 public class Application extends SpringBootServletInitializer {
 
 	public static final String APP_URL = "/";

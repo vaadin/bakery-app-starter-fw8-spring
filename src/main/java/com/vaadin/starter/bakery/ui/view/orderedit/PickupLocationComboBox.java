@@ -3,10 +3,10 @@ package com.vaadin.starter.bakery.ui.view.orderedit;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.spring.annotation.PrototypeScope;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.starter.bakery.backend.data.entity.PickupLocation;
-import com.vaadin.starter.bakery.ui.PrototypeScope;
 import com.vaadin.ui.ComboBox;
 
 @SpringComponent

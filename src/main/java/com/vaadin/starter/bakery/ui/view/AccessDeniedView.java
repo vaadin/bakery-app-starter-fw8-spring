@@ -1,8 +1,9 @@
 package com.vaadin.starter.bakery.ui.view;
 
+import org.vaadin.spring.annotation.PrototypeScope;
+
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.starter.bakery.ui.PrototypeScope;
 
 @SpringComponent
 @PrototypeScope
