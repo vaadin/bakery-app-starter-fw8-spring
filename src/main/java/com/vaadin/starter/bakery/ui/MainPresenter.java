@@ -48,10 +48,14 @@ public class MainPresenter implements Serializable {
 			ui.getSession().getSession().invalidate();
 			ui.getPage().reload();
 		};
-		View currentView = view.getUI().getNavigator().getCurrentView();
+
+		View currentView = navigationManager.getCurrentView();
+
 		if (currentView instanceof NavigableView) {
 			NavigableView view = (NavigableView) currentView;
-			view.beforeLeave(() -> doLogout.run());
+			if (view.beforeLeave(() -> doLogout.run())) {
+				doLogout.run();
+			}
 		} else {
 			doLogout.run();
 		}
