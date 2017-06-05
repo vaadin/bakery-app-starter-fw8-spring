@@ -51,4 +51,13 @@ $v-layout-margin-left: $v-layout-margin-top;
   .v-errorindicator {
     display: none; // Only show validation errors using field styles
   }
+  .Vaadin-Icons {
+    // make Vaadin Icons behave exactly like FontAwesome
+    font-style: normal;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+    text-align: center;
+  }
 }
