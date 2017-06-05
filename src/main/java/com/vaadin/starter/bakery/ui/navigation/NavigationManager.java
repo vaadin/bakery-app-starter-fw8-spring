@@ -40,11 +40,11 @@ public class NavigationManager extends SpringNavigator {
 			if (viewAlreadyConfirmed) {
 				return true;
 			} else {
-				return ((NavigableView) oldView).beforeLeave(new NavigationEvent(() -> {
+				return ((NavigableView) oldView).beforeLeave(() -> {
 					viewAlreadyConfirmed = true;
 					navigateTo(navigationState);
 					viewAlreadyConfirmed = false;
-				}));
+				});
 			}
 		}
 
