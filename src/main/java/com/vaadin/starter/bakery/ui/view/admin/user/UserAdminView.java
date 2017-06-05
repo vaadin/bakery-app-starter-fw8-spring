@@ -48,7 +48,8 @@ public class UserAdminView extends AbstractCrudView<User> {
 		}
 	};
 
-	public UserAdminView(@Autowired UserAdminPresenter presenter) {
+	@Autowired
+	public UserAdminView(UserAdminPresenter presenter) {
 		super(User.class);
 		this.presenter = presenter;
 		userAdminViewDesign = new UserAdminViewDesign();
