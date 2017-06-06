@@ -37,7 +37,7 @@ image::img/bakery-mobile.png[Bakery Mobile view,250,align=center]
 They go with multiple names. Create-Read-Update-Delete, Master-Detail. Updating data is at the core of many business applications. Bakery includes two examples of CRUD views where you can maintain the data.
 
 .Bakery CRUD view
-image::img/bakery-dashboard.png[Bakery CRUD view]
+image::img/bakery-crud.png[Bakery CRUD view]
 
 === Dashboard with Charts
 
