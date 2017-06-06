@@ -18,7 +18,7 @@ Quick Start Guide
 4. Start the server
 
 5. Start a test from the command line, e.g.:
-	 ```mvn gatling:execute -Dgatling.simulationClass=com.vaadin.starter.bakery.Barista```
+	 ```mvn -Pscalability gatling:execute -Dgatling.simulationClass=com.vaadin.starter.bakery.Barista```
 
 6. Test results are stored into target folder, e.g.:
 	```target/gatling/Barista-1487784042461/index.html```
