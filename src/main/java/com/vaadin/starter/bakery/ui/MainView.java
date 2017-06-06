@@ -57,7 +57,8 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 	@Override
 	public void showView(View view) {
 		if (!(view instanceof NavigableView)) {
-			throw new IllegalArgumentException("Only OrdersView implementations are supported");
+			throw new IllegalArgumentException(
+					"Only " + NavigableView.class.getSimpleName() + " implementations are supported");
 		}
 		content.removeAllComponents();
 		content.addComponent(((NavigableView) view).getViewComponent());
