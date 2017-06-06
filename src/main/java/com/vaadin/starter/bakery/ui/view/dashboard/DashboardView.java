@@ -63,6 +63,7 @@ public class DashboardView extends DashboardViewDesign implements NavigableView,
 	@Autowired
 	public DashboardView(DashboardPresenter presenter) {
 		this.presenter = presenter;
+		dueGrid.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
 	}
 
 	@PostConstruct
