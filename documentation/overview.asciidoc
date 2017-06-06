@@ -6,20 +6,6 @@ It includes an end-to-end technology stack covering each layer that is needed th
 
 [red yellow-background]*See a live demo of the application.*
 
-== Getting started
-
-A personalized project can be downloaded from the product page [red yellow-background]*<link>* by giving group id, artifact id and developer name.
-
-A paid Pro or Prime subscription is required for creating a new software project from a Starter template. After its creation, results can be used, developed and distributed freely, but licenses for the used commercial components are required during development. The Starter or its parts cannot be redistributed as a code example or template. For full terms, see Commercial Vaadin Template License. [red yellow-background]*<link>*
-
-See more information on setting up your environment in <<_running_building_and_packaging,Running, building and packaging>>.
-
-
-=== Software needed
-
-* Java JDK 1.8 or higher
-* Maven is required for building, running and packaging the Software
-
 == Features
 
 === Full stack architecture
@@ -79,3 +65,17 @@ The application is set up, run and packaged with the help of Spring Boot, which 
 === Maven
 
 Dependency management and building is handed to Maven and the standardized Maven conventions help working in the industry-proven way.
+
+
+== Getting started
+
+A personalized project can be downloaded from the product page [red yellow-background]*<link>* by giving group id, artifact id and developer name.
+
+A paid Pro or Prime subscription is required for creating a new software project from a Starter template. After its creation, results can be used, developed and distributed freely, but licenses for the used commercial components are required during development. The Starter or its parts cannot be redistributed as a code example or template. For full terms, see Commercial Vaadin Template License. [red yellow-background]*<link>*
+
+See more information on setting up your environment in <<_running_building_and_packaging,Running, building and packaging>>.
+
+=== Software needed
+
+* Java JDK 1.8 or higher
+* Maven is required for building, running and packaging the Software
