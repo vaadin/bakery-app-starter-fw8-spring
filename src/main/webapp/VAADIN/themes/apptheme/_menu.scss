@@ -2,14 +2,15 @@
   .navigation-bar {
     color: lighten($v-focus-color,40%);
 
-    .v-button:hover {
-      .v-icon, .v-button-caption {
-          color: lighten($v-focus-color, 60%);
-      }
+    .v-button {
+      border-radius: 0;
     }
     .selected {
-      background: darken($v-focus-color,10%);
-      border-radius: 0;
+      background: rgba(0,0,0,.2);
+      color: lighten($v-focus-color,60%);
+      .v-icon, .v-button-caption {
+          color: lighten($v-focus-color,60%);
+      }
     }
     .activeViewName {
       line-height: $v-unit-size;
@@ -18,7 +19,9 @@
       font-size: $v-font-size;
     }
   }
-
+  .logo {
+    color: #fff;
+  }
   .app-shell[width-range~="-600px"] {
     .logo {
       max-width: 150px;
@@ -33,7 +36,20 @@
       display: none;
     }
     .logo {
-      padding: 15px 8px;
+      padding-top: $v-layout-margin-top;
+      // match search-bar height
+      height: 60px;
+    }
+  }
+  .app-shell[width-range~="1001px-"] {
+    .navigation-bar {
+      background-image: url(bg.jpg);
+      background-size: cover;
+      background-position: top;
+      .navigation {
+        background: transparent;
+        border: none;
+      }
     }
   }
 
