@@ -18,22 +18,102 @@
 			margin-bottom: 0;
 			border-bottom: 2px solid rgba(0, 0, 0, .1);
 		}
-	}
-	.edit .v-widget.header {
-		border-bottom: none;
-	}
-	.responsive {
-		display: flex;
-	  	flex-wrap: wrap;
-	  	justify-content: space-between;
-	  	
-	  	> .v-widget {
-			margin: 8px 0;
-		}
+  	.edit .v-widget.header {
+  		border-bottom: none;
+  	}
+  
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .v-button {
+        margin-top: 8px;
+      }
+    }
+    .product-container {
+      margin-top: 0;
+    }
+    .product-row {
+      border-bottom: 1px solid rgba(0,0,0,.05);
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+  
+      .times {
+        text-align: center;
+      }
+      .quantity, .price {
+        text-align: right;
+      }
+      .delete {
+        border-radius: 4px 0 0 4px;
+        border-right: 0;
+      }
+      .product {
+        border-radius: 0 4px 4px 0;
+      }
+    }
+    .product-row:last-child {
+        border-bottom: 0;
+        margin-bottom: 0;
+    }
+  
+    .history {
+      .v-caption {
+        .v-captiontext, .v-icon {
+          font-size: 10px;
+          font-weight: bold;
+          line-height: 1;
+        }
+        padding-bottom: 0;
+      }
+    }
 
-		.v-caption-half {
-			margin: -1px;
-		}
+    // Make components completely invisible in read-only mode
+    .v-textfield.v-readonly {
+      // Hide placeholder in readonly fields
+      &::placeholder {
+        color: transparent;
+  
+      }
+      &:-ms-input-placeholder {
+        color: transparent;
+      }
+  
+      &::-webkit-input-placeholder {
+        color: transparent;
+      }
+  
+      padding-left: 0;
+      border: 0;
+    }
+    .v-filterselect.v-readonly {
+      input {
+        padding-left: 0;
+        border: 0;
+      }
+      .v-filterselect-button {
+        display: none;
+      }
+    }
+    .v-datefield.v-readonly {
+      .v-datefield-button {
+        display: none;
+      }
+    }
+  }
+
+  // minimalistic custom responsive "layout"
+	.responsive {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    
+    > .v-widget {
+     margin: 8px 0;
+    }
+    .v-caption-half {
+      margin: -1px;
+    }
 	}
 	.responsive[width-range~="-599px"] {
 		justify-content: flex-end;
@@ -47,84 +127,4 @@
 	.responsive[width-range~="600px-"] .short {
 		width: 150px !important;
 	}
-	.buttons {
-		display: flex;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		.v-button {
-			margin-top: 8px;
-		}
-	}
-	.product-container {
-		margin-top: 0;
-	}
-	.product-row {
-		border-bottom: 1px solid rgba(0,0,0,.05);
-		padding-bottom: 8px;
-		margin-bottom: 16px;
-
-		.times {
-			text-align: center;
-		}
-		.quantity, .price {
-			text-align: right;
-		}
-		.delete {
-			border-radius: 4px 0 0 4px;
-			border-right: 0;
-		}
-		.product {
-			border-radius: 0 4px 4px 0;
-		}
-	}
-	.product-row:last-child {
-			border-bottom: 0;
-			margin-bottom: 0;
-	}
-
-	.history {
-		.v-caption {
-			.v-captiontext, .v-icon {
-				font-size: 10px;
-				font-weight: bold;
-				line-height: 1;
-			}
-			padding-bottom: 0;
-		}
-	}
-
-
-  .v-textfield.v-readonly {
-    // Hide placeholder in readonly fields
-    &::placeholder {
-      color: transparent;
-
-    }
-    &:-ms-input-placeholder {
-      color: transparent;
-    }
-
-    &::-webkit-input-placeholder {
-      color: transparent;
-    }
-
-    padding-left: 0;
-    border: 0;
-  }
-  .v-filterselect.v-readonly {
-    input {
-      padding-left: 0;
-      border: 0;
-    }
-    .v-filterselect-button {
-      display: none;
-    }
-  }
-  .v-datefield.v-readonly {
-    .v-datefield-button {
-      display: none;
-    }
-  }
-
 }
-

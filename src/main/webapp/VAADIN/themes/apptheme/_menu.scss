@@ -36,12 +36,14 @@
       display: none;
     }
     .logo {
-      padding-top: $v-layout-margin-top;
       // match search-bar height
       height: 60px;
     }
   }
   .app-shell[width-range~="1001px-"] {
+    .logo {
+      padding-top: $v-layout-spacing-vertical;
+    }
     .navigation-bar {
       background-image: url(bg.jpg);
       background-size: cover;
