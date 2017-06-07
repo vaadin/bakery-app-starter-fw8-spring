@@ -38,4 +38,4 @@ cache:
 
 before_cache:
   # remove all build artifacts
-  - rm -rf $HOME/.m2/repository/com/vaadin/orders
+  - rm -rf $HOME/.m2/repository/com/vaadin/starter/bakery
