@@ -2,30 +2,30 @@
 <html>
  <head>
   <meta charset="UTF-8">
-  <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;orderstheme&quot;}">
+  <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;apptheme&quot;}">
   <meta name="vaadin-version" content="8.0.5">
   <meta name="package-mapping" content="com_vaadin_template_orders_ui_view_orders:com.vaadin.starter.bakery.ui.view.orders">
   <meta name="package-mapping" content="com_vaadin_template_orders_ui_components:com.vaadin.starter.bakery.ui.components">
   <meta name="package-mapping" content="com_vaadin_template_orders_ui_view_orderedit:com.vaadin.starter.bakery.ui.view.orderedit">
  </head>
  <body>
-  <vaadin-vertical-layout>
+  <vaadin-vertical-layout spacing="false" margin-top="false">
    <vaadin-css-layout style-name="order-form responsive" responsive width-full>
     <vaadin-horizontal-layout id="reportHeader" width-full _id="reportHeader">
-     <vaadin-label style-name="h2" id="orderId" plain-text _id="orderId">
+     <vaadin-label style-name="h4 colored" id="orderId" plain-text _id="orderId">
        #182 
      </vaadin-label>
-     <vaadin-label style-name="h2" id="stateLabel" plain-text _id="stateLabel">
+     <vaadin-label style-name="h4 colored" id="stateLabel" width-full plain-text _id="stateLabel" :expand>
        New order 
      </vaadin-label>
-     <com_vaadin_template_orders_ui_view_orderedit-order-state-select id="state" _id="state" :middle :right :expand></com_vaadin_template_orders_ui_view_orderedit-order-state-select>
+     <com_vaadin_template_orders_ui_view_orderedit-order-state-select id="state" _id="state" :middle :right></com_vaadin_template_orders_ui_view_orderedit-order-state-select>
     </vaadin-horizontal-layout>
     <vaadin-label style-name="header" width-full plain-text>
       Due 
     </vaadin-label>
     <vaadin-horizontal-layout style-name="half" width-full>
-     <vaadin-date-field id="dueDate" placeholder="Date" width-full _id="dueDate" :expand></vaadin-date-field>
-     <vaadin-combo-box empty-selection-allowed="false" id="dueTime" text-input-allowed="false" width="100px" data-item-type="java.time.LocalTime" _id="dueTime"></vaadin-combo-box>
+     <vaadin-date-field id="dueDate" placeholder="Date" date-format="EEE dd MMM yyyy" width="180px" _id="dueDate"></vaadin-date-field>
+     <vaadin-combo-box empty-selection-allowed="false" id="dueTime" text-input-allowed="false" width="6em" data-item-type="java.time.LocalTime" _id="dueTime" :expand></vaadin-combo-box>
     </vaadin-horizontal-layout>
     <vaadin-horizontal-layout style-name="half" width-full>
      <vaadin-label style-name="large" plain-text :middle>
