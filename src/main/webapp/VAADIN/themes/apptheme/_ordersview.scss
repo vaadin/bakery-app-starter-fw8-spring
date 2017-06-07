@@ -2,7 +2,6 @@
 
 	.order-form {
 		max-width: 768px;
-	
 		.add-items {
 			text-align: left;
 			border: 1px dashed rgba(0,0,0,.2);
@@ -20,8 +19,7 @@
 		}
   	.edit .v-widget.header {
   		border-bottom: none;
-  	}
-  
+  	} 
     .buttons {
       display: flex;
       justify-content: space-between;
@@ -37,7 +35,6 @@
       border-bottom: 1px solid rgba(0,0,0,.05);
       padding-bottom: 8px;
       margin-bottom: 16px;
-  
       .times {
         text-align: center;
       }
@@ -57,14 +54,13 @@
         margin-bottom: 0;
     }
   
-    .history {
-      .v-caption {
-        .v-captiontext, .v-icon {
-          font-size: 10px;
-          font-weight: bold;
-          line-height: 1;
-        }
-        padding-bottom: 0;
+    .history .v-caption {
+      padding-bottom: 0;
+      .v-captiontext,
+      .v-icon {
+        font-size: 10px;
+        font-weight: bold;
+        line-height: 1;
       }
     }
 
@@ -73,16 +69,13 @@
       // Hide placeholder in readonly fields
       &::placeholder {
         color: transparent;
-  
       }
       &:-ms-input-placeholder {
         color: transparent;
       }
-  
       &::-webkit-input-placeholder {
         color: transparent;
       }
-  
       padding-left: 0;
       border: 0;
     }
@@ -107,7 +100,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    
     > .v-widget {
      margin: 8px 0;
     }
