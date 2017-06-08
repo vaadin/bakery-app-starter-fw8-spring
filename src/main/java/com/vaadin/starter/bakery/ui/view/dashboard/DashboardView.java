@@ -49,7 +49,7 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 
 	private final Chart deliveriesThisMonthGraph = new Chart(ChartType.COLUMN);
 	private final Chart deliveriesThisYearGraph = new Chart(ChartType.COLUMN);
-	private final Chart yearlySalesGraph = new Chart(ChartType.AREASPLINE);
+	private final Chart yearlySalesGraph = new Chart(ChartType.LINE);
 	private final Chart monthlyProductSplit = new Chart(ChartType.PIE);
 	private final OrdersGrid dueGrid = new OrdersGrid();
 
@@ -104,7 +104,7 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 		conf.getChart().setMarginBottom(6);
 
 		salesPerYear = new ListSeries[3];
-		for (int i = 0; i < 3; i++) {
+		for (int i = 2; i >= 0; i--) {
 			salesPerYear[i] = new ListSeries(Integer.toString(year - i));
 			conf.addSeries(salesPerYear[i]);
 		}
