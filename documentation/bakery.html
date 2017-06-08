@@ -432,69 +432,110 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>It includes an end-to-end technology stack covering each layer that is needed the build a production grade application. The App Starter is opinionated and reflects Vaadin&#8217;s view on what is the best way to build business applications.</p>
 </div>
 <div class="paragraph">
-<p>Front end features:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Vaadin Framework 8 for a UI layer</p>
-</li>
-<li>
-<p>Responsive, mobile-first design</p>
-</li>
-<li>
-<p>Many views and examples how to build your own</p>
-</li>
-<li>
-<p>Create-Read-Update-Delete (CRUD) views to edit data objects</p>
-</li>
-<li>
-<p>Vaadin Designer to fast build views visually</p>
-</li>
-<li>
-<p>Vaadin Board and Vaadin Charts to build a data focused dashboard to give an overview</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Back end features:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Service and repository layer working with JPA</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>General features:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Spring Boot enables easy set up, packaging, running and deploying</p>
-</li>
-<li>
-<p>Maven to manage dependencies and building</p>
-</li>
-<li>
-<p>TestBench tests to ensure</p>
-</li>
-<li>
-<p>Scalable, proven with Scalability tests</p>
-</li>
-<li>
-<p>In-memory database which can easily be changed to an production database</p>
-</li>
-<li>
-<p>Authorization and Authentication with Spring Security</p>
-</li>
-</ul>
+<p><strong class="red yellow-background">See a live demo of the application.</strong></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_getting_started">1. Getting started</h2>
+<h2 id="_features">1. Features</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_full_stack_architecture">1.1. Full stack architecture</h3>
+<div class="paragraph">
+<p>Bakery architecture is built to give a full opinionated working stack with all the technologies changed out. Every project has however their own needs and each stack doesn&#8217;t fit in to every project. If the default stack is not a perfect fit for your needs, you can switch out the technologies to match your requirements better.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_declarative_mobile_first_views">1.2. Declarative, mobile-first views</h3>
+<div class="paragraph">
+<p>Views are built with Vaadin Framework 8 with the help of Vaadin Designer. Each view is built responsively, mobile-first. Vaadin Designer enables you to build the views visually and in a very fast and productive way. The views that are bundled show paradigms on how to create certain types of view and serve as bases for your own views.</p>
+</div>
+<div class="imageblock" style="text-align: center">
+<div class="content">
+<img src="img/bakery-mobile.png" alt="Bakery Mobile view" width="250">
+</div>
+<div class="title">Figure 1. Bakery Mobile view</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_crud_views">1.3. CRUD views</h3>
+<div class="paragraph">
+<p>They go with multiple names. Create-Read-Update-Delete, Master-Detail. Updating data is at the core of many business applications. Bakery includes two examples of CRUD views where you can maintain the data.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/bakery-crud.png" alt="Bakery CRUD view">
+</div>
+<div class="title">Figure 2. Bakery CRUD view</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dashboard_with_charts">1.4. Dashboard with Charts</h3>
+<div class="paragraph">
+<p>A dashboard view is included to give the user an overview of the data in the application in one glance. Customize the widgets to show the data that is relevant to your users and give them indications on events that they should react to. Vaadin Board is used to layout the dashboard and Vaadin Charts visualizes the data.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/bakery-dashboard.png" alt="Bakery Dashboard view">
+</div>
+<div class="title">Figure 3. Bakery Dashboard view</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_authentication_and_authorization">1.5. Authentication and authorization</h3>
+<div class="paragraph">
+<p>The application is protected with user login to keep your sensitive data safe. Users can have different roles defined in the application which defines what they can do within the application. The authentication and authorization is built on top of Spring Security, given you many extensions points to configure it the way you handle security in your company.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/bakery-login.png" alt="Bakery Login screen">
+</div>
+<div class="title">Figure 4. Bakery Login screen</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tested">1.6. Tested</h3>
+<div class="paragraph">
+<p>Integration tests are built on the application with the help of Vaadin TestBench. We content that you don&#8217;t break functionality of the application why developing by maintaining and running the tests while developing. Running tests can be set up to happen on and integration server along with every commit.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_scalable">1.7. Scalable</h3>
+<div class="paragraph">
+<p>The application includes a scalability setup for testing how your application scales to multiple users.</p>
+</div>
+<div class="paragraph">
+<p>We have tested the application&#8217;s performance. Download the <strong class="red yellow-background">scalability report</strong> to find out closer how many end users you can serve.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_service_layer">1.8. Service layer</h3>
+<div class="paragraph">
+<p>Views contact a service layer which separates the UI layer from the business logic layer. The Service layer is divided to Services which is the contact point for the UI layer, and repositories that communicate with the database.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_spring_data">1.9. Spring Data</h3>
+<div class="paragraph">
+<p>Database layer makes use of Spring Data, JPA and Hibernate to fetch data, with a handy API for querying. The application comes bundled with an in-memory H2 database for easy setup and getting started, along with an easy way to switch the in-memory database for a production database.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_spring_boot">1.10. Spring Boot</h3>
+<div class="paragraph">
+<p>The application is set up, run and packaged with the help of Spring Boot, which helps you create production-ready applications.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_maven">1.11. Maven</h3>
+<div class="paragraph">
+<p>Dependency management and building is handed to Maven and the standardized Maven conventions help working in the industry-proven way.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_started">2. Getting started</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>A personalized project can be downloaded from the product page <strong class="red yellow-background">&lt;link&gt;</strong> by giving group id, artifact id and developer name.</p>
@@ -502,11 +543,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>A paid Pro or Prime subscription is required for creating a new software project from a Starter template. After its creation, results can be used, developed and distributed freely, but licenses for the used commercial components are required during development. The Starter or its parts cannot be redistributed as a code example or template. For full terms, see Commercial Vaadin Template License. <strong class="red yellow-background">&lt;link&gt;</strong></p>
 </div>
+<div class="paragraph">
+<p>See more information on setting up your environment in <a href="#_running_building_and_packaging">Running, building and packaging</a>.</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_software_needed">2. Software needed</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_software_needed">2.1. Software needed</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -515,10 +556,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li>
 <p>Maven is required for building, running and packaging the Software</p>
 </li>
-<li>
-<p>Bower (and transiently NPM) is required to download web components used in the project</p>
-</li>
 </ul>
+</div>
 </div>
 </div>
 </div>

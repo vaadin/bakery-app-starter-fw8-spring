@@ -3,6 +3,7 @@ package com.vaadin.starter.bakery.ui;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Viewport;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -14,6 +15,7 @@ import com.vaadin.ui.UI;
 @Theme("apptheme")
 @SpringUI
 @Viewport("width=device-width, initial-scale=1.0")
+@Title("###Bakery###")
 public class AppUI extends UI {
 
 	private final SpringViewProvider viewProvider;
