@@ -48,13 +48,17 @@
   			h4 {
   				margin: $v-layout-spacing-vertical $v-layout-spacing-horizontal !important;
   				margin-top: $spacing !important;
+  				font-weight: 100;
   			}
+  	     h1 {
+            @extend .v-label-huge;
+        }
   		}
 
 		.board-row-group {
 			@include valo-panel-style;
       		margin-bottom: $spacing;
-
+      		
           .new h4 {
       			color: $v-friendly-color;
       		}
@@ -127,5 +131,4 @@
 			}
 		}
 	}
-
 }

@@ -15,16 +15,20 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.addon.charts.Chart;
+import com.vaadin.addon.charts.ChartOptions;
 import com.vaadin.addon.charts.model.ChartType;
 import com.vaadin.addon.charts.model.Configuration;
 import com.vaadin.addon.charts.model.DataSeries;
 import com.vaadin.addon.charts.model.DataSeriesItem;
 import com.vaadin.addon.charts.model.Labels;
 import com.vaadin.addon.charts.model.ListSeries;
+import com.vaadin.addon.charts.model.Marker;
 import com.vaadin.addon.charts.model.PlotOptionsColumn;
+import com.vaadin.addon.charts.model.PlotOptionsLine;
 import com.vaadin.addon.charts.model.YAxis;
+import com.vaadin.addon.charts.model.style.Color;
 import com.vaadin.addon.charts.model.style.SolidColor;
-import com.vaadin.addon.charts.model.style.Style;
+import com.vaadin.addon.charts.model.style.Theme;
 import com.vaadin.board.Row;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
@@ -49,7 +53,7 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 
 	private final Chart deliveriesThisMonthGraph = new Chart(ChartType.COLUMN);
 	private final Chart deliveriesThisYearGraph = new Chart(ChartType.COLUMN);
-	private final Chart yearlySalesGraph = new Chart(ChartType.LINE);
+	private final Chart yearlySalesGraph = new Chart(ChartType.AREA);
 	private final Chart monthlyProductSplit = new Chart(ChartType.PIE);
 	private final OrdersGrid dueGrid = new OrdersGrid();
 
@@ -58,6 +62,24 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 	private ListSeries[] salesPerYear;
 
 	private DataSeries deliveriesPerProductSeries;
+
+	{
+		// Set a custom Theme for Charts
+		ChartOptions.get().setTheme(new Theme() {
+			{
+				// Set some custom colors
+				Color[] colors = { //
+						new SolidColor("#a56284"), //
+						new SolidColor("#6c6c93"), //
+						new SolidColor("#fb991c"), //
+				};
+				setColors(colors);
+
+				getTitle().setColor(colors[0]);
+				getTitle().setFontSize("inherit"); // inherit from CSS
+			}
+		});
+	}
 
 	@Autowired
 	public DashboardView(DashboardPresenter presenter) {
@@ -99,13 +121,18 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 
 		Configuration conf = yearlySalesGraph.getConfiguration();
 		conf.setTitle("Sales last years");
-		configureTitleStyle(conf);
 		conf.getxAxis().setCategories(getMonthNames());
 		conf.getChart().setMarginBottom(6);
 
+		PlotOptionsLine options = new PlotOptionsLine();
+		options.setMarker(new Marker(false));
+		options.setShadow(true);
+		conf.setPlotOptions(options);
+
 		salesPerYear = new ListSeries[3];
-		for (int i = 2; i >= 0; i--) {
+		for (int i = 0; i < salesPerYear.length; i++) {
 			salesPerYear[i] = new ListSeries(Integer.toString(year - i));
+			salesPerYear[i].setPlotOptions(new PlotOptionsLineWithZIndex(year - i));
 			conf.addSeries(salesPerYear[i]);
 		}
 		conf.getyAxis().setTitle("");
@@ -121,7 +148,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 		Configuration conf = monthlyProductSplit.getConfiguration();
 		String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL, Locale.US);
 		conf.setTitle("Products delivered in " + thisMonth);
-		configureTitleStyle(conf);
 		deliveriesPerProductSeries = new DataSeries();
 		conf.addSeries(deliveriesPerProductSeries);
 
@@ -141,7 +167,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 		Configuration yearConf = deliveriesThisYearGraph.getConfiguration();
 
 		yearConf.setTitle("Deliveries in " + today.getYear());
-		configureTitleStyle(yearConf);
 		yearConf.getChart().setMarginBottom(6);
 		yearConf.getxAxis().setCategories(getMonthNames());
 		yearConf.getxAxis().setLabels(new Labels(null));
@@ -153,7 +178,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 		Configuration monthConf = deliveriesThisMonthGraph.getConfiguration();
 		String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL, Locale.US);
 		monthConf.setTitle("Deliveries in " + thisMonth);
-		configureTitleStyle(monthConf);
 		monthConf.getChart().setMarginBottom(6);
 		monthConf.getLegend().setEnabled(false);
 		deliveriesThisMonthSeries = new ListSeries("Deliveries");
@@ -165,7 +189,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 				.toArray(size -> new String[size]);
 		monthConf.getxAxis().setCategories(categories);
 		monthConf.getxAxis().setLabels(new Labels(false));
-
 	}
 
 	protected void configureColumnSeries(ListSeries series) {
@@ -178,12 +201,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 		yaxis.setGridLineWidth(0);
 		yaxis.setLabels(new Labels(false));
 		yaxis.setTitle("");
-	}
-
-	private void configureTitleStyle(Configuration conf) {
-		Style titleStyle = conf.getTitle().getStyle();
-		titleStyle.setColor(new SolidColor("inherit"));
-		titleStyle.setFontSize("inherit");
 	}
 
 	private String[] getMonthNames() {
@@ -219,4 +236,16 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 		tomorrowLabel.setContent(Integer.toString(deliveryStats.getDueTomorrow()));
 	}
 
+	/**
+	 * Extends {@link PlotOptionsLine} to support zIndex. Omits getter/setter,
+	 * since they are not needed in our case.
+	 *
+	 */
+	private static class PlotOptionsLineWithZIndex extends PlotOptionsLine {
+		private Number zIndex;
+
+		public PlotOptionsLineWithZIndex(Number zIndex) {
+			this.zIndex = zIndex;
+		};
+	}
 }
