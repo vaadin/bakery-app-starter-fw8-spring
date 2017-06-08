@@ -3,7 +3,6 @@ package com.vaadin.starter.bakery.ui.view.admin.product;
 import org.junit.Assert;
 
 import com.vaadin.starter.bakery.ui.view.admin.AbstractCrudIT;
-import com.vaadin.starter.bakery.ui.view.orderedit.ElementUtil;
 import com.vaadin.testbench.elements.TextFieldElement;
 
 public class ProductAdminIT extends AbstractCrudIT<ProductAdminViewElement> {
@@ -20,8 +19,8 @@ public class ProductAdminIT extends AbstractCrudIT<ProductAdminViewElement> {
 
 	@Override
 	protected void assertFormFieldsEmpty(ProductAdminViewElement view) {
-		Assert.assertEquals("", ElementUtil.getText(view.getPrice()));
-		Assert.assertEquals("", ElementUtil.getText(view.getPrice()));
+		Assert.assertEquals("", view.getPrice().getText());
+		Assert.assertEquals("", view.getPrice().getText());
 	}
 
 	@Override

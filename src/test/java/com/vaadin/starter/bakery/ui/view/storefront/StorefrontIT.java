@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.starter.bakery.AbstractIT;
-import com.vaadin.starter.bakery.ui.view.orderedit.ElementUtil;
 import com.vaadin.testbench.elements.GridElement;
 
 public class StorefrontIT extends AbstractIT {
@@ -40,7 +39,7 @@ public class StorefrontIT extends AbstractIT {
 	public void filterUsingSearchField() {
 		StorefrontViewElement view = loginAsBarista();
 		view.getSearchField().setValue("gallegos");
-		ElementUtil.click(view.getSearchButton());
+		view.getSearchButton().click();
 
 		GridElement list = view.getList();
 		long rowCount = list.getRowCount();
