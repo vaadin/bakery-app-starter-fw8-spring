@@ -75,10 +75,9 @@ public class UpdateOrderIT extends AbstractIT {
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
 
 		OrderState oldState = OrderState.forDisplayName(orderEdit.getStateLabel().getText());
-		ElementUtil.click(orderEdit.getEditOrCancel());
-		Assert.assertEquals("Cancel button has wrong caption", "Cancel",
-				ElementUtil.getCaption(orderEdit.getEditOrCancel()));
-		Assert.assertEquals("Save button has wrong caption", "Save", ElementUtil.getCaption(orderEdit.getOk()));
+		orderEdit.getEditOrCancel().click();
+		Assert.assertEquals("Cancel button has wrong caption", "Cancel", orderEdit.getEditOrCancel().getCaption());
+		Assert.assertEquals("Save button has wrong caption", "Save", orderEdit.getOk().getCaption());
 
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
 		OrderInfo updatedOrder = new OrderInfo();
@@ -124,8 +123,8 @@ public class UpdateOrderIT extends AbstractIT {
 		DollarPriceConverter convert = new DollarPriceConverter();
 		updatedOrder.total = convert.convertToPresentation(updatedTotal, new ValueContext(Locale.US));
 
-		ElementUtil.click(orderEdit.getOk());
-		Assert.assertEquals("Save failed", "Edit", ElementUtil.getCaption(orderEdit.getEditOrCancel()));
+		orderEdit.getOk().click();
+		Assert.assertEquals("Save failed", "Edit", orderEdit.getEditOrCancel().getCaption());
 		orderEdit.assertOrder(updatedOrder);
 	}
 
@@ -133,7 +132,7 @@ public class UpdateOrderIT extends AbstractIT {
 	public void updateButCancel() {
 		StorefrontViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
-		ElementUtil.click(orderEdit.getEditOrCancel());
+		orderEdit.getEditOrCancel().click();
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
 
 		Customer currentCustomer = currentOrder.customer;
@@ -161,7 +160,7 @@ public class UpdateOrderIT extends AbstractIT {
 
 		orderEdit.setProducts(products);
 
-		ElementUtil.click(orderEdit.getEditOrCancel());
+		orderEdit.getEditOrCancel().click();
 		orderEdit.assertOrder(currentOrder);
 	}
 
@@ -169,17 +168,17 @@ public class UpdateOrderIT extends AbstractIT {
 	public void emptyProductRowsDoNotPreventSave() {
 		StorefrontViewElement storeFront = loginAsBarista();
 		OrderEditViewElement orderEdit = storeFront.selectOrder(1);
-		ElementUtil.click(orderEdit.getEditOrCancel()); // "Edit"
+		orderEdit.getEditOrCancel().click(); // "Edit"
 
 		int nrProducts = orderEdit.getNumberOfProducts();
 		for (int i = 0; i < 3; i++) {
-			ElementUtil.click(orderEdit.getAddItems());
+			orderEdit.getAddItems().click();
 		}
 		Assert.assertEquals(nrProducts + 3, orderEdit.getNumberOfProducts());
-		ElementUtil.click(orderEdit.getOk());
+		orderEdit.getOk().click();
 
 		// Assert saved
-		Assert.assertEquals("Save failed", "Edit", ElementUtil.getCaption(orderEdit.getEditOrCancel()));
+		Assert.assertEquals("Save failed", "Edit", orderEdit.getEditOrCancel().getCaption());
 
 		// Should still have the same products
 		Assert.assertEquals(nrProducts, orderEdit.getNumberOfProducts());
@@ -189,7 +188,7 @@ public class UpdateOrderIT extends AbstractIT {
 	public void confirmDialogAfterCustomerChanges() {
 		StorefrontViewElement storefront = loginAsBarista();
 		OrderEditViewElement orderEditView = storefront.selectOrder(2);
-		ElementUtil.click(orderEditView.getEditOrCancel());
+		orderEditView.getEditOrCancel().click();
 
 		TextFieldElement fullName = orderEditView.getFullName();
 		fullName.setValue(fullName.getValue() + "foo");
@@ -201,7 +200,7 @@ public class UpdateOrderIT extends AbstractIT {
 	public void confirmDialogAfterProductChanges() {
 		StorefrontViewElement storefront = loginAsBarista();
 		OrderEditViewElement orderEditView = storefront.selectOrder(2);
-		ElementUtil.click(orderEditView.getEditOrCancel());
+		orderEditView.getEditOrCancel().click();
 
 		TextFieldElement quantity = orderEditView.getProductInfo(0).getQuantity();
 		quantity.setValue(String.valueOf(Integer.parseInt(quantity.getValue()) + 1));
@@ -214,8 +213,8 @@ public class UpdateOrderIT extends AbstractIT {
 	public void confirmDialogAfterProductAdd() {
 		StorefrontViewElement storefront = loginAsBarista();
 		OrderEditViewElement orderEditView = storefront.selectOrder(2);
-		ElementUtil.click(orderEditView.getEditOrCancel());
-		ElementUtil.click(orderEditView.getAddItems());
+		orderEditView.getEditOrCancel().click();
+		orderEditView.getAddItems().click();
 
 		ProductInfoElement productInfo = orderEditView.getProductInfo(orderEditView.getNumberOfProducts() - 1);
 		productInfo.getProduct().selectByText("Blueberry Cheese Cake");
@@ -227,10 +226,10 @@ public class UpdateOrderIT extends AbstractIT {
 	public void confirmDialogAfterProductDelete() {
 		StorefrontViewElement storefront = loginAsBarista();
 		OrderEditViewElement orderEditView = storefront.selectOrder(2);
-		ElementUtil.click(orderEditView.getEditOrCancel());
+		orderEditView.getEditOrCancel().click();
 
 		ProductInfoElement productInfo = orderEditView.getProductInfo(0);
-		ElementUtil.click(productInfo.getDelete());
+		productInfo.getDelete().click();
 
 		assertConfirmationDialogBlocksLeaving(orderEditView);
 	}
@@ -251,7 +250,7 @@ public class UpdateOrderIT extends AbstractIT {
 	public void concurrentEditing() {
 		StorefrontViewElement storefront = loginAsBarista();
 		OrderEditViewElement orderEditView = storefront.selectOrder(0);
-		ElementUtil.click(orderEditView.getEditOrCancel());
+		orderEditView.getEditOrCancel().click();
 		TextFieldElement fullName = orderEditView.getFullName();
 		fullName.setValue(fullName.getValue() + "-edited-by-user-1");
 
@@ -262,11 +261,11 @@ public class UpdateOrderIT extends AbstractIT {
 			StorefrontViewElement otherUserOrderListView = new ElementQuery<>(StorefrontViewElement.class)
 					.context(otherUser).first();
 			OrderEditViewElement otherUserOrderEditView = otherUserOrderListView.selectOrder(0);
-			ElementUtil.click(otherUserOrderEditView.getEditOrCancel());
+			otherUserOrderEditView.getEditOrCancel().click();
 			TextFieldElement otherUserFullName = otherUserOrderEditView.getFullName();
 			String newValue = otherUserFullName.getValue() + "-edited-by-user-2";
 			otherUserFullName.setValue(newValue);
-			ElementUtil.click(otherUserOrderEditView.getOk());
+			otherUserOrderEditView.getOk().click();
 
 			// Ensure that the changes were saved
 			assertEnabledWithCaption("Edit", otherUserOrderEditView.getEditOrCancel());
@@ -274,7 +273,7 @@ public class UpdateOrderIT extends AbstractIT {
 
 			// Switch back to user 1 and try to save -> assert we are still in
 			// edit mode
-			ElementUtil.click(orderEditView.getOk());
+			orderEditView.getOk().click();
 			assertEnabledWithCaption("Cancel", orderEditView.getEditOrCancel());
 			Assert.assertEquals(1, $(NotificationElement.class).all().size());
 		} finally {

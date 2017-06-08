@@ -5,7 +5,6 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.vaadin.starter.bakery.ui.view.orderedit.ElementUtil;
 import com.vaadin.testbench.elements.AbstractComponentElement;
 import com.vaadin.testbench.elements.CssLayoutElement;
 import com.vaadin.testbench.elements.GridElement;
@@ -17,11 +16,11 @@ public class DashboardViewElement extends DashboardViewDesignElement {
 	public static class BoardBoxElement extends CssLayoutElement {
 
 		public String getHeader() {
-			return ElementUtil.getText(findElement(By.tagName("h4")));
+			return findElement(By.tagName("h4")).getText();
 		}
 
 		public String getContent() {
-			return ElementUtil.getText(findElement(By.tagName("h1")));
+			return findElement(By.tagName("h1")).getText();
 		}
 	}
 

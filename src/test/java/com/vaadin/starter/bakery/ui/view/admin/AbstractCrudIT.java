@@ -13,7 +13,6 @@ import com.vaadin.starter.bakery.AbstractIT;
 import com.vaadin.starter.bakery.ui.components.ConfirmationDialogDesignElement;
 import com.vaadin.starter.bakery.ui.view.MenuElement;
 import com.vaadin.starter.bakery.ui.view.admin.product.CrudViewElement;
-import com.vaadin.starter.bakery.ui.view.orderedit.ElementUtil;
 import com.vaadin.starter.bakery.ui.view.storefront.StorefrontViewElement;
 import com.vaadin.testbench.elements.GridElement;
 import com.vaadin.testbench.elements.GridElement.GridRowElement;
@@ -34,7 +33,7 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 	protected T loginAndNavigateToView() {
 		loginAsAdmin();
 		MenuElement menu = $(MenuElement.class).first();
-		ElementUtil.click(menu.getMenuLink(getViewName()));
+		menu.getMenuLink(getViewName()).click();
 		return getViewElement();
 	}
 
