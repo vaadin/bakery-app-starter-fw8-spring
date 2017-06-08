@@ -26,7 +26,6 @@ import com.vaadin.addon.charts.model.Marker;
 import com.vaadin.addon.charts.model.PlotOptionsColumn;
 import com.vaadin.addon.charts.model.PlotOptionsLine;
 import com.vaadin.addon.charts.model.YAxis;
-import com.vaadin.addon.charts.model.style.Color;
 import com.vaadin.addon.charts.model.style.SolidColor;
 import com.vaadin.addon.charts.model.style.Theme;
 import com.vaadin.board.Row;
@@ -63,28 +62,18 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 
 	private DataSeries deliveriesPerProductSeries;
 
-	{
-		// Set a custom Theme for Charts
-		ChartOptions.get().setTheme(new Theme() {
-			{
-				// Set some custom colors
-				Color[] colors = { //
-						new SolidColor("#a56284"), //
-						new SolidColor("#6c6c93"), //
-						new SolidColor("#fb991c"), //
-				};
-				setColors(colors);
-
-				getTitle().setColor(colors[0]);
-				getTitle().setFontSize("inherit"); // inherit from CSS
-			}
-		});
-	}
-
 	@Autowired
 	public DashboardView(DashboardPresenter presenter) {
 		this.presenter = presenter;
 		dueGrid.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
+
+		// Custom Theme for Charts
+		Theme theme = new Theme();
+		theme.setColors(new SolidColor("#a56284"), new SolidColor("#6c6c93"), new SolidColor("#fb991c"));
+		theme.getTitle().setColor(theme.getColors()[0]);
+		theme.getTitle().setFontSize("inherit"); // inherit from CSS
+		// Set the theme ("globally") for all Charts
+		ChartOptions.get().setTheme(theme);
 	}
 
 	@PostConstruct
@@ -248,4 +237,5 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 			this.zIndex = zIndex;
 		};
 	}
+
 }
