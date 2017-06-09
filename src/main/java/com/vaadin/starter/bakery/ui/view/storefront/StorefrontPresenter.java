@@ -26,12 +26,9 @@ public class StorefrontPresenter implements Serializable {
 
 	private final NavigationManager navigationManager;
 
-	private final OrdersDataProvider ordersDataProvider;
-
 	@Autowired
-	public StorefrontPresenter(NavigationManager navigationManager, OrdersDataProvider ordersDataProvider) {
+	public StorefrontPresenter(NavigationManager navigationManager) {
 		this.navigationManager = navigationManager;
-		this.ordersDataProvider = ordersDataProvider;
 	}
 
 	void init(StorefrontView view) {
@@ -40,10 +37,6 @@ public class StorefrontPresenter implements Serializable {
 
 	protected StorefrontView getView() {
 		return view;
-	}
-
-	public OrdersDataProvider getOrdersProvider() {
-		return ordersDataProvider;
 	}
 
 	public void selectedOrder(Order order) {
@@ -55,17 +48,12 @@ public class StorefrontPresenter implements Serializable {
 	}
 
 	public void search(SearchEvent event) {
-		filterGrid(event.getSearchString(), event.isIncludePast());
+		getView().filterGrid(event.getSearchString(), event.isIncludePast());
 		String parameters = PARAMETER_SEARCH + "=" + event.getSearchString();
 		if (event.isIncludePast()) {
 			parameters += "&" + PARAMETER_INCLUDE_PAST;
 		}
 		navigationManager.updateViewParameter(parameters);
-	}
-
-	private void filterGrid(String searchTerm, boolean includePast) {
-		ordersDataProvider.setFilter(searchTerm);
-		ordersDataProvider.setIncludePast(includePast);
 	}
 
 	public void enter(String parameterString) {
@@ -75,7 +63,7 @@ public class StorefrontPresenter implements Serializable {
 			searchTerm = "";
 		}
 		boolean includePast = params.containsKey(PARAMETER_INCLUDE_PAST);
-		filterGrid(searchTerm, includePast);
+		getView().filterGrid(searchTerm, includePast);
 	}
 
 	private Map<String, String> parameterStringToMap(String parameterString) {

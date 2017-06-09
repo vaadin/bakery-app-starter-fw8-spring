@@ -4,19 +4,11 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.annotation.ViewScope;
-import com.vaadin.starter.bakery.ui.components.OrdersGrid;
-import com.vaadin.starter.bakery.ui.components.search.SearchField;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 
 @SpringView
 public class StorefrontView extends StorefrontViewDesign implements NavigableView {
@@ -44,7 +36,6 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	public void init() {
 		presenter.init(this);
 
-		list.setDataProvider(presenter.getOrdersProvider());
 		list.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
 
 		searchField.addSerchListener(e -> presenter.search(e));
@@ -63,5 +54,9 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	@Override
 	public void enter(ViewChangeEvent event) {
 		presenter.enter(event.getParameters());
+	}
+
+	public void filterGrid(String searchString, boolean includePast) {
+		list.filterGrid(searchString, includePast);
 	}
 }
