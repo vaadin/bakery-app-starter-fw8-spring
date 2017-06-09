@@ -10,6 +10,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.ui.components.OrdersDataProvider;
+import com.vaadin.starter.bakery.ui.components.search.SearchEvent;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView;
 
@@ -53,10 +54,10 @@ public class StorefrontPresenter implements Serializable {
 		navigationManager.navigateTo(OrderEditView.class);
 	}
 
-	public void search(String searchTerm, boolean includePast) {
-		filterGrid(searchTerm, includePast);
-		String parameters = PARAMETER_SEARCH + "=" + searchTerm;
-		if (includePast) {
+	public void search(SearchEvent event) {
+		filterGrid(event.getSearchString(), event.isIncludePast());
+		String parameters = PARAMETER_SEARCH + "=" + event.getSearchString();
+		if (event.isIncludePast()) {
 			parameters += "&" + PARAMETER_INCLUDE_PAST;
 		}
 		navigationManager.updateViewParameter(parameters);
@@ -65,7 +66,6 @@ public class StorefrontPresenter implements Serializable {
 	private void filterGrid(String searchTerm, boolean includePast) {
 		ordersDataProvider.setFilter(searchTerm);
 		ordersDataProvider.setIncludePast(includePast);
-		view.updateFilters(searchTerm, includePast);
 	}
 
 	public void enter(String parameterString) {

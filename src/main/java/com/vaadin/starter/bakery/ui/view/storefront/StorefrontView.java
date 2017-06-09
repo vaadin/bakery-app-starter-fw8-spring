@@ -4,13 +4,19 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.annotation.ViewScope;
+import com.vaadin.starter.bakery.ui.components.OrdersGrid;
+import com.vaadin.starter.bakery.ui.components.search.SearchField;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
-import com.vaadin.ui.Button.ClickShortcut;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 @SpringView
 public class StorefrontView extends StorefrontViewDesign implements NavigableView {
@@ -37,13 +43,13 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	@PostConstruct
 	public void init() {
 		presenter.init(this);
+
 		list.setDataProvider(presenter.getOrdersProvider());
 		list.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
-		newOrder.addClickListener(e -> presenter.newOrder());
-		searchButton.addClickListener(e -> presenter.search(searchField.getValue(), includePast.getValue()));
 
-		// We don't want a global shortcut for enter, scope it to the panel
-		searchPanel.addAction(new ClickShortcut(searchButton, KeyCode.ENTER, null));
+		searchField.addSerchListener(e -> presenter.search(e));
+
+		newOrder.addClickListener(e -> presenter.newOrder());
 	}
 
 	/**
@@ -57,10 +63,5 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	@Override
 	public void enter(ViewChangeEvent event) {
 		presenter.enter(event.getParameters());
-	}
-
-	public void updateFilters(String searchTerm, boolean includePast) {
-		searchField.setValue(searchTerm);
-		this.includePast.setValue(includePast);
 	}
 }
