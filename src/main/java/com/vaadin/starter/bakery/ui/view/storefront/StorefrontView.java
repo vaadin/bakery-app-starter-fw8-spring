@@ -1,26 +1,29 @@
 package com.vaadin.starter.bakery.ui.view.storefront;
 
+import java.util.Optional;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.annotation.ViewScope;
+import com.vaadin.starter.bakery.backend.data.entity.Order;
+import com.vaadin.starter.bakery.ui.components.search.SearchEvent;
+import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
-import com.vaadin.ui.Button.ClickShortcut;
+import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView;
 
 @SpringView
 public class StorefrontView extends StorefrontViewDesign implements NavigableView {
 
-	private StorefrontPresenter presenter;
-
 	@Autowired
-	public StorefrontView(StorefrontPresenter presenter) {
-		this.presenter = presenter;
-	}
+	private NavigationManager navigationManager;
+
+	private static final String PARAMETER_SEARCH = "search";
+	private static final String PARAMETER_INCLUDE_PAST = "includePast";
 
 	/**
 	 * This method is invoked once each time an instance of the view is created.
@@ -36,14 +39,10 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@PostConstruct
 	public void init() {
-		presenter.init(this);
-		list.setDataProvider(presenter.getOrdersProvider());
-		list.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
-		newOrder.addClickListener(e -> presenter.newOrder());
-		searchButton.addClickListener(e -> presenter.search(searchField.getValue(), includePast.getValue()));
+		list.addSelectionListener(e -> onOrderSelected(e.getFirstSelectedItem().get()));
 
-		// We don't want a global shortcut for enter, scope it to the panel
-		searchPanel.addAction(new ClickShortcut(searchButton, KeyCode.ENTER, null));
+		searchField.addSerchListener(e -> onSearch(e));
+		newOrder.addClickListener(e -> onNewOrder());
 	}
 
 	/**
@@ -56,11 +55,32 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		presenter.enter(event.getParameters());
+		String searchTerm = Optional.ofNullable(navigationManager.getStateParameterMap().get(PARAMETER_SEARCH))
+				.orElse("");
+		boolean includePast = navigationManager.getStateParameterMap().containsKey(PARAMETER_INCLUDE_PAST);
+		filterGrid(searchTerm, includePast);
 	}
 
-	public void updateFilters(String searchTerm, boolean includePast) {
-		searchField.setValue(searchTerm);
-		this.includePast.setValue(includePast);
+	protected void filterGrid(String searchString, boolean includePast) {
+		list.filterGrid(searchString, includePast);
+		searchField.setSearchString(searchString);
+		searchField.setIncludePast(includePast);
+	}
+
+	public void onOrderSelected(Order order) {
+		navigationManager.navigateTo(OrderEditView.class, order.getId());
+	}
+
+	public void onNewOrder() {
+		navigationManager.navigateTo(OrderEditView.class);
+	}
+
+	public void onSearch(SearchEvent event) {
+		filterGrid(event.getSearchString(), event.isIncludePast());
+		String parameters = PARAMETER_SEARCH + "=" + event.getSearchString();
+		if (event.isIncludePast()) {
+			parameters += "&" + PARAMETER_INCLUDE_PAST;
+		}
+		navigationManager.updateViewParameter(parameters);
 	}
 }

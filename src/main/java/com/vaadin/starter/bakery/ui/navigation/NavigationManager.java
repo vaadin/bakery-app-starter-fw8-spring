@@ -1,5 +1,9 @@
 package com.vaadin.starter.bakery.ui.navigation;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
@@ -120,5 +124,4 @@ public class NavigationManager extends SpringNavigator {
 
 		updateNavigationState(new ViewChangeEvent(this, getCurrentView(), getCurrentView(), viewName, parameters));
 	}
-
 }
