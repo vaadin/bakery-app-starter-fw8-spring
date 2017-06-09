@@ -9,9 +9,9 @@ import com.vaadin.addon.charts.themes.ValoLightTheme;
  */
 public class ChartsTheme extends Theme {
 
-	public final static SolidColor COLOR1 = new SolidColor("#a56284");
-	public final static SolidColor COLOR2 = new SolidColor("#6c6c93");
-	public final static SolidColor COLOR3 = new SolidColor("#fb991c");
+	private static final SolidColor COLOR1 = new SolidColor("#a56284");
+	private static final SolidColor COLOR2 = new SolidColor("#6c6c93");
+	private static final SolidColor COLOR3 = new SolidColor("#fb991c");
 
 	public ChartsTheme() {
 		setColors(COLOR1, COLOR2, COLOR3);
