@@ -1,6 +1,5 @@
 package com.vaadin.starter.bakery.ui.view.storefront;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -56,17 +55,20 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Map<String, String> params = parameterStringToMap(event.getParameters());
+		Map<String, String> params = NavigationManager.parameterStringToMap(event.getParameters());
 		String searchTerm = params.get(PARAMETER_SEARCH);
 		if (searchTerm == null) {
 			searchTerm = "";
 		}
+
 		boolean includePast = params.containsKey(PARAMETER_INCLUDE_PAST);
 		filterGrid(searchTerm, includePast);
 	}
 
 	public void filterGrid(String searchString, boolean includePast) {
 		list.filterGrid(searchString, includePast);
+		searchField.setSearchString(searchString);
+		searchField.setIncludePast(includePast);
 	}
 
 	public void selectedOrder(Order order) {
@@ -84,20 +86,5 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 			parameters += "&" + PARAMETER_INCLUDE_PAST;
 		}
 		navigationManager.updateViewParameter(parameters);
-	}
-
-	private Map<String, String> parameterStringToMap(String parameterString) {
-		Map<String, String> parameterMap = new HashMap<>();
-		String[] parameters = parameterString.split("&");
-		for (int i = 0; i < parameters.length; i++) {
-			String[] keyAndValue = parameters[i].split("=");
-			if (keyAndValue.length > 1) {
-				parameterMap.put(keyAndValue[0], keyAndValue[1]);
-			} else {
-				parameterMap.put(keyAndValue[0], "");
-			}
-		}
-
-		return parameterMap;
 	}
 }

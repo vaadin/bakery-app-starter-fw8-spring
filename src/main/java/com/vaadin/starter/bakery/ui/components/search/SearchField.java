@@ -53,7 +53,7 @@ public class SearchField extends Composite {
 		Panel panel = new Panel();
 		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
 		panel.setSizeUndefined();
-		
+
 		HorizontalLayout contentLayout = new HorizontalLayout(searchField, searchButton, includePast);
 		contentLayout.setWidthUndefined();
 		contentLayout.setComponentAlignment(includePast, Alignment.MIDDLE_RIGHT);
@@ -78,5 +78,13 @@ public class SearchField extends Composite {
 				listener.onSearch(event);
 			}
 		}
+	}
+
+	public void setSearchString(String searchString) {
+		this.searchField.setValue(searchString);
+	}
+
+	public void setIncludePast(boolean includePast) {
+		this.includePast.setValue(includePast);
 	}
 }

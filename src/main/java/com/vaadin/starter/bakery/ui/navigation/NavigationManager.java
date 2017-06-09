@@ -1,5 +1,8 @@
 package com.vaadin.starter.bakery.ui.navigation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
@@ -121,4 +124,18 @@ public class NavigationManager extends SpringNavigator {
 		updateNavigationState(new ViewChangeEvent(this, getCurrentView(), getCurrentView(), viewName, parameters));
 	}
 
+	public static Map<String, String> parameterStringToMap(String parameterString) {
+		Map<String, String> parameterMap = new HashMap<>();
+		String[] parameters = parameterString.split("&");
+		for (int i = 0; i < parameters.length; i++) {
+			String[] keyAndValue = parameters[i].split("=");
+			if (keyAndValue.length > 1) {
+				parameterMap.put(keyAndValue[0], keyAndValue[1]);
+			} else {
+				parameterMap.put(keyAndValue[0], "");
+			}
+		}
+
+		return parameterMap;
+	}
 }
