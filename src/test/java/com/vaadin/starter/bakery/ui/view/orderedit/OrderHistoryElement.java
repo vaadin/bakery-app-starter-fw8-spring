@@ -25,7 +25,7 @@ public class OrderHistoryElement extends OrderHistoryDesignElement {
 	public List<OrderHistoryItemObject> getHistoryItems() {
 		List<OrderHistoryItemObject> history = new ArrayList<>();
 		CssLayoutElement layout = getItems();
-		ElementUtil.scrollIntoView(layout);
+		layout.scrollIntoView();
 
 		List<WebElement> labels = layout.findElements(By.className("v-label"));
 		List<WebElement> captions = layout.findElements(By.className("v-captiontext"));
