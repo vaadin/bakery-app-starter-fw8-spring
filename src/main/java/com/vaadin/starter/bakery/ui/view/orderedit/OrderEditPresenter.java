@@ -10,9 +10,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.annotation.PreDestroy;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.spring.events.EventBus.ViewEventBus;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
@@ -25,7 +28,6 @@ import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.data.entity.OrderItem;
 import com.vaadin.starter.bakery.backend.service.OrderService;
 import com.vaadin.starter.bakery.backend.service.PickupLocationService;
-import com.vaadin.starter.bakery.ui.eventbus.ViewEventBus;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView.Mode;
 import com.vaadin.starter.bakery.ui.view.storefront.StorefrontView;
@@ -45,23 +47,38 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 
 	private final NavigationManager navigationManager;
 
+	private final ViewEventBus viewEventBus;
+
 	private static final List<OrderState> happyPath = Arrays.asList(OrderState.NEW, OrderState.CONFIRMED,
 			OrderState.READY, OrderState.DELIVERED);
 
 	@Autowired
 	public OrderEditPresenter(ViewEventBus viewEventBus, NavigationManager navigationManager) {
+		this.viewEventBus = viewEventBus;
 		this.navigationManager = navigationManager;
-		viewEventBus.subscribe(ProductInfoChangeEvent.class, change -> {
-			updateTotalSum();
-			view.onProductInfoChanged();
-		});
-		viewEventBus.subscribe(OrderItemDeleted.class, deleted -> {
-			removeOrderItem(deleted.getOrderItem());
-			view.onProductInfoChanged();
-		});
-		viewEventBus.subscribe(OrderUpdated.class, deleted -> {
-			refresh(view.getOrder().getId());
-		});
+		viewEventBus.subscribe(this);
+	}
+
+	@PreDestroy
+	public void destroy() {
+		viewEventBus.unsubscribe(this);
+	}
+
+	@EventBusListenerMethod
+	private void onProductInfoChange(ProductInfoChangeEvent event) {
+		updateTotalSum();
+		view.onProductInfoChanged();
+	}
+
+	@EventBusListenerMethod
+	private void onOrderItemDelete(OrderItemDeleted event) {
+		removeOrderItem(event.getOrderItem());
+		view.onProductInfoChanged();
+	}
+
+	@EventBusListenerMethod
+	private void onOrderItemUpdate(OrderUpdated event) {
+		refresh(view.getOrder().getId());
 	}
 
 	void init(OrderEditView view) {

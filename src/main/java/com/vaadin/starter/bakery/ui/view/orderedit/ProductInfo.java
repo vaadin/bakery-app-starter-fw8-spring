@@ -7,6 +7,8 @@ import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.spring.annotation.PrototypeScope;
+import org.vaadin.spring.events.EventBus.ViewEventBus;
 
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.BindingValidationStatus;
@@ -16,8 +18,6 @@ import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.starter.bakery.backend.data.entity.OrderItem;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
-import com.vaadin.starter.bakery.ui.PrototypeScope;
-import com.vaadin.starter.bakery.ui.eventbus.ViewEventBus;
 import com.vaadin.starter.bakery.ui.util.DollarPriceConverter;
 import com.vaadin.ui.Label;
 
@@ -59,6 +59,7 @@ public class ProductInfo extends ProductInfoDesign {
 
 		readOnlyComment.setWidth("100%");
 		readOnlyComment.setId(comment.getId());
+		readOnlyComment.setStyleName(comment.getStyleName());
 
 		delete.addClickListener(e -> fireOrderItemDeleted());
 	}
@@ -68,11 +69,11 @@ public class ProductInfo extends ProductInfoDesign {
 	}
 
 	private void fireProductInfoChanged() {
-		viewEventBus.publish(new ProductInfoChangeEvent());
+		viewEventBus.publish(this, new ProductInfoChangeEvent());
 	}
 
 	private void fireOrderItemDeleted() {
-		viewEventBus.publish(new OrderItemDeleted(getItem()));
+		viewEventBus.publish(this, new OrderItemDeleted(getItem()));
 	}
 
 	public int getSum() {

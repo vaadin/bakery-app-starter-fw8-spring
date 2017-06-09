@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.vaadin.spring.annotation.PrototypeScope;
 
 import com.vaadin.data.provider.Query;
 import com.vaadin.data.provider.QuerySortOrder;
@@ -15,7 +16,6 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.service.OrderService;
-import com.vaadin.starter.bakery.ui.PrototypeScope;
 import com.vaadin.starter.bakery.ui.dataprovider.FilterablePageableDataProvider;
 
 @SpringComponent

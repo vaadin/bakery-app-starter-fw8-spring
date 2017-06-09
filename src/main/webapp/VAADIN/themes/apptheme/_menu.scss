@@ -1,15 +1,21 @@
 @mixin menu {
+  .navigation-bar-container {
+     @include linear-gradient(145deg, #484962 30%, #d06b41 100%);
+  }
   .navigation-bar {
     color: lighten($v-focus-color,40%);
-
-    .v-button:hover {
-      .v-icon, .v-button-caption {
-          color: lighten($v-focus-color, 60%);
-      }
+    background-size: cover;
+    background-position: top;
+    
+    .v-button {
+      border-radius: 0;
     }
     .selected {
-      background: darken($v-focus-color,10%);
-      border-radius: 0;
+      background: rgba(0,0,0,.2);
+      color: lighten($v-focus-color,60%);
+      .v-icon, .v-button-caption {
+          color: lighten($v-focus-color,60%);
+      }
     }
     .activeViewName {
       line-height: $v-unit-size;
@@ -18,7 +24,9 @@
       font-size: $v-font-size;
     }
   }
-
+  .logo {
+    color: #fff;
+  }
   .app-shell[width-range~="-600px"] {
     .logo {
       max-width: 150px;
@@ -33,7 +41,24 @@
       display: none;
     }
     .logo {
-      padding: 15px 8px;
+      // match search-bar height
+      height: 60px;
+    }
+    .navigation-bar {
+      @include linear-gradient(145deg, #484962 30%, #d06b41 100%);
+      .navigation {
+        background-color: transparent;
+        border: none;
+      }
+    }
+  }
+  .app-shell[width-range~="1001px-"] {
+    .logo {
+      padding-top: $v-layout-spacing-vertical;
+    }
+    .navigation-bar {
+      background-color: transparent;
+      background-image: url(bg.jpg); 
     }
   }
 

@@ -18,8 +18,7 @@ import com.vaadin.starter.bakery.ui.view.dashboard.DashboardView;
 import com.vaadin.starter.bakery.ui.view.storefront.StorefrontView;
 
 /**
- * NavigationManager is the component that governs view navigation of the Orders
- * app.
+ * Governs view navigation of the app.
  */
 @Component
 @UIScope

@@ -15,16 +15,17 @@ import org.slf4j.LoggerFactory;
 
 import com.vaadin.starter.bakery.ui.view.LoginViewElement;
 import com.vaadin.starter.bakery.ui.view.dashboard.DashboardViewElement;
-import com.vaadin.starter.bakery.ui.view.orderedit.ElementUtil;
 import com.vaadin.starter.bakery.ui.view.storefront.StorefrontViewElement;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.HasDriver;
+import com.vaadin.testbench.HasTestBenchCommandExecutor;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBench;
 import com.vaadin.testbench.TestBenchDriverProxy;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.TestBenchTestCase;
+import com.vaadin.testbench.commands.TestBenchCommandExecutor;
 import com.vaadin.testbench.elements.AbstractComponentElement;
 import com.vaadin.testbench.elements.GridElement;
 import com.vaadin.testbench.elements.GridElement.GridCellElement;
@@ -49,6 +50,7 @@ public class AbstractIT extends TestBenchTestCase {
 	@Before
 	public void setup() {
 		setDriver(createDriver());
+		getDriver().resizeViewPortTo(800, 600);
 	}
 
 	protected WebDriver createDriver() {
@@ -71,7 +73,7 @@ public class AbstractIT extends TestBenchTestCase {
 
 	protected static void assertEnabledWithCaption(String text, AbstractComponentElement element) {
 		assertEnabled(true, element);
-		Assert.assertEquals(text, ElementUtil.getCaption(element));
+		Assert.assertEquals(text, element.getCaption());
 	}
 
 	/**
@@ -216,7 +218,8 @@ public class AbstractIT extends TestBenchTestCase {
 	protected LoginViewElement openLoginView(WebDriver driver, String url) {
 		driver.get(url);
 		TestBenchElement body = (TestBenchElement) driver.findElement(By.tagName("body"));
-		return TestBench.createElement(LoginViewElement.class, body.getWrappedElement(), getCommandExecutor());
+		TestBenchCommandExecutor executor = ((HasTestBenchCommandExecutor) driver).getCommandExecutor();
+		return TestBench.createElement(LoginViewElement.class, body.getWrappedElement(), executor);
 	}
 
 }

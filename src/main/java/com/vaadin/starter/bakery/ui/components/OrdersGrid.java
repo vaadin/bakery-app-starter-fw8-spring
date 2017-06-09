@@ -7,7 +7,6 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.vaadin.shared.ui.grid.ColumnResizeMode;
 import com.vaadin.starter.bakery.backend.data.entity.Customer;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.ui.Grid;
@@ -16,30 +15,37 @@ import com.vaadin.ui.renderers.HtmlRenderer;
 public class OrdersGrid extends Grid<Order> {
 
 	public OrdersGrid() {
+		addStyleName("orders-grid");
 		setSizeFull();
-		addStyleName("two-row");
-		setColumnResizeMode(ColumnResizeMode.ANIMATED);
 		removeHeaderRow(0);
 
-		// Due
-		Column<Order, String> dueColumn = addColumn(order -> dueCell(getTimeHeader(order.getDueDate()),
-				String.valueOf(order.getDueTime()), getTimeStyle(order.getDueDate())), new HtmlRenderer());
-		dueColumn.setSortProperty("dueDate", "dueTime");
+		// Add stylenames to rows
+		setStyleGenerator(OrdersGrid::getRowStyle);
 
-		// Order
-		addColumn(order -> {
+		// Due column
+		Column<Order, String> dueColumn = addColumn(
+				order -> twoRowCell(getTimeHeader(order.getDueDate()), String.valueOf(order.getDueTime())),
+				new HtmlRenderer());
+		dueColumn.setSortProperty("dueDate", "dueTime");
+		dueColumn.setStyleGenerator(order -> "due");
+
+		// Summary column
+		Column<Order, String> summaryColumn = addColumn(order -> {
 			Customer customer = order.getCustomer();
 			return twoRowCell(customer.getFullName(), getOrderSummary(order));
 		}, new HtmlRenderer()).setExpandRatio(1).setSortProperty("customer.fullName").setMinimumWidthFromContent(false);
-
-		// Status
-		Column<Order, String> stateColumn = addColumn(order -> "<div>" + order.getState() + "</div>")
-				.setRenderer(new HtmlRenderer());
-		stateColumn.setStyleGenerator(order -> "status " + order.getState().name().toLowerCase());
-		stateColumn.setSortProperty("state");
+		summaryColumn.setStyleGenerator(order -> "summary");
 	}
 
-	private String getTimeHeader(LocalDate dueDate) {
+	/**
+	 * Makes date into a more readable form; "Today", "Mon 7", "12 Jun"
+	 * 
+	 * @param dueDate
+	 *            The date to make into a string
+	 * @return A formatted string depending on how far in the future the date
+	 *         is.
+	 */
+	private static String getTimeHeader(LocalDate dueDate) {
 		LocalDate today = LocalDate.now();
 		if (dueDate.isEqual(today)) {
 			return "Today";
@@ -57,27 +63,27 @@ public class OrdersGrid extends Grid<Order> {
 		}
 	}
 
-	private String getTimeStyle(LocalDate dueDate) {
-		long days = LocalDate.now().until(dueDate, ChronoUnit.DAYS);
-		if (days < 7) {
-			return "in" + days;
-		} else {
-			return "";
+	private static String getRowStyle(Order order) {
+		String style = order.getState().name().toLowerCase();
+
+		long days = LocalDate.now().until(order.getDueDate(), ChronoUnit.DAYS);
+		if (days == 0) {
+			style += " today";
+		} else if (days == 1) {
+			style += " tomorrow";
 		}
+
+		return style;
 	}
 
-	private String getOrderSummary(Order order) {
+	private static String getOrderSummary(Order order) {
 		Stream<String> quantityAndName = order.getItems().stream()
 				.map(item -> item.getQuantity() + "x " + item.getProduct().getName());
 		return quantityAndName.collect(Collectors.joining(", "));
 	}
 
-	private String dueCell(String header, String content, String styleName) {
-		return "<div class=\"due " + styleName + "\"><b>" + header + "</b>" + content + "</div>";
-	}
-
-	private String twoRowCell(String header, String content) {
-		return "<b>" + header + "</b><br>" + content;
+	private static String twoRowCell(String header, String content) {
+		return "<div class=\"header\">" + header + "</div><div class=\"content\">" + content + "</div>";
 	}
 
 }
