@@ -76,13 +76,13 @@ public class AddOrderIT extends AbstractIT {
 
 		for (int i = 0; i < testOrder.products.size(); i++) {
 			if (i > 0) {
-				ElementUtil.click(orderEditView.getAddItems());
+				orderEditView.getAddItems().click();
 			}
 			ProductOrderData product = testOrder.products.get(i);
 			ProductInfoElement productInfo = orderEditView.getProductInfo(i);
 			productInfo.setProduct(product);
 			// Check that (unit) price was updated correctly
-			String itemPriceText = ElementUtil.getText(productInfo.getPrice());
+			String itemPriceText = productInfo.getPrice().getText();
 			Result<Integer> itemPrice = new DollarPriceConverter().convertToModel(itemPriceText,
 					new ValueContext(Locale.US));
 
@@ -90,24 +90,24 @@ public class AddOrderIT extends AbstractIT {
 		}
 
 		// Check total sum
-		Assert.assertEquals(testOrder.total, ElementUtil.getText(orderEditView.getTotal()));
+		Assert.assertEquals(testOrder.total, orderEditView.getTotal().getText());
 
 		// Add empty row
-		ElementUtil.click(orderEditView.getAddItems());
+		orderEditView.getAddItems().click();
 
 		// Add + delete row
-		ElementUtil.click(orderEditView.getAddItems());
+		orderEditView.getAddItems().click();
 		ProductOrderData product = testOrder.products.get(0);
 		ProductInfoElement productInfo = orderEditView.getProductInfo(orderEditView.getNumberOfProducts() - 1);
 		productInfo.setProduct(product);
 		Assert.assertEquals(testOrder.products.size() + 2, orderEditView.getNumberOfProducts());
-		ElementUtil.click(orderEditView.getProductInfo(orderEditView.getNumberOfProducts() - 1).getDelete());
+		orderEditView.getProductInfo(orderEditView.getNumberOfProducts() - 1).getDelete().click();
 
 		// One extra row at the bottom, but it should not affect the result
 		Assert.assertEquals(testOrder.products.size() + 1, orderEditView.getNumberOfProducts());
 
 		// Done -> go to confirmation screen
-		ElementUtil.click(orderEditView.getOk());
+		orderEditView.getOk().click();
 		// Ensure that that we are on the confirmation screen
 		assertEnabledWithCaption("Place order", orderEditView.getOk());
 
@@ -120,12 +120,12 @@ public class AddOrderIT extends AbstractIT {
 		// Place order -> go to order report screen
 		// This causes a reload so we need first wait until the refresh is done
 		// and then fetch a new orderEditView reference
-		ElementUtil.click(orderEditView.getOk());
+		orderEditView.getOk().click();
 		// Re-fetch the orderEditView reference as the whole view was updated
 		orderEditView = $(OrderEditViewElement.class).first();
 
 		// ID is of type #1234
-		String orderIdText = ElementUtil.getText(orderEditView.getOrderId());
+		String orderIdText = orderEditView.getOrderId().getText();
 		Assert.assertTrue(orderIdText.matches("#\\d+"));
 
 		// Order info intact
@@ -161,20 +161,20 @@ public class AddOrderIT extends AbstractIT {
 		orderEditView
 				.setProducts(Collections.singletonList(new ProductOrderData("Blueberry Cheese Cake", 12, "A comment")));
 
-		ElementUtil.click(orderEditView.getOk());
-		ElementUtil.click(orderEditView.getOk());
+		orderEditView.getOk().click();
+		orderEditView.getOk().click();
 
 		// Re-fetch the orderEditView reference as the whole view was updated
 		orderEditView = $(OrderEditViewElement.class).first();
 
 		Assert.assertEquals(OrderState.NEW, orderEditView.getCurrentState());
-		ElementUtil.click(orderEditView.getEditOrCancel());
-		ElementUtil.scrollIntoView(orderEditView.getState());
+		orderEditView.getEditOrCancel().click();
+		orderEditView.getState().scrollIntoView();
 		orderEditView.getState().selectByText(OrderState.CONFIRMED.getDisplayName());
 		// Chrome scrolls back up when clicking due to some (un)focus issue,
-		// avoid by explicit focus:
+		// avoid by explicitly focusing before clicking:
 		orderEditView.getOk().focus();
-		ElementUtil.click(orderEditView.getOk());
+		orderEditView.getOk().click();
 		Assert.assertEquals(OrderState.CONFIRMED, orderEditView.getCurrentState());
 	}
 

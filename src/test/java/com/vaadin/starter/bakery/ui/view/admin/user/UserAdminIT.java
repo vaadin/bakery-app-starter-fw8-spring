@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.starter.bakery.ui.view.admin.AbstractCrudIT;
-import com.vaadin.starter.bakery.ui.view.orderedit.ElementUtil;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.TextFieldElement;
@@ -72,9 +71,9 @@ public class UserAdminIT extends AbstractCrudIT<UserAdminViewElement> {
 
 	@Override
 	protected void assertFormFieldsEmpty(UserAdminViewElement view) {
-		Assert.assertEquals("", ElementUtil.getText(view.getEmail()));
-		Assert.assertEquals("", ElementUtil.getText(view.getName()));
-		Assert.assertEquals("", ElementUtil.getText(view.getPassword()));
+		Assert.assertEquals("", view.getEmail().getText());
+		Assert.assertEquals("", view.getName().getText());
+		Assert.assertEquals("", view.getPassword().getText());
 		Assert.assertEquals("", view.getRole().getValue());
 	}
 

@@ -35,7 +35,7 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 	public OrderState getCurrentState() {
 		try {
 			LabelElement stateLabel = getStateLabel();
-			String displayName = ElementUtil.getText(stateLabel);
+			String displayName = stateLabel.getText();
 			return OrderState.forDisplayName(displayName);
 		} catch (NoSuchElementException e) {
 			// State label is not shown for the "confirmation" view
@@ -66,8 +66,6 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 	}
 
 	public OrderInfo getOrderInfo() {
-		ElementUtil.scrollIntoView(getDueDate());
-
 		OrderInfo order = new OrderInfo();
 		order.customer = getCustomerInfo();
 		// Disabled until https://github.com/vaadin/framework/pull/9263 is
@@ -79,7 +77,7 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 		for (int i = 0; i < nrProducts; i++) {
 			order.products.add(getProductInfo(i).getProductOrderData());
 		}
-		order.total = ElementUtil.getText(getTotal());
+		order.total = getTotal().getText();
 		order.state = getCurrentState();
 		return order;
 	}
