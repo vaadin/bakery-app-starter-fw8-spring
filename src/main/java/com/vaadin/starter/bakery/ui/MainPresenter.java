@@ -39,7 +39,7 @@ public class MainPresenter implements Serializable {
 	 *            {@link SpringView @SpringView}
 	 */
 	public void navigateTo(Class<? extends View> viewClass) {
-		view.getUI().getNavigator().navigateTo(navigationManager.getViewId(viewClass));
+		navigationManager.navigateTo(viewClass);
 	}
 
 	public void logout() {
@@ -49,14 +49,8 @@ public class MainPresenter implements Serializable {
 			ui.getPage().reload();
 		};
 
-		View currentView = navigationManager.getCurrentView();
-
-		if (currentView instanceof NavigableView) {
-			NavigableView view = (NavigableView) currentView;
-			if (view.beforeLeave(() -> doLogout.run())) {
-				doLogout.run();
-			}
-		} else {
+		NavigableView currentView = navigationManager.getCurrentView();
+		if (currentView.beforeLeave(doLogout::run)) {
 			doLogout.run();
 		}
 	}

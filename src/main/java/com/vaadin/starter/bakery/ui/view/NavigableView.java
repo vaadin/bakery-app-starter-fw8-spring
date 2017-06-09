@@ -54,6 +54,7 @@ public interface NavigableView extends View {
 	 */
 	default void showLeaveViewConfirmDialog(Runnable runOnConfirm) {
 		showLeaveViewConfirmDialog(runOnConfirm, () -> {
+			// Nothing to do on cancel
 		});
 	}
 

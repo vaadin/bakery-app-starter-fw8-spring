@@ -121,4 +121,15 @@ public class NavigationManager extends SpringNavigator {
 		updateNavigationState(new ViewChangeEvent(this, getCurrentView(), getCurrentView(), viewName, parameters));
 	}
 
+	@Override
+	public NavigableView getCurrentView() {
+		View view = super.getCurrentView();
+		if (view == null || view instanceof NavigableView) {
+			return (NavigableView) view;
+		} else {
+			throw new IllegalStateException("All views must implement NavigableView. The current view "
+					+ view.getClass().getName() + " does not");
+		}
+	}
+
 }
