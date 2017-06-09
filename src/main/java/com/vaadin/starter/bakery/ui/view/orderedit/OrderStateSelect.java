@@ -12,6 +12,7 @@ public class OrderStateSelect extends ComboBox<OrderState> implements HasLogger 
 
 	public OrderStateSelect() {
 		setEmptySelectionAllowed(false);
+		setTextInputAllowed(false);
 		setItems(OrderState.values());
 		setItemCaptionGenerator(OrderState::getDisplayName);
 	}
