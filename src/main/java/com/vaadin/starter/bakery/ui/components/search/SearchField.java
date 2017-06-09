@@ -40,6 +40,7 @@ public class SearchField extends Composite {
 
 		searchField = new TextField();
 		searchField.setPlaceholder("Search");
+		searchField.setId("searchField");
 
 		includePast = new CheckBox("Include past");
 		includePast.setStyleName(ValoTheme.CHECKBOX_SMALL);
@@ -49,6 +50,7 @@ public class SearchField extends Composite {
 
 		searchButton = new Button(VaadinIcons.SEARCH);
 		searchButton.addClickListener(e -> onSearchClicked());
+		searchButton.setId("searchButton");
 
 		Panel panel = new Panel();
 		panel.setStyleName(ValoTheme.PANEL_BORDERLESS);
