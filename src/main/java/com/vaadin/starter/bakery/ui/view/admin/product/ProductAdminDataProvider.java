@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
 import org.vaadin.spring.annotation.PrototypeScope;
 
 import com.vaadin.data.provider.Query;
@@ -15,7 +16,6 @@ import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
 import com.vaadin.starter.bakery.backend.service.CrudService;
 import com.vaadin.starter.bakery.backend.service.ProductService;
-import com.vaadin.starter.bakery.ui.dataprovider.FilterablePageableDataProvider;
 
 @SpringComponent
 @PrototypeScope
