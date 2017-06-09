@@ -1,5 +1,8 @@
 package com.vaadin.starter.bakery.ui.view.storefront;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,17 +11,20 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.annotation.ViewScope;
+import com.vaadin.starter.bakery.backend.data.entity.Order;
+import com.vaadin.starter.bakery.ui.components.search.SearchEvent;
+import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
+import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView;
 
 @SpringView
 public class StorefrontView extends StorefrontViewDesign implements NavigableView {
 
-	private StorefrontPresenter presenter;
-
 	@Autowired
-	public StorefrontView(StorefrontPresenter presenter) {
-		this.presenter = presenter;
-	}
+	private NavigationManager navigationManager;
+
+	private static final String PARAMETER_SEARCH = "search";
+	private static final String PARAMETER_INCLUDE_PAST = "includePast";
 
 	/**
 	 * This method is invoked once each time an instance of the view is created.
@@ -34,13 +40,10 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@PostConstruct
 	public void init() {
-		presenter.init(this);
+		list.addSelectionListener(e -> selectedOrder(e.getFirstSelectedItem().get()));
 
-		list.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
-
-		searchField.addSerchListener(e -> presenter.search(e));
-
-		newOrder.addClickListener(e -> presenter.newOrder());
+		searchField.addSerchListener(e -> search(e));
+		newOrder.addClickListener(e -> newOrder());
 	}
 
 	/**
@@ -53,10 +56,48 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		presenter.enter(event.getParameters());
+		Map<String, String> params = parameterStringToMap(event.getParameters());
+		String searchTerm = params.get(PARAMETER_SEARCH);
+		if (searchTerm == null) {
+			searchTerm = "";
+		}
+		boolean includePast = params.containsKey(PARAMETER_INCLUDE_PAST);
+		filterGrid(searchTerm, includePast);
 	}
 
 	public void filterGrid(String searchString, boolean includePast) {
 		list.filterGrid(searchString, includePast);
+	}
+
+	public void selectedOrder(Order order) {
+		navigationManager.navigateTo(OrderEditView.class, order.getId());
+	}
+
+	public void newOrder() {
+		navigationManager.navigateTo(OrderEditView.class);
+	}
+
+	public void search(SearchEvent event) {
+		filterGrid(event.getSearchString(), event.isIncludePast());
+		String parameters = PARAMETER_SEARCH + "=" + event.getSearchString();
+		if (event.isIncludePast()) {
+			parameters += "&" + PARAMETER_INCLUDE_PAST;
+		}
+		navigationManager.updateViewParameter(parameters);
+	}
+
+	private Map<String, String> parameterStringToMap(String parameterString) {
+		Map<String, String> parameterMap = new HashMap<>();
+		String[] parameters = parameterString.split("&");
+		for (int i = 0; i < parameters.length; i++) {
+			String[] keyAndValue = parameters[i].split("=");
+			if (keyAndValue.length > 1) {
+				parameterMap.put(keyAndValue[0], keyAndValue[1]);
+			} else {
+				parameterMap.put(keyAndValue[0], "");
+			}
+		}
+
+		return parameterMap;
 	}
 }
