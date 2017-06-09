@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
-import com.vaadin.starter.bakery.backend.data.Role;
 import com.vaadin.starter.bakery.backend.data.entity.User;
 import com.vaadin.starter.bakery.backend.service.UserService;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
@@ -17,31 +16,17 @@ import com.vaadin.starter.bakery.ui.view.admin.AbstractCrudPresenter;
 public class UserAdminPresenter extends AbstractCrudPresenter<User, UserService, UserAdminView>
 		implements Serializable {
 
-	private final UserAdminDataProvider userAdminDataProvider;
+	private final UserService userService;
 
 	@Autowired
-	public UserAdminPresenter(UserAdminDataProvider userAdminDataProvider, NavigationManager navigationManager) {
-		super(navigationManager);
-		this.userAdminDataProvider = userAdminDataProvider;
-	}
-
-	@Override
-	protected UserAdminDataProvider getGridDataProvider() {
-		return userAdminDataProvider;
-	}
-
-	@Override
-	protected User createEntity() {
-		return new User("", "", "", Role.BARISTA);
-	}
-
-	@Override
-	public void filterGrid(String filter) {
-		getGridDataProvider().setFilter(filter);
+	public UserAdminPresenter(UserAdminDataProvider userAdminDataProvider, NavigationManager navigationManager,
+			UserService service) {
+		super(navigationManager, service, userAdminDataProvider);
+		userService = service;
 	}
 
 	public String encodePassword(String value) {
-		return getService().encodePassword(value);
+		return userService.encodePassword(value);
 	}
 
 	@Override
