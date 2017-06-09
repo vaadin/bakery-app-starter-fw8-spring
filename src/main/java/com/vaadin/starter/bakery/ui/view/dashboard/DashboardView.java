@@ -15,7 +15,6 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.addon.charts.Chart;
-import com.vaadin.addon.charts.ChartOptions;
 import com.vaadin.addon.charts.model.ChartType;
 import com.vaadin.addon.charts.model.Configuration;
 import com.vaadin.addon.charts.model.DataSeries;
@@ -26,8 +25,6 @@ import com.vaadin.addon.charts.model.Marker;
 import com.vaadin.addon.charts.model.PlotOptionsColumn;
 import com.vaadin.addon.charts.model.PlotOptionsLine;
 import com.vaadin.addon.charts.model.YAxis;
-import com.vaadin.addon.charts.model.style.SolidColor;
-import com.vaadin.addon.charts.model.style.Theme;
 import com.vaadin.board.Row;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
@@ -66,14 +63,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 	public DashboardView(DashboardPresenter presenter) {
 		this.presenter = presenter;
 		dueGrid.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
-
-		// Custom Theme for Charts
-		Theme theme = new Theme();
-		theme.setColors(new SolidColor("#a56284"), new SolidColor("#6c6c93"), new SolidColor("#fb991c"));
-		theme.getTitle().setColor(theme.getColors()[0]);
-		theme.getTitle().setFontSize("inherit"); // inherit from CSS
-		// Set the theme ("globally") for all Charts
-		ChartOptions.get().setTheme(theme);
 	}
 
 	@PostConstruct
