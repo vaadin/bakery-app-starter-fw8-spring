@@ -11,7 +11,6 @@ import com.vaadin.data.HasValue;
 import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
 import com.vaadin.starter.bakery.backend.service.CrudService;
-import com.vaadin.starter.bakery.ui.components.ConfirmationDialog;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Grid;
@@ -139,18 +138,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		runIfNoUnsavedChanges(() -> {
 			T entity = createEntity();
 			editItem(entity);
-		});
-	}
-
-	/**
-	 * Runs the given command if the form contains no unsaved changes or if the
-	 * user clicks ok in the confirmation dialog telling about unsaved changes.
-	 *
-	 * @param onOk
-	 *            the command to run
-	 */
-	private void runIfNoUnsavedChanges(Runnable onOk) {
-		runIfNoUnsavedChanges(onOk, () -> {
+		}, () -> {
 		});
 	}
 
@@ -166,7 +154,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	 */
 	private void runIfNoUnsavedChanges(Runnable onOk, Runnable onCancel) {
 		if (view.containsUnsavedChanges()) {
-			ConfirmationDialog.show(getView().getViewComponent().getUI(), onOk, onCancel);
+			getView().showLeaveViewConfirmDialog(onOk, onCancel);
 		} else {
 			onOk.run();
 		}
@@ -244,5 +232,4 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		getView().getUpdate().setEnabled(hasChanges && !hasValidationErrors);
 		getView().getCancel().setEnabled(hasChanges);
 	}
-
 }

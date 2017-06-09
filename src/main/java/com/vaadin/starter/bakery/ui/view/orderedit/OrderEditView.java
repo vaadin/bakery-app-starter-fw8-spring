@@ -21,8 +21,6 @@ import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.backend.data.OrderState;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.data.entity.OrderItem;
-import com.vaadin.starter.bakery.ui.components.ConfirmationDialog;
-import com.vaadin.starter.bakery.ui.navigation.NavigationEvent;
 import com.vaadin.starter.bakery.ui.util.DollarPriceConverter;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
 import com.vaadin.ui.Component;
@@ -229,12 +227,12 @@ public class OrderEditView extends OrderEditViewDesign implements NavigableView 
 	}
 
 	@Override
-	public boolean beforeLeave(NavigationEvent event) {
+	public boolean beforeLeave(Runnable event) {
 		if (!containsUnsavedChanges()) {
 			return true;
 		}
 
-		ConfirmationDialog.show(getViewComponent().getUI(), event::navigate);
+		showLeaveViewConfirmDialog(event::run);
 		return false;
 	}
 
@@ -245,5 +243,4 @@ public class OrderEditView extends OrderEditViewDesign implements NavigableView 
 	public boolean containsUnsavedChanges() {
 		return hasChanges;
 	}
-
 }

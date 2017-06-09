@@ -4,15 +4,15 @@ import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.VerticalLayoutElement;
 import com.vaadin.testbench.elementsbase.ServerClass;
 
-@ServerClass("com.vaadin.starter.bakery.ui.components.ConfirmationDialogDesign")
+@ServerClass("org.vaadin.dialogs.ConfirmDialog")
 public class ConfirmationDialogDesignElement extends VerticalLayoutElement {
 
 	public ButtonElement getCancel() {
-		return $(ButtonElement.class).id("cancel");
+		return $(ButtonElement.class).id("confirmdialog-cancel-button");
 	}
 
 	public ButtonElement getDiscardChanges() {
-		return $(ButtonElement.class).id("discardChanges");
+		return $(ButtonElement.class).id("confirmdialog-ok-button");
 	}
 
 }
