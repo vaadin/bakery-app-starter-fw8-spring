@@ -41,4 +41,11 @@ Scalability tests can be run as follows
 
 The project can be imported into the IDE of your choice as a Maven project
 
+The views are created using Vaadin Designer. To edit the views visually,
+you need to install the Vaadin Designer plug-in.
 
+In Eclipse, open Marketplace, search for "vaadin" and install Vaadin
+Designer 2.x
+
+In IntelliJ, go to "Preferences" -> "Plugins" -> "Browse Repositories",
+search for "Vaadin Designer 2" and install "Vaadin Designer"
