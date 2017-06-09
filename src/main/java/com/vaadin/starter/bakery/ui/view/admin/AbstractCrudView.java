@@ -144,7 +144,7 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 
 		// Force user to choose save or cancel in form once enabled
 		((SingleSelectionModel<T>) getGrid().getSelectionModel()).setDeselectAllowed(false);
-		getGrid().setDataProvider(getPresenter().getGridDataProvider());
+		getGrid().setDataProvider(getPresenter().getDataProvider());
 
 		// Button logic
 		getUpdate().addClickListener(event -> getPresenter().updateClicked());

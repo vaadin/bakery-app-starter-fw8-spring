@@ -3,13 +3,11 @@ package com.vaadin.starter.bakery.ui.view.admin;
 import java.io.Serializable;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.vaadin.artur.spring.dataprovider.PageableDataProvider;
+import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
 
 import com.vaadin.data.HasValue;
-import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
 import com.vaadin.starter.bakery.backend.service.CrudService;
@@ -27,44 +25,56 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 
 	private final NavigationManager navigationManager;
 
-	private final Class<S> serviceType;
+	private final S service;
 
-	@Autowired
-	protected AbstractCrudPresenter(NavigationManager navigationManager) {
-		this.serviceType = discoverServiceType();
+	private FilterablePageableDataProvider<T, Object> dataProvider;
+
+	protected AbstractCrudPresenter(NavigationManager navigationManager, S service,
+			FilterablePageableDataProvider<T, Object> dataProvider) {
+		this.service = service;
 		this.navigationManager = navigationManager;
-	}
-
-	@SuppressWarnings("unchecked")
-	private Class<S> discoverServiceType() {
-		ResolvableType forClass = ResolvableType.forClass(getClass());
-		ResolvableType resolvableGeneric = forClass.getSuperType().getGeneric(1);
-		return (Class<S>) resolvableGeneric.resolve();
+		this.dataProvider = dataProvider;
 	}
 
 	protected S getService() {
-		return BeanLocator.find(serviceType);
+		return service;
 	}
 
-	public abstract void filterGrid(String filter);
+	protected void filterGrid(String filter) {
+		getDataProvider().setFilter(filter);
+	}
 
 	protected T loadEntity(long id) {
-		return getService().load(id);
+		return service.load(id);
 	}
 
-	protected abstract PageableDataProvider<T, Object> getGridDataProvider();
+	protected FilterablePageableDataProvider<T, Object> getDataProvider() {
+		return dataProvider;
+	}
 
-	protected abstract T createEntity();
+	@SuppressWarnings("unchecked")
+	protected Class<T> getEntityType() {
+		return (Class<T>) ResolvableType.forClass(getClass()).getSuperType().getGeneric(0).resolve();
+	}
+
+	protected T createEntity() {
+		try {
+			return getEntityType().newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new UnsupportedOperationException(
+					"Entity of type " + getEntityType().getName() + " is missing a public no-args constructor", e);
+		}
+	}
 
 	protected T saveEntity(T editItem) {
-		return getService().save(editItem);
+		return service.save(editItem);
 	}
 
 	protected void deleteEntity(T entity) {
 		if (entity.isNew()) {
 			throw new IllegalArgumentException("Cannot delete an entity which is not in the database");
 		} else {
-			getService().delete(entity.getId());
+			service.delete(entity.getId());
 		}
 	}
 
@@ -193,11 +203,11 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 
 		if (isNew) {
 			// Move to the "Updating an entity" state
-			getGridDataProvider().refreshAll();
+			getDataProvider().refreshAll();
 			selectAndEditEntity(entity);
 		} else {
 			// Stay in the "Updating an entity" state
-			getGridDataProvider().refreshItem(entity);
+			getDataProvider().refreshItem(entity);
 			editRequest(entity);
 		}
 	}
@@ -226,7 +236,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 			getLogger().error("Unable to delete entity of type " + entity.getClass().getName(), e);
 			return;
 		}
-		getGridDataProvider().refreshAll();
+		getDataProvider().refreshAll();
 		showInitialState();
 	}
 

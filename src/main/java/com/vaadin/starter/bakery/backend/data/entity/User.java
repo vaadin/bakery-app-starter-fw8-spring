@@ -30,8 +30,8 @@ public class User extends AbstractEntity {
 	@Size(max = 255)
 	private String role;
 
-	protected User() {
-		// Empty constructor is needed by Spring Data / JPA
+	public User() {
+		// An empty constructor is needed for all beans
 	}
 
 	public User(String email, String name, String password, String role) {
