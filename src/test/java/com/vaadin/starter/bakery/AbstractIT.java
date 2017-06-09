@@ -101,20 +101,7 @@ public class AbstractIT extends TestBenchTestCase {
 	}
 
 	protected static void assertEnabled(boolean expectedEnabled, TestBenchElement element) {
-		if (expectedEnabled) {
-			if (hasAttribute(element, "disabled")) {
-				throw new AssertionError("Expected element to be enabled but it has a 'disabled' attribute");
-			}
-			if (hasClassName(element, "v-disabled")) {
-				throw new AssertionError("Expected element to be enabled but it has a 'v-disabled' class");
-			}
-		} else {
-			if (!hasAttribute(element, "disabled") && !hasClassName(element, "v-disabled")) {
-				throw new AssertionError(
-						"Expected element to be disabled but it does not have a 'disabled' attribute nor a 'v-disabled' class");
-			}
-
-		}
+		Assert.assertEquals(expectedEnabled, element.isEnabled());
 	}
 
 	/**
