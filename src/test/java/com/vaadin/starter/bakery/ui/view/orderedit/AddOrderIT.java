@@ -171,6 +171,9 @@ public class AddOrderIT extends AbstractIT {
 		orderEditView.getEditOrCancel().click();
 		orderEditView.getState().scrollIntoView();
 		orderEditView.getState().selectByText(OrderState.CONFIRMED.getDisplayName());
+		// Chrome scrolls back up when clicking due to some (un)focus issue,
+		// avoid by explicitly focusing before clicking:
+		orderEditView.getOk().focus();
 		orderEditView.getOk().click();
 		Assert.assertEquals(OrderState.CONFIRMED, orderEditView.getCurrentState());
 	}

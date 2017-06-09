@@ -19,6 +19,7 @@ public class PickupLocationComboBox extends ComboBox<PickupLocation> {
 	public PickupLocationComboBox(PickupLocationComboBoxDataProvider dataProvider) {
 		this.dataProvider = dataProvider;
 		setEmptySelectionAllowed(false);
+		setTextInputAllowed(false);
 		setPlaceholder("Pickup location");
 		setItemCaptionGenerator(PickupLocation::getName);
 	}
