@@ -13,27 +13,9 @@ import com.vaadin.starter.bakery.ui.view.admin.AbstractCrudPresenter;
 @ViewScope
 public class ProductAdminPresenter extends AbstractCrudPresenter<Product, ProductService, ProductAdminView> {
 
-	private final ProductAdminDataProvider productAdminDataProvider;
-
 	@Autowired
-	public ProductAdminPresenter(ProductAdminDataProvider productAdminDataProvider,
-			NavigationManager navigationManager) {
-		super(navigationManager);
-		this.productAdminDataProvider = productAdminDataProvider;
-	}
-
-	@Override
-	protected ProductAdminDataProvider getGridDataProvider() {
-		return productAdminDataProvider;
-	}
-
-	@Override
-	protected Product createEntity() {
-		return new Product();
-	}
-
-	@Override
-	public void filterGrid(String filter) {
-		getGridDataProvider().setFilter(filter);
+	public ProductAdminPresenter(ProductAdminDataProvider productAdminDataProvider, NavigationManager navigationManager,
+			ProductService service) {
+		super(navigationManager, service, productAdminDataProvider);
 	}
 }
