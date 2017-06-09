@@ -1,12 +1,13 @@
 @mixin ordersgrid {
   .list-filters {
-    .v-textfield,
-    .v-button,
-    .v-checkbox {
-      // CSS-layout has no built-in spacing
-      margin-bottom: $v-layout-spacing-vertical;
-      margin-right: $v-layout-spacing-horizontal;
-      vertical-align: middle;
+    &.v-margin-left {
+      padding-left: $v-layout-spacing-horizontal;
+    }
+    &.v-margin-right {
+      padding-right: $v-layout-spacing-horizontal;
+    }
+    &.v-margin-top {
+      padding-top: $v-layout-spacing-vertical;
     }
   }
   .v-grid.orders-grid {

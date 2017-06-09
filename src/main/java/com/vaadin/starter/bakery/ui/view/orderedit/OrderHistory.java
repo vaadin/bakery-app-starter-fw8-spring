@@ -6,12 +6,15 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.annotation.PrototypeScope;
+import org.vaadin.spring.events.EventBus.ViewEventBus;
 
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.backend.data.entity.HistoryItem;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
+import com.vaadin.starter.bakery.backend.service.OrderService;
 import com.vaadin.starter.bakery.ui.util.DateTimeFormatter;
 import com.vaadin.ui.Button.ClickShortcut;
 import com.vaadin.ui.Label;
@@ -23,27 +26,34 @@ public class OrderHistory extends OrderHistoryDesign {
 
 	private final DateTimeFormatter dateTimeFormatter;
 
-	private final OrderHistoryPresenter controller;
+	private final ViewEventBus eventBus;
 
 	private Order order;
 
+	private OrderService orderService;
+
 	@Autowired
-	public OrderHistory(DateTimeFormatter dateTimeFormatter, OrderHistoryPresenter controller) {
+	public OrderHistory(DateTimeFormatter dateTimeFormatter, ViewEventBus eventBus) {
 		this.dateTimeFormatter = dateTimeFormatter;
-		this.controller = controller;
+		this.eventBus = eventBus;
+	}
+
+	protected OrderService getOrderService() {
+		if (orderService == null) {
+			orderService = BeanLocator.find(OrderService.class);
+		}
+		return orderService;
 	}
 
 	@PostConstruct
 	public void init() {
-		controller.init(this);
-
 		// Uses binder to get bean validation for the message
 		BeanValidationBinder<HistoryItem> binder = new BeanValidationBinder<>(HistoryItem.class);
 		binder.setRequiredConfigurator(null); // Don't show a *
 		binder.bind(newCommentInput, "message");
 		commitNewComment.addClickListener(e -> {
 			if (binder.isValid()) {
-				controller.addNewComment(newCommentInput.getValue());
+				addNewComment(newCommentInput.getValue());
 			} else {
 				newCommentInput.focus();
 			}
@@ -51,6 +61,11 @@ public class OrderHistory extends OrderHistoryDesign {
 
 		// We don't want a global shortcut for enter, scope it to the panel
 		addAction(new ClickShortcut(commitNewComment, KeyCode.ENTER, null));
+	}
+
+	public void addNewComment(String comment) {
+		getOrderService().addHistoryItem(getOrder(), comment);
+		eventBus.publish(this, new OrderUpdated());
 	}
 
 	public void setOrder(Order order) {
@@ -68,7 +83,6 @@ public class OrderHistory extends OrderHistoryDesign {
 
 	private String formatTimestamp(HistoryItem historyItem) {
 		return dateTimeFormatter.format(historyItem.getTimestamp(), Locale.US);
-
 	}
 
 	private String formatMessage(HistoryItem historyItem) {

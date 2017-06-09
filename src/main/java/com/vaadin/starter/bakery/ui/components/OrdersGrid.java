@@ -7,12 +7,23 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.spring.annotation.PrototypeScope;
+
+import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.starter.bakery.backend.data.entity.Customer;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.renderers.HtmlRenderer;
 
+@SpringComponent
+@PrototypeScope
 public class OrdersGrid extends Grid<Order> {
+
+	@Autowired
+	private OrdersDataProvider dataProvider;
 
 	public OrdersGrid() {
 		addStyleName("orders-grid");
@@ -35,6 +46,16 @@ public class OrdersGrid extends Grid<Order> {
 			return twoRowCell(customer.getFullName(), getOrderSummary(order));
 		}, new HtmlRenderer()).setExpandRatio(1).setSortProperty("customer.fullName").setMinimumWidthFromContent(false);
 		summaryColumn.setStyleGenerator(order -> "summary");
+	}
+
+	public void filterGrid(String searchTerm, boolean includePast) {
+		dataProvider.setFilter(searchTerm);
+		dataProvider.setIncludePast(includePast);
+	}
+
+	@PostConstruct
+	protected void init() {
+		setDataProvider(dataProvider);
 	}
 
 	/**
