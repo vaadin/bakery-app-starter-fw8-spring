@@ -2,6 +2,7 @@ package com.vaadin.starter.bakery.ui.navigation;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -137,5 +138,29 @@ public class NavigationManager extends SpringNavigator {
 		}
 
 		return parameterMap;
+	}
+
+	/**
+	 * Parses the given parameter String and returns value for given key if it
+	 * exists, null otherwise.
+	 * 
+	 * @param parameter
+	 * @param key
+	 * @return value for the key or null if key doesn't exist.
+	 */
+	public static Optional<String> parseParam(String parameter, String key) {
+		return Optional.ofNullable(parameterStringToMap(parameter).get(key));
+	}
+
+	/**
+	 * Parses the given paramter String and returns true if given key exists,
+	 * false otherwise.
+	 * 
+	 * @param parameter
+	 * @param key
+	 * @return true if key exists, false otherwise.
+	 */
+	public static boolean paramAvailable(String parameter, String key) {
+		return parameterStringToMap(parameter).containsKey(key);
 	}
 }

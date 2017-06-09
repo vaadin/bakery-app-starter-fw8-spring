@@ -1,7 +1,5 @@
 package com.vaadin.starter.bakery.ui.view.storefront;
 
-import java.util.Map;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +37,10 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@PostConstruct
 	public void init() {
-		list.addSelectionListener(e -> selectedOrder(e.getFirstSelectedItem().get()));
+		list.addSelectionListener(e -> onOrderSelected(e.getFirstSelectedItem().get()));
 
-		searchField.addSerchListener(e -> search(e));
-		newOrder.addClickListener(e -> newOrder());
+		searchField.addSerchListener(e -> onSearch(e));
+		newOrder.addClickListener(e -> onNewOrder());
 	}
 
 	/**
@@ -55,31 +53,26 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Map<String, String> params = NavigationManager.parameterStringToMap(event.getParameters());
-		String searchTerm = params.get(PARAMETER_SEARCH);
-		if (searchTerm == null) {
-			searchTerm = "";
-		}
-
-		boolean includePast = params.containsKey(PARAMETER_INCLUDE_PAST);
+		String searchTerm = NavigationManager.parseParam(event.getParameters(), PARAMETER_SEARCH).orElse("");
+		boolean includePast = NavigationManager.paramAvailable(event.getParameters(), PARAMETER_INCLUDE_PAST);
 		filterGrid(searchTerm, includePast);
 	}
 
-	public void filterGrid(String searchString, boolean includePast) {
+	protected void filterGrid(String searchString, boolean includePast) {
 		list.filterGrid(searchString, includePast);
 		searchField.setSearchString(searchString);
 		searchField.setIncludePast(includePast);
 	}
 
-	public void selectedOrder(Order order) {
+	public void onOrderSelected(Order order) {
 		navigationManager.navigateTo(OrderEditView.class, order.getId());
 	}
 
-	public void newOrder() {
+	public void onNewOrder() {
 		navigationManager.navigateTo(OrderEditView.class);
 	}
 
-	public void search(SearchEvent event) {
+	public void onSearch(SearchEvent event) {
 		filterGrid(event.getSearchString(), event.isIncludePast());
 		String parameters = PARAMETER_SEARCH + "=" + event.getSearchString();
 		if (event.isIncludePast()) {
