@@ -1,5 +1,7 @@
 package com.vaadin.starter.bakery.ui.view.storefront;
 
+import java.util.Optional;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +55,9 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		String searchTerm = NavigationManager.parseParam(event.getParameters(), PARAMETER_SEARCH).orElse("");
-		boolean includePast = NavigationManager.paramAvailable(event.getParameters(), PARAMETER_INCLUDE_PAST);
+		String searchTerm = Optional.ofNullable(navigationManager.getStateParameterMap().get(PARAMETER_SEARCH))
+				.orElse("");
+		boolean includePast = navigationManager.getStateParameterMap().containsKey(PARAMETER_INCLUDE_PAST);
 		filterGrid(searchTerm, includePast);
 	}
 
