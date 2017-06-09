@@ -15,7 +15,6 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.addon.charts.Chart;
-import com.vaadin.addon.charts.ChartOptions;
 import com.vaadin.addon.charts.model.ChartType;
 import com.vaadin.addon.charts.model.Configuration;
 import com.vaadin.addon.charts.model.DataSeries;
@@ -26,9 +25,6 @@ import com.vaadin.addon.charts.model.Marker;
 import com.vaadin.addon.charts.model.PlotOptionsColumn;
 import com.vaadin.addon.charts.model.PlotOptionsLine;
 import com.vaadin.addon.charts.model.YAxis;
-import com.vaadin.addon.charts.model.style.Color;
-import com.vaadin.addon.charts.model.style.SolidColor;
-import com.vaadin.addon.charts.model.style.Theme;
 import com.vaadin.board.Row;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
@@ -62,24 +58,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 	private ListSeries[] salesPerYear;
 
 	private DataSeries deliveriesPerProductSeries;
-
-	{
-		// Set a custom Theme for Charts
-		ChartOptions.get().setTheme(new Theme() {
-			{
-				// Set some custom colors
-				Color[] colors = { //
-						new SolidColor("#a56284"), //
-						new SolidColor("#6c6c93"), //
-						new SolidColor("#fb991c"), //
-				};
-				setColors(colors);
-
-				getTitle().setColor(colors[0]);
-				getTitle().setFontSize("inherit"); // inherit from CSS
-			}
-		});
-	}
 
 	@Autowired
 	public DashboardView(DashboardPresenter presenter) {
@@ -248,4 +226,5 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 			this.zIndex = zIndex;
 		};
 	}
+
 }

@@ -2,6 +2,7 @@ package com.vaadin.starter.bakery.ui;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.addon.charts.ChartOptions;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Viewport;
@@ -29,6 +30,9 @@ public class AppUI extends UI {
 		this.viewProvider = viewProvider;
 		this.navigationManager = navigationManager;
 		this.mainView = mainView;
+
+		// Set the theme ("globally") for all Charts
+		ChartOptions.get(this).setTheme(new ChartsTheme());
 	}
 
 	@Override
