@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.vaadin.artur.spring.dataprovider.PageableDataProvider;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.starter.bakery.app.BeanLocator;
@@ -13,7 +14,6 @@ import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
 import com.vaadin.starter.bakery.backend.service.CrudService;
 import com.vaadin.starter.bakery.ui.components.ConfirmationDialog;
-import com.vaadin.starter.bakery.ui.dataprovider.PageableDataProvider;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Grid;
