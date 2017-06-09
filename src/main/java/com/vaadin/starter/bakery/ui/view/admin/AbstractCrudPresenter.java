@@ -16,7 +16,6 @@ import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.UI;
 
 public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends CrudService<T>, V extends AbstractCrudView<T>>
 		implements HasLogger, Serializable {
@@ -157,7 +156,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		if (view.containsUnsavedChanges()) {
 			getView().showLeaveViewConfirmDialog(onOk, onCancel);
 		} else {
-			UI.getCurrent().access(onOk);
+			onOk.run();
 		}
 	}
 

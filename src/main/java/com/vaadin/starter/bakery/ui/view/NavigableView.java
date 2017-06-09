@@ -7,6 +7,7 @@ import org.vaadin.dialogs.ConfirmDialog;
 import com.vaadin.navigator.View;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * A view which is connected to a URL and can be navigated to by the user.
@@ -65,10 +66,12 @@ public interface NavigableView extends View {
 	 * @param onCancel
 	 */
 	default void showLeaveViewConfirmDialog(Runnable runOnConfirm, Runnable runOnCancel) {
-		ConfirmDialog confirmDialog = ConfirmDialog.show(UI.getCurrent(), "Please confirm", null, "Discard Changes",
-				"Cancel", Objects.requireNonNull(runOnConfirm));
+		ConfirmDialog confirmDialog = ConfirmDialog.show(UI.getCurrent(), "Please confirm",
+				"You have unsaved changes that will be discarded if you navigate away.", "Discard Changes", "Cancel",
+				Objects.requireNonNull(runOnConfirm));
+		confirmDialog.getOkButton().addStyleName(ValoTheme.BUTTON_DANGER);
 		if (confirmDialog.isCanceled()) {
-			UI.getCurrent().access(runOnCancel);
+			runOnCancel.run();
 		}
 	}
 }
