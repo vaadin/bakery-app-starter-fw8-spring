@@ -28,7 +28,8 @@ public class NavigationManager extends SpringNavigator {
 	 * Adds support for the beforeLeave method in NavigationEvent so views can
 	 * show a confirmation dialog before actually performing the navigation.
 	 */
-	private final class ViewChangeBeforeLeaveSupport implements ViewChangeListener {
+	public static class ViewChangeBeforeLeaveSupport implements ViewChangeListener {
+		boolean viewAlreadyConfirmed = false;
 
 		@Override
 		public boolean beforeViewChange(ViewChangeEvent e) {
@@ -42,7 +43,7 @@ public class NavigationManager extends SpringNavigator {
 			} else {
 				return ((NavigableView) oldView).beforeLeave(() -> {
 					viewAlreadyConfirmed = true;
-					navigateTo(navigationState);
+					e.getNavigator().navigateTo(navigationState);
 					viewAlreadyConfirmed = false;
 				});
 			}
@@ -56,8 +57,6 @@ public class NavigationManager extends SpringNavigator {
 			}
 		}
 	}
-
-	boolean viewAlreadyConfirmed = false;
 
 	@PostConstruct
 	public void init() {
