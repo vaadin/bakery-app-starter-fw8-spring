@@ -6,13 +6,13 @@ import java.util.logging.Logger;
 import com.vaadin.server.DeploymentConfiguration;
 import com.vaadin.server.ServiceException;
 import com.vaadin.server.VaadinServletService;
-import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.starter.bakery.app.ApplicationConfiguration;
+import com.vaadin.starter.bakery.app.ApplicationServlet;
 
 /**
  * Customized SpringVaadinServlet for enabling the LoadTestServletService
  */
-public class LoadTestVaadinSpringServlet extends SpringVaadinServlet {
+public class LoadTestVaadinSpringServlet extends ApplicationServlet {
 
 	@Override
 	protected VaadinServletService createServletService(DeploymentConfiguration deploymentConfiguration)
