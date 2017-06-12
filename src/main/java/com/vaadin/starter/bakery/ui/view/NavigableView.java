@@ -1,11 +1,13 @@
 package com.vaadin.starter.bakery.ui.view;
 
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.List;
 
 import org.vaadin.dialogs.ConfirmDialog;
+import org.vaadin.dialogs.DefaultConfirmDialogFactory;
 
 import com.vaadin.navigator.View;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
@@ -15,6 +17,20 @@ import com.vaadin.ui.themes.ValoTheme;
  * other patterns.
  */
 public interface NavigableView extends View {
+
+	static final DefaultConfirmDialogFactory confirmDialogFactory = new DefaultConfirmDialogFactory() {
+		@Override
+		protected List<Button> orderButtons(Button cancel, Button notOk, Button ok) {
+			return Arrays.asList(ok, cancel);
+		}
+
+		@Override
+		protected Button buildOkButton(String okCaption) {
+			Button okButton = super.buildOkButton(okCaption);
+			okButton.addStyleName(ValoTheme.BUTTON_DANGER);
+			return okButton;
+		}
+	};
 
 	/**
 	 * Called before leaving a view.
@@ -55,12 +71,15 @@ public interface NavigableView extends View {
 	 * @param onCancel
 	 */
 	default void showLeaveViewConfirmDialog(Runnable runOnConfirm, Runnable runOnCancel) {
-		ConfirmDialog confirmDialog = ConfirmDialog.show(UI.getCurrent(), "Please confirm",
+		ConfirmDialog dialog = confirmDialogFactory.create("Please confirm",
 				"You have unsaved changes that will be discarded if you navigate away.", "Discard Changes", "Cancel",
-				Objects.requireNonNull(runOnConfirm));
-		confirmDialog.getOkButton().addStyleName(ValoTheme.BUTTON_DANGER);
-		if (confirmDialog.isCanceled()) {
-			runOnCancel.run();
-		}
+				null);
+		dialog.show(getViewComponent().getUI(), event -> {
+			if (event.isConfirmed()) {
+				runOnConfirm.run();
+			} else {
+				runOnCancel.run();
+			}
+		}, true);
 	}
 }
