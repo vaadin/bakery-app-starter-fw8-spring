@@ -5,7 +5,6 @@ import java.util.Objects;
 import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.navigator.View;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -16,17 +15,6 @@ import com.vaadin.ui.themes.ValoTheme;
  * other patterns.
  */
 public interface NavigableView extends View {
-
-	/**
-	 * Gets the component to show when navigating to the view.
-	 *
-	 * By default casts this View to a {@link Component}.
-	 *
-	 * @return the component to show, by default the view instance itself
-	 */
-	public default Component getViewComponent() {
-		return (Component) this;
-	}
 
 	/**
 	 * Called before leaving a view.
