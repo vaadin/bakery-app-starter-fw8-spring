@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.starter.bakery.app.loadtest.LoadTestVaadinSpringServlet;
 
 @Configuration
@@ -36,7 +35,7 @@ public class ApplicationConfiguration {
 			// Use Customized Vaadin servlet for the load test mode
 			return new LoadTestVaadinSpringServlet();
 		} else {
-			return new SpringVaadinServlet();
+			return new ApplicationServlet();
 		}
 	}
 }
