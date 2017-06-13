@@ -12,6 +12,7 @@ import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
 import com.vaadin.starter.bakery.backend.service.CrudService;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
+import com.vaadin.starter.bakery.ui.view.confirmpopup.ConfirmPopup;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Notification;
@@ -107,7 +108,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	}
 
 	public void editRequest(T entity) {
-		runIfNoUnsavedChanges(() -> {
+		runWithConfirmation(() -> {
 			// Fetch a fresh item so we have the latest changes (less optimistic
 			// locking problems)
 			T freshEntity = loadEntity(entity.getId());
@@ -135,10 +136,16 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	}
 
 	public void addNewClicked() {
-		runIfNoUnsavedChanges(() -> {
+		runWithConfirmation(() -> {
 			T entity = createEntity();
 			editItem(entity);
 		}, () -> {
+		});
+	}
+
+	public boolean beforeLeave(Runnable runOnLeave) {
+		return runWithConfirmation(runOnLeave, () -> {
+			// Nothing special needs to be done if user aborts the navigation
 		});
 	}
 
@@ -146,17 +153,22 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	 * Runs the given command if the form contains no unsaved changes or if the
 	 * user clicks ok in the confirmation dialog telling about unsaved changes.
 	 *
-	 * @param onOk
-	 *            the command to run if there are not changes or user pushes ok
+	 * @param onConfirmation
+	 *            the command to run if there are not changes or user pushes
+	 *            {@literal confirm}
 	 * @param onCancel
 	 *            the command to run if there are changes and the user pushes
-	 *            cancel
+	 *            {@literal cancel}
+	 * @return <code>true</code> if the {@literal confirm} command was run
+	 *         immediately, <code>false</code> otherwise
 	 */
-	private void runIfNoUnsavedChanges(Runnable onOk, Runnable onCancel) {
+	private boolean runWithConfirmation(Runnable onConfirmation, Runnable onCancel) {
 		if (view.containsUnsavedChanges()) {
-			getView().showLeaveViewConfirmDialog(onOk, onCancel);
+			ConfirmPopup.get().showLeaveViewConfirmDialog(view, onConfirmation, onCancel);
+			return false;
 		} else {
-			onOk.run();
+			onConfirmation.run();
+			return true;
 		}
 	}
 
@@ -232,4 +244,5 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		getView().getUpdate().setEnabled(hasChanges && !hasValidationErrors);
 		getView().getCancel().setEnabled(hasChanges);
 	}
+
 }

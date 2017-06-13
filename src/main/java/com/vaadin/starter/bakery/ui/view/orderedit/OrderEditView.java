@@ -23,6 +23,7 @@ import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.data.entity.OrderItem;
 import com.vaadin.starter.bakery.ui.util.DollarPriceConverter;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
+import com.vaadin.starter.bakery.ui.view.confirmpopup.ConfirmPopup;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 
@@ -232,7 +233,7 @@ public class OrderEditView extends OrderEditViewDesign implements NavigableView 
 			return true;
 		}
 
-		showLeaveViewConfirmDialog(event::run);
+		ConfirmPopup.get().showLeaveViewConfirmDialog(this, event::run);
 		return false;
 	}
 

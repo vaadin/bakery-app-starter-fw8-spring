@@ -177,11 +177,6 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 
 	@Override
 	public boolean beforeLeave(Runnable runOnLeave) {
-		if (containsUnsavedChanges()) {
-			showLeaveViewConfirmDialog(runOnLeave);
-			return false;
-		} 
-
-		return true;
+		return getPresenter().beforeLeave(runOnLeave);
 	}
 }
