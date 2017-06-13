@@ -71,6 +71,18 @@ public class ApplicationServlet extends SpringVaadinServlet {
 					head.appendChild(element);
 				}
 			}
+
+			/*- Enable these to hide browser controls when app is started from homescreen:
+			Element element = document.createElement("meta");
+			element.attr("name", "mobile-web-app-capable");
+			element.attr("content", "yes");
+			head.appendChild(element);
+			
+			element = document.createElement("meta");
+			element.attr("name", "apple-mobile-web-app-capable");
+			element.attr("content", "yes");
+			head.appendChild(element);
+			*/
 		}
 
 	}
