@@ -79,6 +79,13 @@ public class NavigationManager extends SpringNavigator {
 		return Conventions.deriveMappingForView(viewClass, springView);
 	}
 
+	/**
+	 * Navigate to the given view class.
+	 *
+	 * @param viewClass
+	 *            the class of the target view, must be annotated using
+	 *            {@link SpringView @SpringView}
+	 */
 	public void navigateTo(Class<? extends View> targetView) {
 		String viewId = getViewId(targetView);
 		navigateTo(viewId);
