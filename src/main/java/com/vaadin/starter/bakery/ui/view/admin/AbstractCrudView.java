@@ -59,7 +59,6 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 	public static final String CAPTION_UPDATE = "Update";
 	public static final String CAPTION_ADD = "Add";
 	private final BeanValidationBinder<T> binder;
-	private T editItem;
 
 	protected AbstractCrudView(Class<T> entityType) {
 		this.binder = new BeanValidationBinder<>(entityType);
@@ -75,7 +74,6 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 	}
 
 	public void showInitialState() {
-		this.editItem = null;
 		getForm().setEnabled(false);
 		getGrid().deselectAll();
 		getBinder().readBean(null);
@@ -84,10 +82,6 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 	}
 
 	public void editItem(T editItem, boolean isNew) {
-		if (editItem == null) {
-			throw new IllegalArgumentException("The entity to edit cannot be null");
-		}
-		this.editItem = editItem;
 		if (isNew) {
 			getGrid().deselectAll();
 			getUpdate().setCaption(CAPTION_ADD);
@@ -103,23 +97,15 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 		getDelete().setEnabled(!isNew);
 	}
 
-	private boolean isFormModified() {
+	protected boolean isFormModified() {
 		return getBinder().hasChanges();
-	}
-
-	public boolean containsUnsavedChanges() {
-		return editItem != null && isFormModified();
 	}
 
 	public Stream<HasValue<?>> validate() {
 		return binder.validate().getFieldValidationErrors().stream().map(BindingValidationStatus::getField);
 	}
 
-	public T getEditItem() {
-		return editItem;
-	}
-
-	public boolean commitEditItem() {
+	public boolean commitEditItem(T editItem) {
 		return getBinder().writeBeanIfValid(editItem);
 	}
 
