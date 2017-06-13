@@ -15,7 +15,7 @@ import com.vaadin.ui.UI;
 
 @Theme("apptheme")
 @SpringUI
-@Viewport("width=device-width, initial-scale=1.0")
+@Viewport("width=device-width,initial-scale=1.0,user-scalable=no")
 @Title("###Bakery###")
 public class AppUI extends UI {
 
