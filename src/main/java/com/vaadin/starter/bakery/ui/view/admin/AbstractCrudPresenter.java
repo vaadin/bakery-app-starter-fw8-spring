@@ -29,6 +29,11 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 
 	private FilterablePageableDataProvider<T, Object> dataProvider;
 
+	// The model for the view. Not extracted to a class to reduce clutter. If
+	// the model becomes more complex, it could be encapsulated in a separate
+	// class.
+	private T editItem;
+
 	protected AbstractCrudPresenter(NavigationManager navigationManager, S service,
 			FilterablePageableDataProvider<T, Object> dataProvider) {
 		this.service = service;
@@ -64,10 +69,6 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 			throw new UnsupportedOperationException(
 					"Entity of type " + getEntityType().getName() + " is missing a public no-args constructor", e);
 		}
-	}
-
-	protected T saveEntity(T editItem) {
-		return service.save(editItem);
 	}
 
 	protected void deleteEntity(T entity) {
@@ -115,7 +116,6 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 			editItem(freshEntity);
 		}, () -> {
 			// Revert selection in grid
-			T editItem = getView().getEditItem();
 			Grid<T> grid = getView().getGrid();
 			if (editItem == null) {
 				grid.deselectAll();
@@ -126,6 +126,11 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	}
 
 	protected void editItem(T item) {
+		if (item == null) {
+			throw new IllegalArgumentException("The entity to edit cannot be null");
+		}
+		this.editItem = item;
+
 		boolean isNew = item.isNew();
 		if (isNew) {
 			navigationManager.updateViewParameter("new");
@@ -163,7 +168,9 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	 *         immediately, <code>false</code> otherwise
 	 */
 	private boolean runWithConfirmation(Runnable onConfirmation, Runnable onCancel) {
-		if (view.containsUnsavedChanges()) {
+		boolean hasUnsavedChanges = editItem != null && getView().isFormModified();
+
+		if (hasUnsavedChanges) {
 			ConfirmPopup.get().showLeaveViewConfirmDialog(view, onConfirmation, onCancel);
 			return false;
 		} else {
@@ -179,25 +186,25 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 			return;
 		}
 
-		if (!view.commitEditItem()) {
+		if (!view.commitEditItem(editItem)) {
 			// Commit failed because of validation errors - which should never
 			// happen as validation is checked above
 			Notification.show(
 					"An unexpected problem occured while saving the data. Please try refreshing the view or contact the administrator.",
 					Type.ERROR_MESSAGE);
-			getLogger().error("Unable to commit entity of type " + view.getEditItem().getClass().getName());
+			getLogger().error("Unable to commit entity of type " + editItem.getClass().getName());
 			return;
 		}
 
-		T entity = view.getEditItem();
-		boolean isNew = entity.isNew();
+		boolean isNew = editItem.isNew();
+		T entity;
 		try {
-			entity = saveEntity(entity);
+			entity = service.save(editItem);
 		} catch (Exception e) {
 			// The most likely cause is an optimistic locking error, i.e.
 			// somebody else edited the data
 			Notification.show("A problem occured while saving the data. Please check the fields.", Type.ERROR_MESSAGE);
-			getLogger().error("Unable to save entity of type " + entity.getClass().getName(), e);
+			getLogger().error("Unable to save entity of type " + editItem.getClass().getName(), e);
 			return;
 		}
 
@@ -213,31 +220,30 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	}
 
 	public void cancelClicked() {
-		T entity = getView().getEditItem();
-		if (entity.isNew()) {
-			showInitialState();
+		if (editItem.isNew()) {
+			revertToInitialState();
 		} else {
-			editItem(entity);
+			editItem(editItem);
 		}
 	}
 
-	private void showInitialState() {
+	private void revertToInitialState() {
+		editItem = null;
 		getView().showInitialState();
 		navigationManager.updateViewParameter("");
 	}
 
 	public void deleteClicked() {
-		T entity = getView().getEditItem();
 		try {
-			deleteEntity(entity);
+			deleteEntity(editItem);
 		} catch (DataIntegrityViolationException e) {
 			Notification.show("The given entity cannot be deleted as there are references to it in the database",
 					Type.ERROR_MESSAGE);
-			getLogger().error("Unable to delete entity of type " + entity.getClass().getName(), e);
+			getLogger().error("Unable to delete entity of type " + editItem.getClass().getName(), e);
 			return;
 		}
 		getDataProvider().refreshAll();
-		showInitialState();
+		revertToInitialState();
 	}
 
 	public void formStatusChanged(boolean hasValidationErrors, boolean hasChanges) {
