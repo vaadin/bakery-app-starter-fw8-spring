@@ -1,9 +1,8 @@
 package com.vaadin.starter.bakery.ui.view.admin.user;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.Validator;
 import com.vaadin.data.ValueContext;
@@ -50,19 +49,20 @@ public class UserAdminView extends AbstractCrudView<User> {
 
 	@Autowired
 	public UserAdminView(UserAdminPresenter presenter) {
-		super(User.class);
 		this.presenter = presenter;
 		userAdminViewDesign = new UserAdminViewDesign();
 	}
 
 	@Override
-	@PostConstruct
 	public void init() {
 		super.init();
 		presenter.init(this);
 		getGrid().setColumns("email", "name", "role");
+	}
 
-		getBinder().forField(getViewComponent().password).withValidator(passwordValidator).bind(bean -> "",
+	@Override
+	public void bindFormFields(BeanValidationBinder<User> binder) {
+		binder.forField(getViewComponent().password).withValidator(passwordValidator).bind(bean -> "",
 				(bean, value) -> {
 					if (value.isEmpty()) {
 						// If nothing is entered in the password field, do
@@ -71,8 +71,7 @@ public class UserAdminView extends AbstractCrudView<User> {
 						bean.setPassword(presenter.encodePassword(value));
 					}
 				});
-		getBinder().bindInstanceFields(getViewComponent());
-
+		binder.bindInstanceFields(getViewComponent());
 	}
 
 	public void setPasswordRequired(boolean passwordRequired) {

@@ -1,9 +1,8 @@
 package com.vaadin.starter.bakery.ui.view.admin.product;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.ValueContext;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
@@ -28,14 +27,12 @@ public class ProductAdminView extends AbstractCrudView<Product> {
 
 	@Autowired
 	public ProductAdminView(ProductAdminPresenter presenter, DollarPriceConverter priceToStringConverter) {
-		super(Product.class);
 		this.presenter = presenter;
 		this.priceToStringConverter = priceToStringConverter;
 		userAdminViewDesign = new ProductAdminViewDesign();
 	}
 
 	@Override
-	@PostConstruct
 	public void init() {
 		super.init();
 		presenter.init(this);
@@ -43,9 +40,12 @@ public class ProductAdminView extends AbstractCrudView<Product> {
 		getGrid().removeColumn(PRICE_PROPERTY);
 		getGrid().addColumn(product -> priceToStringConverter.convertToPresentation(product.getPrice(),
 				new ValueContext(getGrid()))).setSortProperty(PRICE_PROPERTY);
-		getBinder().forField(getViewComponent().price).withConverter(priceToStringConverter).bind(PRICE_PROPERTY);
-		getBinder().bindInstanceFields(getViewComponent());
+	}
 
+	@Override
+	public void bindFormFields(BeanValidationBinder<Product> binder) {
+		binder.forField(getViewComponent().price).withConverter(priceToStringConverter).bind(PRICE_PROPERTY);
+		binder.bindInstanceFields(getViewComponent());
 	}
 
 	@Override
