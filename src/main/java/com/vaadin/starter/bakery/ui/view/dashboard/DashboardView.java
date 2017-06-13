@@ -2,6 +2,7 @@ package com.vaadin.starter.bakery.ui.view.dashboard;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.MonthDay;
 import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
@@ -30,16 +31,30 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.starter.bakery.backend.data.DashboardData;
 import com.vaadin.starter.bakery.backend.data.DeliveryStats;
+import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
+import com.vaadin.starter.bakery.backend.service.OrderService;
+import com.vaadin.starter.bakery.ui.components.OrdersDataProvider;
 import com.vaadin.starter.bakery.ui.components.OrdersGrid;
+import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
+import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView;
 
+/**
+ * The dashboard view showing statistics about sales and deliveries.
+ * <p>
+ * Created as a single View class because the logic is so simple that using a
+ * pattern like MVP would add much overhead for little gain. If more complexity
+ * is added to the class, you should consider splitting out a presenter.
+ */
 @SpringView
 public class DashboardView extends DashboardViewDesign implements NavigableView {
 
 	private static final String BOARD_ROW_PANELS = "board-row-panels";
 
-	private final DashboardPresenter presenter;
+	private final NavigationManager navigationManager;
+	private final OrdersDataProvider ordersDataProvider;
+	private final OrderService orderService;
 
 	private final BoardLabel todayLabel = new BoardLabel("Today", "3/7", "today");
 	private final BoardLabel notAvailableLabel = new BoardLabel("N/A", "1", "na");
@@ -60,9 +75,11 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 	private DataSeries deliveriesPerProductSeries;
 
 	@Autowired
-	public DashboardView(DashboardPresenter presenter) {
-		this.presenter = presenter;
-		dueGrid.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
+	public DashboardView(NavigationManager navigationManager, OrdersDataProvider ordersDataProvider,
+			OrderService orderService) {
+		this.navigationManager = navigationManager;
+		this.ordersDataProvider = ordersDataProvider;
+		this.orderService = orderService;
 	}
 
 	@PostConstruct
@@ -89,7 +106,8 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 		dueGrid.setId("dueGrid");
 		dueGrid.setSizeFull();
 
-		dueGrid.setDataProvider(presenter.getOrdersProvider());
+		dueGrid.addSelectionListener(e -> selectedOrder(e.getFirstSelectedItem().get()));
+		dueGrid.setDataProvider(ordersDataProvider);
 	}
 
 	private void initYearlySalesGraph() {
@@ -188,9 +206,13 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		DashboardData data = presenter.fetchData();
+		DashboardData data = fetchData();
 		updateLabels(data.getDeliveryStats());
 		updateGraphs(data);
+	}
+
+	private DashboardData fetchData() {
+		return orderService.getDashboardData(MonthDay.now().getMonthValue(), Year.now().getValue());
 	}
 
 	private void updateGraphs(DashboardData data) {
@@ -225,6 +247,10 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 		public PlotOptionsLineWithZIndex(Number zIndex) {
 			this.zIndex = zIndex;
 		};
+	}
+
+	public void selectedOrder(Order order) {
+		navigationManager.navigateTo(OrderEditView.class, order.getId());
 	}
 
 }
