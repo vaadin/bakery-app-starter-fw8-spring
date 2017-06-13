@@ -39,7 +39,6 @@ public class AppUI extends UI {
 	protected void init(VaadinRequest vaadinRequest) {
 		viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
 		setContent(mainView);
-		mainView.populateMenu();
 
 		navigationManager.navigateToDefaultView();
 	}
