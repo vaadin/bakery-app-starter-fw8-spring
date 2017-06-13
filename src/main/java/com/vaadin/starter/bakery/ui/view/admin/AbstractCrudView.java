@@ -1,15 +1,16 @@
 package com.vaadin.starter.bakery.ui.view.admin;
 
 import java.io.Serializable;
-import java.util.stream.Stream;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.security.access.annotation.Secured;
 
 import com.vaadin.data.BeanValidationBinder;
-import com.vaadin.data.Binder;
-import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
+import com.vaadin.data.provider.DataProvider;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.backend.data.Role;
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
@@ -52,36 +53,31 @@ import com.vaadin.ui.components.grid.SingleSelectionModel;
  *            the type of entity which can be edited in the view
  */
 @Secured(Role.ADMIN)
-public abstract class AbstractCrudView<T extends AbstractEntity> implements Serializable, NavigableView {
+public abstract class AbstractCrudView<T extends AbstractEntity> implements Serializable, NavigableView, HasLogger {
 
 	public static final String CAPTION_DISCARD = "Discard";
 	public static final String CAPTION_CANCEL = "Cancel";
 	public static final String CAPTION_UPDATE = "Update";
 	public static final String CAPTION_ADD = "Add";
-	private final BeanValidationBinder<T> binder;
-
-	protected AbstractCrudView(Class<T> entityType) {
-		this.binder = new BeanValidationBinder<>(entityType);
-		getBinder().addStatusChangeListener(
-				statusChange -> getPresenter().formStatusChanged(statusChange.hasValidationErrors(), isFormModified()));
-	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		if (!event.getParameters().isEmpty()) {
-			getPresenter().editRequest(event.getParameters());
-		}
+		getPresenter().viewEntered(event);
+	}
+
+	@Override
+	public boolean beforeLeave(Runnable runOnLeave) {
+		return getPresenter().beforeLeavingView(runOnLeave);
 	}
 
 	public void showInitialState() {
 		getForm().setEnabled(false);
 		getGrid().deselectAll();
-		getBinder().readBean(null);
 		getUpdate().setCaption(CAPTION_UPDATE);
 		getCancel().setCaption(CAPTION_DISCARD);
 	}
 
-	public void editItem(T editItem, boolean isNew) {
+	public void editItem(boolean isNew) {
 		if (isNew) {
 			getGrid().deselectAll();
 			getUpdate().setCaption(CAPTION_ADD);
@@ -92,27 +88,11 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 			getCancel().setCaption(CAPTION_DISCARD);
 		}
 
-		getBinder().readBean(editItem);
 		getForm().setEnabled(true);
 		getDelete().setEnabled(!isNew);
 	}
 
-	protected boolean isFormModified() {
-		return getBinder().hasChanges();
-	}
-
-	public Stream<HasValue<?>> validate() {
-		return binder.validate().getFieldValidationErrors().stream().map(BindingValidationStatus::getField);
-	}
-
-	public boolean commitEditItem(T editItem) {
-		return getBinder().writeBeanIfValid(editItem);
-	}
-
-	protected Binder<T> getBinder() {
-		return binder;
-	}
-
+	@PostConstruct
 	protected void init() {
 		getGrid().addSelectionListener(e -> {
 			if (!e.isUserOriginated()) {
@@ -128,7 +108,6 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 
 		// Force user to choose save or cancel in form once enabled
 		((SingleSelectionModel<T>) getGrid().getSelectionModel()).setDeselectAllowed(false);
-		getGrid().setDataProvider(getPresenter().getDataProvider());
 
 		// Button logic
 		getUpdate().addClickListener(event -> getPresenter().updateClicked());
@@ -139,6 +118,26 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 		// Search functionality
 		getSearch().addValueChangeListener(event -> getPresenter().filterGrid(event.getValue()));
 
+	}
+
+	public void setDataProvider(DataProvider<T, Object> dataProvider) {
+		getGrid().setDataProvider(dataProvider);
+	}
+
+	public void setUpdateEnabled(boolean enabled) {
+		getUpdate().setEnabled(enabled);
+	}
+
+	public void setCancelEnabled(boolean enabled) {
+		getCancel().setEnabled(enabled);
+	}
+
+	public void focusField(HasValue<?> field) {
+		if (field instanceof Focusable) {
+			((Focusable) field).focus();
+		} else {
+			getLogger().warn("Unable to focus field of type " + field.getClass().getName());
+		}
 	}
 
 	protected abstract AbstractCrudPresenter<T, ?, ? extends AbstractCrudView<T>> getPresenter();
@@ -161,8 +160,5 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 
 	protected abstract Focusable getFirstFormField();
 
-	@Override
-	public boolean beforeLeave(Runnable runOnLeave) {
-		return getPresenter().beforeLeave(runOnLeave);
-	}
+	public abstract void bindFormFields(BeanValidationBinder<T> binder);
 }

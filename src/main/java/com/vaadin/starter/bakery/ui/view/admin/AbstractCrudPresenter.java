@@ -2,18 +2,23 @@ package com.vaadin.starter.bakery.ui.view.admin;
 
 import java.io.Serializable;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.core.ResolvableType;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
 
+import com.vaadin.data.BeanValidationBinder;
+import com.vaadin.data.BinderValidationStatus;
+import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
+import com.vaadin.data.StatusChangeEvent;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
 import com.vaadin.starter.bakery.backend.service.CrudService;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.confirmpopup.ConfirmPopup;
-import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
@@ -29,6 +34,8 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 
 	private FilterablePageableDataProvider<T, Object> dataProvider;
 
+	private BeanValidationBinder<T> binder;
+
 	// The model for the view. Not extracted to a class to reduce clutter. If
 	// the model becomes more complex, it could be encapsulated in a separate
 	// class.
@@ -39,6 +46,28 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		this.service = service;
 		this.navigationManager = navigationManager;
 		this.dataProvider = dataProvider;
+		createBinder();
+	}
+
+	public void viewEntered(ViewChangeEvent event) {
+		if (!event.getParameters().isEmpty()) {
+			editRequest(event.getParameters());
+		}
+	}
+
+	public boolean beforeLeavingView(Runnable runOnLeave) {
+		return runWithConfirmation(runOnLeave, () -> {
+			// Nothing special needs to be done if user aborts the navigation
+		});
+	}
+
+	protected void createBinder() {
+		binder = new BeanValidationBinder<>(getEntityType());
+		binder.addStatusChangeListener(this::onFormStatusChange);
+	}
+
+	protected BeanValidationBinder<T> getBinder() {
+		return binder;
 	}
 
 	protected S getService() {
@@ -46,15 +75,11 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	}
 
 	protected void filterGrid(String filter) {
-		getDataProvider().setFilter(filter);
+		dataProvider.setFilter(filter);
 	}
 
 	protected T loadEntity(long id) {
 		return service.load(id);
-	}
-
-	protected FilterablePageableDataProvider<T, Object> getDataProvider() {
-		return dataProvider;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -62,7 +87,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		return (Class<T>) ResolvableType.forClass(getClass()).getSuperType().getGeneric(0).resolve();
 	}
 
-	protected T createEntity() {
+	private T createEntity() {
 		try {
 			return getEntityType().newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
@@ -81,6 +106,8 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 
 	public void init(V view) {
 		this.view = view;
+		view.setDataProvider(dataProvider);
+		view.bindFormFields(getBinder());
 		view.showInitialState();
 	}
 
@@ -137,7 +164,9 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		} else {
 			navigationManager.updateViewParameter(String.valueOf(item.getId()));
 		}
-		getView().editItem(item, isNew);
+
+		getBinder().readBean(editItem);
+		getView().editItem(isNew);
 	}
 
 	public void addNewClicked() {
@@ -145,12 +174,6 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 			T entity = createEntity();
 			editItem(entity);
 		}, () -> {
-		});
-	}
-
-	public boolean beforeLeave(Runnable runOnLeave) {
-		return runWithConfirmation(runOnLeave, () -> {
-			// Nothing special needs to be done if user aborts the navigation
 		});
 	}
 
@@ -168,7 +191,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	 *         immediately, <code>false</code> otherwise
 	 */
 	private boolean runWithConfirmation(Runnable onConfirmation, Runnable onCancel) {
-		boolean hasUnsavedChanges = editItem != null && getView().isFormModified();
+		boolean hasUnsavedChanges = editItem != null && getBinder().hasChanges();
 
 		if (hasUnsavedChanges) {
 			ConfirmPopup.get().showLeaveViewConfirmDialog(view, onConfirmation, onCancel);
@@ -180,13 +203,21 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	}
 
 	public void updateClicked() {
-		Optional<HasValue<?>> firstErrorField = view.validate().findFirst();
-		if (firstErrorField.isPresent()) {
-			((Focusable) firstErrorField.get()).focus();
+		BinderValidationStatus<T> validationStatus = binder.validate();
+		if (validationStatus.hasErrors()) {
+			Stream<HasValue<?>> fieldsWithErrors = validationStatus.getFieldValidationErrors().stream()
+					.map(BindingValidationStatus::getField);
+			Optional<HasValue<?>> firstErrorField = fieldsWithErrors.findFirst();
+			if (firstErrorField.isPresent()) {
+				getView().focusField(firstErrorField.get());
+			} else {
+				// Bean validation error
+			}
+
 			return;
 		}
 
-		if (!view.commitEditItem(editItem)) {
+		if (!getBinder().writeBeanIfValid(editItem)) {
 			// Commit failed because of validation errors - which should never
 			// happen as validation is checked above
 			Notification.show(
@@ -210,11 +241,11 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 
 		if (isNew) {
 			// Move to the "Updating an entity" state
-			getDataProvider().refreshAll();
+			dataProvider.refreshAll();
 			selectAndEditEntity(entity);
 		} else {
 			// Stay in the "Updating an entity" state
-			getDataProvider().refreshItem(entity);
+			dataProvider.refreshItem(entity);
 			editRequest(entity);
 		}
 	}
@@ -229,6 +260,7 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 
 	private void revertToInitialState() {
 		editItem = null;
+		getBinder().readBean(null);
 		getView().showInitialState();
 		navigationManager.updateViewParameter("");
 	}
@@ -242,13 +274,15 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 			getLogger().error("Unable to delete entity of type " + editItem.getClass().getName(), e);
 			return;
 		}
-		getDataProvider().refreshAll();
+		dataProvider.refreshAll();
 		revertToInitialState();
 	}
 
-	public void formStatusChanged(boolean hasValidationErrors, boolean hasChanges) {
-		getView().getUpdate().setEnabled(hasChanges && !hasValidationErrors);
-		getView().getCancel().setEnabled(hasChanges);
+	public void onFormStatusChange(StatusChangeEvent event) {
+		boolean hasChanges = event.getBinder().hasChanges();
+		boolean hasValidationErrors = event.hasValidationErrors();
+		getView().setUpdateEnabled(hasChanges && !hasValidationErrors);
+		getView().setCancelEnabled(hasChanges);
 	}
 
 }
