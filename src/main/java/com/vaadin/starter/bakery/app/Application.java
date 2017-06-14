@@ -15,6 +15,15 @@ import com.vaadin.starter.bakery.backend.service.UserService;
 import com.vaadin.starter.bakery.backend.util.LocalDateJpaConverter;
 import com.vaadin.starter.bakery.ui.AppUI;
 
+/**
+ * Main Spring Boot application class.
+ * <p>
+ * To run the project in an embedded container, you can launch this class as a
+ * Java application. The project can also be built as a {@literal war} file and
+ * deployed to any servlet container supporting Vaadin Framework 8.
+ *
+ * @author ###author###
+ */
 @SpringBootApplication(scanBasePackageClasses = { AppUI.class, Application.class, UserService.class,
 		SecurityConfig.class })
 @EnableJpaRepositories(basePackageClasses = { OrderRepository.class })
