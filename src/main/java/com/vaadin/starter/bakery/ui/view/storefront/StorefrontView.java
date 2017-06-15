@@ -1,5 +1,7 @@
 package com.vaadin.starter.bakery.ui.view.storefront;
 
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +11,31 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.annotation.ViewScope;
+import com.vaadin.starter.bakery.backend.data.entity.Order;
+import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
+import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView;
 import com.vaadin.ui.Button.ClickShortcut;
 
+/**
+ * The storefront view showing upcoming orders.
+ * <p>
+ * Created as a single View class because the logic is so simple that using a
+ * pattern like MVP would add much overhead for little gain. If more complexity
+ * is added to the class, you should consider splitting out a presenter.
+ */
 @SpringView
 public class StorefrontView extends StorefrontViewDesign implements NavigableView {
 
-	private StorefrontPresenter presenter;
+	private static final String PARAMETER_SEARCH = "search";
+
+	private static final String PARAMETER_INCLUDE_PAST = "includePast";
+
+	private final NavigationManager navigationManager;
 
 	@Autowired
-	public StorefrontView(StorefrontPresenter presenter) {
-		this.presenter = presenter;
+	public StorefrontView(NavigationManager navigationManager) {
+		this.navigationManager = navigationManager;
 	}
 
 	/**
@@ -36,13 +52,29 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@PostConstruct
 	public void init() {
-		presenter.init(this);
-		list.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
-		newOrder.addClickListener(e -> presenter.newOrder());
-		searchButton.addClickListener(e -> presenter.search(searchField.getValue(), includePast.getValue()));
+		list.addSelectionListener(e -> selectedOrder(e.getFirstSelectedItem().get()));
+		newOrder.addClickListener(e -> newOrder());
+		searchButton.addClickListener(e -> search(searchField.getValue(), includePast.getValue()));
 
 		// We don't want a global shortcut for enter, scope it to the panel
 		searchPanel.addAction(new ClickShortcut(searchButton, KeyCode.ENTER, null));
+	}
+
+	public void selectedOrder(Order order) {
+		navigationManager.navigateTo(OrderEditView.class, order.getId());
+	}
+
+	public void newOrder() {
+		navigationManager.navigateTo(OrderEditView.class);
+	}
+
+	public void search(String searchTerm, boolean includePast) {
+		filterGrid(searchTerm, includePast);
+		String parameters = PARAMETER_SEARCH + "=" + searchTerm;
+		if (includePast) {
+			parameters += "&" + PARAMETER_INCLUDE_PAST;
+		}
+		navigationManager.updateViewParameter(parameters);
 	}
 
 	/**
@@ -55,7 +87,10 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		presenter.enter(event);
+		Map<String, String> params = event.getNavigator().getStateParameterMap();
+		String searchTerm = params.getOrDefault(PARAMETER_SEARCH, "");
+		boolean includePast = params.containsKey(PARAMETER_INCLUDE_PAST);
+		filterGrid(searchTerm, includePast);
 	}
 
 	public void filterGrid(String searchTerm, boolean includePast) {
