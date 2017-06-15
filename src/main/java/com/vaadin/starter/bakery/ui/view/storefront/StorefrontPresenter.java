@@ -1,11 +1,11 @@
 package com.vaadin.starter.bakery.ui.view.storefront;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
@@ -68,28 +68,11 @@ public class StorefrontPresenter implements Serializable {
 		view.updateFilters(searchTerm, includePast);
 	}
 
-	public void enter(String parameterString) {
-		Map<String, String> params = parameterStringToMap(parameterString);
-		String searchTerm = params.get(PARAMETER_SEARCH);
-		if (searchTerm == null) {
-			searchTerm = "";
-		}
+	public void enter(ViewChangeEvent event) {
+		Map<String, String> params = event.getNavigator().getStateParameterMap();
+		String searchTerm = params.getOrDefault(PARAMETER_SEARCH, "");
 		boolean includePast = params.containsKey(PARAMETER_INCLUDE_PAST);
 		filterGrid(searchTerm, includePast);
 	}
 
-	private Map<String, String> parameterStringToMap(String parameterString) {
-		Map<String, String> parameterMap = new HashMap<>();
-		String[] parameters = parameterString.split("&");
-		for (int i = 0; i < parameters.length; i++) {
-			String[] keyAndValue = parameters[i].split("=");
-			if (keyAndValue.length > 1) {
-				parameterMap.put(keyAndValue[0], keyAndValue[1]);
-			} else {
-				parameterMap.put(keyAndValue[0], "");
-			}
-		}
-
-		return parameterMap;
-	}
 }

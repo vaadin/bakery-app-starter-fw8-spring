@@ -56,7 +56,7 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		presenter.enter(event.getParameters());
+		presenter.enter(event);
 	}
 
 	public void updateFilters(String searchTerm, boolean includePast) {
