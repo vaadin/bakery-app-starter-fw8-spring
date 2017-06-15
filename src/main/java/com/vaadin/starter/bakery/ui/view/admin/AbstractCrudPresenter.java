@@ -13,6 +13,7 @@ import com.vaadin.data.BinderValidationStatus;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.StatusChangeEvent;
+import com.vaadin.navigator.ViewBeforeLeaveEvent;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
@@ -55,8 +56,8 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		}
 	}
 
-	public boolean beforeLeavingView(Runnable runOnLeave) {
-		return runWithConfirmation(runOnLeave, () -> {
+	public void beforeLeavingView(ViewBeforeLeaveEvent event) {
+		runWithConfirmation(() -> event.navigate(), () -> {
 			// Nothing special needs to be done if user aborts the navigation
 		});
 	}
@@ -190,16 +191,16 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	 * @return <code>true</code> if the {@literal confirm} command was run
 	 *         immediately, <code>false</code> otherwise
 	 */
-	private boolean runWithConfirmation(Runnable onConfirmation, Runnable onCancel) {
-		boolean hasUnsavedChanges = editItem != null && getBinder().hasChanges();
-
-		if (hasUnsavedChanges) {
+	private void runWithConfirmation(Runnable onConfirmation, Runnable onCancel) {
+		if (hasUnsavedChanges()) {
 			ConfirmPopup.get().showLeaveViewConfirmDialog(view, onConfirmation, onCancel);
-			return false;
 		} else {
 			onConfirmation.run();
-			return true;
 		}
+	}
+
+	private boolean hasUnsavedChanges() {
+		return editItem != null && getBinder().hasChanges();
 	}
 
 	public void updateClicked() {
