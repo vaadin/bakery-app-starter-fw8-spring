@@ -7,13 +7,13 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
-import com.vaadin.starter.bakery.ui.view.NavigableView;
 import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView;
 import com.vaadin.ui.Button.ClickShortcut;
 
@@ -25,7 +25,7 @@ import com.vaadin.ui.Button.ClickShortcut;
  * is added to the class, you should consider splitting out a presenter.
  */
 @SpringView
-public class StorefrontView extends StorefrontViewDesign implements NavigableView {
+public class StorefrontView extends StorefrontViewDesign implements View {
 
 	private static final String PARAMETER_SEARCH = "search";
 
@@ -87,7 +87,7 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		Map<String, String> params = event.getNavigator().getStateParameterMap();
+		Map<String, String> params = event.getParameterMap();
 		String searchTerm = params.getOrDefault(PARAMETER_SEARCH, "");
 		boolean includePast = params.containsKey(PARAMETER_INCLUDE_PAST);
 		filterGrid(searchTerm, includePast);
