@@ -34,7 +34,6 @@ import com.vaadin.starter.bakery.backend.data.DeliveryStats;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
 import com.vaadin.starter.bakery.backend.service.OrderService;
-import com.vaadin.starter.bakery.ui.components.OrdersDataProvider;
 import com.vaadin.starter.bakery.ui.components.OrdersGrid;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.NavigableView;
@@ -53,7 +52,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 	private static final String BOARD_ROW_PANELS = "board-row-panels";
 
 	private final NavigationManager navigationManager;
-	private final OrdersDataProvider ordersDataProvider;
 	private final OrderService orderService;
 
 	private final BoardLabel todayLabel = new BoardLabel("Today", "3/7", "today");
@@ -66,7 +64,7 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 	private final Chart deliveriesThisYearGraph = new Chart(ChartType.COLUMN);
 	private final Chart yearlySalesGraph = new Chart(ChartType.AREA);
 	private final Chart monthlyProductSplit = new Chart(ChartType.PIE);
-	private final OrdersGrid dueGrid = new OrdersGrid();
+	private final OrdersGrid dueGrid;
 
 	private ListSeries deliveriesThisMonthSeries;
 	private ListSeries deliveriesThisYearSeries;
@@ -75,11 +73,10 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 	private DataSeries deliveriesPerProductSeries;
 
 	@Autowired
-	public DashboardView(NavigationManager navigationManager, OrdersDataProvider ordersDataProvider,
-			OrderService orderService) {
+	public DashboardView(NavigationManager navigationManager, OrderService orderService, OrdersGrid dueGrid) {
 		this.navigationManager = navigationManager;
-		this.ordersDataProvider = ordersDataProvider;
 		this.orderService = orderService;
+		this.dueGrid = dueGrid;
 	}
 
 	@PostConstruct
@@ -107,7 +104,6 @@ public class DashboardView extends DashboardViewDesign implements NavigableView 
 		dueGrid.setSizeFull();
 
 		dueGrid.addSelectionListener(e -> selectedOrder(e.getFirstSelectedItem().get()));
-		dueGrid.setDataProvider(ordersDataProvider);
 	}
 
 	private void initYearlySalesGraph() {
