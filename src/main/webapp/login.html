@@ -24,11 +24,15 @@ Vaadin-Refresh: context://login.html
   -->
     
   <script type="text/javascript">
-    var preserveFragment = function() {
+    var init = function() {
       if (window.location.hash) {
         document.getElementById("theform").action += window.location.hash;
       }
+      if (window.location.search.indexOf("error")>0) {
+          document.body.className = "error";
+      }
     }
+    
   </script>
 	<style>
 		@font-face {
@@ -39,130 +43,110 @@ Vaadin-Refresh: context://login.html
 		}
 		@font-face {
 			font-family: "Open Sans";
-			src: url(VAADIN/themes/valo/fonts/open-sans/OpenSans-Regular-webfont.woff) format("woff");
-			font-weight: 400;
-			font-style: normal;
-		}
-		@font-face {
-			font-family: "Open Sans";
 			src: url(VAADIN/themes/valo/fonts/open-sans/OpenSans-Semibold-webfont.woff) format("woff");
 			font-weight: 600;
 			font-style: normal;
 		}
-
-		/* Layout */
-		body, html {
-			box-sizing: border-box;
-			height: 100%;
-			background-color: #fff;
-			font: 100 16px/1.55 "Open Sans", sans-serif;
-		}
-		*, *:before, *:after {
-			box-sizing: inherit;
-			margin: 0;
-			padding: 0;
-		}
-		body {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-		#info, #form {
-			height: 450px;
-			padding: 28px;
-			box-shadow: 0 2px 3px rgba(0,0,0,.2);
-		}
-		#info {
-			width: 465px;
-			background-color: rgba(255,255,255,.2);
-			color: #fff;
-			text-align: center;
-			border-radius: 5px 0 0 5px;
-		}
-		#info > * {
-			margin: 16px auto;
-		} 
-		#logo {
-			background-color: rgba(255,255,255,0.2);
-			width:96px;
-			height:96px;
-			border-radius: 100%;
+		
+    html {
+     background: linear-gradient(145deg, #484962 30%, #d06b41 100%);
+    }
+    @media (min-width: 1000px) {
+      /* load on wide screens */
+      body {
+        background-color: transparent;
+        background-image: url(VAADIN/themes/apptheme/bg.jpg);
+        background-size: cover;
+      }
+    }
+    button {
+      background-color: #4b4b65;
+    }
+    #logo {
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+      border-radius: 100%;
       background-image: url(VAADIN/themes/apptheme/icon-96.png);
       background-size: contain;
       background-repeat: no-repeat;
+      background-color: rgba(255,255,255,0.2);
       box-shadow: 3px 3px 8px rgba(0,0,0,.2);
+    }
+
+		/* Layout */
+		*, *:before, *:after {
+      box-sizing: border-box;
+    }
+		html, body {
+			height: 100%;
+			font: 100 16px/1.55 "Open Sans", sans-serif;
+			margin: 0;
+		}
+		#info {
+       color: #fff;
+       text-align: center;
+       padding: 28px;
 		}
 		#form {
+			height: 100%;
 			display: flex;
-			width: 320px;
 			background-color: #fff;
-			padding: 28px;
-			border-radius: 0 5px 5px 0;  
-		}
-		
-		/* Responsive behaviour */
-		
+			justify-content: center;
+    }
+    
+    /* Responsive behaviour */	
 		@media (max-width: 1000px) {
-			body {
-				display: block;
-			}
-			#info {
-			 background-color: #4b4b65;
-			 background: linear-gradient(145deg, #484962 30%, #d06b41 100%);
-			}
-			#info, #form {
-				width: 100%;
-				height: auto;
-				border-radius: 0;
-				box-shadow: none;
-				padding: 8px;
-			}
-			#info > * {
-				margin: 8px auto;
-			}
-			#logo {
-				width: 60px;
-				height: 60px;
-			}
-			h2 {
-				display: none;
-			}
+		  h2 {
+        display: none;
+      }
 		}
-		@media (min-width: 1000px) {
-			html {
-			  background: linear-gradient(145deg, #484962 30%, #d06b41 100%);
-			}
-			body {
-			  background-color: transparent;
-				background-image: url(VAADIN/themes/apptheme/bg.jpg);
-				background-size: cover;
-			}
-		}
+		
+		@media (min-width: 1001px) {
+	    body {
+	      display: flex;
+	      align-items: center;
+	      justify-content: center;
+	    }
+	    #logo {
+	      width:96px;
+        height:96px;
+	    }
+	    #info, #form {
+	      height: 450px;
+	      box-shadow: 0 2px 3px rgba(0,0,0,.2);
+	    }
+	    #info {
+        background-color: rgba(255,255,255,.2);
+	      width: 465px;
+	      border-radius: 5px 0 0 5px;
+	    }
+	    #form {
+	      width: 320px;
+	      padding: 28px;
+	      border-radius: 0 5px 5px 0;
+	    }
+    }
 		
 		/* Elements / components theme */
 		
 		h1 {
 			font-size: 36px;
 			font-weight: 100;
-		}
-		
+		}	
 		h2 {
 			font-size: 28px;
 			font-weight: 100;
-		}
-		
+			margin-bottom: 14px;
+		}	
 		form {
-			width: 100%;
-			margin: auto;
 			max-width: 320px;
 		}
-		
 		label {
 			font-size: 14px;
 			padding: 16px 0 5px 0;
 			display: inline-block; 
-		}
-		
+		}	
 		input[type='text'],
 		input[type='password'] {
 			width: 100%;
@@ -180,12 +164,8 @@ Vaadin-Refresh: context://login.html
 			border-radius: 4px;
 			padding: 4px 9px;
 			border: 1px solid rgba(0,0,0,.2);
-			color: #474747;
 		}
-		
-		#button-submit {
-			background-color: #4b4b65;
-			 
+		button {
 			width:100%;
 			margin-top: 37px;
 			height: 37px;
@@ -201,9 +181,8 @@ Vaadin-Refresh: context://login.html
 			font: inherit;
 			font-weight: 600;
 		}
-		
 		#button-submit:focus:after {
-			box-shadow: 0 0 0 2px #4b4b65;
+			box-shadow: 0 0 0 2px rgba(0,0,0,.5);
 			content: "";
 			position: absolute;
 			top: -2px;
@@ -212,7 +191,6 @@ Vaadin-Refresh: context://login.html
 			left: -2px;
 			border-radius: inherit;
 		}
-		
 		.error input {
 			display: block;
 			border-color: red;
@@ -229,7 +207,7 @@ Vaadin-Refresh: context://login.html
 		}
 	</style>
 </head>
-<body onload="preserveFragment()">
+<body onload="init()">
 	<div id="info">
 		<div id="logo"></div>
 		<h1>###Bakery###</h1>
