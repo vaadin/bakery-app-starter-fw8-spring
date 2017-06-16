@@ -1,32 +1,41 @@
 @mixin menu {
-  .navigation-bar-container {
-     @include linear-gradient(145deg, #484962 30%, #d06b41 100%);
-  }
-  .navigation-bar {
-    color: lighten($v-focus-color,40%);
-    background-size: cover;
-    background-position: top;
-
-    .v-button {
-      border-radius: 0;
+  .app-shell {
+    .logo {
+      // our logo text is white
+      color: #fff;
+      word-wrap: break-word;
     }
-    .selected {
-      background: rgba(0,0,0,.2);
-      color: lighten($v-focus-color,60%);
-      .v-icon, .v-button-caption {
-          color: lighten($v-focus-color,60%);
+    .v-caption-logo {
+      // this is the (font)icon
+      @extend .v-label;
+      @extend .logo;
+    }
+  
+    .navigation-bar {
+      color: lighten($v-focus-color,40%);
+      background-size: cover;
+      background-position: top;
+  
+      .v-button {
+        border-radius: 0;
+      }
+      .selected {
+        background: rgba(0,0,0,.2);
+        color: lighten($v-focus-color,60%);
+        .v-icon, .v-button-caption {
+            color: lighten($v-focus-color,60%);
+        }
+      }
+      .activeViewName {
+        line-height: $v-unit-size;
+        width: auto !important;
+        padding: 0 $v-unit-size / 2.5;
+        font-size: $v-font-size;
       }
     }
-    .activeViewName {
-      line-height: $v-unit-size;
-      width: auto !important;
-      padding: 0 $v-unit-size / 2.5;
-      font-size: $v-font-size;
-    }
   }
-  .logo {
-    color: #fff;
-  }
+
+  // narrow screens
   .app-shell[width-range~="-600px"] {
     .logo {
       max-width: 150px;
@@ -34,32 +43,41 @@
       white-space: nowrap;
       text-overflow: ellipsis;
     }
+    .v-caption-logo {
+      float: left;
+    }
   }
 
+  // medium screens
   .app-shell[width-range~="601px-"] {
     .activeViewName {
       display: none;
     }
-    .logo {
-      // match search-bar height
-      height: 60px;
+    .v-caption-logo {
+      display:block;
+      text-align: center;
     }
-    .navigation-bar {
-      @include linear-gradient(145deg, #484962 30%, #d06b41 100%);
+    @if $app-background-gradient {
+      // apply gradient, if configured
+      .navigation-bar-container {
+          background-image: $app-background-gradient;
+      }
+      .navigation-bar {
+        background-color: transparent;
+      }
       .navigation {
         background-color: transparent;
         border: none;
       }
     }
   }
+  // wide screens
   .app-shell[width-range~="1001px-"] {
-    .logo {
-      padding-top: $v-layout-spacing-vertical;
-    }
-    .navigation-bar {
-      background-color: transparent;
-      background-image: url(bg.jpg);
+    @if $app-background-image {
+      // load the background image, if configured
+      .navigation-bar {
+        background-image: $app-background-image;
+      }
     }
   }
-
 }
