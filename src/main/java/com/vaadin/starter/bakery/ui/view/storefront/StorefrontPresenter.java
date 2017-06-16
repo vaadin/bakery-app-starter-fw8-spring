@@ -9,7 +9,6 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
-import com.vaadin.starter.bakery.ui.components.OrdersDataProvider;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView;
 
@@ -25,12 +24,9 @@ public class StorefrontPresenter implements Serializable {
 
 	private final NavigationManager navigationManager;
 
-	private final OrdersDataProvider ordersDataProvider;
-
 	@Autowired
-	public StorefrontPresenter(NavigationManager navigationManager, OrdersDataProvider ordersDataProvider) {
+	public StorefrontPresenter(NavigationManager navigationManager) {
 		this.navigationManager = navigationManager;
-		this.ordersDataProvider = ordersDataProvider;
 	}
 
 	void init(StorefrontView view) {
@@ -39,10 +35,6 @@ public class StorefrontPresenter implements Serializable {
 
 	protected StorefrontView getView() {
 		return view;
-	}
-
-	public OrdersDataProvider getOrdersProvider() {
-		return ordersDataProvider;
 	}
 
 	public void selectedOrder(Order order) {
@@ -54,7 +46,7 @@ public class StorefrontPresenter implements Serializable {
 	}
 
 	public void search(String searchTerm, boolean includePast) {
-		filterGrid(searchTerm, includePast);
+		view.filterGrid(searchTerm, includePast);
 		String parameters = PARAMETER_SEARCH + "=" + searchTerm;
 		if (includePast) {
 			parameters += "&" + PARAMETER_INCLUDE_PAST;
@@ -62,17 +54,11 @@ public class StorefrontPresenter implements Serializable {
 		navigationManager.updateViewParameter(parameters);
 	}
 
-	private void filterGrid(String searchTerm, boolean includePast) {
-		ordersDataProvider.setFilter(searchTerm);
-		ordersDataProvider.setIncludePast(includePast);
-		view.updateFilters(searchTerm, includePast);
-	}
-
 	public void enter(ViewChangeEvent event) {
 		Map<String, String> params = event.getNavigator().getStateParameterMap();
 		String searchTerm = params.getOrDefault(PARAMETER_SEARCH, "");
 		boolean includePast = params.containsKey(PARAMETER_INCLUDE_PAST);
-		filterGrid(searchTerm, includePast);
+		view.filterGrid(searchTerm, includePast);
 	}
 
 }

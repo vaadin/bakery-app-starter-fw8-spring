@@ -37,7 +37,6 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 	@PostConstruct
 	public void init() {
 		presenter.init(this);
-		list.setDataProvider(presenter.getOrdersProvider());
 		list.addSelectionListener(e -> presenter.selectedOrder(e.getFirstSelectedItem().get()));
 		newOrder.addClickListener(e -> presenter.newOrder());
 		searchButton.addClickListener(e -> presenter.search(searchField.getValue(), includePast.getValue()));
@@ -59,7 +58,8 @@ public class StorefrontView extends StorefrontViewDesign implements NavigableVie
 		presenter.enter(event);
 	}
 
-	public void updateFilters(String searchTerm, boolean includePast) {
+	public void filterGrid(String searchTerm, boolean includePast) {
+		list.filterGrid(searchTerm, includePast);
 		searchField.setValue(searchTerm);
 		this.includePast.setValue(includePast);
 	}
