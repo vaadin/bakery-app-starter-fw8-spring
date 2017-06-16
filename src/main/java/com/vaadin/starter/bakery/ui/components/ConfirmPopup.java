@@ -1,4 +1,4 @@
-package com.vaadin.starter.bakery.ui.view.confirmpopup;
+package com.vaadin.starter.bakery.ui.components;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.dialogs.ConfirmDialog;

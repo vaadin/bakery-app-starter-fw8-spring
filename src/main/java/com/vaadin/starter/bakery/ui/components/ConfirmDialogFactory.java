@@ -1,4 +1,4 @@
-package com.vaadin.starter.bakery.ui.view.confirmpopup;
+package com.vaadin.starter.bakery.ui.components;
 
 import java.util.Arrays;
 import java.util.List;
