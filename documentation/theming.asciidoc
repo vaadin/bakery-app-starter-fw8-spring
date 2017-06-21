@@ -100,6 +100,8 @@ image::img/dark-gray-bakery.png[Dark-gray Bakery]
 === &lowbar;dashboardview.scss 
 Styles for the Dashboard, which is implemented using _Vaadin Board_ and _Vaadin Charts_. 
 
+TIP: A good starting point for styling Vaadin Charts can be found here: https://vaadin.com/blog/-/blogs/styling-your-vaadin-charts
+
 The main things done here is 1) joining the first row into a joint “panel”, while the other rows’ content is styled as separate panels 2) making sure padding and spacing follows Valo parameters. 
 
 There is one responsive breakpoint, which reduces spacing and removes side-margins on narrow devices.
