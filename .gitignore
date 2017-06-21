@@ -1,3 +1,4 @@
+
 .classpath
 .project
 .settings
@@ -11,7 +12,7 @@ addons.scss
 .designer
 .vaadin-designer2
 
-orders.iml
+*.iml
 
 yarn.lock
 src/main/frontend
