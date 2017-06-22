@@ -4,7 +4,9 @@ Bakery is an App Starter to give you a head start building your business applica
 
 It includes an end-to-end technology stack covering each layer that is needed the build a production grade application. The App Starter is opinionated and reflects Vaadin's view on what is the best way to build business applications.
 
-[red yellow-background]*See a live demo of the application.*
+link:https://bakery.demo.vaadin.com[See a live demo of the application.^]
+
+image::img/overview.png[Bakery on different devices,250,align=center]
 
 == Features
 
@@ -69,9 +71,9 @@ Dependency management and building is handed to Maven and the standardized Maven
 
 == Getting started
 
-A personalized project can be downloaded from the product page [red yellow-background]*<link>* by giving group id, artifact id and developer name.
+A personalized project can be link:https://vaadin.com/full-stack-starter#get-started[downloaded from the product page^] by giving group id, artifact id and developer name.
 
-A paid Pro or Prime subscription is required for creating a new software project from a Starter template. After its creation, results can be used, developed and distributed freely, but licenses for the used commercial components are required during development. The Starter or its parts cannot be redistributed as a code example or template. For full terms, see Commercial Vaadin Template License. [red yellow-background]*<link>*
+NOTE: A paid _Pro or Prime subscription is required_ for creating a new software project from a Starter template. After its creation, results can be used, developed and distributed freely, but licenses for the used commercial components are required during development. The Starter or its parts cannot be redistributed as a code example or template. For full terms, see the link:https://vaadin.com/license/cvtl-1[Commercial Vaadin Template License.]
 
 See more information on setting up your environment in <<_running_building_and_packaging,Running, building and packaging>>.
 
