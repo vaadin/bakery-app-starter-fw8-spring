@@ -1,6 +1,6 @@
 == Adding a view
 
-We're going to create a new view and add it to the navigation, step-by-step. The view we are creating here is an "About" view.
+In the following, we're going to create a new view and add it to the navigation, step-by-step. The view we are creating here is an "About" view.
 
 === Creating a design
 
@@ -8,7 +8,7 @@ The views of bakery are built with Designer. We start off by creating a new desi
 
 image::img/new-design.png[Adding a new design file]
 
-=== Extending Design to concrete View
+=== Extending design to concrete View
 
 Creating a design will create a HTML design file in the resource package as well as generated Java class in the java package. Create a Class called `AboutView` in the same package which extends the generated design package. We extend the generated class because the generated class is regenerated when the design is edited and it would remove our changes. The extending `AboutView` is the class that will be initialized when the user wants to enter the view.
 
@@ -21,9 +21,9 @@ public class AboutView extends AboutViewDesign {
 
 Any logic or configuration that you want to add into the view goes here.
 
-=== Defining it as a view of the application
+=== Adding the view to the application
 
-We have to tell Spring that `AboutView` is a valid view to be shown in the application. The is done by annotating the class with `@SpringView` and implementing NavigableView.
+We have to tell Spring that `AboutView` is a valid view to be shown in the application. This is achieved by annotating the class with `@SpringView` and implementing NavigableView.
 
 ```java
 package com.vaadin.starter.bakery.ui.view.about;
@@ -41,15 +41,19 @@ public class AboutView extends AboutViewDesign implements NavigableView {
 }
 ```
 
-`@SpringView` tells Spring that this is a valid view to initialize as a view. The name parameter is what is used in the url for the view, for example www.myapplication.com/about. `NavigableView` requires you to implement the `enter(ViewChangeEvent)`. This method is called whenever the user is navigates to the view and is an easy place to for example update data. If you don't want to do anything when the user enters the view, then you can leave the implementation empty.
+`@SpringView` tells Spring that this is a valid view to initialize as a view. The name parameter is used in the url for the view, for example _myapplication.com/#!about_.
 
-The view is now accessible by going to the url http://localhost:8080/#!about. It is however not in the menu yet.
+`NavigableView` requires you to implement the `enter(ViewChangeEvent)`. This method is called whenever the user is navigates to the view and is an easy place to for example update data. If you don't want to do anything when the user enters the view, then you can leave the implementation empty.
+
+The view is now accessible by going to the url http://localhost:8080/#!about. However, it does not appear in the menu yet.
 
 image::img/about-view-not-in-menu.png[About view available, but not in menu.]
 
 === Adding the view to the menu
 
-To modify the menu, we want to first open the main layout design, `MainViewDesign` in the view package. We want to add a new Button into the 'menu' layout. The easiest way to do this is select the last view and pressing copy paste on it (ctrl+c -> ctrl+v). This will add a copy of the menu button with same icon and caption. Let's change those. In the properties panel, you want to change Name, Icon, Caption and DomId to match your new view. Next to icon is a handy button where you see the icons and select a new one visually.
+To modify the menu, we want to first open the main layout design, `MainViewDesign` in the view package. We want to add a new Button into the 'menu' layout. The easiest way to do this is select the last view and pressing copy paste on it (ctrl+c -> ctrl+v). This will add a copy of the menu button with same icon and caption. Let's change those: in the properties panel, you want to change Name, Icon, Caption and DomId to match your new view. Next to icon is a handy button where you see the icons and select a new one visually. The list contains all the built-in font-icons from link:https://vaadin.com/icons[Vaadin Icons].
+
+TIP: Refer to link:https://vaadin.com/docs/-/part/designer/designer-overview.html[Vaadin Designer documentation] to learn more about visually designing your UI.
 
 image::img/about-to-menu-designer.png[About added to the menu.]
 
@@ -72,7 +76,7 @@ image::img/about-in-menu.png[About view ready.]
 
 === Restricting access to the view.
 
-If you want to secure the app to some views, you can require the user to have certain roles by adding an annotation.
+If you want to restrict access to some views, you can require the user to have certain roles by adding an annotation. Restricting access to the About-view might not make much sense usually, but we'll do it anyway:
 
 ```java
 @SpringView(name = "about")
