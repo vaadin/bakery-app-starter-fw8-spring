@@ -38,13 +38,13 @@ public class StorefrontIT extends AbstractIT {
 	@Test
 	public void filterUsingSearchField() {
 		StorefrontViewElement view = loginAsBarista();
-		view.getSearchField().setValue("gallegos");
+		view.getSearchField().setValue("pickett");
 		view.getSearchButton().click();
 
 		GridElement list = view.getList();
 		long rowCount = list.getRowCount();
-		Assert.assertTrue(rowCount > 0);
-		Assert.assertTrue(rowCount < 100);
-		Assert.assertTrue(list.getCell(0, 1).getText().toLowerCase().contains("gallegos"));
+		Assert.assertTrue("The row count of storefront list was expected to have more than zero rows. Rows in list: " + rowCount, rowCount > 0);
+		Assert.assertTrue("The row count of storefront list was expected to be less than 100. Rows in list: " + rowCount, rowCount < 100);
+		Assert.assertTrue(list.getCell(0, 1).getText().toLowerCase().contains("pickett"));
 	}
 }
