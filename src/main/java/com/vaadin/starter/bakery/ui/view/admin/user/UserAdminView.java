@@ -48,14 +48,14 @@ public class UserAdminView extends AbstractCrudView<User> {
 	};
 
 	/**
-	 * Custom validator to be able to decide dynamically whether the password
-	 * field is required or not (empty value when updating the user is
-	 * interpreted as 'do not change the password').
+	 * Custom validator to not allow saving up certain locked users. Users
+	 * with isLocked() == true should not be changeable from the UI.
 	 */
 	private Validator<User> lockedValidator = (Validator<User>) (value, context) -> {
         if (value.isLocked() == true) {
             // Account is locked. Don't allow saving
-            return ValidationResult.error("This user account is locked from modification. Changes will not be saved.");
+            return ValidationResult.error("This user account is locked from modification. " +
+                    "Changes will not be saved.");
         } else {
             return ValidationResult.ok();
         }
