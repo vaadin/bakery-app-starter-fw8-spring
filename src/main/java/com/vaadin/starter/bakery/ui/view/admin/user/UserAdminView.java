@@ -51,7 +51,7 @@ public class UserAdminView extends AbstractCrudView<User> {
 	 * Custom validator to not allow saving up certain locked users. Users
 	 * with isLocked() == true should not be changeable from the UI.
 	 */
-	private Validator<User> lockedValidator = (Validator<User>) (value, context) -> {
+	private Validator<User> lockedValidator = (value, context) -> {
         if (value.isLocked()) {
             // Account is locked. Don't allow saving
             return ValidationResult.error("This user account is locked from modification. " +
