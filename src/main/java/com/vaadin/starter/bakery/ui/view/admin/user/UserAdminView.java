@@ -52,7 +52,7 @@ public class UserAdminView extends AbstractCrudView<User> {
 	 * with isLocked() == true should not be changeable from the UI.
 	 */
 	private Validator<User> lockedValidator = (Validator<User>) (value, context) -> {
-        if (value.isLocked() == true) {
+        if (value.isLocked()) {
             // Account is locked. Don't allow saving
             return ValidationResult.error("This user account is locked from modification. " +
                     "Changes will not be saved.");
