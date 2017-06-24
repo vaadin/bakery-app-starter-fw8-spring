@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.vaadin.testbench.elements.NotificationElement;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -237,7 +238,10 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 	@Test
 	public void updateEntity() {
 		T view = loginAndNavigateToView();
-		view.getList().getCell(0, 0).click();
+		/* Choose second row. In user view first is locked and
+		   can't be modified. */
+
+		view.getList().getCell(1, 0).click();
 		assertEditState(view, false);
 
 		TextFieldElement field = getFirstFormTextField(view);
@@ -253,6 +257,7 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 		view.getUpdate().click();
 		assertEditState(view, false);
 	}
+
 
 	@Test
 	public void confirmationDialogShownWhenAboutToLoseData() {
