@@ -2,6 +2,7 @@ package com.vaadin.starter.bakery.ui.view.admin.user;
 
 import java.util.List;
 
+import com.vaadin.testbench.elements.NotificationElement;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -88,4 +89,19 @@ public class UserAdminIT extends AbstractCrudIT<UserAdminViewElement> {
 		Assert.assertTrue(userAdmin.getPassword().hasClassName("v-textfield-error"));
 	}
 
+
+	@Test
+	public void tryToUpdatedLockedEntity() {
+		UserAdminViewElement view = loginAndNavigateToView();
+		view.getList().getCell(0, 0).click();
+		assertEditState(view, false);
+
+		TextFieldElement field = getFirstFormTextField(view);
+		String oldValue = field.getValue();
+		String newValue = oldValue + "-updated";
+		field.setValue(newValue);
+		assertEditState(view, true);
+		view.getUpdate().click();
+		Assert.assertEquals("An unexpected problem occured while saving the data. Please try refreshing the view or contact the administrator.", $(NotificationElement.class).first().getCaption());
+	}
 }
