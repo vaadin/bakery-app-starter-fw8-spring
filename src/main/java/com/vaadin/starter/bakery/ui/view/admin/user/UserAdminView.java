@@ -47,6 +47,20 @@ public class UserAdminView extends AbstractCrudView<User> {
 		}
 	};
 
+	/**
+	 * Custom validator to be able to decide dynamically whether the password
+	 * field is required or not (empty value when updating the user is
+	 * interpreted as 'do not change the password').
+	 */
+	private Validator<User> lockedValidator = (Validator<User>) (value, context) -> {
+        if (value.isLocked() == true) {
+            // Account is locked. Don't allow saving
+            return ValidationResult.error("This user account is locked from modification. Changes will not be saved.");
+        } else {
+            return ValidationResult.ok();
+        }
+    };
+
 	@Autowired
 	public UserAdminView(UserAdminPresenter presenter) {
 		this.presenter = presenter;
@@ -71,6 +85,7 @@ public class UserAdminView extends AbstractCrudView<User> {
 						bean.setPassword(presenter.encodePassword(value));
 					}
 				});
+		binder.withValidator(lockedValidator);
 		binder.bindInstanceFields(getViewComponent());
 	}
 

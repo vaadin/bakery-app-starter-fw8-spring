@@ -30,6 +30,8 @@ public class User extends AbstractEntity {
 	@Size(max = 255)
 	private String role;
 
+	private boolean locked = false;
+
 	public User() {
 		// An empty constructor is needed for all beans
 	}
@@ -78,4 +80,11 @@ public class User extends AbstractEntity {
 		this.email = email;
 	}
 
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+	}
 }
