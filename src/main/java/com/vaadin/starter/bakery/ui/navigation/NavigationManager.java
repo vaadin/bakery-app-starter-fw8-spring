@@ -1,11 +1,8 @@
 package com.vaadin.starter.bakery.ui.navigation;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.stereotype.Component;
 
 import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
@@ -13,7 +10,6 @@ import com.vaadin.spring.internal.Conventions;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.starter.bakery.app.security.SecurityUtils;
 import com.vaadin.starter.bakery.backend.data.Role;
-import com.vaadin.starter.bakery.ui.view.NavigableView;
 import com.vaadin.starter.bakery.ui.view.dashboard.DashboardView;
 import com.vaadin.starter.bakery.ui.view.storefront.StorefrontView;
 
@@ -23,45 +19,6 @@ import com.vaadin.starter.bakery.ui.view.storefront.StorefrontView;
 @Component
 @UIScope
 public class NavigationManager extends SpringNavigator {
-
-	/**
-	 * Adds support for the beforeLeave method in NavigationEvent so views can
-	 * show a confirmation dialog before actually performing the navigation.
-	 */
-	public static class ViewChangeBeforeLeaveSupport implements ViewChangeListener {
-		boolean viewAlreadyConfirmed = false;
-
-		@Override
-		public boolean beforeViewChange(ViewChangeEvent e) {
-			View oldView = e.getOldView();
-			if (!(oldView instanceof NavigableView)) {
-				return true;
-			}
-			String navigationState = getTargetState(e);
-			if (viewAlreadyConfirmed) {
-				return true;
-			} else {
-				return ((NavigableView) oldView).beforeLeave(() -> {
-					viewAlreadyConfirmed = true;
-					e.getNavigator().navigateTo(navigationState);
-					viewAlreadyConfirmed = false;
-				});
-			}
-		}
-
-		private String getTargetState(ViewChangeEvent e) {
-			if (e.getParameters() == null || e.getParameters().isEmpty()) {
-				return e.getViewName();
-			} else {
-				return e.getViewName() + "/" + e.getParameters();
-			}
-		}
-	}
-
-	@PostConstruct
-	public void init() {
-		addViewChangeListener(new ViewChangeBeforeLeaveSupport());
-	}
 
 	/**
 	 * Find the view id (URI fragment) used for a given view class.
@@ -125,17 +82,6 @@ public class NavigationManager extends SpringNavigator {
 		}
 
 		updateNavigationState(new ViewChangeEvent(this, getCurrentView(), getCurrentView(), viewName, parameters));
-	}
-
-	@Override
-	public NavigableView getCurrentView() {
-		View view = super.getCurrentView();
-		if (view == null || view instanceof NavigableView) {
-			return (NavigableView) view;
-		} else {
-			throw new IllegalStateException("All views must implement NavigableView. The current view "
-					+ view.getClass().getName() + " does not");
-		}
 	}
 
 }

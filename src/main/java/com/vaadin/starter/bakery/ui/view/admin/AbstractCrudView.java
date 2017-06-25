@@ -9,11 +9,12 @@ import org.springframework.security.access.annotation.Secured;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.provider.DataProvider;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewBeforeLeaveEvent;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.backend.data.Role;
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
-import com.vaadin.starter.bakery.ui.view.NavigableView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Component.Focusable;
@@ -53,7 +54,7 @@ import com.vaadin.ui.components.grid.SingleSelectionModel;
  *            the type of entity which can be edited in the view
  */
 @Secured(Role.ADMIN)
-public abstract class AbstractCrudView<T extends AbstractEntity> implements Serializable, NavigableView, HasLogger {
+public abstract class AbstractCrudView<T extends AbstractEntity> implements Serializable, View, HasLogger {
 
 	public static final String CAPTION_DISCARD = "Discard";
 	public static final String CAPTION_CANCEL = "Cancel";
@@ -66,8 +67,8 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 	}
 
 	@Override
-	public boolean beforeLeave(Runnable runOnLeave) {
-		return getPresenter().beforeLeavingView(runOnLeave);
+	public void beforeLeave(ViewBeforeLeaveEvent event) {
+		getPresenter().beforeLeavingView(event);
 	}
 
 	public void showInitialState() {

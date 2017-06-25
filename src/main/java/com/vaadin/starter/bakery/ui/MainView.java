@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
+import com.vaadin.navigator.ViewLeaveAction;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.starter.bakery.app.security.SecuredViewAccessControl;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
-import com.vaadin.starter.bakery.ui.view.NavigableView;
 import com.vaadin.starter.bakery.ui.view.admin.product.ProductAdminView;
 import com.vaadin.starter.bakery.ui.view.admin.user.UserAdminView;
 import com.vaadin.starter.bakery.ui.view.dashboard.DashboardView;
@@ -94,16 +94,13 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 	 * changes.
 	 */
 	public void logout() {
-		Runnable doLogout = () -> {
+		ViewLeaveAction doLogout = () -> {
 			UI ui = getUI();
 			ui.getSession().getSession().invalidate();
 			ui.getPage().reload();
 		};
 
-		NavigableView currentView = navigationManager.getCurrentView();
-		if (currentView.beforeLeave(doLogout::run)) {
-			doLogout.run();
-		}
+		navigationManager.runAfterLeaveConfirmation(doLogout);
 	}
 
 }
