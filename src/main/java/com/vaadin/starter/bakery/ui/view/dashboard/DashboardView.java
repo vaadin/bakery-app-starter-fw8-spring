@@ -27,6 +27,7 @@ import com.vaadin.addon.charts.model.PlotOptionsColumn;
 import com.vaadin.addon.charts.model.PlotOptionsLine;
 import com.vaadin.addon.charts.model.YAxis;
 import com.vaadin.board.Row;
+import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.starter.bakery.backend.data.DashboardData;
@@ -36,7 +37,6 @@ import com.vaadin.starter.bakery.backend.data.entity.Product;
 import com.vaadin.starter.bakery.backend.service.OrderService;
 import com.vaadin.starter.bakery.ui.components.OrdersGrid;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
-import com.vaadin.starter.bakery.ui.view.NavigableView;
 import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView;
 
 /**
@@ -47,7 +47,7 @@ import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView;
  * is added to the class, you should consider splitting out a presenter.
  */
 @SpringView
-public class DashboardView extends DashboardViewDesign implements NavigableView {
+public class DashboardView extends DashboardViewDesign implements View {
 
 	private static final String BOARD_ROW_PANELS = "board-row-panels";
 

@@ -15,6 +15,8 @@ import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValueContext;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewBeforeLeaveEvent;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.starter.bakery.app.BeanLocator;
@@ -23,12 +25,11 @@ import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.data.entity.OrderItem;
 import com.vaadin.starter.bakery.ui.components.ConfirmPopup;
 import com.vaadin.starter.bakery.ui.util.DollarPriceConverter;
-import com.vaadin.starter.bakery.ui.view.NavigableView;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 
 @SpringView(name = "order")
-public class OrderEditView extends OrderEditViewDesign implements NavigableView {
+public class OrderEditView extends OrderEditViewDesign implements View {
 
 	public enum Mode {
 		EDIT, REPORT, CONFIRMATION;
@@ -228,13 +229,12 @@ public class OrderEditView extends OrderEditViewDesign implements NavigableView 
 	}
 
 	@Override
-	public boolean beforeLeave(Runnable event) {
+	public void beforeLeave(ViewBeforeLeaveEvent event) {
 		if (!containsUnsavedChanges()) {
-			return true;
+			event.navigate();
+		} else {
+			ConfirmPopup.get().showLeaveViewConfirmDialog(this, event::navigate);
 		}
-
-		ConfirmPopup.get().showLeaveViewConfirmDialog(this, event::run);
-		return false;
 	}
 
 	public void onProductInfoChanged() {
