@@ -1,17 +1,13 @@
 package com.vaadin.starter.bakery.app.security;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.vaadin.ui.UI;
 
 /**
  * SecurityUtils takes care of all such static operations that have to do with
