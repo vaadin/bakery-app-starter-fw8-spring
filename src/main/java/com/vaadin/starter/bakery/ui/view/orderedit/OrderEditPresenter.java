@@ -14,6 +14,7 @@ import javax.annotation.PreDestroy;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.vaadin.spring.events.EventBus.ViewEventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 
@@ -214,8 +215,15 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 			Notification.show("Please check the contents of the fields: " + e.getMessage(), Type.ERROR_MESSAGE);
 			getLogger().error("Validation error during order save", e);
 			return null;
-		} catch (Exception e) {
+		} catch (OptimisticLockingFailureException e) {
+			// Somebody else probably edited the data at the same time
 			Notification.show("Somebody else might have updated the data. Please refresh and try again.",
+					Type.ERROR_MESSAGE);
+			getLogger().debug("Optimistic locking error while saving order", e);
+			return null;
+		} catch (Exception e) {
+			// Something went wrong, no idea what
+			Notification.show("An unexpected error occurred while saving. Please refresh and try again.",
 					Type.ERROR_MESSAGE);
 			getLogger().error("Unable to save order", e);
 			return null;
