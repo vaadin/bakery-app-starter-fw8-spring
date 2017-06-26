@@ -68,9 +68,7 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 	public OrderInfo getOrderInfo() {
 		OrderInfo order = new OrderInfo();
 		order.customer = getCustomerInfo();
-		// Disabled until https://github.com/vaadin/framework/pull/9263 is
-		// merged
-		// order.dueDate = getDueDate().getValue();
+		order.dueDate = getDueDate().getDate();
 		order.pickupLocation = getPickupLocation().getValue();
 		order.products = new ArrayList<>();
 		int nrProducts = getNumberOfProducts();
@@ -84,9 +82,7 @@ public class OrderEditViewElement extends OrderEditViewDesignElement {
 
 	public void assertOrder(OrderInfo order) {
 		OrderInfo currentInfo = getOrderInfo();
-		// Disabled until https://github.com/vaadin/framework/pull/9263 is
-		// merged
-		// Assert.assertEquals(order.dueDate, currentInfo.dueDate);
+		Assert.assertEquals(order.dueDate, currentInfo.dueDate);
 		Assert.assertEquals(order.pickupLocation, currentInfo.pickupLocation);
 		Assert.assertThat(order.customer, SamePropertyValuesAs.samePropertyValuesAs(currentInfo.customer));
 		Assert.assertEquals(order.state, currentInfo.state);

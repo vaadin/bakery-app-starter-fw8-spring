@@ -2,6 +2,7 @@ package com.vaadin.starter.bakery.ui.view.orderedit;
 
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -82,6 +83,9 @@ public class UpdateOrderIT extends AbstractIT {
 		OrderInfo currentOrder = orderEdit.getOrderInfo();
 		OrderInfo updatedOrder = new OrderInfo();
 
+		LocalDate newDate = currentOrder.dueDate.plusDays(1);
+		orderEdit.getDueDate().setDate(newDate);
+		updatedOrder.dueDate = newDate;
 		int nextStateIndex = (oldState.ordinal() + 1) % OrderState.values().length;
 		OrderState newState = OrderState.values()[nextStateIndex];
 		updatedOrder.state = newState;
