@@ -61,20 +61,4 @@ public class SecurityUtils {
 				.collect(Collectors.toSet());
 	}
 
-	/**
-	 * Checks if access is granted for the current user for the given secured
-	 * view within the given ui.
-	 *
-	 * @param ui
-	 * @param viewSecured
-	 * @return true if access is granted, false otherwise.
-	 */
-	public static boolean isAccessGranted(UI ui, Secured viewSecured) {
-		if (viewSecured == null) {
-			return true;
-		}
-
-		return Arrays.asList(viewSecured.value()).stream().anyMatch(SecurityUtils::isCurrentUserInRole);
-	}
-
 }

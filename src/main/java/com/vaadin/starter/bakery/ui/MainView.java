@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import com.vaadin.spring.access.SecuredViewAccessControl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
@@ -12,7 +13,6 @@ import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.navigator.ViewLeaveAction;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.starter.bakery.app.security.SecuredViewAccessControl;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.admin.product.ProductAdminView;
 import com.vaadin.starter.bakery.ui.view.admin.user.UserAdminView;
@@ -65,7 +65,7 @@ public class MainView extends MainViewDesign implements ViewDisplay {
 	 *            the view to navigate to when the user clicks the button
 	 */
 	private void attachNavigation(Button navigationButton, Class<? extends View> targetView) {
-		boolean hasAccessToView = viewAccessControl.isAccessGranted(getUI(), targetView);
+		boolean hasAccessToView = viewAccessControl.isAccessGranted(targetView);
 		navigationButton.setVisible(hasAccessToView);
 
 		if (hasAccessToView) {

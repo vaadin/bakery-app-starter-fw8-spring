@@ -3,6 +3,7 @@
 .settings
 target
 .idea
+*.iml
 
 styles.css
 styles.scss.cache
