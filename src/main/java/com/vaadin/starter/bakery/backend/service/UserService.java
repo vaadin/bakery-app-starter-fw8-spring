@@ -3,6 +3,7 @@ package com.vaadin.starter.bakery.backend.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,5 +61,21 @@ public class UserService implements CrudService<User> {
 
 	public String encodePassword(String value) {
 		return passwordEncoder.encode(value);
+	}
+
+	@Override
+	public User save(User entity) {
+		if(entity.isLocked()){
+			throw new UserLockedException("Tried to save User entity, but it has been locked and changes through API" +
+					"is not permitted");
+		}
+		return getRepository().save(entity);
+	}
+
+	class UserLockedException extends DataAccessException {
+
+		public UserLockedException(String msg) {
+			super(msg);
+		}
 	}
 }
