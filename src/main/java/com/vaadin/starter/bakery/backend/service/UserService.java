@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +15,7 @@ import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.app.security.SecurityUtils;
 import com.vaadin.starter.bakery.backend.UserRepository;
 import com.vaadin.starter.bakery.backend.data.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService implements CrudService<User> {
@@ -64,18 +67,29 @@ public class UserService implements CrudService<User> {
 	}
 
 	@Override
+    @Transactional
 	public User save(User entity) {
+	    if(entity.getId() != null) {
+            User dbUser = getRepository().getOne(entity.getId());
+            if(dbUser.isLocked()){
+                throw new DataIntegrityViolationException("Tried to save User entity, but it has been locked " +
+                        "and changes through API is not permitted");
+            }
+        }
 		if(entity.isLocked()){
-			throw new UserLockedException("Tried to save User entity, but it has been locked and changes through API" +
-					"is not permitted");
+			throw new DataIntegrityViolationException("Tried to save User entity, but it has been locked and changes" +
+                    " through API is not permitted");
 		}
 		return getRepository().save(entity);
 	}
 
-	class UserLockedException extends DataAccessException {
-
-		public UserLockedException(String msg) {
-			super(msg);
-		}
-	}
+    @Override
+    @Transactional
+    public void delete(long id) {
+        User user = getRepository().getOne(id);
+        if(user != null && user.isLocked()){
+            throw new DataIntegrityViolationException("User has been locked from editing.");
+        }
+        getRepository().delete(id);
+    }
 }
