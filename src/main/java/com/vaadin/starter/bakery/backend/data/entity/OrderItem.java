@@ -2,6 +2,7 @@ package com.vaadin.starter.bakery.backend.data.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,6 +14,7 @@ public class OrderItem extends AbstractEntity {
 	@NotNull
 	private Product product;
 	@Min(1)
+	@Max(1000)
 	private int quantity = 1;
 	@Size(max = 255)
 	private String comment;
