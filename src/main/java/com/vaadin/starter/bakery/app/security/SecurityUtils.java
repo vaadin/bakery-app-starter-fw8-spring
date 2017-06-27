@@ -1,17 +1,13 @@
 package com.vaadin.starter.bakery.app.security;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.vaadin.ui.UI;
 
 /**
  * SecurityUtils takes care of all such static operations that have to do with
@@ -59,22 +55,6 @@ public class SecurityUtils {
 		SecurityContext context = SecurityContextHolder.getContext();
 		return context.getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority)
 				.collect(Collectors.toSet());
-	}
-
-	/**
-	 * Checks if access is granted for the current user for the given secured
-	 * view within the given ui.
-	 *
-	 * @param ui
-	 * @param viewSecured
-	 * @return true if access is granted, false otherwise.
-	 */
-	public static boolean isAccessGranted(UI ui, Secured viewSecured) {
-		if (viewSecured == null) {
-			return true;
-		}
-
-		return Arrays.asList(viewSecured.value()).stream().anyMatch(SecurityUtils::isCurrentUserInRole);
 	}
 
 }
