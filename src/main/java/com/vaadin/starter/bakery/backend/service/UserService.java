@@ -3,23 +3,22 @@ package com.vaadin.starter.bakery.backend.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.app.security.SecurityUtils;
 import com.vaadin.starter.bakery.backend.UserRepository;
 import com.vaadin.starter.bakery.backend.data.entity.User;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService implements CrudService<User> {
 
+	private static final String MODIFY_LOCKED_USER_NOT_PERMITTED = "User has been locked and cannot be modified or deleted";
 	private final PasswordEncoder passwordEncoder;
 
 	@Autowired
@@ -67,29 +66,28 @@ public class UserService implements CrudService<User> {
 	}
 
 	@Override
-    @Transactional
+	@Transactional
 	public User save(User entity) {
-	    if(entity.getId() != null) {
-            User dbUser = getRepository().getOne(entity.getId());
-            if(dbUser.isLocked()){
-                throw new DataIntegrityViolationException("Tried to save User entity, but it has been locked " +
-                        "and changes through API is not permitted");
-            }
-        }
-		if(entity.isLocked()){
-			throw new DataIntegrityViolationException("Tried to save User entity, but it has been locked and changes" +
-                    " through API is not permitted");
-		}
+		throwIfUserLocked(entity.getId());
 		return getRepository().save(entity);
 	}
 
-    @Override
-    @Transactional
-    public void delete(long id) {
-        User user = getRepository().getOne(id);
-        if(user != null && user.isLocked()){
-            throw new DataIntegrityViolationException("User has been locked from editing.");
-        }
-        getRepository().delete(id);
-    }
+	@Override
+	@Transactional
+	public void delete(long userId) {
+		throwIfUserLocked(userId);
+		getRepository().delete(userId);
+	}
+
+	private void throwIfUserLocked(Long userId) {
+		if (userId == null) {
+			return;
+		}
+
+		User dbUser = getRepository().findOne(userId);
+		if (dbUser.isLocked()) {
+			throw new DataIntegrityViolationException(MODIFY_LOCKED_USER_NOT_PERMITTED);
+		}
+	}
+
 }
