@@ -47,7 +47,8 @@ public class ProductInfo extends ProductInfoDesign {
 	public void init() {
 		binder = new BeanValidationBinder<>(OrderItem.class);
 		binder.setRequiredConfigurator(null);
-		binder.forField(quantity).withConverter(new StringToIntegerConverter("Please enter a number")).bind("quantity");
+		binder.forField(quantity).withConverter(new StringToIntegerConverter(-1, "Please enter a number"))
+				.bind("quantity");
 		binder.bindInstanceFields(this);
 		binder.addValueChangeListener(e -> fireProductInfoChanged());
 
