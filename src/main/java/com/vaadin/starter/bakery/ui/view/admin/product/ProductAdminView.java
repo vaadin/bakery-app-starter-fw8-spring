@@ -36,7 +36,11 @@ public class ProductAdminView extends AbstractCrudView<Product> {
 	public void init() {
 		super.init();
 		presenter.init(this);
+		// Show two columns: "name" and "price".
 		getGrid().setColumns("name", PRICE_PROPERTY);
+		// The price column is configured automatically based on the bean. As
+		// we want a custom converter, we remove the column and configure it
+		// manually.
 		getGrid().removeColumn(PRICE_PROPERTY);
 		getGrid().addColumn(product -> priceToStringConverter.convertToPresentation(product.getPrice(),
 				new ValueContext(getGrid()))).setSortProperty(PRICE_PROPERTY);
