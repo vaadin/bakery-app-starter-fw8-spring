@@ -1,5 +1,6 @@
 package com.vaadin.starter.bakery.app;
 
+import com.vaadin.spring.access.SecuredViewAccessControl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,4 +17,9 @@ public class ApplicationConfiguration {
 		return new BCryptPasswordEncoder();
 	}
 
+	@Bean
+	SecuredViewAccessControl securedViewAccessControl()
+	{
+		return new SecuredViewAccessControl();
+	}
 }
