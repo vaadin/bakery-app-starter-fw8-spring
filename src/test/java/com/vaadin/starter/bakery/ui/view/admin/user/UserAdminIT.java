@@ -13,6 +13,8 @@ import com.vaadin.testbench.elements.TextFieldElement;
 
 public class UserAdminIT extends AbstractCrudIT<UserAdminViewElement> {
 
+	private static final String MODIFY_LOCKED_USER_NOT_PERMITTED = "User has been locked and cannot be modified or deleted";
+
 	@Override
 	protected String getViewName() {
 		return "Users";
@@ -101,9 +103,8 @@ public class UserAdminIT extends AbstractCrudIT<UserAdminViewElement> {
 		field.setValue(newValue);
 		assertEditState(view, true);
 		view.getUpdate().click();
-		Assert.assertEquals(
-				"An unexpected problem occured while saving the data. Please try refreshing the view or contact the administrator.",
-				$(NotificationElement.class).first().getCaption());
+
+		Assert.assertEquals(MODIFY_LOCKED_USER_NOT_PERMITTED, $(NotificationElement.class).first().getCaption());
 	}
 
 	@Test
@@ -113,7 +114,6 @@ public class UserAdminIT extends AbstractCrudIT<UserAdminViewElement> {
 		view.getList().getCell(0, 0).click();
 		assertEditState(view, false);
 		view.getDelete().click();
-		Assert.assertEquals("The given entity cannot be deleted as there are references to it in the database",
-				$(NotificationElement.class).first().getCaption());
+		Assert.assertEquals(MODIFY_LOCKED_USER_NOT_PERMITTED, $(NotificationElement.class).first().getCaption());
 	}
 }
