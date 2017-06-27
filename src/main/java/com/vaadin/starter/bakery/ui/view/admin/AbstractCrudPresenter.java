@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import org.springframework.core.ResolvableType;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
 
 import com.vaadin.data.BeanValidationBinder;
@@ -232,9 +233,15 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		T entity;
 		try {
 			entity = service.save(editItem);
+		} catch (OptimisticLockingFailureException e) {
+			// Somebody else probably edited the data at the same time
+			Notification.show("Somebody else might have updated the data. Please refresh and try again.",
+					Type.ERROR_MESSAGE);
+			getLogger().debug("Optimistic locking error while saving entity of type " + editItem.getClass().getName(),
+					e);
+			return;
 		} catch (Exception e) {
-			// The most likely cause is an optimistic locking error, i.e.
-			// somebody else edited the data
+			// Something went wrong, no idea what
 			Notification.show("A problem occured while saving the data. Please check the fields.", Type.ERROR_MESSAGE);
 			getLogger().error("Unable to save entity of type " + editItem.getClass().getName(), e);
 			return;
