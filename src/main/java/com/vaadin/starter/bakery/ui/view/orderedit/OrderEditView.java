@@ -58,10 +58,8 @@ public class OrderEditView extends OrderEditViewDesign implements View {
 		// We're limiting dueTime to even hours between 07:00 and 17:00
 		dueTime.setItems(IntStream.range(7, 17).mapToObj(h -> LocalTime.of(h, 0)));
 
-		// Binds properties in Order automatically:
-		// pickupLocation, state, paid
-		// Does not bind sub properties, see
-		// https://github.com/vaadin/framework/issues/8384
+		// Binder takes care of binding Vaadin fields defined as Java member
+		// fields in this class to properties in the Order bean
 		binder = new BeanValidationBinder<>(Order.class);
 
 		// Almost all fields are required, so we don't want to display
@@ -74,7 +72,7 @@ public class OrderEditView extends OrderEditViewDesign implements View {
 		// multiple errors.
 		binder.bindInstanceFields(this);
 
-		// These can be removed once
+		// Must bind sub properties manually until
 		// https://github.com/vaadin/framework/issues/9210 is fixed
 		binder.bind(fullName, "customer.fullName");
 		binder.bind(phone, "customer.phoneNumber");
