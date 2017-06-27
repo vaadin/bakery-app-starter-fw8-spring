@@ -238,6 +238,7 @@ public class DashboardView extends DashboardViewDesign implements View {
 	 *
 	 */
 	private static class PlotOptionsLineWithZIndex extends PlotOptionsLine {
+		@SuppressWarnings("unused")
 		private Number zIndex;
 
 		public PlotOptionsLineWithZIndex(Number zIndex) {
