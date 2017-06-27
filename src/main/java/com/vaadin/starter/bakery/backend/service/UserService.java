@@ -3,10 +3,12 @@ package com.vaadin.starter.bakery.backend.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.app.security.SecurityUtils;
@@ -16,6 +18,7 @@ import com.vaadin.starter.bakery.backend.data.entity.User;
 @Service
 public class UserService implements CrudService<User> {
 
+	private static final String MODIFY_LOCKED_USER_NOT_PERMITTED = "User has been locked and cannot be modified or deleted";
 	private final PasswordEncoder passwordEncoder;
 
 	@Autowired
@@ -61,4 +64,30 @@ public class UserService implements CrudService<User> {
 	public String encodePassword(String value) {
 		return passwordEncoder.encode(value);
 	}
+
+	@Override
+	@Transactional
+	public User save(User entity) {
+		throwIfUserLocked(entity.getId());
+		return getRepository().save(entity);
+	}
+
+	@Override
+	@Transactional
+	public void delete(long userId) {
+		throwIfUserLocked(userId);
+		getRepository().delete(userId);
+	}
+
+	private void throwIfUserLocked(Long userId) {
+		if (userId == null) {
+			return;
+		}
+
+		User dbUser = getRepository().findOne(userId);
+		if (dbUser.isLocked()) {
+			throw new DataIntegrityViolationException(MODIFY_LOCKED_USER_NOT_PERMITTED);
+		}
+	}
+
 }
