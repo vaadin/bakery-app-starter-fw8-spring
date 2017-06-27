@@ -1,8 +1,7 @@
 package com.vaadin.starter.bakery.ui.view.admin;
 
 import java.io.Serializable;
-import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.List;
 
 import org.springframework.core.ResolvableType;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -10,15 +9,17 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
 
 import com.vaadin.data.BeanValidationBinder;
-import com.vaadin.data.BinderValidationStatus;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.StatusChangeEvent;
+import com.vaadin.data.ValidationException;
+import com.vaadin.data.ValidationResult;
 import com.vaadin.navigator.ViewBeforeLeaveEvent;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
 import com.vaadin.starter.bakery.backend.service.CrudService;
+import com.vaadin.starter.bakery.backend.service.UserFriendlyDataException;
 import com.vaadin.starter.bakery.ui.components.ConfirmPopup;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.ui.Grid;
@@ -205,27 +206,23 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	}
 
 	public void updateClicked() {
-		BinderValidationStatus<T> validationStatus = binder.validate();
-		if (validationStatus.hasErrors()) {
-			Stream<HasValue<?>> fieldsWithErrors = validationStatus.getFieldValidationErrors().stream()
-					.map(BindingValidationStatus::getField);
-			Optional<HasValue<?>> firstErrorField = fieldsWithErrors.findFirst();
-			if (firstErrorField.isPresent()) {
-				getView().focusField(firstErrorField.get());
+		try {
+			// The validate() call is needed only to ensure that the error
+			// indicator is properly shown for the field in case of an error
+			getBinder().validate();
+			getBinder().writeBean(editItem);
+		} catch (ValidationException e) {
+			// Commit failed because of validation errors
+			List<BindingValidationStatus<?>> fieldErrors = e.getFieldValidationErrors();
+			if (!fieldErrors.isEmpty()) {
+				// Field level error
+				HasValue<?> firstErrorField = fieldErrors.get(0).getField();
+				getView().focusField(firstErrorField);
 			} else {
 				// Bean validation error
+				ValidationResult firstError = e.getBeanValidationErrors().get(0);
+				Notification.show(firstError.getErrorMessage(), Type.ERROR_MESSAGE);
 			}
-
-			return;
-		}
-
-		if (!getBinder().writeBeanIfValid(editItem)) {
-			// Commit failed because of validation errors - which should never
-			// happen as validation is checked above
-			Notification.show(
-					"An unexpected problem occured while saving the data. Please try refreshing the view or contact the administrator.",
-					Type.ERROR_MESSAGE);
-			getLogger().error("Unable to commit entity of type " + editItem.getClass().getName());
 			return;
 		}
 
@@ -239,6 +236,10 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 					Type.ERROR_MESSAGE);
 			getLogger().debug("Optimistic locking error while saving entity of type " + editItem.getClass().getName(),
 					e);
+			return;
+		} catch (UserFriendlyDataException e) {
+			Notification.show(e.getMessage(), Type.ERROR_MESSAGE);
+			getLogger().debug("Unable to update entity of type " + editItem.getClass().getName(), e);
 			return;
 		} catch (Exception e) {
 			// Something went wrong, no idea what
@@ -276,6 +277,10 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	public void deleteClicked() {
 		try {
 			deleteEntity(editItem);
+		} catch (UserFriendlyDataException e) {
+			Notification.show(e.getMessage(), Type.ERROR_MESSAGE);
+			getLogger().debug("Unable to delete entity of type " + editItem.getClass().getName(), e);
+			return;
 		} catch (DataIntegrityViolationException e) {
 			Notification.show("The given entity cannot be deleted as there are references to it in the database",
 					Type.ERROR_MESSAGE);

@@ -3,7 +3,6 @@ package com.vaadin.starter.bakery.backend.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -86,7 +85,7 @@ public class UserService implements CrudService<User> {
 
 		User dbUser = getRepository().findOne(userId);
 		if (dbUser.isLocked()) {
-			throw new DataIntegrityViolationException(MODIFY_LOCKED_USER_NOT_PERMITTED);
+			throw new UserFriendlyDataException(MODIFY_LOCKED_USER_NOT_PERMITTED);
 		}
 	}
 
