@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.util.HtmlUtils;
 import org.vaadin.spring.annotation.PrototypeScope;
 
 import com.vaadin.spring.annotation.SpringComponent;
@@ -104,7 +105,8 @@ public class OrdersGrid extends Grid<Order> {
 	}
 
 	private static String twoRowCell(String header, String content) {
-		return "<div class=\"header\">" + header + "</div><div class=\"content\">" + content + "</div>";
+		return "<div class=\"header\">" + HtmlUtils.htmlEscape(header) + "</div><div class=\"content\">"
+				+ HtmlUtils.htmlEscape(content) + "</div>";
 	}
 
 }
