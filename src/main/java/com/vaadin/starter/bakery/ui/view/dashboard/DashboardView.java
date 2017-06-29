@@ -49,6 +49,8 @@ import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView;
 @SpringView
 public class DashboardView extends DashboardViewDesign implements View {
 
+	private static final String DELIVERIES = "Deliveries";
+
 	private static final String BOARD_ROW_PANELS = "board-row-panels";
 
 	private final NavigationManager navigationManager;
@@ -140,7 +142,7 @@ public class DashboardView extends DashboardViewDesign implements View {
 		Configuration conf = monthlyProductSplit.getConfiguration();
 		String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL, Locale.US);
 		conf.setTitle("Products delivered in " + thisMonth);
-		deliveriesPerProductSeries = new DataSeries();
+		deliveriesPerProductSeries = new DataSeries(DELIVERIES);
 		conf.addSeries(deliveriesPerProductSeries);
 
 		conf.getyAxis().setTitle("");
@@ -163,7 +165,7 @@ public class DashboardView extends DashboardViewDesign implements View {
 		yearConf.getxAxis().setCategories(getMonthNames());
 		yearConf.getxAxis().setLabels(new Labels(null));
 		yearConf.getLegend().setEnabled(false);
-		deliveriesThisYearSeries = new ListSeries("Deliveries");
+		deliveriesThisYearSeries = new ListSeries(DELIVERIES);
 		yearConf.addSeries(deliveriesThisYearSeries);
 		configureColumnSeries(deliveriesThisYearSeries);
 
@@ -172,7 +174,7 @@ public class DashboardView extends DashboardViewDesign implements View {
 		monthConf.setTitle("Deliveries in " + thisMonth);
 		monthConf.getChart().setMarginBottom(6);
 		monthConf.getLegend().setEnabled(false);
-		deliveriesThisMonthSeries = new ListSeries("Deliveries");
+		deliveriesThisMonthSeries = new ListSeries(DELIVERIES);
 		monthConf.addSeries(deliveriesThisMonthSeries);
 		configureColumnSeries(deliveriesThisMonthSeries);
 
