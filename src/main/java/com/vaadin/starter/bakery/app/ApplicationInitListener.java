@@ -2,13 +2,15 @@ package com.vaadin.starter.bakery.app;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import com.vaadin.server.ConnectorIdGenerator;
 import com.vaadin.server.ServiceInitEvent;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServiceInitListener;
 import com.vaadin.server.VaadinSession;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.vaadin.connectoridgenerator.ComponentIdBasedConnectorIdGenerator;
 
 /**
