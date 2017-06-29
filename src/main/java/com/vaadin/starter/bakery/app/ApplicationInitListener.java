@@ -11,7 +11,7 @@ import com.vaadin.server.ServiceInitEvent;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServiceInitListener;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.starter.bakery.app.loadtest.ComponentIdBasedConnectorIdGenerator;
+import org.vaadin.connectoridgenerator.ComponentIdBasedConnectorIdGenerator;
 
 /**
  * Configures the VaadinService instance that serves the app through a servlet.
