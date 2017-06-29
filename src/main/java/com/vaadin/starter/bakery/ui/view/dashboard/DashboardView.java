@@ -140,7 +140,7 @@ public class DashboardView extends DashboardViewDesign implements View {
 		Configuration conf = monthlyProductSplit.getConfiguration();
 		String thisMonth = today.getMonth().getDisplayName(TextStyle.FULL, Locale.US);
 		conf.setTitle("Products delivered in " + thisMonth);
-		deliveriesPerProductSeries = new DataSeries();
+		deliveriesPerProductSeries = new DataSeries("Deliveries");
 		conf.addSeries(deliveriesPerProductSeries);
 
 		conf.getyAxis().setTitle("");
