@@ -6,10 +6,9 @@ import com.vaadin.server.ConnectorIdGenerator;
 import com.vaadin.server.ServiceInitEvent;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServiceInitListener;
-import com.vaadin.server.VaadinServletService;
 import com.vaadin.server.VaadinSession;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.vaadin.connectoridgenerator.ComponentIdBasedConnectorIdGenerator;
 
 /**
@@ -21,9 +20,11 @@ import org.vaadin.connectoridgenerator.ComponentIdBasedConnectorIdGenerator;
  * Uses a bootstrap listener to modify the bootstrap HTML page and include icons
  * for home screen for mobile devices.
  */
+@Component
 public class ApplicationInitListener implements VaadinServiceInitListener {
 
-    private static final String LOADTESTMODE_PROPERTY = "loadtestmode.enabled";
+    @Value("${loadtestmode.enabled}")
+    private boolean loadTestModeEnabled;
 
     @Override
     public void serviceInit(ServiceInitEvent serviceInitEvent) {
@@ -32,7 +33,7 @@ public class ApplicationInitListener implements VaadinServiceInitListener {
         service.addSessionInitListener(event -> event.getSession()
                 .addBootstrapListener(new IconBootstrapListener()));
 
-        if (isLoadTestEnabled(service)) {
+        if (loadTestModeEnabled) {
             Logger.getLogger(ApplicationInitListener.class.getName()).log(
                     Level.WARNING,
                     "Running in load test mode, do not use this in production");
@@ -41,24 +42,6 @@ public class ApplicationInitListener implements VaadinServiceInitListener {
                     event -> getGenerator(event.getSession())
                             .generateConnectorId(event));
         }
-    }
-
-    private static boolean isLoadTestEnabled(VaadinService service) {
-        /*
-         * Must manually find the application property since service init
-         * listeners are not Spring managed beans.
-         *
-         * See https://github.com/vaadin/spring/issues/213 and
-         * https://github.com/vaadin/spring/pull/218.
-         */
-        WebApplicationContext applicationContext = WebApplicationContextUtils
-                .getWebApplicationContext(((VaadinServletService) service)
-                        .getServlet().getServletContext());
-
-        Boolean loadTestMode = applicationContext.getEnvironment()
-                .getProperty(LOADTESTMODE_PROPERTY, Boolean.class);
-
-        return Boolean.TRUE.equals(loadTestMode);
     }
 
     private static ConnectorIdGenerator getGenerator(VaadinSession session) {
