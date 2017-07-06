@@ -6,18 +6,23 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.vaadin.starter.bakery.backend.util.Blacklist;
+
 @Entity
 public class Customer extends AbstractEntity {
 
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)
+	@Blacklist("demo.blacklist")
 	private String fullName;
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)
+	@Blacklist("demo.blacklist")
 	private String phoneNumber;
 	@Size(max = 255)
+	@Blacklist("demo.blacklist")
 	private String details;
 
 	public Customer() {

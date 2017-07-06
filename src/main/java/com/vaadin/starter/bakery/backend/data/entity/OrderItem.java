@@ -7,6 +7,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.vaadin.starter.bakery.backend.util.Blacklist;
+
 @Entity
 public class OrderItem extends AbstractEntity {
 
@@ -17,6 +19,7 @@ public class OrderItem extends AbstractEntity {
 	@Max(1000)
 	private int quantity = 1;
 	@Size(max = 255)
+	@Blacklist("demo.blacklist")
 	private String comment;
 
 	public OrderItem() {

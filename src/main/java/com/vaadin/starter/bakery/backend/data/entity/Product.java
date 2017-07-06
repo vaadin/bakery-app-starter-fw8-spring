@@ -5,10 +5,13 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
+import com.vaadin.starter.bakery.backend.util.Blacklist;
+
 @Entity
 public class Product extends AbstractEntity {
 
 	@Size(max = 255)
+	@Blacklist("demo.blacklist")
 	private String name;
 
 	// Real price * 100 as an int to avoid rounding errors

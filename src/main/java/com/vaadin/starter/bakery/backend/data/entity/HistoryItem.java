@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.vaadin.starter.bakery.backend.data.OrderState;
+import com.vaadin.starter.bakery.backend.util.Blacklist;
 
 @Entity
 public class HistoryItem extends AbstractEntity {
@@ -18,6 +19,7 @@ public class HistoryItem extends AbstractEntity {
 
 	@NotEmpty
 	@Size(max = 255)
+	@Blacklist("demo.blacklist")
 	private String message;
 
 	@NotNull
