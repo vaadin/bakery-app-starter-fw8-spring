@@ -2,6 +2,7 @@ package com.vaadin.starter.bakery.backend.data.entity;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,6 +15,7 @@ public class User extends AbstractEntity {
 	@NotNull
 	@NotEmpty
 	@Size(max = 255)
+	@Column(unique = true)
 	private String email;
 
 	@NotNull
