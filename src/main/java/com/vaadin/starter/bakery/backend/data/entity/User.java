@@ -7,29 +7,24 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 @Entity
 public class User extends AbstractEntity {
 
 	@NotNull
-	@NotEmpty
-	@Size(max = 255)
+	@Size(min = 1, max = 255)
 	@Column(unique = true)
 	private String email;
 
 	@NotNull
-	@NotEmpty
 	@Size(min = 4, max = 255)
 	private String password;
 
 	@NotNull
-	@NotEmpty
-	@Size(max = 255)
+	@Size(min = 1, max = 255)
 	private String name;
 
 	@NotNull
-	@Size(max = 255)
+	@Size(min = 1, max = 255)
 	private String role;
 
 	private boolean locked = false;
