@@ -2,7 +2,6 @@ package com.vaadin.starter.bakery.ui.view.orderedit;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -70,7 +69,7 @@ public class AddOrderIT extends AbstractIT {
 
 		OrderInfo testOrder = new TestOrder();
 		orderEditView.setCustomerInfo(testOrder.customer);
-		orderEditView.getDueDate().setValue(format(testOrder.dueDate));
+		orderEditView.getDueDate().setDate(testOrder.dueDate);
 		orderEditView.getDueTime().selectByText(testOrder.dueTime.toString());
 		orderEditView.getPickupLocation().selectByText(testOrder.pickupLocation);
 
@@ -176,11 +175,6 @@ public class AddOrderIT extends AbstractIT {
 		orderEditView.getOk().focus();
 		orderEditView.getOk().click();
 		Assert.assertEquals(OrderState.CONFIRMED, orderEditView.getCurrentState());
-	}
-
-	private String format(LocalDate date) {
-		return date.format(DateTimeFormatter.ofPattern("M/dd/yy"));
-
 	}
 
 	@Test
