@@ -20,6 +20,7 @@ public class HistoryItem extends AbstractEntity {
 
 	@NotNull
 	private LocalDateTime timestamp;
+	@NotNull
 	@OneToOne
 	private User createdBy;
 
