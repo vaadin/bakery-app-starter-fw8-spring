@@ -12,9 +12,11 @@ import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.starter.bakery.app.BeanLocator;
+import com.vaadin.starter.bakery.app.security.SecurityUtils;
 import com.vaadin.starter.bakery.backend.data.entity.HistoryItem;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.service.OrderService;
+import com.vaadin.starter.bakery.backend.service.UserService;
 import com.vaadin.starter.bakery.ui.util.DateTimeFormatter;
 import com.vaadin.ui.Button.ClickShortcut;
 import com.vaadin.ui.Label;
@@ -39,6 +41,8 @@ public class OrderHistory extends OrderHistoryDesign {
 
 	private OrderService orderService;
 
+	private UserService userService;
+
 	@Autowired
 	public OrderHistory(DateTimeFormatter dateTimeFormatter, ViewEventBus eventBus) {
 		this.dateTimeFormatter = dateTimeFormatter;
@@ -50,6 +54,13 @@ public class OrderHistory extends OrderHistoryDesign {
 			orderService = BeanLocator.find(OrderService.class);
 		}
 		return orderService;
+	}
+
+	protected UserService getUserService() {
+		if (userService == null) {
+			userService = BeanLocator.find(UserService.class);
+		}
+		return userService;
 	}
 
 	@PostConstruct
@@ -71,7 +82,7 @@ public class OrderHistory extends OrderHistoryDesign {
 	}
 
 	public void addNewComment(String comment) {
-		getOrderService().addHistoryItem(order, comment);
+		getOrderService().addHistoryItem(order, comment, SecurityUtils.getCurrentUser(getUserService()));
 		eventBus.publish(this, new OrderUpdated());
 	}
 

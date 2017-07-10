@@ -9,6 +9,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.vaadin.starter.bakery.backend.data.entity.User;
+import com.vaadin.starter.bakery.backend.service.UserService;
+
 /**
  * SecurityUtils takes care of all such static operations that have to do with
  * security and querying rights from different beans of the UI.
@@ -57,4 +60,12 @@ public class SecurityUtils {
 				.collect(Collectors.toSet());
 	}
 
+	/**
+	 * Gets the user object for the current user.
+	 *
+	 * @return the user object
+	 */
+	public static User getCurrentUser(UserService userService) {
+		return userService.findByEmail(SecurityUtils.getUsername());
+	}
 }

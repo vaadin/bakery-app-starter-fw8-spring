@@ -27,6 +27,7 @@ import com.vaadin.starter.bakery.backend.data.entity.Customer;
 import com.vaadin.starter.bakery.backend.data.entity.HistoryItem;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
+import com.vaadin.starter.bakery.backend.data.entity.User;
 
 @Service
 public class OrderService {
@@ -50,20 +51,20 @@ public class OrderService {
 		return getOrderRepository().findOne(id);
 	}
 
-	public Order changeState(Order order, OrderState state) {
+	public Order changeState(Order order, OrderState state, User user) {
 		if (order.getState() == state) {
 			throw new IllegalArgumentException("Order state is already " + state);
 		}
 		order.setState(state);
-		addHistoryItem(order, state);
+		addHistoryItem(order, state, user);
 
 		return getOrderRepository().save(order);
 	}
 
-	private void addHistoryItem(Order order, OrderState newState) {
+	private void addHistoryItem(Order order, OrderState newState, User user) {
 		String comment = "Order " + newState.getDisplayName();
 
-		HistoryItem item = new HistoryItem(getUserService().getCurrentUser(), comment);
+		HistoryItem item = new HistoryItem(user, comment);
 		item.setNewState(newState);
 		if (order.getHistory() == null) {
 			order.setHistory(new ArrayList<>());
@@ -72,14 +73,14 @@ public class OrderService {
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	public Order saveOrder(Order order) {
+	public Order saveOrder(Order order, User user) {
 		Customer customer = getCustomerRepository().save(order.getCustomer());
 		order.setCustomer(customer);
 
 		if (order.getHistory() == null) {
 			String comment = "Order placed";
 			order.setHistory(new ArrayList<>());
-			HistoryItem item = new HistoryItem(getUserService().getCurrentUser(), comment);
+			HistoryItem item = new HistoryItem(user, comment);
 			item.setNewState(OrderState.NEW);
 			order.getHistory().add(item);
 		}
@@ -87,8 +88,8 @@ public class OrderService {
 		return getOrderRepository().save(order);
 	}
 
-	public Order addHistoryItem(Order order, String comment) {
-		HistoryItem item = new HistoryItem(getUserService().getCurrentUser(), comment);
+	public Order addHistoryItem(Order order, String comment, User user) {
+		HistoryItem item = new HistoryItem(user, comment);
 
 		if (order.getHistory() == null) {
 			order.setHistory(new ArrayList<>());
