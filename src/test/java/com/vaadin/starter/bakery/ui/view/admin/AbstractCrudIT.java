@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.vaadin.testbench.elements.NotificationElement;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -315,8 +314,17 @@ public abstract class AbstractCrudIT<T extends CrudViewElement> extends Abstract
 
 	@Test
 	public void enterEditUsingParameter() {
-		loginAndNavigateToView();
-		getDriver().get(getDriver().getCurrentUrl() + "/1");
+		T view = loginAndNavigateToView();
+		String url = getDriver().getCurrentUrl();
+		view.getList().getCell(0, 0).click();
+		String firstIdUrl = getDriver().getCurrentUrl();
+		String firstId = firstIdUrl.substring(firstIdUrl.lastIndexOf("/") + 1);
+
+		// Select the second row (to avoid having the first already selected),
+		// open the url and first row should be selected
+		view.getList().getCell(1, 0).click();
+		getDriver().get(url + "/" + firstId);
+
 		T viewElement = getViewElement();
 		TextFieldElement firstField = getFirstFormTextField(viewElement);
 		Assert.assertNotEquals("", firstField.getValue());

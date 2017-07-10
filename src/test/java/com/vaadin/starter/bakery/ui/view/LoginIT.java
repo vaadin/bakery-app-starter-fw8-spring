@@ -5,14 +5,14 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 
 import com.vaadin.starter.bakery.AbstractIT;
-import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditViewElement;
+import com.vaadin.starter.bakery.ui.view.dashboard.DashboardViewElement;
 
 public class LoginIT extends AbstractIT {
 
 	@Test
 	public void userIsRedirectedToRequestedView() {
-		openLoginView(APP_URL + "#!order/1").login("barista@vaadin.com", "barista");
-		Assert.assertEquals("#1", $(OrderEditViewElement.class).first().getOrderId().getText());
+		openLoginView(APP_URL + "#!dashboard").login("barista@vaadin.com", "barista");
+		Assert.assertNotNull($(DashboardViewElement.class).first());
 	}
 
 	@Test
