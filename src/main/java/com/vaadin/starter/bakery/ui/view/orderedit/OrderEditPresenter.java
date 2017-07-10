@@ -22,12 +22,14 @@ import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.starter.bakery.app.HasLogger;
+import com.vaadin.starter.bakery.app.security.SecurityUtils;
 import com.vaadin.starter.bakery.backend.data.OrderState;
 import com.vaadin.starter.bakery.backend.data.entity.Customer;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.data.entity.OrderItem;
 import com.vaadin.starter.bakery.backend.service.OrderService;
 import com.vaadin.starter.bakery.backend.service.PickupLocationService;
+import com.vaadin.starter.bakery.backend.service.UserService;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
 import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditView.Mode;
 import com.vaadin.starter.bakery.ui.view.storefront.StorefrontView;
@@ -42,6 +44,7 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 	private OrderEditView view;
 
 	private final OrderService orderService;
+	private final UserService userService;
 
 	private final PickupLocationService pickupLocationService;
 
@@ -54,10 +57,11 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 
 	@Autowired
 	public OrderEditPresenter(ViewEventBus viewEventBus, NavigationManager navigationManager, OrderService orderService,
-			PickupLocationService pickupLocationService) {
+			UserService userService, PickupLocationService pickupLocationService) {
 		this.viewEventBus = viewEventBus;
 		this.navigationManager = navigationManager;
 		this.orderService = orderService;
+		this.userService = userService;
 		this.pickupLocationService = pickupLocationService;
 		viewEventBus.subscribe(this);
 	}
@@ -146,7 +150,7 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 				throw new IllegalStateException(
 						"The next state button should never be enabled when the state does not follow the happy path");
 			}
-			orderService.changeState(order, nextState.get());
+			orderService.changeState(order, nextState.get(), SecurityUtils.getCurrentUser(userService));
 			refresh(order.getId());
 		} else if (view.getMode() == Mode.CONFIRMATION) {
 			Order order = saveOrder();
@@ -209,7 +213,7 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 		try {
 			filterEmptyProducts();
 			Order order = view.getOrder();
-			return orderService.saveOrder(order);
+			return orderService.saveOrder(order, SecurityUtils.getCurrentUser(userService));
 		} catch (ValidationException e) {
 			// Should not get here if validation is setup properly
 			Notification.show("Please check the contents of the fields: " + e.getMessage(), Type.ERROR_MESSAGE);
