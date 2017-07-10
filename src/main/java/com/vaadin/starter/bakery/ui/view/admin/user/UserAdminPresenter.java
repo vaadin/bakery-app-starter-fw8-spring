@@ -2,6 +2,7 @@ package com.vaadin.starter.bakery.ui.view.admin.user;
 
 import java.io.Serializable;
 
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
@@ -18,8 +19,8 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserService,
 
 	@Autowired
 	public UserAdminPresenter(UserAdminDataProvider userAdminDataProvider, NavigationManager navigationManager,
-			UserService service) {
-		super(navigationManager, service, userAdminDataProvider);
+			UserService service, BeanFactory beanFactory) {
+		super(navigationManager, service, userAdminDataProvider, beanFactory);
 	}
 
 	public String encodePassword(String value) {

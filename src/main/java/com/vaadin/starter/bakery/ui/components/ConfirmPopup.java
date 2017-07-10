@@ -6,7 +6,6 @@ import org.vaadin.spring.annotation.PrototypeScope;
 
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.starter.bakery.app.BeanLocator;
 
 @SpringComponent
 @PrototypeScope
@@ -60,7 +59,4 @@ public class ConfirmPopup {
 		}, true);
 	}
 
-	public static ConfirmPopup get() {
-		return BeanLocator.find(ConfirmPopup.class);
-	}
 }

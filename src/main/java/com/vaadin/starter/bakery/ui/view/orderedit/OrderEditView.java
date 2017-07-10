@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.BeanValidationBinder;
@@ -19,7 +20,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewBeforeLeaveEvent;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.backend.data.OrderState;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.data.entity.OrderItem;
@@ -45,9 +45,12 @@ public class OrderEditView extends OrderEditViewDesign implements View {
 
 	private boolean hasChanges;
 
+	private final BeanFactory beanFactory;
+
 	@Autowired
-	public OrderEditView(OrderEditPresenter presenter, DollarPriceConverter priceConverter) {
+	public OrderEditView(OrderEditPresenter presenter, BeanFactory beanFactory, DollarPriceConverter priceConverter) {
 		this.presenter = presenter;
+		this.beanFactory = beanFactory;
 		this.priceConverter = priceConverter;
 	}
 
@@ -146,7 +149,7 @@ public class OrderEditView extends OrderEditViewDesign implements View {
 	 * @return a new product info instance
 	 */
 	private ProductInfo createProductInfo(OrderItem orderItem) {
-		ProductInfo productInfo = BeanLocator.find(ProductInfo.class);
+		ProductInfo productInfo = beanFactory.getBean(ProductInfo.class);
 		productInfo.setItem(orderItem);
 		return productInfo;
 	}
@@ -231,7 +234,8 @@ public class OrderEditView extends OrderEditViewDesign implements View {
 		if (!containsUnsavedChanges()) {
 			event.navigate();
 		} else {
-			ConfirmPopup.get().showLeaveViewConfirmDialog(this, event::navigate);
+			ConfirmPopup confirmPopup = beanFactory.getBean(ConfirmPopup.class);
+			confirmPopup.showLeaveViewConfirmDialog(this, event::navigate);
 		}
 	}
 

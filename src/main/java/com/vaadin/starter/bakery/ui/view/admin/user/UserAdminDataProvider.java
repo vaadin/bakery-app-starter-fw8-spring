@@ -3,6 +3,7 @@ package com.vaadin.starter.bakery.ui.view.admin.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
@@ -12,7 +13,6 @@ import com.vaadin.data.provider.Query;
 import com.vaadin.data.provider.QuerySortOrder;
 import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.backend.data.entity.User;
 import com.vaadin.starter.bakery.backend.service.UserService;
 
@@ -20,23 +20,21 @@ import com.vaadin.starter.bakery.backend.service.UserService;
 @PrototypeScope
 public class UserAdminDataProvider extends FilterablePageableDataProvider<User, Object> {
 
-	private transient UserService userService;
+	private final UserService userService;
+
+	@Autowired
+	public UserAdminDataProvider(UserService userService) {
+		this.userService = userService;
+	}
 
 	@Override
 	protected Page<User> fetchFromBackEnd(Query<User, Object> query, Pageable pageable) {
-		return getUserService().findAnyMatching(getOptionalFilter(), pageable);
+		return userService.findAnyMatching(getOptionalFilter(), pageable);
 	}
 
 	@Override
 	protected int sizeInBackEnd(Query<User, Object> query) {
-		return (int) getUserService().countAnyMatching(getOptionalFilter());
-	}
-
-	protected UserService getUserService() {
-		if (userService == null) {
-			userService = BeanLocator.find(UserService.class);
-		}
-		return userService;
+		return (int) userService.countAnyMatching(getOptionalFilter());
 	}
 
 	@Override

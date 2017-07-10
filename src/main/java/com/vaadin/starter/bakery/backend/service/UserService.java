@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.backend.UserRepository;
 import com.vaadin.starter.bakery.backend.data.entity.User;
 
@@ -18,9 +17,11 @@ public class UserService extends CrudService<User> {
 
 	private static final String MODIFY_LOCKED_USER_NOT_PERMITTED = "User has been locked and cannot be modified or deleted";
 	private final PasswordEncoder passwordEncoder;
+	private final UserRepository userRepository;
 
 	@Autowired
-	public UserService(PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
 
@@ -51,7 +52,7 @@ public class UserService extends CrudService<User> {
 
 	@Override
 	protected UserRepository getRepository() {
-		return BeanLocator.find(UserRepository.class);
+		return userRepository;
 	}
 
 	@Override

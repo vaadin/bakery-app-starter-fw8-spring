@@ -3,6 +3,7 @@ package com.vaadin.starter.bakery.ui.view.orderedit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.vaadin.artur.spring.dataprovider.PageableDataProvider;
@@ -11,31 +12,27 @@ import com.vaadin.data.provider.Query;
 import com.vaadin.data.provider.QuerySortOrder;
 import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
-import com.vaadin.starter.bakery.backend.service.CrudService;
 import com.vaadin.starter.bakery.backend.service.ProductService;
 
 @SpringComponent
 public class ProductComboBoxDataProvider extends PageableDataProvider<Product, String> {
 
-	private transient CrudService<Product> productService;
+	private final ProductService productService;
+
+	@Autowired
+	public ProductComboBoxDataProvider(ProductService productService) {
+		this.productService = productService;
+	}
 
 	@Override
 	protected Page<Product> fetchFromBackEnd(Query<Product, String> query, Pageable pageable) {
-		return getProductService().findAnyMatching(query.getFilter(), pageable);
+		return productService.findAnyMatching(query.getFilter(), pageable);
 	}
 
 	@Override
 	protected int sizeInBackEnd(Query<Product, String> query) {
-		return (int) getProductService().countAnyMatching(query.getFilter());
-	}
-
-	protected CrudService<Product> getProductService() {
-		if (productService == null) {
-			productService = BeanLocator.find(ProductService.class);
-		}
-		return productService;
+		return (int) productService.countAnyMatching(query.getFilter());
 	}
 
 	@Override

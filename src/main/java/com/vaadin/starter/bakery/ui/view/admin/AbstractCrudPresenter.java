@@ -3,6 +3,7 @@ package com.vaadin.starter.bakery.ui.view.admin;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.ResolvableType;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -44,11 +45,14 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	// class.
 	private T editItem;
 
+	private final BeanFactory beanFactory;
+
 	protected AbstractCrudPresenter(NavigationManager navigationManager, S service,
-			FilterablePageableDataProvider<T, Object> dataProvider) {
+			FilterablePageableDataProvider<T, Object> dataProvider, BeanFactory beanFactory) {
 		this.service = service;
 		this.navigationManager = navigationManager;
 		this.dataProvider = dataProvider;
+		this.beanFactory = beanFactory;
 		createBinder();
 	}
 
@@ -195,7 +199,8 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 	 */
 	private void runWithConfirmation(Runnable onConfirmation, Runnable onCancel) {
 		if (hasUnsavedChanges()) {
-			ConfirmPopup.get().showLeaveViewConfirmDialog(view, onConfirmation, onCancel);
+			ConfirmPopup confirmPopup = beanFactory.getBean(ConfirmPopup.class);
+			confirmPopup.showLeaveViewConfirmDialog(view, onConfirmation, onCancel);
 		} else {
 			onConfirmation.run();
 		}
