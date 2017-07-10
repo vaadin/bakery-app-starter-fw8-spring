@@ -74,7 +74,7 @@ public class ProductInfo extends ProductInfoDesign {
 	}
 
 	private void fireOrderItemDeleted() {
-		viewEventBus.publish(this, new OrderItemDeleted(getItem()));
+		viewEventBus.publish(this, new OrderItemDeletedEvent(getItem()));
 	}
 
 	public int getSum() {

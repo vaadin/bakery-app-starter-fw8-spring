@@ -78,13 +78,13 @@ public class OrderEditPresenter implements Serializable, HasLogger {
 	}
 
 	@EventBusListenerMethod
-	private void onOrderItemDelete(OrderItemDeleted event) {
+	private void onOrderItemDelete(OrderItemDeletedEvent event) {
 		removeOrderItem(event.getOrderItem());
 		view.onProductInfoChanged();
 	}
 
 	@EventBusListenerMethod
-	private void onOrderItemUpdate(OrderUpdated event) {
+	private void onOrderItemUpdate(OrderUpdatedEvent event) {
 		refresh(view.getOrder().getId());
 	}
 

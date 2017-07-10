@@ -71,7 +71,7 @@ public class OrderHistory extends OrderHistoryDesign {
 
 	public void addNewComment(String comment) {
 		orderService.addHistoryItem(order, comment, SecurityUtils.getCurrentUser(userService));
-		eventBus.publish(this, new OrderUpdated());
+		eventBus.publish(this, new OrderUpdatedEvent());
 	}
 
 	public void setOrder(Order order) {

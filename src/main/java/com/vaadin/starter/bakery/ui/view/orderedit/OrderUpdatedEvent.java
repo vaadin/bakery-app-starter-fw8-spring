@@ -3,9 +3,9 @@ package com.vaadin.starter.bakery.ui.view.orderedit;
 /**
  * Event object sent when an order has been updated.
  */
-public class OrderUpdated {
+public class OrderUpdatedEvent {
 
-	public OrderUpdated() {
+	public OrderUpdatedEvent() {
 		// This is just a marker class to invoke the correct listener
 	}
 }
