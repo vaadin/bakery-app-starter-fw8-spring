@@ -47,6 +47,6 @@ public class ProductService extends CrudService<Product> {
 
 	@Override
 	public Page<Product> find(Pageable pageable) {
-		return getRepository().findBy(pageable);
+		return getRepository().findAll(pageable);
 	}
 }
