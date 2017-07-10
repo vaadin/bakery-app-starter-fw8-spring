@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,56 +43,41 @@ public class DataGenerator implements HasLogger {
 			"Whitney", "Farmer", "Henry", "Chen", "Macias", "Rowland", "Pierce", "Cortez", "Noble", "Howard", "Nixon",
 			"Mcbride", "Leblanc", "Russell", "Carver", "Benton", "Maldonado", "Lyons" };
 
-	private final PasswordEncoder passwordEncoder;
-
 	private final Random random = new Random(1L);
 
 	private final List<PickupLocation> pickupLocations = new ArrayList<>();
 	private final List<Product> products = new ArrayList<>();
-	private final List<Customer> customers = new ArrayList<>();
 	private final List<User> users = new ArrayList<>();
 	private final List<Order> orders = new ArrayList<>();
 	private User baker;
 	private User barista;
 	private User admin;
 
-	@Autowired
-	public DataGenerator(PasswordEncoder passwordEncoder) {
-		this.passwordEncoder = passwordEncoder;
-	}
-
 	@Bean
-	public CommandLineRunner loadData(OrderRepository orders, UserRepository users, ProductRepository products,
-			CustomerRepository customers, PickupLocationRepository pickupLocations, PasswordEncoder passwordEncoder) {
+	public CommandLineRunner loadData(OrderRepository orderRepository, UserRepository userRepository,
+			ProductRepository productRepository, CustomerRepository customerRepository,
+			PickupLocationRepository pickupLocationRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
-			if (users.count() != 0L) {
+			if (userRepository.count() != 0L) {
 				getLogger().info("Using existing database");
 				return;
 			}
 
 			getLogger().info("Generating demo data");
 			getLogger().info("... generating users");
-			createUsers(users);
+			createUsers(userRepository, passwordEncoder);
 			getLogger().info("... generating products");
-			createProducts(products);
-			getLogger().info("... generating customers");
-			createCustomers(customers);
+			createProducts(productRepository);
 			getLogger().info("... generating pickup locations");
-			createPickupLocations(pickupLocations);
+			createPickupLocations(pickupLocationRepository);
 			getLogger().info("... generating orders");
-			createOrders(orders);
+			createOrders(orderRepository, customerRepository);
 
 			getLogger().info("Generated demo data");
 		};
 	}
 
-	private void createCustomers(CustomerRepository customerRepo) {
-		for (int i = 0; i < 100; i++) {
-			customers.add(createCustomer(customerRepo));
-		}
-	}
-
-	private Customer createCustomer(CustomerRepository customerRepo) {
+	private Customer createCustomer() {
 		Customer customer = new Customer();
 		String first = getRandom(FIRST_NAME);
 		String last = getRandom(LAST_NAME);
@@ -102,14 +86,14 @@ public class DataGenerator implements HasLogger {
 		if (random.nextInt(10) == 0) {
 			customer.setDetails("Very important customer");
 		}
-		return customerRepo.save(customer);
+		return customer;
 	}
 
 	private String getRandomPhone() {
 		return "+1-555-" + String.format("%04d", random.nextInt(10000));
 	}
 
-	private void createOrders(OrderRepository orderRepo) {
+	private void createOrders(OrderRepository orderRepo, CustomerRepository customerRepository) {
 		int yearsToInclude = 2;
 		LocalDate now = LocalDate.now();
 		LocalDate oldestDate = LocalDate.of(now.getYear() - yearsToInclude, 1, 1);
@@ -132,7 +116,7 @@ public class DataGenerator implements HasLogger {
 	private Order createOrder(LocalDate dueDate) {
 		Order order = new Order();
 
-		order.setCustomer(getRandomCustomer());
+		order.setCustomer(createCustomer());
 		order.setPickupLocation(getRandomPickupLocation());
 		order.setDueDate(dueDate);
 		order.setDueTime(getRandomDueTime());
@@ -277,10 +261,6 @@ public class DataGenerator implements HasLogger {
 		return getRandom(pickupLocations);
 	}
 
-	private Customer getRandomCustomer() {
-		return getRandom(customers);
-	}
-
 	private User getBaker() {
 		return baker;
 	}
@@ -334,7 +314,7 @@ public class DataGenerator implements HasLogger {
 		return name;
 	}
 
-	private void createUsers(UserRepository userRepository) {
+	private void createUsers(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		baker = userRepository.save(new User("baker@vaadin.com", "Heidi", passwordEncoder.encode("baker"), Role.BAKER));
 		User user = new User("barista@vaadin.com", "Malin", passwordEncoder.encode("barista"), Role.BARISTA);
 		user.setLocked(true);

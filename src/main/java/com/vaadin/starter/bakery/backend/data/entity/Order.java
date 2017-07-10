@@ -31,7 +31,7 @@ public class Order extends AbstractEntity {
 	@OneToOne
 	private PickupLocation pickupLocation;
 	@NotNull
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Customer customer;
 	@NotNull
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

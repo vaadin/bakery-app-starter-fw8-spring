@@ -23,7 +23,6 @@ import com.vaadin.starter.bakery.backend.OrderRepository;
 import com.vaadin.starter.bakery.backend.data.DashboardData;
 import com.vaadin.starter.bakery.backend.data.DeliveryStats;
 import com.vaadin.starter.bakery.backend.data.OrderState;
-import com.vaadin.starter.bakery.backend.data.entity.Customer;
 import com.vaadin.starter.bakery.backend.data.entity.HistoryItem;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
@@ -78,9 +77,6 @@ public class OrderService {
 
 	@Transactional(rollbackOn = Exception.class)
 	public Order saveOrder(Order order, User user) {
-		Customer customer = customerRepository.save(order.getCustomer());
-		order.setCustomer(customer);
-
 		if (order.getHistory() == null) {
 			String comment = "Order placed";
 			order.setHistory(new ArrayList<>());
