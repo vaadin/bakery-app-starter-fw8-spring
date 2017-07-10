@@ -11,7 +11,7 @@ import com.vaadin.starter.bakery.backend.ProductRepository;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
 
 @Service
-public class ProductService implements CrudService<Product> {
+public class ProductService extends CrudService<Product> {
 
 	@Override
 	public Page<Product> findAnyMatching(Optional<String> filter, Pageable pageable) {
@@ -29,12 +29,12 @@ public class ProductService implements CrudService<Product> {
 			String repositoryFilter = "%" + filter.get() + "%";
 			return getRepository().countByNameLikeIgnoreCase(repositoryFilter);
 		} else {
-			return count();
+			return getRepository().count();
 		}
 	}
 
 	@Override
-	public ProductRepository getRepository() {
+	protected ProductRepository getRepository() {
 		return BeanLocator.find(ProductRepository.class);
 	}
 

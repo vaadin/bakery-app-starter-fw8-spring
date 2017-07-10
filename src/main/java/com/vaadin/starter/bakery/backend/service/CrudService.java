@@ -8,29 +8,25 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.vaadin.starter.bakery.backend.data.entity.AbstractEntity;
 
-public interface CrudService<T extends AbstractEntity> {
+public abstract class CrudService<T extends AbstractEntity> {
 
-	CrudRepository<T, Long> getRepository();
+	protected abstract CrudRepository<T, Long> getRepository();
 
-	default T save(T entity) {
+	public T save(T entity) {
 		return getRepository().save(entity);
 	}
 
-	default void delete(long id) {
+	public void delete(long id) {
 		getRepository().delete(id);
 	}
 
-	default long count() {
-		return getRepository().count();
-	}
-
-	default T load(long id) {
+	public T load(long id) {
 		return getRepository().findOne(id);
 	}
 
-	long countAnyMatching(Optional<String> filter);
+	public abstract long countAnyMatching(Optional<String> filter);
 
-	Page<T> findAnyMatching(Optional<String> filter, Pageable pageable);
+	public abstract Page<T> findAnyMatching(Optional<String> filter, Pageable pageable);
 
-	Page<T> find(Pageable pageable);
+	public abstract Page<T> find(Pageable pageable);
 }

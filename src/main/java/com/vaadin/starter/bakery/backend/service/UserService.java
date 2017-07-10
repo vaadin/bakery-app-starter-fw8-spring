@@ -14,7 +14,7 @@ import com.vaadin.starter.bakery.backend.UserRepository;
 import com.vaadin.starter.bakery.backend.data.entity.User;
 
 @Service
-public class UserService implements CrudService<User> {
+public class UserService extends CrudService<User> {
 
 	private static final String MODIFY_LOCKED_USER_NOT_PERMITTED = "User has been locked and cannot be modified or deleted";
 	private final PasswordEncoder passwordEncoder;
@@ -50,7 +50,7 @@ public class UserService implements CrudService<User> {
 	}
 
 	@Override
-	public UserRepository getRepository() {
+	protected UserRepository getRepository() {
 		return BeanLocator.find(UserRepository.class);
 	}
 
