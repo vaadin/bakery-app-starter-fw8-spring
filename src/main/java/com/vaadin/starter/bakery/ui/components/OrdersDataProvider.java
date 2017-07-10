@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
@@ -14,7 +15,6 @@ import com.vaadin.data.provider.Query;
 import com.vaadin.data.provider.QuerySortOrder;
 import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.service.OrderService;
 
@@ -22,12 +22,17 @@ import com.vaadin.starter.bakery.backend.service.OrderService;
 @PrototypeScope
 public class OrdersDataProvider extends FilterablePageableDataProvider<Order, Object> {
 
-	private transient OrderService orderService;
+	private final OrderService orderService;
 	private LocalDate filterDate = LocalDate.now().minusDays(1);
+
+	@Autowired
+	public OrdersDataProvider(OrderService orderService) {
+		this.orderService = orderService;
+	}
 
 	@Override
 	protected Page<Order> fetchFromBackEnd(Query<Order, Object> query, Pageable pageable) {
-		return getOrderService().findAnyMatchingAfterDueDate(getOptionalFilter(), getOptionalFilterDate(), pageable);
+		return orderService.findAnyMatchingAfterDueDate(getOptionalFilter(), getOptionalFilterDate(), pageable);
 	}
 
 	private Optional<LocalDate> getOptionalFilterDate() {
@@ -48,15 +53,7 @@ public class OrdersDataProvider extends FilterablePageableDataProvider<Order, Ob
 
 	@Override
 	protected int sizeInBackEnd(Query<Order, Object> query) {
-
-		return (int) getOrderService().countAnyMatchingAfterDueDate(getOptionalFilter(), getOptionalFilterDate());
-	}
-
-	protected OrderService getOrderService() {
-		if (orderService == null) {
-			orderService = BeanLocator.find(OrderService.class);
-		}
-		return orderService;
+		return (int) orderService.countAnyMatchingAfterDueDate(getOptionalFilter(), getOptionalFilterDate());
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.vaadin.starter.bakery.ui.view.admin.product;
 
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.SpringComponent;
@@ -15,7 +16,7 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 
 	@Autowired
 	public ProductAdminPresenter(ProductAdminDataProvider productAdminDataProvider, NavigationManager navigationManager,
-			ProductService service) {
-		super(navigationManager, service, productAdminDataProvider);
+			ProductService service, BeanFactory beanFactory) {
+		super(navigationManager, service, productAdminDataProvider, beanFactory);
 	}
 }

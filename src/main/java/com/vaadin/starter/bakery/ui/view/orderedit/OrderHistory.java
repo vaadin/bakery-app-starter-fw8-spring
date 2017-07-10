@@ -11,7 +11,6 @@ import org.vaadin.spring.events.EventBus.ViewEventBus;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.app.security.SecurityUtils;
 import com.vaadin.starter.bakery.backend.data.entity.HistoryItem;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
@@ -39,28 +38,17 @@ public class OrderHistory extends OrderHistoryDesign {
 
 	private Order order;
 
-	private OrderService orderService;
+	private final OrderService orderService;
 
-	private UserService userService;
+	private final UserService userService;
 
 	@Autowired
-	public OrderHistory(DateTimeFormatter dateTimeFormatter, ViewEventBus eventBus) {
+	public OrderHistory(DateTimeFormatter dateTimeFormatter, ViewEventBus eventBus, OrderService orderService,
+			UserService userService) {
 		this.dateTimeFormatter = dateTimeFormatter;
 		this.eventBus = eventBus;
-	}
-
-	protected OrderService getOrderService() {
-		if (orderService == null) {
-			orderService = BeanLocator.find(OrderService.class);
-		}
-		return orderService;
-	}
-
-	protected UserService getUserService() {
-		if (userService == null) {
-			userService = BeanLocator.find(UserService.class);
-		}
-		return userService;
+		this.orderService = orderService;
+		this.userService = userService;
 	}
 
 	@PostConstruct
@@ -82,7 +70,7 @@ public class OrderHistory extends OrderHistoryDesign {
 	}
 
 	public void addNewComment(String comment) {
-		getOrderService().addHistoryItem(order, comment, SecurityUtils.getCurrentUser(getUserService()));
+		orderService.addHistoryItem(order, comment, SecurityUtils.getCurrentUser(userService));
 		eventBus.publish(this, new OrderUpdated());
 	}
 

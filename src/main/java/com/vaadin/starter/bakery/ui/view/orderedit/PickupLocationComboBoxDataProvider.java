@@ -3,6 +3,7 @@ package com.vaadin.starter.bakery.ui.view.orderedit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.vaadin.artur.spring.dataprovider.PageableDataProvider;
@@ -11,7 +12,6 @@ import com.vaadin.data.provider.Query;
 import com.vaadin.data.provider.QuerySortOrder;
 import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.starter.bakery.app.BeanLocator;
 import com.vaadin.starter.bakery.backend.data.entity.PickupLocation;
 import com.vaadin.starter.bakery.backend.service.PickupLocationService;
 
@@ -21,23 +21,21 @@ import com.vaadin.starter.bakery.backend.service.PickupLocationService;
 @SpringComponent
 public class PickupLocationComboBoxDataProvider extends PageableDataProvider<PickupLocation, String> {
 
-	private transient PickupLocationService pickupLocationService;
+	private final PickupLocationService pickupLocationService;
+
+	@Autowired
+	public PickupLocationComboBoxDataProvider(PickupLocationService pickupLocationService) {
+		this.pickupLocationService = pickupLocationService;
+	}
 
 	@Override
 	protected Page<PickupLocation> fetchFromBackEnd(Query<PickupLocation, String> query, Pageable pageable) {
-		return getPickupLocationService().findAnyMatching(query.getFilter(), pageable);
+		return pickupLocationService.findAnyMatching(query.getFilter(), pageable);
 	}
 
 	@Override
 	protected int sizeInBackEnd(Query<PickupLocation, String> query) {
-		return (int) getPickupLocationService().countAnyMatching(query.getFilter());
-	}
-
-	protected PickupLocationService getPickupLocationService() {
-		if (pickupLocationService == null) {
-			pickupLocationService = BeanLocator.find(PickupLocationService.class);
-		}
-		return pickupLocationService;
+		return (int) pickupLocationService.countAnyMatching(query.getFilter());
 	}
 
 	@Override
