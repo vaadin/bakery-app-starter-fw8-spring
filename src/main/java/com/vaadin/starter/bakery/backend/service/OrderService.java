@@ -18,12 +18,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.vaadin.starter.bakery.backend.CustomerRepository;
 import com.vaadin.starter.bakery.backend.OrderRepository;
 import com.vaadin.starter.bakery.backend.data.DashboardData;
 import com.vaadin.starter.bakery.backend.data.DeliveryStats;
 import com.vaadin.starter.bakery.backend.data.OrderState;
-import com.vaadin.starter.bakery.backend.data.entity.Customer;
 import com.vaadin.starter.bakery.backend.data.entity.HistoryItem;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
@@ -33,8 +31,6 @@ import com.vaadin.starter.bakery.backend.data.entity.User;
 public class OrderService {
 
 	private final OrderRepository orderRepository;
-
-	private final CustomerRepository customerRepository;
 
 	private static Set<OrderState> notAvailableStates;
 
@@ -46,9 +42,8 @@ public class OrderService {
 	}
 
 	@Autowired
-	public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository) {
+	public OrderService(OrderRepository orderRepository) {
 		this.orderRepository = orderRepository;
-		this.customerRepository = customerRepository;
 	}
 
 	public Order findOrder(Long id) {
@@ -78,9 +73,6 @@ public class OrderService {
 
 	@Transactional(rollbackOn = Exception.class)
 	public Order saveOrder(Order order, User user) {
-		Customer customer = customerRepository.save(order.getCustomer());
-		order.setCustomer(customer);
-
 		if (order.getHistory() == null) {
 			String comment = "Order placed";
 			order.setHistory(new ArrayList<>());
