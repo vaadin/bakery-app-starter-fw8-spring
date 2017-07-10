@@ -2,11 +2,11 @@ package com.vaadin.starter.bakery.ui.view.orderedit;
 
 import com.vaadin.starter.bakery.backend.data.entity.OrderItem;
 
-public class OrderItemDeleted {
+public class OrderItemDeletedEvent {
 
 	private OrderItem orderItem;
 
-	public OrderItemDeleted(OrderItem orderItem) {
+	public OrderItemDeletedEvent(OrderItem orderItem) {
 		this.orderItem = orderItem;
 	}
 
