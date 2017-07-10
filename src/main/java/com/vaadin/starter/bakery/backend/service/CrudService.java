@@ -28,5 +28,4 @@ public abstract class CrudService<T extends AbstractEntity> {
 
 	public abstract Page<T> findAnyMatching(Optional<String> filter, Pageable pageable);
 
-	public abstract Page<T> find(Pageable pageable);
 }

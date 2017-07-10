@@ -26,7 +26,7 @@ public class ProductService extends CrudService<Product> {
 			String repositoryFilter = "%" + filter.get() + "%";
 			return getRepository().findByNameLikeIgnoreCase(repositoryFilter, pageable);
 		} else {
-			return find(pageable);
+			return getRepository().findAll(pageable);
 		}
 	}
 
@@ -45,8 +45,4 @@ public class ProductService extends CrudService<Product> {
 		return productRepository;
 	}
 
-	@Override
-	public Page<Product> find(Pageable pageable) {
-		return getRepository().findAll(pageable);
-	}
 }

@@ -36,7 +36,7 @@ public class UserService extends CrudService<User> {
 			return getRepository().findByEmailLikeIgnoreCaseOrNameLikeIgnoreCaseOrRoleLikeIgnoreCase(repositoryFilter,
 					repositoryFilter, repositoryFilter, pageable);
 		} else {
-			return find(pageable);
+			return getRepository().findAll(pageable);
 		}
 	}
 
@@ -53,11 +53,6 @@ public class UserService extends CrudService<User> {
 	@Override
 	protected UserRepository getRepository() {
 		return userRepository;
-	}
-
-	@Override
-	public Page<User> find(Pageable pageable) {
-		return getRepository().findBy(pageable);
 	}
 
 	public String encodePassword(String value) {
