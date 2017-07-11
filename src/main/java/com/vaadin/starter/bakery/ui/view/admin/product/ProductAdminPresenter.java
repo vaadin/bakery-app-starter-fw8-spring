@@ -17,6 +17,6 @@ public class ProductAdminPresenter extends AbstractCrudPresenter<Product, Produc
 	@Autowired
 	public ProductAdminPresenter(ProductAdminDataProvider productAdminDataProvider, NavigationManager navigationManager,
 			ProductService service, BeanFactory beanFactory) {
-		super(navigationManager, service, productAdminDataProvider, beanFactory);
+		super(navigationManager, service, Product.class, productAdminDataProvider, beanFactory);
 	}
 }

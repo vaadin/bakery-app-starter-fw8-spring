@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.core.ResolvableType;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
@@ -47,10 +46,13 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 
 	private final BeanFactory beanFactory;
 
-	protected AbstractCrudPresenter(NavigationManager navigationManager, S service,
+	private final Class<T> entityType;
+
+	protected AbstractCrudPresenter(NavigationManager navigationManager, S service, Class<T> entityType,
 			FilterablePageableDataProvider<T, Object> dataProvider, BeanFactory beanFactory) {
 		this.service = service;
 		this.navigationManager = navigationManager;
+		this.entityType = entityType;
 		this.dataProvider = dataProvider;
 		this.beanFactory = beanFactory;
 		createBinder();
@@ -89,9 +91,8 @@ public abstract class AbstractCrudPresenter<T extends AbstractEntity, S extends 
 		return service.load(id);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected Class<T> getEntityType() {
-		return (Class<T>) ResolvableType.forClass(getClass()).getSuperType().getGeneric(0).resolve();
+		return entityType;
 	}
 
 	private T createEntity() {
