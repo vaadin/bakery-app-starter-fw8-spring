@@ -63,14 +63,14 @@ public class UserService extends CrudService<User> {
 	@Transactional
 	public User save(User entity) {
 		throwIfUserLocked(entity.getId());
-		return getRepository().save(entity);
+		return super.save(entity);
 	}
 
 	@Override
 	@Transactional
 	public void delete(long userId) {
 		throwIfUserLocked(userId);
-		getRepository().delete(userId);
+		super.delete(userId);
 	}
 
 	private void throwIfUserLocked(Long userId) {
