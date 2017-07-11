@@ -29,20 +29,21 @@ public class AppUI extends UI implements HasLogger {
 
 	@Autowired
 	public AppUI(SpringViewProvider viewProvider, NavigationManager navigationManager, MainView mainView) {
-		setErrorHandler(event -> {
-			Throwable t = DefaultErrorHandler.findRelevantThrowable(event.getThrowable());
-			getLogger().error("Error during request", t);
-		});
 		this.viewProvider = viewProvider;
 		this.navigationManager = navigationManager;
 		this.mainView = mainView;
-
-		// Set the theme ("globally") for all Charts
-		ChartOptions.get(this).setTheme(new ChartsTheme());
 	}
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
+		setErrorHandler(event -> {
+			Throwable t = DefaultErrorHandler.findRelevantThrowable(event.getThrowable());
+			getLogger().error("Error during request", t);
+		});
+
+		// Set the theme ("globally") for all Charts
+		ChartOptions.get(this).setTheme(new ChartsTheme());
+
 		viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
 		setContent(mainView);
 
