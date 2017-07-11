@@ -279,7 +279,8 @@ public class UpdateOrderIT extends AbstractIT {
 			// edit mode
 			orderEditView.getOk().click();
 			assertEnabledWithCaption("Cancel", orderEditView.getEditOrCancel());
-			Assert.assertEquals(1, $(NotificationElement.class).all().size());
+			Assert.assertEquals("Somebody else might have updated the data. Please refresh and try again.",
+					$(NotificationElement.class).first().getCaption());
 		} finally {
 			otherUser.close();
 		}
