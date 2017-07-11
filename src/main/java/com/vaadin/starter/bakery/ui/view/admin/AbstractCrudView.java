@@ -94,7 +94,7 @@ public abstract class AbstractCrudView<T extends AbstractEntity> implements Seri
 	}
 
 	@PostConstruct
-	protected void init() {
+	private void initLogic() {
 		getGrid().addSelectionListener(e -> {
 			if (!e.isUserOriginated()) {
 				return;
