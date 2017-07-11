@@ -46,18 +46,15 @@ public class DataGenerator implements HasLogger {
 
 	private final List<PickupLocation> pickupLocations = new ArrayList<>();
 	private final List<Product> products = new ArrayList<>();
-	private final List<User> users = new ArrayList<>();
-	private final List<Order> orders = new ArrayList<>();
 	private User baker;
 	private User barista;
-	private User admin;
 
 	@Bean
 	public CommandLineRunner loadData(OrderRepository orderRepository, UserRepository userRepository,
 			ProductRepository productRepository, PickupLocationRepository pickupLocationRepository,
 			PasswordEncoder passwordEncoder) {
 		return args -> {
-			if (userRepository.count() != 0L) {
+			if (hasData(userRepository)) {
 				getLogger().info("Using existing database");
 				return;
 			}
@@ -76,6 +73,10 @@ public class DataGenerator implements HasLogger {
 		};
 	}
 
+	private boolean hasData(UserRepository userRepository) {
+		return userRepository.count() != 0L;
+	}
+
 	private Customer createCustomer() {
 		Customer customer = new Customer();
 		String first = getRandom(FIRST_NAME);
@@ -92,8 +93,10 @@ public class DataGenerator implements HasLogger {
 		return "+1-555-" + String.format("%04d", random.nextInt(10000));
 	}
 
-	private void createOrders(OrderRepository orderRepo) {
+	private void createOrders(OrderRepository orderRepository) {
 		int yearsToInclude = 2;
+		List<Order> orders = new ArrayList<>();
+
 		LocalDate now = LocalDate.now();
 		LocalDate oldestDate = LocalDate.of(now.getYear() - yearsToInclude, 1, 1);
 		LocalDate newestDate = now.plusMonths(1L);
@@ -109,7 +112,7 @@ public class DataGenerator implements HasLogger {
 				orders.add(createOrder(dueDate));
 			}
 		}
-		orderRepo.save(orders);
+		orderRepository.save(orders);
 	}
 
 	private Order createOrder(LocalDate dueDate) {
@@ -276,22 +279,22 @@ public class DataGenerator implements HasLogger {
 		return array[random.nextInt(array.length)];
 	}
 
-	private void createPickupLocations(PickupLocationRepository pickupRepo) {
+	private void createPickupLocations(PickupLocationRepository pickupLocationRepository) {
 		PickupLocation store = new PickupLocation();
 		store.setName("Store");
-		pickupLocations.add(pickupRepo.save(store));
+		pickupLocations.add(pickupLocationRepository.save(store));
 		PickupLocation bakery = new PickupLocation();
 		bakery.setName("Bakery");
-		pickupLocations.add(pickupRepo.save(bakery));
+		pickupLocations.add(pickupLocationRepository.save(bakery));
 	}
 
-	private void createProducts(ProductRepository productsRepo) {
+	private void createProducts(ProductRepository productRepository) {
 		for (int i = 0; i < 10; i++) {
 			Product product = new Product();
 			product.setName(getRandomProductName());
 			double doublePrice = 2.0 + random.nextDouble() * 100.0;
 			product.setPrice((int) (doublePrice * 100.0));
-			products.add(productsRepo.save(product));
+			products.add(productRepository.save(product));
 		}
 	}
 
@@ -320,9 +323,6 @@ public class DataGenerator implements HasLogger {
 		barista = userRepository.save(user);
 		user = new User("admin@vaadin.com", "Göran", passwordEncoder.encode("admin"), Role.ADMIN);
 		user.setLocked(true);
-		admin = userRepository.save(user);
-		users.add(barista);
-		users.add(admin);
-		users.add(baker);
+		userRepository.save(user);
 	}
 }
