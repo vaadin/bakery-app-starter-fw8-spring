@@ -20,7 +20,7 @@ public class UserAdminPresenter extends AbstractCrudPresenter<User, UserService,
 	@Autowired
 	public UserAdminPresenter(UserAdminDataProvider userAdminDataProvider, NavigationManager navigationManager,
 			UserService service, BeanFactory beanFactory) {
-		super(navigationManager, service, userAdminDataProvider, beanFactory);
+		super(navigationManager, service, User.class, userAdminDataProvider, beanFactory);
 	}
 
 	public String encodePassword(String value) {
