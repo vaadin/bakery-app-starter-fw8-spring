@@ -1,5 +1,7 @@
 package com.vaadin.starter.bakery.ui.view.admin.user;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.BeanValidationBinder;
@@ -53,9 +55,8 @@ public class UserAdminView extends AbstractCrudView<User> {
 		userAdminViewDesign = new UserAdminViewDesign();
 	}
 
-	@Override
-	public void init() {
-		super.init();
+	@PostConstruct
+	private void init() {
 		presenter.init(this);
 		getGrid().setColumns("email", "name", "role");
 	}

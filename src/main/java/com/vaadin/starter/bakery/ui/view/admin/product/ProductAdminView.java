@@ -1,5 +1,7 @@
 package com.vaadin.starter.bakery.ui.view.admin.product;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.BeanValidationBinder;
@@ -32,9 +34,8 @@ public class ProductAdminView extends AbstractCrudView<Product> {
 		userAdminViewDesign = new ProductAdminViewDesign();
 	}
 
-	@Override
-	public void init() {
-		super.init();
+	@PostConstruct
+	private void init() {
 		presenter.init(this);
 		// Show two columns: "name" and "price".
 		getGrid().setColumns("name", PRICE_PROPERTY);
