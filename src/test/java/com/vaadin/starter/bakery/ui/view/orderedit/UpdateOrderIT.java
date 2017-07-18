@@ -25,6 +25,7 @@ import com.vaadin.starter.bakery.ui.view.orderedit.OrderEditViewElement.OrderInf
 import com.vaadin.starter.bakery.ui.view.orderedit.ProductInfoElement.ProductOrderData;
 import com.vaadin.starter.bakery.ui.view.storefront.StorefrontViewElement;
 import com.vaadin.testbench.ElementQuery;
+import com.vaadin.testbench.elements.ComboBoxElement;
 import com.vaadin.testbench.elements.NotificationElement;
 import com.vaadin.testbench.elements.TextFieldElement;
 
@@ -221,7 +222,14 @@ public class UpdateOrderIT extends AbstractIT {
 		orderEditView.getAddItems().click();
 
 		ProductInfoElement productInfo = orderEditView.getProductInfo(orderEditView.getNumberOfProducts() - 1);
-		productInfo.getProduct().selectByText("Blueberry Cheese Cake");
+		ComboBoxElement productSelect = productInfo.getProduct();
+
+		// Select any other value
+		String oldValue = productSelect.getValue();
+		List<String> suggestions = productSelect.getPopupSuggestions();
+		String otherValue = suggestions.stream().filter(suggestion -> !suggestion.equals(oldValue)).findFirst()
+				.orElseThrow(() -> new RuntimeException("No product found to select"));
+		productSelect.selectByText(otherValue);
 
 		assertConfirmationDialogBlocksLeaving(orderEditView);
 	}
