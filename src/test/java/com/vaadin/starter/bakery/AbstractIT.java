@@ -11,6 +11,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.LoggerFactory;
 
 import com.vaadin.starter.bakery.ui.view.LoginViewElement;
@@ -54,7 +55,10 @@ public class AbstractIT extends TestBenchTestCase {
 	}
 
 	protected WebDriver createDriver() {
-		return TestBench.createDriver(new ChromeDriver());
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--headless");
+		options.addArguments("--disable-gpu");
+		return TestBench.createDriver(new ChromeDriver(options));
 	}
 
 	@Override
