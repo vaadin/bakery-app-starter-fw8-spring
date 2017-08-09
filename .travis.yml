@@ -10,7 +10,7 @@ before_install:
 addons:
   chrome: stable
 
-install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -U -B -V -Dvaadin.charts.developer.license=$CHARTS_LICENSE -Dvaadin.board.developer.license=$BOARD_LICENSE
+before_install: ./.travis.before_install.sh
 script: ./.travis.script.sh
 
 deploy:
