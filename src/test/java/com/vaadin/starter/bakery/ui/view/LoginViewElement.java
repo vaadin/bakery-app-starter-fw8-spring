@@ -2,6 +2,7 @@ package com.vaadin.starter.bakery.ui.view;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.vaadin.testbench.TestBenchElement;
@@ -18,12 +19,11 @@ public class LoginViewElement extends TestBenchElement {
 
 		getSubmit().click();
 
-		waitUntilElementPresent("Login failed", By.className("navigation-bar"));
+		waitUntilElementPresent(By.className("navigation-bar"));
 	}
 
-	protected void waitUntilElementPresent(String errorMessage, By by) {
-		new WebDriverWait(getDriver(), 30).until(driver -> !driver.findElements(by).isEmpty());
-
+	protected void waitUntilElementPresent(By by) {
+		new WebDriverWait(getDriver(), 30).until(ExpectedConditions.presenceOfElementLocated(by));
 	}
 
 	private WebElement getSubmit() {
