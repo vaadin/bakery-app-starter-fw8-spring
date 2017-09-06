@@ -10,7 +10,7 @@
 	<name>###Bakery###</name>
 
 	<properties>
-		<vaadin.version>8.1.0</vaadin.version>
+		<vaadin.version>8.1.3</vaadin.version>
 		<vaadin-spring.version>2.1.0.beta2</vaadin-spring.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<springboot.version>1.5.4.RELEASE</springboot.version>
