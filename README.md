@@ -9,6 +9,16 @@ Open http://localhost:8080/ to view the application.
 Default credentials are admin@vaadin.com/admin for admin access and
 barista@vaadin.com/barista for normal user access.
 
+# Running the project as an executable jar
+
+The project is configured to automatically make the build artifact runnable using `java -jar`.
+By default you can thus also run the project by executing the war file:
+```
+java -jar target/###artifactId###-1.0-SNAPSHOT.war
+```
+
+If you want to produce a `jar` file instead of a `war` file, change the packaging type in `pom.xml` to `<packaging>jar</packaging>`.
+
 # Running integration tests
 
 Integration tests are implemented using TestBench. The tests take tens of minutes to run and are therefore included in a separate profile. To run the tests, execute
