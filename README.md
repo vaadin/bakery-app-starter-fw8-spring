@@ -59,3 +59,8 @@ Designer 2.x
 
 In IntelliJ, go to "Preferences" -> "Plugins" -> "Browse Repositories",
 search for "Vaadin Designer 2" and install "Vaadin Designer"
+
+# License
+A paid Pro or Prime subscription is required for creating a new software project from this starter. After its creation, results can be used, developed and distributed freely, but licenses for the used commercial components are required during development. The starter or its parts cannot be redistributed as a code example or template.
+
+For full terms, see LICENSE
