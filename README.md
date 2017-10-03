@@ -31,20 +31,20 @@ and make sure you have a valid TestBench license installed.
 
 Scalability tests can be run as follows
 
-1. Configure the server for load testing by setting `loadtestmode.enabled=true` in `src/main/resources/application.properties`
-
-2. Configure the number of concurrent users and a suitable ramp up time in the end of the `src/test/scala/*.scala` files, e.g.:
+1. Configure the number of concurrent users and a suitable ramp up time in the end of the `src/test/scala/*.scala` files, e.g.:
 	```setUp(scn.inject( rampUsers(50) over (60 seconds)) ).protocols(httpProtocol)```
 
-3. If you are not running on localhost, configure the baseUrl in the beginning of the `src/test/scala/*.scala` files, e.g.:
+2. If you are not running on localhost, configure the baseUrl in the beginning of the `src/test/scala/*.scala` files, e.g.:
+
 	```val baseUrl = "http://my.server.com"```
 
-4. Make sure the server is running at the given URL
+3. Make sure the server is running at the given URL. To run the local server, use
+  ```mvn spring-boot:run```
 
-5. Start a test from the command line, e.g.:
+4. Start a test from the command line, e.g.:
 	 ```mvn -Pscalability gatling:execute -Dgatling.simulationClass=com.vaadin.starter.bakery.Barista```
 
-6. Test results are stored into target folder, e.g.:
+5. Test results are stored into target folder, e.g.:
 	```target/gatling/Barista-1487784042461/index.html```
 
 # Developing the project
