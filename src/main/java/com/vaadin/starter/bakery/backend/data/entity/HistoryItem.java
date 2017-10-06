@@ -3,7 +3,7 @@ package com.vaadin.starter.bakery.backend.data.entity;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -21,7 +21,7 @@ public class HistoryItem extends AbstractEntity {
 	@NotNull
 	private LocalDateTime timestamp;
 	@NotNull
-	@OneToOne
+	@ManyToOne
 	private User createdBy;
 
 	protected HistoryItem() {

@@ -2,11 +2,14 @@ package com.vaadin.starter.bakery.backend.data.entity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
@@ -17,7 +20,8 @@ import javax.validation.constraints.NotNull;
 
 import com.vaadin.starter.bakery.backend.data.OrderState;
 
-@Entity(name = "OrderInfo") // "Order" is a reserved word
+// "Order" is a reserved word
+@Entity(name = "OrderInfo")
 @NamedEntityGraphs({ @NamedEntityGraph(name = "Order.gridData", attributeNodes = { @NamedAttributeNode("customer") }),
 		@NamedEntityGraph(name = "Order.allData", attributeNodes = { @NamedAttributeNode("customer"),
 				@NamedAttributeNode("items"), @NamedAttributeNode("history") }) })
@@ -28,7 +32,7 @@ public class Order extends AbstractEntity {
 	@NotNull
 	private LocalTime dueTime;
 	@NotNull
-	@OneToOne
+	@ManyToOne
 	private PickupLocation pickupLocation;
 	@NotNull
 	@OneToOne(cascade = CascadeType.ALL)
@@ -84,6 +88,12 @@ public class Order extends AbstractEntity {
 
 	public List<OrderItem> getItems() {
 		return items;
+	}
+
+	public Stream<OrderItem> getItemsStream() {
+		// Make a copy of the items list to work around
+		// EclipseLink bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=467470
+		return new ArrayList<>(getItems()).stream();
 	}
 
 	public void setItems(List<OrderItem> items) {

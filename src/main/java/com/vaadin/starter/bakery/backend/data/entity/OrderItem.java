@@ -1,7 +1,7 @@
 package com.vaadin.starter.bakery.backend.data.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Entity
 public class OrderItem extends AbstractEntity {
 
-	@OneToOne
+	@ManyToOne
 	@NotNull
 	private Product product;
 	@Min(1)

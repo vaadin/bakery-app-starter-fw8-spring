@@ -7,7 +7,8 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Entity
+// "User" is a reserved word in some SQL implementations
+@Entity(name = "UserInfo")
 public class User extends AbstractEntity {
 
 	@NotNull
