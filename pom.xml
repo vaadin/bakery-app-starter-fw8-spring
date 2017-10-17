@@ -133,7 +133,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>webcomponents-helper</artifactId>
-			<version>0.2-SNAPSHOT</version>
+			<version>0.2.0</version>
 		</dependency>
 
 		<!-- Spring -->
@@ -235,9 +235,6 @@
 							<rules>
 								<requireReleaseDeps>
 									<message>No Snapshots Allowed!</message>
-									<excludes>
-										<exclude>com.vaadin:webcomponents-helper</exclude>
-									</excludes>
 								</requireReleaseDeps>
 							</rules>
 							<fail>true</fail>
