@@ -5,22 +5,26 @@ import com.vaadin.ui.CssLayout;
 
 public class BoardBox extends CssLayout {
 
+	private CssLayout boardBox = new CssLayout();
+
 	public BoardBox(Component component) {
-		addStyleName("board-box");
-		setSizeFull();
+		addStyleName("board-box-wrapper");
+		addComponent(boardBox);
+		boardBox.addStyleName("board-box");
+		boardBox.setSizeFull();
 		CssLayout inner = new CssLayout();
 		inner.setSizeFull();
 		inner.addStyleName("board-box-inner");
 		inner.addComponent(component);
-		addComponent(inner);
+		boardBox.addComponent(inner);
 	}
 
 	public BoardBox(Component component, String styleName) {
 		this(component);
-		addStyleName(styleName);
+		boardBox.addStyleName(styleName);
 	}
 
 	public void setNeedsAttention(boolean needsAttention) {
-		setStyleName("board-box-needs-attention", needsAttention);
+		boardBox.setStyleName("board-box-needs-attention", needsAttention);
 	}
 }
