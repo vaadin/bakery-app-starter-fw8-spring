@@ -8,7 +8,10 @@ public class BoardBox extends CssLayout {
 	private CssLayout boardBox = new CssLayout();
 
 	public BoardBox(Component component) {
+		// An extra wrapper is here because of the IE11 flex box issue
+		// https://github.com/philipwalton/flexbugs#7-flex-basis-doesnt-account-for-box-sizingborder-box
 		addStyleName("board-box-wrapper");
+		setSizeFull();
 		addComponent(boardBox);
 		boardBox.addStyleName("board-box");
 		boardBox.setSizeFull();
