@@ -5,29 +5,29 @@ import com.vaadin.ui.CssLayout;
 
 public class BoardBox extends CssLayout {
 
-	private CssLayout boardBox = new CssLayout();
+	private CssLayout mainDiv = new CssLayout();
 
 	public BoardBox(Component component) {
 		// An extra wrapper is here because of the IE11 flex box issue
 		// https://github.com/philipwalton/flexbugs#7-flex-basis-doesnt-account-for-box-sizingborder-box
 		addStyleName("board-box-wrapper");
 		setSizeFull();
-		addComponent(boardBox);
-		boardBox.addStyleName("board-box");
-		boardBox.setSizeFull();
+		addComponent(mainDiv);
+		mainDiv.addStyleName("board-box");
+		mainDiv.setSizeFull();
 		CssLayout inner = new CssLayout();
 		inner.setSizeFull();
 		inner.addStyleName("board-box-inner");
 		inner.addComponent(component);
-		boardBox.addComponent(inner);
+		mainDiv.addComponent(inner);
 	}
 
 	public BoardBox(Component component, String styleName) {
 		this(component);
-		boardBox.addStyleName(styleName);
+		mainDiv.addStyleName(styleName);
 	}
 
 	public void setNeedsAttention(boolean needsAttention) {
-		boardBox.setStyleName("board-box-needs-attention", needsAttention);
+		mainDiv.setStyleName("board-box-needs-attention", needsAttention);
 	}
 }
