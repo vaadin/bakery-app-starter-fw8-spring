@@ -42,8 +42,8 @@ public class DashboardIT extends AbstractIT {
 		ChartElement productSplit = dashboardView.getMonthlyProductSplit();
 		List<WebElement> series = productSplit.getSeries();
 		Assert.assertEquals(1, series.size());
-		Assert.assertTrue("With the generated data, more than 3 products should have been sold last month",
-				series.get(0).findElements(By.tagName("path")).size() > 3);
+		Assert.assertTrue("With the generated data, more than 1 product should have been sold last month",
+				series.get(0).findElements(By.tagName("path")).size() > 1);
 	}
 
 	@Test
