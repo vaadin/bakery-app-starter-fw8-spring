@@ -9,11 +9,11 @@
 	vaadin-board {
 		padding: $padding;
 
-		vaadin-board-row:nth-child(2) > .board-box {
+		vaadin-board-row:nth-child(2) > .board-box-wrapper {
 			height: calc(20vh - $first-row-compensation) !important;
 			min-height: 150px;
 		}
-		vaadin-board-row:nth-child(3) > .board-box {
+		vaadin-board-row:nth-child(3) > .board-box-wrapper {
 			height: calc(40vh - $first-row-compensation) !important;
 			min-height: 200px;
 		}
@@ -22,10 +22,10 @@
 			min-height: 200px;
 		}
 	
-		vaadin-board-row.medium:nth-child(2) > .board-box {
+		vaadin-board-row.medium:nth-child(2) > .board-box-wrapper {
 			height: calc(20vh - $first-row-compensation * 2) !important;
 		}
-		vaadin-board-row.medium:nth-child(3) > .board-box {
+		vaadin-board-row.medium:nth-child(3) > .board-box-wrapper {
 			height: calc(40vh - $first-row-compensation * 2) !important;
 		}
 		vaadin-board-row.medium:nth-child(4) {
@@ -67,31 +67,31 @@
       		}
 
       		&.large {
-      			.board-box:not(:first-child) {
+      			.board-box-wrapper:not(:first-child) > .board-box {
       				border-left: valo-border($strength: .3);
       			}
       		}
       		&.medium {
-      			.board-box:nth-child(even) {
+      			.board-box-wrapper:nth-child(even) > .board-box {
       				border-left: valo-border($strength: .3);
       			}
-      			.board-box:nth-child(1n+3) {
+      			.board-box-wrapper:nth-child(1n+3) > .board-box {
       				border-top: valo-border($strength: .3);
       			}
       		}
       		&.small {
       			margin-bottom: $spacing-small;
-      			.board-box:nth-child(1n+2) {
+      			.board-box-wrapper:nth-child(1n+2) > .board-box {
       				border-top: valo-border($strength: .3);
       			}
       		}
 		}
 	
 		.board-row-panels {
-			.board-box:first-child {
+			.board-box-wrapper:first-child > .board-box {
 				padding-left: 0;
 			}
-			.board-box:last-child {
+			.board-box-wrapper:last-child > .board-box {
 				padding-right: 0;
 			}
       		.board-box-inner {
@@ -120,6 +120,13 @@
 			@extend .v-label-h4;
 		}
 	}
+	
+	.board-box-wrapper {
+      border: 0;
+      padding: 0;
+      margin: 0;
+	}
+	
 	.dashboard-view[width-range~="-599px"] {
  		/* minimize spacing/padding on small screens */
 		vaadin-board {
