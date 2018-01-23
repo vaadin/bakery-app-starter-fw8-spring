@@ -14,10 +14,10 @@ import com.vaadin.navigator.ViewLeaveAction;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
-import com.vaadin.starter.bakery.ui.view.admin.product.ProductAdminView;
-import com.vaadin.starter.bakery.ui.view.admin.user.UserAdminView;
-import com.vaadin.starter.bakery.ui.view.dashboard.DashboardView;
-import com.vaadin.starter.bakery.ui.view.storefront.StorefrontView;
+import com.vaadin.starter.bakery.ui.views.admin.product.ProductAdminView;
+import com.vaadin.starter.bakery.ui.views.admin.user.UserAdminView;
+import com.vaadin.starter.bakery.ui.views.dashboard.DashboardView;
+import com.vaadin.starter.bakery.ui.views.storefront.StorefrontView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;
 
