@@ -10,8 +10,8 @@ import com.vaadin.spring.internal.Conventions;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.starter.bakery.app.security.SecurityUtils;
 import com.vaadin.starter.bakery.backend.data.Role;
-import com.vaadin.starter.bakery.ui.view.dashboard.DashboardView;
-import com.vaadin.starter.bakery.ui.view.storefront.StorefrontView;
+import com.vaadin.starter.bakery.ui.views.dashboard.DashboardView;
+import com.vaadin.starter.bakery.ui.views.storefront.StorefrontView;
 
 /**
  * Governs view navigation of the app.

@@ -12,7 +12,7 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.starter.bakery.app.HasLogger;
 import com.vaadin.starter.bakery.ui.navigation.NavigationManager;
-import com.vaadin.starter.bakery.ui.view.AccessDeniedView;
+import com.vaadin.starter.bakery.ui.views.AccessDeniedView;
 import com.vaadin.ui.UI;
 
 @Theme("apptheme")
