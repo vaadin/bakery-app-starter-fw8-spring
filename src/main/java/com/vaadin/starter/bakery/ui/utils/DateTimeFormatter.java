@@ -1,4 +1,4 @@
-package com.vaadin.starter.bakery.ui.util;
+package com.vaadin.starter.bakery.ui.utils;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

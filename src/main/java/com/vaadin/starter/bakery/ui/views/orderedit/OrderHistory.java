@@ -16,7 +16,7 @@ import com.vaadin.starter.bakery.backend.data.entity.HistoryItem;
 import com.vaadin.starter.bakery.backend.data.entity.Order;
 import com.vaadin.starter.bakery.backend.service.OrderService;
 import com.vaadin.starter.bakery.backend.service.UserService;
-import com.vaadin.starter.bakery.ui.util.DateTimeFormatter;
+import com.vaadin.starter.bakery.ui.utils.DateTimeFormatter;
 import com.vaadin.ui.Button.ClickShortcut;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;

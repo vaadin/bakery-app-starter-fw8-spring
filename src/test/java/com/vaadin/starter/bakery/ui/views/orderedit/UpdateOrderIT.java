@@ -19,7 +19,7 @@ import com.vaadin.starter.bakery.AbstractIT;
 import com.vaadin.starter.bakery.backend.data.OrderState;
 import com.vaadin.starter.bakery.backend.data.entity.Customer;
 import com.vaadin.starter.bakery.ui.components.ConfirmationDialogDesignElement;
-import com.vaadin.starter.bakery.ui.util.DollarPriceConverter;
+import com.vaadin.starter.bakery.ui.utils.DollarPriceConverter;
 import com.vaadin.starter.bakery.ui.views.MenuElement;
 import com.vaadin.starter.bakery.ui.views.orderedit.OrderEditViewElement.OrderInfo;
 import com.vaadin.starter.bakery.ui.views.orderedit.ProductInfoElement.ProductOrderData;

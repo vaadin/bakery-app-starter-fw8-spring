@@ -18,7 +18,7 @@ import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.starter.bakery.backend.data.entity.OrderItem;
 import com.vaadin.starter.bakery.backend.data.entity.Product;
-import com.vaadin.starter.bakery.ui.util.DollarPriceConverter;
+import com.vaadin.starter.bakery.ui.utils.DollarPriceConverter;
 import com.vaadin.ui.Label;
 
 @SpringComponent
