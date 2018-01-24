@@ -1,4 +1,4 @@
-package com.vaadin.starter.bakery.ui.util;
+package com.vaadin.starter.bakery.ui.utils;
 
 import java.text.NumberFormat;
 import java.util.Locale;
