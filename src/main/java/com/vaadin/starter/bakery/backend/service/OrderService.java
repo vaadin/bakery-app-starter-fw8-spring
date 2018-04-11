@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class OrderService {
 	}
 
 	public Order findOrder(Long id) {
-		return orderRepository.findOne(id);
+		return orderRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 
 	public Order changeState(Order order, OrderState state, User user) {

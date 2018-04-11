@@ -2,6 +2,8 @@ package com.vaadin.starter.bakery.backend.service;
 
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -78,7 +80,7 @@ public class UserService extends CrudService<User> {
 			return;
 		}
 
-		User dbUser = getRepository().findOne(userId);
+		User dbUser = getRepository().findById(userId).orElseThrow(EntityNotFoundException::new);
 		if (dbUser.isLocked()) {
 			throw new UserFriendlyDataException(MODIFY_LOCKED_USER_NOT_PERMITTED);
 		}
