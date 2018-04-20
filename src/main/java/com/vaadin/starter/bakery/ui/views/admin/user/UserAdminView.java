@@ -34,7 +34,7 @@ public class UserAdminView extends AbstractCrudView<User> {
 	 */
 	private Validator<String> passwordValidator = new Validator<String>() {
 
-		BeanValidator passwordBeanValidator = new BeanValidator(User.class, "password");
+		BeanValidator passwordBeanValidator = new BeanValidator(User.class, "passwordHash");
 
 		@Override
 		public ValidationResult apply(String value, ValueContext context) {
@@ -69,7 +69,7 @@ public class UserAdminView extends AbstractCrudView<User> {
 						// If nothing is entered in the password field, do
 						// nothing
 					} else {
-						bean.setPassword(presenter.encodePassword(value));
+						bean.setPasswordHash(presenter.encodePassword(value));
 					}
 				});
 		binder.bindInstanceFields(getViewComponent());
