@@ -78,7 +78,7 @@ public class UserService extends CrudService<User> {
 			return;
 		}
 
-		User dbUser = getRepository().findOne(userId);
+		User dbUser = getRepository().findById(userId).orElse(null);
 		if (dbUser.isLocked()) {
 			throw new UserFriendlyDataException(MODIFY_LOCKED_USER_NOT_PERMITTED);
 		}

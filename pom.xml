@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.4.RELEASE</version>
+		<version>2.0.2.RELEASE</version>
 		<relativePath></relativePath>
 	</parent>
 
@@ -87,6 +87,32 @@
 			<artifactId>vaadin-themes</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.vaadin.addon</groupId>
+			<artifactId>confirmdialog</artifactId>
+			<version>3.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-charts</artifactId>
+			<version>4.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-board</artifactId>
+			<version>1.1.0-beta1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>webcomponents-helper</artifactId>
+			<version>0.2.0</version>
+		</dependency>
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-spring-boot-starter</artifactId>
 			<version>${vaadin-spring.version}</version><!--$NO-MVN-MAN-VER$ -->
@@ -106,34 +132,6 @@
 			<artifactId>vaadin-spring-security</artifactId>
 			<version>${vaadin-spring.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.vaadin.addon</groupId>
-			<artifactId>confirmdialog</artifactId>
-			<version>3.1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-charts</artifactId>
-			<version>4.0.4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-board</artifactId>
-			<version>1.1.0-beta1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>webcomponents-helper</artifactId>
-			<version>0.2.0</version>
-		</dependency>
-
-		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -155,6 +153,18 @@
 			<artifactId>vaadin-spring-addon-eventbus</artifactId>
 			<version>${org.vaadin.spring.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.vaadin.artur</groupId>
+			<artifactId>spring-data-provider</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<!-- Add JAXB explicitly as the java.xml.bind module is not included
+			 by default anymore in Java 9-->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -179,11 +189,6 @@
 			<artifactId>vaadin-testbench-core</artifactId>
 			<version>5.1.1</version><!--$NO-MVN-MAN-VER$ -->
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.vaadin.artur</groupId>
-			<artifactId>spring-data-provider</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 
@@ -300,7 +305,7 @@
 						<artifactId>driver-binary-downloader-maven-plugin</artifactId>
 						<version>1.0.12</version>
 						<configuration>
-							<!-- root directory that downloaded driver binaries will be stored 
+							<!-- root directory that downloaded driver binaries will be stored
 								in -->
 							<onlyGetDriversForHostOperatingSystem>true</onlyGetDriversForHostOperatingSystem>
 							<rootStandaloneServerDirectory>.driver</rootStandaloneServerDirectory>
