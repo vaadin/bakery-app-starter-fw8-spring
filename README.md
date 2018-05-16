@@ -19,6 +19,25 @@ java -jar target/###artifactId###-1.0-SNAPSHOT.war
 
 If you want to produce a `jar` file instead of a `war` file, change the packaging type in `pom.xml` to `<packaging>jar</packaging>`.
 
+You also need to configure Vaadin resources and Designer templates to be included into the jar:
+
+```xml
+<build>
+ ...
+    <resources>
+        <resource>
+            <directory>src/main/webapp</directory>
+                <filtering>false</filtering>
+        </resource>
+        <resource>
+            <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+        </resource>
+    </resources>
+ ...
+</build>
+```
+
 # Running integration tests
 
 Integration tests are implemented using TestBench. The tests take tens of minutes to run and are therefore included in a separate profile. To run the tests, execute
