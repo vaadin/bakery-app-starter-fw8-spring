@@ -17,7 +17,7 @@
 	<name>###Bakery###</name>
 
 	<properties>
-		<vaadin.version>8.9.2</vaadin.version>
+		<vaadin.version>8.14.0</vaadin.version>
 		<vaadin-spring.version>3.2.1</vaadin-spring.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<org.vaadin.spring.version>0.0.7.RELEASE</org.vaadin.spring.version>
@@ -40,20 +40,12 @@
 			<id>vaadin-pre</id>
 			<url>https://maven.vaadin.com/vaadin-prereleases</url>
 		</repository>
-		<repository>
-			<id>vaadin-snapshot</id>
-			<url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-		</repository>
 	</repositories>
 
 	<pluginRepositories>
 		<pluginRepository>
 			<id>vaadin-pre</id>
 			<url>https://maven.vaadin.com/vaadin-prereleases</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>vaadin-snapshot</id>
-			<url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -94,7 +86,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-charts</artifactId>
-			<version>4.0.4</version>
+			<version>4.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
