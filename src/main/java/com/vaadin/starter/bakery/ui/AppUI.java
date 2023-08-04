@@ -3,6 +3,7 @@ package com.vaadin.starter.bakery.ui;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.addon.charts.ChartOptions;
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Viewport;
@@ -17,6 +18,7 @@ import com.vaadin.ui.UI;
 
 @Theme("apptheme")
 @SpringUI
+@Push
 @Viewport("width=device-width,initial-scale=1.0,user-scalable=no")
 @Title("###Bakery###")
 public class AppUI extends UI implements HasLogger {
