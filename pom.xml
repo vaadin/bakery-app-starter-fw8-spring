@@ -71,11 +71,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>appsec-kit-v8</artifactId>
-			<version>1.0.1</version>
-		</dependency>
-		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
 			<version>5.13.0</version>
@@ -121,6 +116,13 @@
 			<artifactId>webcomponents-helper</artifactId>
 			<version>0.2.0</version>
 		</dependency>
+		<!-- AppSec Kit -->
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>appsec-kit-v8</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+		<!---->
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
